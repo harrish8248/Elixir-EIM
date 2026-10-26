@@ -5,8 +5,9 @@ Enterprise Structured JSON Logger with Correlation and Tenant Context.
 import json
 import logging
 import sys
-from datetime import datetime, timezone
-from typing import Any, Dict
+from datetime import UTC, datetime
+from typing import Any
+
 from apps.api.app.platform.config import settings
 from apps.api.app.platform.correlation import get_correlation_id
 
@@ -15,8 +16,8 @@ class JSONFormatter(logging.Formatter):
     """Formats log records into single-line structured JSON objects."""
 
     def format(self, record: logging.LogRecord) -> str:
-        log_entry: Dict[str, Any] = {
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+        log_entry: dict[str, Any] = {
+            "timestamp": datetime.now(UTC).isoformat(),
             "level": record.levelname,
             "logger": record.name,
             "message": record.getMessage(),

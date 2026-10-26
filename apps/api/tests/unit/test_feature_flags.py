@@ -3,6 +3,7 @@ Unit Tests for Platform Feature Flag Service.
 """
 
 import uuid
+
 from apps.api.app.platform.feature_flags.service import FeatureFlagService
 
 

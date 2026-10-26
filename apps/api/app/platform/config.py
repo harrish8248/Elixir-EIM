@@ -3,7 +3,7 @@ Platform Configuration Module.
 Loads environment variables safely using Pydantic Settings.
 """
 
-from typing import List
+
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -73,7 +73,7 @@ class PlatformSettings(BaseSettings):
     log_format: str = Field(default="json", alias="LOG_FORMAT")
 
     @property
-    def cors_origins(self) -> List[str]:
+    def cors_origins(self) -> list[str]:
         return [origin.strip() for origin in self.allowed_origins.split(",") if origin.strip()]
 
 

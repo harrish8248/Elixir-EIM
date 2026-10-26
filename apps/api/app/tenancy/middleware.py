@@ -4,11 +4,13 @@ Extracts and validates tenant context from headers or JWT tokens.
 """
 
 import uuid
+
 from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoint
 from starlette.requests import Request
 from starlette.responses import Response
+
 from apps.api.app.platform.errors import ValidationError
-from apps.api.app.tenancy.context import set_current_tenant_id, tenant_id_ctx
+from apps.api.app.tenancy.context import tenant_id_ctx
 
 TENANT_HEADER = "X-Tenant-ID"
 

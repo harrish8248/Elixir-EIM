@@ -3,11 +3,13 @@ Main FastAPI Application Entrypoint - Elixir Enterprise Information Management.
 """
 
 from contextlib import asynccontextmanager
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any, Dict
-from fastapi import FastAPI, status
+from typing import Any
+
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from apps.api.app.platform.branding import BRANDING
 from apps.api.app.platform.config import settings
 from apps.api.app.platform.correlation import CorrelationIdMiddleware, get_correlation_id
@@ -20,7 +22,7 @@ from apps.api.app.platform.logging import logger
 from apps.api.app.platform.registry import module_registry
 from apps.api.app.tenancy import TenancyMiddleware
 
-START_TIME = datetime.now(timezone.utc)
+START_TIME = datetime.now(UTC)
 
 
 @asynccontextmanager
@@ -35,7 +37,7 @@ async def lifespan(app: FastAPI):
     try:
         discovered = module_registry.discover_modules(modules_root)
         logger.info(f"Loaded {len(discovered)} modules: {module_registry.startup_order()}")
-    except Exception as exc:
+    except Exception as exc:  # noqa: BLE001
         logger.error(f"Error during module discovery: {exc}")
 
     yield
@@ -74,7 +76,7 @@ def create_app() -> FastAPI:
     # System & Health Endpoints
     # --------------------------------------------------------------------------
     @app.get("/api/v1/system/info", tags=["System"])
-    async def get_system_info() -> Dict[str, Any]:
+    async def get_system_info() -> dict[str, Any]:
         """Expose product branding, version, and active modules."""
         modules = [
             {
@@ -96,27 +98,27 @@ def create_app() -> FastAPI:
                 "vendor": BRANDING.vendor,
                 "copyright": BRANDING.copyright_statement,
                 "environment": settings.elixir_env,
-                "uptimeSeconds": (datetime.now(timezone.utc) - START_TIME).total_seconds(),
+                "uptimeSeconds": (datetime.now(UTC) - START_TIME).total_seconds(),
                 "activeModules": modules,
             },
             "meta": {
                 "requestId": get_correlation_id(),
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),
                 "version": BRANDING.version,
             },
         }
 
     @app.get("/api/v1/system/health", tags=["System"])
     @app.get("/api/v1/system/health/live", tags=["System"])
-    async def liveness_probe() -> Dict[str, Any]:
+    async def liveness_probe() -> dict[str, Any]:
         """Simple liveness probe."""
         return {
             "status": "UP",
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
         }
 
     @app.get("/api/v1/system/health/ready", tags=["System"])
-    async def readiness_probe() -> Dict[str, Any]:
+    async def readiness_probe() -> dict[str, Any]:
         """Readiness check for dependent services (DB, Redis, OPA)."""
         # In test/dev environment, return status map
         return {
@@ -127,7 +129,7 @@ def create_app() -> FastAPI:
                 "opa": "UP",
                 "storage": "UP",
             },
-            "timestamp": datetime.now(timezone.utc).isoformat(),
+            "timestamp": datetime.now(UTC).isoformat(),
         }
 
     @app.get("/", include_in_schema=False)

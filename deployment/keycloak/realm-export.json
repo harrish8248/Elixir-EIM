@@ -53,5 +53,55 @@
       { "name": "KnowledgeWorker", "description": "Standard document authoring and workflow participation" },
       { "name": "Auditor", "description": "Read-only access to audit trails and governance" }
     ]
-  }
+  },
+  "users": [
+    {
+      "username": "admin@elixir.internal",
+      "email": "admin@elixir.internal",
+      "firstName": "Global",
+      "lastName": "Administrator",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["GlobalAdmin"]
+    },
+    {
+      "username": "sarah.chen@acrocorp.com",
+      "email": "sarah.chen@acrocorp.com",
+      "firstName": "Sarah",
+      "lastName": "Chen",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["RecordsManager"]
+    },
+    {
+      "username": "john.doe@acrocorp.com",
+      "email": "john.doe@acrocorp.com",
+      "firstName": "John",
+      "lastName": "Doe",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "password123",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["KnowledgeWorker"]
+    }
+  ]
 }

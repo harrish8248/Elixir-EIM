@@ -40,6 +40,10 @@ dev = [
 [project.scripts]
 elixir-admin = "cli.elixir_admin.main:app"
 
+[tool.setuptools.packages.find]
+include = ["apps.api*", "cli*"]
+exclude = ["apps.web*"]
+
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = ["apps/api/tests"]

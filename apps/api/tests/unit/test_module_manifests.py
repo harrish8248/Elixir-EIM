@@ -2,8 +2,8 @@
 Unit Tests for Module Manifests and Registry.
 """
 
-from pathlib import Path
 import pytest
+
 from apps.api.app.platform.errors import ValidationError
 from apps.api.app.platform.registry.manifest import DependencySpec, ModuleManifest
 from apps.api.app.platform.registry.registry import ModuleRegistry

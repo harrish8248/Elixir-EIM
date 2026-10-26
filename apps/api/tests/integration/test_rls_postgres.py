@@ -9,8 +9,9 @@ Proves that:
 
 import os
 import uuid
-import pytest
+
 import psycopg
+import pytest
 
 # Pytest marker identifying tests that require a live PostgreSQL 16 instance
 pytestmark = pytest.mark.postgres
@@ -27,7 +28,7 @@ def is_postgres_available() -> bool:
         conn = psycopg.connect(DATABASE_URL, connect_timeout=1)
         conn.close()
         return True
-    except Exception:
+    except psycopg.Error:
         return False
 
 
@@ -98,9 +99,11 @@ def test_rls_cross_tenant_isolation_and_check_violations(pg_connection):
     app_conn_params["user"] = "elixir_app_role"
     app_conn_params["password"] = "app_secure_pass"
 
-    with psycopg.connect(**app_conn_params) as app_conn:
-        with app_conn.cursor() as cur:
-            # 1. Tenant A context: insert doc A
+    with (
+        psycopg.connect(**app_conn_params) as app_conn,
+        app_conn.cursor() as cur,
+    ):
+        # 1. Tenant A context: insert doc A
             cur.execute(f"SET app.current_tenant_id = '{tenant_a}'")
             cur.execute(
                 "INSERT INTO test_rls_documents (id, tenant_id, name) VALUES (%s, %s, %s)",
@@ -143,3 +146,33 @@ def test_rls_cross_tenant_isolation_and_check_violations(pg_connection):
                     (uuid.uuid4(), tenant_b, "Malicious Tampered Document.pdf"),
                 )
             assert "violates row-level security policy" in str(exc_info.value)
+
+
+def test_application_connects_as_non_superuser_with_no_rls_bypass(pg_connection):
+    """
+    Proves that the application connection runs as a non-superuser role
+    with rolbypassrls=False, guaranteeing that RLS cannot be silently bypassed.
+    """
+    app_conn_params = psycopg.conninfo.conninfo_to_dict(DATABASE_URL)
+    app_conn_params["user"] = "elixir_app_role"
+    app_conn_params["password"] = "app_secure_pass"
+
+    with (
+        psycopg.connect(**app_conn_params) as conn,
+        conn.cursor() as cur,
+    ):
+        # 1. Assert current_user is elixir_app_role
+            cur.execute("SELECT current_user;")
+            user = cur.fetchone()[0]
+            assert user == "elixir_app_role"
+
+            # 2. Assert role is NOT a superuser
+            cur.execute("SELECT usesuper FROM pg_user WHERE usename = current_user;")
+            is_superuser = cur.fetchone()[0]
+            assert is_superuser is False, "CRITICAL: Application connection must NOT be a superuser!"
+
+            # 3. Assert rolbypassrls is False
+            cur.execute("SELECT rolbypassrls FROM pg_roles WHERE rolname = current_user;")
+            bypass_rls = cur.fetchone()[0]
+            assert bypass_rls is False, "CRITICAL: Application role must have rolbypassrls=False to prevent RLS bypass!"
+

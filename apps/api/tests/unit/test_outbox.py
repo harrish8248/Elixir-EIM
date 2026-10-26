@@ -3,7 +3,9 @@ Unit Tests for Outbox and Event Bus.
 """
 
 import uuid
+
 import pytest
+
 from apps.api.app.platform.events.bus import EventBus
 from apps.api.app.platform.events.outbox import OutboxEvent, OutboxStatus
 

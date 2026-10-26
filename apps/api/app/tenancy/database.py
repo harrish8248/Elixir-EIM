@@ -2,13 +2,15 @@
 Database Session Factory and Row-Level Security (RLS) Context Propagation.
 """
 
-from typing import AsyncGenerator
+from collections.abc import AsyncGenerator
+
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import (
     AsyncSession,
     async_sessionmaker,
     create_async_engine,
 )
+
 from apps.api.app.platform.config import settings
 from apps.api.app.platform.logging import logger
 from apps.api.app.tenancy.context import get_current_tenant_id

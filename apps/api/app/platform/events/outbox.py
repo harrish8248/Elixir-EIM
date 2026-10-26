@@ -5,9 +5,10 @@ Guarantees reliable at-least-once asynchronous event delivery.
 
 import enum
 import uuid
-from datetime import datetime, timezone
-from typing import Any, Dict, Optional
-from sqlalchemy import BigInteger, DateTime, Enum, Index, Integer, String, Text
+from datetime import UTC, datetime
+from typing import Any
+
+from sqlalchemy import DateTime, Enum, Index, Integer, String, Text
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -42,21 +43,21 @@ class OutboxEvent(Base):
     aggregate_type: Mapped[str] = mapped_column(String(64), nullable=False)
     aggregate_id: Mapped[str] = mapped_column(String(128), nullable=False)
 
-    payload: Mapped[Dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    payload: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
     correlation_id: Mapped[str] = mapped_column(String(128), nullable=False)
 
     status: Mapped[OutboxStatus] = mapped_column(
         Enum(OutboxStatus), default=OutboxStatus.PENDING, nullable=False, index=True
     )
     retry_count: Mapped[int] = mapped_column(Integer, default=0, nullable=False)
-    last_error: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    last_error: Mapped[str | None] = mapped_column(Text, nullable=True)
 
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
-        default=lambda: datetime.now(timezone.utc),
+        default=lambda: datetime.now(UTC),
         nullable=False,
     )
-    processed_at: Mapped[Optional[datetime]] = mapped_column(
+    processed_at: Mapped[datetime | None] = mapped_column(
         DateTime(timezone=True), nullable=True
     )
 

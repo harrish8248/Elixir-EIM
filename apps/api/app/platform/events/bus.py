@@ -3,10 +3,12 @@ Internal Event Bus for In-Memory Asynchronous Message Dispatching.
 """
 
 import asyncio
-from typing import Any, Callable, Coroutine, Dict, List, Set
+from collections.abc import Callable, Coroutine
+from typing import Any
+
 from apps.api.app.platform.logging import logger
 
-EventHandler = Callable[[Dict[str, Any]], Coroutine[Any, Any, None]]
+EventHandler = Callable[[dict[str, Any]], Coroutine[Any, Any, None]]
 
 
 class EventBus:
@@ -15,7 +17,7 @@ class EventBus:
     """
 
     def __init__(self) -> None:
-        self._subscribers: Dict[str, Set[EventHandler]] = {}
+        self._subscribers: dict[str, set[EventHandler]] = {}
 
     def subscribe(self, event_type: str, handler: EventHandler) -> None:
         """Register a handler for a given event type."""
@@ -29,7 +31,7 @@ class EventBus:
         if event_type in self._subscribers:
             self._subscribers[event_type].discard(handler)
 
-    async def publish(self, event_type: str, payload: Dict[str, Any]) -> None:
+    async def publish(self, event_type: str, payload: dict[str, Any]) -> None:
         """
         Dispatch an event to all registered subscribers concurrently.
         Failures in one handler do not abort execution of other handlers.
@@ -47,11 +49,11 @@ class EventBus:
         await asyncio.gather(*tasks)
 
     async def _safe_execute(
-        self, handler: EventHandler, event_type: str, payload: Dict[str, Any]
+        self, handler: EventHandler, event_type: str, payload: dict[str, Any]
     ) -> None:
         try:
             await handler(payload)
-        except Exception as exc:
+        except Exception as exc:  # noqa: BLE001
             logger.error(
                 f"Handler '{handler.__name__}' failed while processing '{event_type}': {exc}",
                 exc_info=True,

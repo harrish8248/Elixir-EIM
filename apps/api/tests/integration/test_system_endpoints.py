@@ -2,9 +2,9 @@
 Integration Tests for System, Health, Correlation, and Tenancy Middleware.
 """
 
-import uuid
 import pytest
 from httpx import AsyncClient
+
 from apps.api.app.platform.branding import BRANDING
 
 
@@ -59,6 +59,7 @@ async def test_invalid_tenant_id_rejection(async_client: AsyncClient):
         "/api/v1/system/health/unscoped",
         headers={"X-Tenant-ID": "not-a-valid-uuid"},
     )
+    assert response.status_code == 422
     # Protected/scoped routes validate tenant UUID
     # Let's test on a path that requires tenant scoping
     response2 = await async_client.get(

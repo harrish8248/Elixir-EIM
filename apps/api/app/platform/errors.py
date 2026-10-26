@@ -3,10 +3,12 @@ Standardized Enterprise Error Hierarchy and HTTP Exception Handlers.
 Errors never leak raw stack traces or internal implementation details to clients.
 """
 
-from datetime import datetime, timezone
-from typing import Any, Dict, List, Optional
+from datetime import UTC, datetime
+from typing import Any
+
 from fastapi import Request, status
 from fastapi.responses import JSONResponse
+
 from apps.api.app.platform.correlation import get_correlation_id
 
 
@@ -18,7 +20,7 @@ class ElixirError(Exception):
         message: str,
         code: str = "INTERNAL_SERVER_ERROR",
         status_code: int = status.HTTP_500_INTERNAL_SERVER_ERROR,
-        details: Optional[List[Dict[str, Any]]] = None,
+        details: list[dict[str, Any]] | None = None,
     ):
         super().__init__(message)
         self.message = message
@@ -37,7 +39,7 @@ class EntityNotFoundError(ElixirError):
 
 
 class PermissionDeniedError(ElixirError):
-    def __init__(self, message: str = "Access denied by enterprise policy.", details: Optional[List[Dict[str, Any]]] = None):
+    def __init__(self, message: str = "Access denied by enterprise policy.", details: list[dict[str, Any]] | None = None):
         super().__init__(
             message=message,
             code="PERMISSION_DENIED",
@@ -65,7 +67,7 @@ class AuditIntegrityError(ElixirError):
 
 
 class ValidationError(ElixirError):
-    def __init__(self, message: str, details: Optional[List[Dict[str, Any]]] = None):
+    def __init__(self, message: str, details: list[dict[str, Any]] | None = None):
         super().__init__(
             message=message,
             code="VALIDATION_FAILED",
@@ -83,7 +85,7 @@ def elixir_error_handler(request: Request, exc: ElixirError) -> JSONResponse:
                 "code": exc.code,
                 "message": exc.message,
                 "requestId": get_correlation_id(),
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),
                 "details": exc.details,
             }
         },
@@ -99,7 +101,7 @@ def unhandled_exception_handler(request: Request, exc: Exception) -> JSONRespons
                 "code": "INTERNAL_ERROR",
                 "message": "An unexpected error occurred. Please contact your system administrator.",
                 "requestId": get_correlation_id(),
-                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "timestamp": datetime.now(UTC).isoformat(),
                 "details": [],
             }
         },

@@ -4,7 +4,8 @@ Unit Tests for Central Branding Configuration.
 
 import pytest
 from pydantic import ValidationError
-from apps.api.app.platform.branding import BRANDING, ProductBrandingConfig
+
+from apps.api.app.platform.branding import BRANDING
 
 
 def test_branding_single_source_of_truth():

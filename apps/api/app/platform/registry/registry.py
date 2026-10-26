@@ -3,8 +3,9 @@ Module Registry and Dependency Graph Resolver.
 """
 
 from pathlib import Path
-from typing import Dict, List, Set
+
 import yaml
+
 from apps.api.app.platform.errors import ValidationError
 from apps.api.app.platform.logging import logger
 from apps.api.app.platform.registry.manifest import ModuleManifest
@@ -17,8 +18,8 @@ class ModuleRegistry:
     """
 
     def __init__(self) -> None:
-        self._manifests: Dict[str, ModuleManifest] = {}
-        self._ordered_modules: List[str] = []
+        self._manifests: dict[str, ModuleManifest] = {}
+        self._ordered_modules: list[str] = []
 
     def register_manifest(self, manifest: ModuleManifest) -> None:
         """Register a pre-parsed module manifest."""
@@ -37,9 +38,9 @@ class ModuleRegistry:
         self.register_manifest(manifest)
         return manifest
 
-    def discover_modules(self, root_dir: Path) -> List[ModuleManifest]:
+    def discover_modules(self, root_dir: Path) -> list[ModuleManifest]:
         """Recursively discover all module.yaml manifests in a directory."""
-        discovered: List[ModuleManifest] = []
+        discovered: list[ModuleManifest] = []
         for manifest_path in root_dir.glob("**/module.yaml"):
             try:
                 manifest = self.load_from_file(manifest_path)
@@ -57,18 +58,18 @@ class ModuleRegistry:
             raise ValidationError(f"Module '{name}' is not registered.")
         return self._manifests[name]
 
-    def all_modules(self) -> Dict[str, ModuleManifest]:
+    def all_modules(self) -> dict[str, ModuleManifest]:
         """Return all registered manifests."""
         return dict(self._manifests)
 
-    def startup_order(self) -> List[str]:
+    def startup_order(self) -> list[str]:
         """Return modules ordered by dependency topology."""
         return list(self._ordered_modules)
 
     def _recompute_order(self) -> None:
         """Topological sort using Kahn's algorithm; raises on cyclic dependencies."""
-        graph: Dict[str, Set[str]] = {name: set() for name in self._manifests}
-        in_degree: Dict[str, int] = {name: 0 for name in self._manifests}
+        graph: dict[str, set[str]] = {name: set() for name in self._manifests}
+        in_degree: dict[str, int] = {name: 0 for name in self._manifests}
 
         for name, manifest in self._manifests.items():
             for dep in manifest.dependencies:
@@ -77,12 +78,12 @@ class ModuleRegistry:
                 if dep_name in self._manifests:
                     graph[dep_name].add(name)
 
-        for name in graph:
-            for neighbor in graph[name]:
+        for neighbors in graph.values():
+            for neighbor in neighbors:
                 in_degree[neighbor] += 1
 
         queue = [name for name, deg in in_degree.items() if deg == 0]
-        order: List[str] = []
+        order: list[str] = []
 
         while queue:
             node = queue.pop(0)

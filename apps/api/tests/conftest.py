@@ -2,9 +2,9 @@
 Pytest Fixtures for Elixir EIM Test Suite.
 """
 
-import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
+
 from apps.api.app.main import app
 
 

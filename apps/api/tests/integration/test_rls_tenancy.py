@@ -3,13 +3,13 @@ Integration Tests for Tenancy Context and Database Models.
 """
 
 import uuid
-import pytest
+
 from apps.api.app.tenancy import (
     Tenant,
     TenantStatus,
+    clear_current_tenant_id,
     get_current_tenant_id,
     set_current_tenant_id,
-    clear_current_tenant_id,
 )
 
 

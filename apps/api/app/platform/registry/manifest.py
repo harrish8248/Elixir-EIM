@@ -2,7 +2,8 @@
 Module Manifest Specification and Pydantic Validator.
 """
 
-from typing import Any, Dict, List, Optional
+from typing import Any
+
 from pydantic import BaseModel, Field
 
 
@@ -22,11 +23,11 @@ class UINavEntry(BaseModel):
     path: str
     icon: str
     order: int = 100
-    required_permission: Optional[str] = None
+    required_permission: str | None = None
 
 
 class UISpec(BaseModel):
-    nav_entries: List[UINavEntry] = Field(default_factory=list)
+    nav_entries: list[UINavEntry] = Field(default_factory=list)
 
 
 class ModuleManifest(BaseModel):
@@ -40,10 +41,10 @@ class ModuleManifest(BaseModel):
     version: str
     title: str
     description: str
-    dependencies: List[DependencySpec] = Field(default_factory=list)
-    required_permissions: List[str] = Field(default_factory=list)
-    events_published: List[str] = Field(default_factory=list)
-    events_consumed: List[EventConsumerSpec] = Field(default_factory=list)
-    config_schema: Dict[str, Any] = Field(default_factory=dict)
-    feature_flag_key: Optional[str] = None
+    dependencies: list[DependencySpec] = Field(default_factory=list)
+    required_permissions: list[str] = Field(default_factory=list)
+    events_published: list[str] = Field(default_factory=list)
+    events_consumed: list[EventConsumerSpec] = Field(default_factory=list)
+    config_schema: dict[str, Any] = Field(default_factory=dict)
+    feature_flag_key: str | None = None
     ui: UISpec = Field(default_factory=UISpec)
