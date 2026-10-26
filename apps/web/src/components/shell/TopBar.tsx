@@ -1,5 +1,4 @@
-import React from "react";
-import { Search, Bell, HelpCircle, Building2, Shield, User } from "lucide-react";
+import { Search, Bell, HelpCircle, Building2, Shield, User, Sun, Moon } from "lucide-react";
 import { BRANDING } from "@/config/branding";
 
 export interface TopBarProps {
@@ -8,6 +7,8 @@ export interface TopBarProps {
   onSearchClick?: () => void;
   userRole?: string;
   userName?: string;
+  isDarkMode?: boolean;
+  onToggleDarkMode?: () => void;
 }
 
 export const TopBar: React.FC<TopBarProps> = ({
@@ -16,6 +17,8 @@ export const TopBar: React.FC<TopBarProps> = ({
   onSearchClick,
   userRole = "RecordsManager",
   userName = "Sarah Chen",
+  isDarkMode = false,
+  onToggleDarkMode,
 }) => {
   return (
     <header className="h-12 bg-brand-950 text-white flex items-center justify-between px-4 border-b border-surface-800 select-none shrink-0 z-30">
@@ -61,8 +64,15 @@ export const TopBar: React.FC<TopBarProps> = ({
           <span className="font-medium">{currentTenant}</span>
         </button>
 
-        {/* Notifications & Help */}
+        {/* Theme Toggle, Notifications & Help */}
         <div className="flex items-center gap-1 text-surface-400">
+          <button
+            onClick={onToggleDarkMode}
+            title={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
+            className="p-1 hover:text-white rounded hover:bg-surface-800 transition-colors"
+          >
+            {isDarkMode ? <Sun className="w-4 h-4 text-amber-400" /> : <Moon className="w-4 h-4 text-slate-300" />}
+          </button>
           <button
             title="Notifications"
             className="p-1 hover:text-white rounded hover:bg-surface-800 transition-colors relative"

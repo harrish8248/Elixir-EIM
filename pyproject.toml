@@ -45,6 +45,9 @@ asyncio_mode = "auto"
 testpaths = ["apps/api/tests"]
 python_files = ["test_*.py"]
 addopts = "-v --strict-markers"
+markers = [
+    "postgres: tests requiring a running PostgreSQL instance with RLS support",
+]
 
 [tool.ruff]
 line-length = 100
