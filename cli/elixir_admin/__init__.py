@@ -1,0 +1,3 @@
+"""
+Elixir EIM Admin CLI.
+"""

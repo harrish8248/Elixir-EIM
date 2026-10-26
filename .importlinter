@@ -1,0 +1,32 @@
+[importlinter]
+root_package = apps.api.app
+
+[importlinter:contract:layers]
+name = Layered Architecture Contract
+type = layers
+layers =
+    apps.api.app.extensions
+    apps.api.app.integrations
+    apps.api.app.admin
+    apps.api.app.workflow
+    apps.api.app.records
+    apps.api.app.content
+    apps.api.app.search
+    apps.api.app.pep
+    apps.api.app.audit
+    apps.api.app.guardrails
+    apps.api.app.pdp
+    apps.api.app.identity
+    apps.api.app.tenancy
+    apps.api.app.platform
+
+[importlinter:contract:domain-independence]
+name = Prevent Direct Domain Cross-Talk
+type = independence
+modules =
+    apps.api.app.content
+    apps.api.app.records
+    apps.api.app.workflow
+    apps.api.app.search
+    apps.api.app.admin
+    apps.api.app.integrations

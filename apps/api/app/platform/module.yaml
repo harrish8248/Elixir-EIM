@@ -1,0 +1,19 @@
+schema_version: "1.0.0"
+name: "platform"
+version: "1.0.0"
+title: "Platform Foundation & Core Services"
+description: "Platform branding, configuration, event bus, outbox, error envelope, and module registry."
+dependencies: []
+required_permissions: []
+events_published:
+  - "platform.system_started"
+  - "platform.config_changed"
+events_consumed: []
+config_schema:
+  type: "object"
+  properties:
+    log_level:
+      type: "string"
+      default: "INFO"
+ui:
+  nav_entries: []

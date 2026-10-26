@@ -1,0 +1,86 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "elixir-eim"
+version = "1.0.0"
+description = "Elixir Enterprise Information Management (Elixir EIM) - Production-Grade Enterprise Content, Records, and Workflow Suite"
+authors = [{ name = "Elixir Enterprise Software Inc.", email = "engineering@elixireim.internal" }]
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115.0",
+    "uvicorn[standard]>=0.31.0",
+    "pydantic>=2.9.0",
+    "pydantic-settings>=2.5.0",
+    "sqlalchemy>=2.0.35",
+    "alembic>=1.13.3",
+    "asyncpg>=0.29.0",
+    "psycopg[binary]>=3.2.0",
+    "redis>=5.1.0",
+    "typer[all]>=0.12.5",
+    "rich>=13.9.0",
+    "httpx>=0.27.2",
+    "pyyaml>=6.0.2",
+    "python-multipart>=0.0.12",
+    "cryptography>=43.0.1",
+    "python-jose[cryptography]>=3.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.3",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=5.0.0",
+    "import-linter>=2.1",
+    "ruff>=0.6.9",
+    "mypy>=1.11.2",
+]
+
+[project.scripts]
+elixir-admin = "cli.elixir_admin.main:app"
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["apps/api/tests"]
+python_files = ["test_*.py"]
+addopts = "-v --strict-markers"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.importlinter]
+root_package = "apps.api.app"
+
+[[tool.importlinter.contracts]]
+name = "Layered Architecture Contract"
+type = "layers"
+layers = [
+    "apps.api.app.extensions",
+    "apps.api.app.integrations",
+    "apps.api.app.admin",
+    "apps.api.app.workflow",
+    "apps.api.app.records",
+    "apps.api.app.content",
+    "apps.api.app.search",
+    "apps.api.app.pep",
+    "apps.api.app.audit",
+    "apps.api.app.guardrails",
+    "apps.api.app.pdp",
+    "apps.api.app.identity",
+    "apps.api.app.tenancy",
+    "apps.api.app.platform",
+]
+
+[[tool.importlinter.contracts]]
+name = "Prevent Direct Domain Cross-Talk"
+type = "independence"
+modules = [
+    "apps.api.app.content",
+    "apps.api.app.records",
+    "apps.api.app.workflow",
+    "apps.api.app.search",
+    "apps.api.app.admin",
+    "apps.api.app.integrations",
+]

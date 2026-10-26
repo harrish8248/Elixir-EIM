@@ -1,0 +1,23 @@
+schema_version: "1.0.0"
+name: "tenancy"
+version: "1.0.0"
+title: "Multi-Tenancy & Isolation Context"
+description: "Multi-tenant routing, context isolation, and PostgreSQL Row-Level Security."
+dependencies:
+  - module: "platform"
+    min_version: "1.0.0"
+required_permissions:
+  - "tenants:manage"
+  - "tenants:view"
+events_published:
+  - "tenancy.tenant_created"
+  - "tenancy.tenant_suspended"
+events_consumed: []
+config_schema:
+  type: "object"
+  properties:
+    enforce_rls:
+      type: "boolean"
+      default: true
+ui:
+  nav_entries: []

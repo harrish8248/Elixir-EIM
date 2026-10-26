@@ -1,0 +1,57 @@
+{
+  "realm": "elixir",
+  "enabled": true,
+  "displayName": "Elixir Enterprise Information Management",
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "clients": [
+    {
+      "clientId": "elixir-eim-api",
+      "name": "Elixir EIM API",
+      "enabled": true,
+      "clientAuthenticatorType": "client-secret",
+      "secret": "keycloak-client-secret-placeholder",
+      "bearerOnly": false,
+      "publicClient": false,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": true,
+      "redirectUris": [
+        "http://localhost:5173/*",
+        "http://localhost:8000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:5173",
+        "http://localhost:8000"
+      ]
+    },
+    {
+      "clientId": "elixir-eim-web",
+      "name": "Elixir EIM Web Client",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "directAccessGrantsEnabled": true,
+      "redirectUris": [
+        "http://localhost:5173/*"
+      ],
+      "webOrigins": [
+        "http://localhost:5173"
+      ]
+    }
+  ],
+  "roles": {
+    "realm": [
+      { "name": "GlobalAdmin", "description": "Full administrative control across all tenants" },
+      { "name": "TenantAdmin", "description": "Tenant-level administration and configuration" },
+      { "name": "RecordsManager", "description": "Records declaration, disposition and legal holds" },
+      { "name": "ComplianceOfficer", "description": "Audit inspection and governance oversight" },
+      { "name": "KnowledgeWorker", "description": "Standard document authoring and workflow participation" },
+      { "name": "Auditor", "description": "Read-only access to audit trails and governance" }
+    ]
+  }
+}

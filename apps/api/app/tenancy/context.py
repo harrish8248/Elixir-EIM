@@ -1,0 +1,25 @@
+"""
+Tenant Context Management using async ContextVars.
+"""
+
+from contextvars import ContextVar
+from typing import Optional
+import uuid
+
+# Context variable preserving active tenant UUID across async execution contexts
+tenant_id_ctx: ContextVar[Optional[uuid.UUID]] = ContextVar("current_tenant_id", default=None)
+
+
+def get_current_tenant_id() -> Optional[uuid.UUID]:
+    """Retrieve the current active tenant UUID."""
+    return tenant_id_ctx.get()
+
+
+def set_current_tenant_id(tenant_id: uuid.UUID) -> None:
+    """Set the current active tenant UUID."""
+    tenant_id_ctx.set(tenant_id)
+
+
+def clear_current_tenant_id() -> None:
+    """Reset the tenant context."""
+    tenant_id_ctx.set(None)
