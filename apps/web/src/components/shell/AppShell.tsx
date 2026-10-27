@@ -18,7 +18,7 @@ function getPathFromHash(): string {
 }
 
 export const AppShell: React.FC = () => {
-  const { user, logout, isForbidden } = useAuth();
+  const { user, logout, isForbidden, clearForbidden } = useAuth();
   const [currentPath, setCurrentPath] = useState<string>(() => getPathFromHash());
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [tenantName, setTenantName] = useState("AcroCorp Global (US-East)");
@@ -27,14 +27,16 @@ export const AppShell: React.FC = () => {
   useEffect(() => {
     const handleHashChange = () => {
       const path = getPathFromHash();
+      clearForbidden();
       setCurrentPath(path);
     };
 
     window.addEventListener("hashchange", handleHashChange);
     return () => window.removeEventListener("hashchange", handleHashChange);
-  }, []);
+  }, [clearForbidden]);
 
   const handleNavigate = (path: string) => {
+    clearForbidden();
     window.location.hash = path;
     setCurrentPath(path);
   };
@@ -60,7 +62,10 @@ export const AppShell: React.FC = () => {
       return (
         <ForbiddenView
           reason="Policy Decision Point (PDP) rejected this request: insufficient permissions or clearance level."
-          onGoBack={() => handleNavigate("/content")}
+          onGoBack={() => {
+            clearForbidden();
+            handleNavigate("/content");
+          }}
         />
       );
     }

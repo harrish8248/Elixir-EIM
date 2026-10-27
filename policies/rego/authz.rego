@@ -146,6 +146,7 @@ decision := {
         "policies:manage",
         "scim:manage",
         "audit:read",
+        "audit:verify_chain",
         "content:read",
         "content:write"
     ]
@@ -172,7 +173,8 @@ decision := {
         "records:disposition:review",
         "content:read",
         "content:write",
-        "audit:read"
+        "audit:read",
+        "audit:verify_chain"
     ]
 }
 

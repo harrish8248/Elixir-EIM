@@ -75,6 +75,11 @@ class PlatformSettings(BaseSettings):
     )
     oidc_algorithms: str = Field(default="RS256", alias="OIDC_ALGORITHMS")
 
+    # Content Processing
+    clamav_host: str = Field(default="localhost", alias="CLAMAV_HOST")
+    clamav_port: int = Field(default=3310, alias="CLAMAV_PORT")
+    gotenberg_url: str = Field(default="http://localhost:3000", alias="GOTENBERG_URL")
+
     # Observability
     log_level: str = Field(default="INFO", alias="LOG_LEVEL")
     log_format: str = Field(default="json", alias="LOG_FORMAT")

@@ -46,16 +46,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       title: "Records & Retention",
       path: "/records",
       icon: <ShieldAlert className="w-4 h-4 shrink-0" />,
-      badge: "2 Holds",
-      badgeVariant: "danger",
     },
     {
       id: "workflow",
       title: "Process Automation",
       path: "/workflow",
       icon: <GitBranch className="w-4 h-4 shrink-0" />,
-      badge: "4 Tasks",
-      badgeVariant: "brand",
     },
     {
       id: "search",
