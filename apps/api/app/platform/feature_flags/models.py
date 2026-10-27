@@ -33,9 +33,7 @@ class TenantFeatureFlag(Base):
 
     __tablename__ = "tenant_feature_flags"
 
-    id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
-    )
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     tenant_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
     flag_key: Mapped[str] = mapped_column(String(64), nullable=False, index=True)
     enabled: Mapped[bool] = mapped_column(Boolean, nullable=False)
@@ -48,6 +46,4 @@ class TenantFeatureFlag(Base):
         DateTime(timezone=True), default=lambda: datetime.now(UTC), nullable=False
     )
 
-    __table_args__ = (
-        Index("uq_tenant_feature_flags", "tenant_id", "flag_key", unique=True),
-    )
+    __table_args__ = (Index("uq_tenant_feature_flags", "tenant_id", "flag_key", unique=True),)

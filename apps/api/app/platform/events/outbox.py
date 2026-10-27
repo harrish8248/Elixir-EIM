@@ -33,9 +33,7 @@ class OutboxEvent(Base):
 
     __tablename__ = "outbox_events"
 
-    id: Mapped[uuid.UUID] = mapped_column(
-        UUID(as_uuid=True), primary_key=True, default=uuid.uuid4
-    )
+    id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     tenant_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), nullable=False, index=True)
     event_type: Mapped[str] = mapped_column(String(128), nullable=False, index=True)
     schema_version: Mapped[str] = mapped_column(String(16), nullable=False, default="1.0.0")
@@ -57,9 +55,7 @@ class OutboxEvent(Base):
         default=lambda: datetime.now(UTC),
         nullable=False,
     )
-    processed_at: Mapped[datetime | None] = mapped_column(
-        DateTime(timezone=True), nullable=True
-    )
+    processed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True), nullable=True)
 
     def __init__(self, **kw: Any) -> None:
         if "status" not in kw:

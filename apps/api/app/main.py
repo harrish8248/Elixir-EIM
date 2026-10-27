@@ -2,6 +2,7 @@
 Main FastAPI Application Entrypoint - Elixir Enterprise Information Management.
 """
 
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from datetime import UTC, datetime
 from pathlib import Path
@@ -26,7 +27,7 @@ START_TIME = datetime.now(UTC)
 
 
 @asynccontextmanager
-async def lifespan(app: FastAPI):
+async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     """Application startup and shutdown lifecycle management."""
     logger.info(
         f"Starting {BRANDING.name} ({BRANDING.short_name}) v{BRANDING.version} [{settings.elixir_env}]"
@@ -133,7 +134,7 @@ def create_app() -> FastAPI:
         }
 
     @app.get("/", include_in_schema=False)
-    async def root_redirect():
+    async def root_redirect() -> dict[str, str]:
         return {
             "name": BRANDING.name,
             "version": BRANDING.version,

@@ -23,3 +23,9 @@
 - **Context:** Enterprise clients frequently require re-branding, OEM packaging, or tenant white-labeling. Hardcoded strings across code and UI break consistency.
 - **Decision:** Define all branding constants (`name`, `short_name`, `version`, `vendor`) in `platform.branding.ProductBrandingConfig`.
 - **Consequences:** Single-point modifications update API headers, telemetry, error envelopes, and UI chrome automatically.
+
+## ADR 005: Python 3.13 Standardized Runtime Target
+- **Status:** Accepted
+- **Context:** Elixir EIM 1.0 requires high-throughput asynchronous execution, enhanced memory safety, and modern type annotations across its enterprise content, records management, and policy pipelines. Discrepancies between development workstations, CI runners, lockfiles, and container deployments introduce runtime divergence risks.
+- **Decision:** Standardize and pin Python 3.13 across all project configurations: `pyproject.toml` (`~=3.13.0`), GitHub Actions CI (`3.13`), `requirements.lock`, and architectural specifications. Python 3.13 provides key runtime improvements including optimized cyclic garbage collection, improved asyncio execution loop efficiency, improved error tracebacks, and full compatibility with our compiled C-extensions (`asyncpg`, `psycopg`, `cryptography`).
+- **Consequences:** Eliminates interpreter version drift between local development, CI builds, and production deployments. All environments execute under identical language semantics.

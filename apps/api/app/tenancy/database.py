@@ -33,7 +33,7 @@ AsyncSessionFactory = async_sessionmaker(
 )
 
 
-async def get_db_session() -> AsyncGenerator[AsyncSession, None]:
+async def get_db_session() -> AsyncGenerator[AsyncSession]:
     """
     Yields an AsyncSession configured with PostgreSQL Row-Level Security (RLS).
     Executes 'SET LOCAL app.current_tenant_id = :tenant_id' for multi-tenant isolation.

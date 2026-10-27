@@ -14,6 +14,7 @@ import { StatusPill } from "@/design-system/components/StatusPill";
 import { DataTable, Column } from "@/design-system/components/DataTable";
 import { SplitPane } from "@/design-system/components/SplitPane";
 import { PageHeader } from "@/components/shell/PageHeader";
+import { NotConnectedState } from "@/design-system/components/NotConnectedState";
 
 interface DocumentItem {
   id: string;
@@ -30,57 +31,10 @@ interface DocumentItem {
 
 export const ContentExplorerView: React.FC = () => {
   const [selectedFolder, setSelectedFolder] = useState("Contracts / Vendor MSA");
-  const [selectedDoc, setSelectedDoc] = useState<DocumentItem | null>({
-    id: "doc-01",
-    name: "Master_Services_Agreement_AcroCorp_2026.pdf",
-    version: "v2.1",
-    contentType: "Master Services Agreement",
-    status: "held",
-    statusLabel: "RECORD: HELD",
-    modified: "Today 14:22",
-    author: "Sarah Chen",
-    size: "2.4 MB",
-    sha256: "7f2b901ac83910ee2a94f0b29841bbce8749a901e138a0928bbfa931084ea912",
-  });
+  const [selectedDoc, setSelectedDoc] = useState<DocumentItem | null>(null);
 
-  const documents: DocumentItem[] = [
-    {
-      id: "doc-01",
-      name: "Master_Services_Agreement_AcroCorp_2026.pdf",
-      version: "v2.1",
-      contentType: "Master Services Agreement",
-      status: "held",
-      statusLabel: "RECORD: HELD",
-      modified: "Today 14:22",
-      author: "Sarah Chen",
-      size: "2.4 MB",
-      sha256: "7f2b901ac83910ee2a94f0b29841bbce8749a901e138a0928bbfa931084ea912",
-    },
-    {
-      id: "doc-02",
-      name: "Procurement_SOW_CloudMigration_v1.docx",
-      version: "v1.0",
-      contentType: "Statement of Work",
-      status: "draft",
-      statusLabel: "UNOFFICIAL",
-      modified: "Oct 24 11:05",
-      author: "Michael Diaz",
-      size: "840 KB",
-      sha256: "3d1c4b7890aef912384a9238910ebf1938a90281930192840192830192830192",
-    },
-    {
-      id: "doc-03",
-      name: "Mutual_NDA_Standard_Template.pdf",
-      version: "v3.0",
-      contentType: "Non-Disclosure Agreement",
-      status: "record",
-      statusLabel: "RETENTION: 7Y",
-      modified: "Oct 19 08:30",
-      author: "Kavita Patel",
-      size: "1.1 MB",
-      sha256: "9102839102840192830192830192830192830192830192830192830192830192",
-    },
-  ];
+  // Live documents empty until connected to backend API
+  const documents: DocumentItem[] = [];
 
   const columns: Column<DocumentItem>[] = [
     {
@@ -194,15 +148,23 @@ export const ContentExplorerView: React.FC = () => {
           leftWidth="w-60"
           right={
             <div className="flex flex-col h-full gap-4 overflow-hidden">
-              {/* Document List Table */}
+              {/* Document List Table / Not Connected State */}
               <div className="flex-1 overflow-auto">
-                <DataTable
-                  columns={columns}
-                  data={documents}
-                  keyExtractor={(doc) => doc.id}
-                  selectedId={selectedDoc?.id}
-                  onRowClick={(doc) => setSelectedDoc(doc)}
-                />
+                {documents.length > 0 ? (
+                  <DataTable
+                    columns={columns}
+                    data={documents}
+                    keyExtractor={(doc) => doc.id}
+                    selectedId={selectedDoc?.id}
+                    onRowClick={(doc) => setSelectedDoc(doc)}
+                  />
+                ) : (
+                  <NotConnectedState
+                    moduleName="Content Repository Services"
+                    description="Live documents, versions, and cryptographic seals from PostgreSQL and MinIO storage will be displayed here once connected. Mock sample rows have been removed."
+                    expectedEndpoint="GET /api/v1/content/nodes"
+                  />
+                )}
               </div>
 
               {/* Document Inspection & Trust Drawer */}

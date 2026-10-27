@@ -36,7 +36,7 @@ services:
       start_period: 5s
 
   minio:
-    image: alpine/minio:latest-release
+    image: alpine/minio:RELEASE.2025-10-15T17-29-55Z
     container_name: elixir-minio
     user: "0:0"
     restart: unless-stopped
@@ -57,7 +57,7 @@ services:
       start_period: 10s
 
   opa:
-    image: openpolicyagent/opa:latest
+    image: openpolicyagent/opa:0.68.0
     container_name: elixir-opa
     restart: unless-stopped
     command:

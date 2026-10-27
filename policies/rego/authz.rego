@@ -1,6 +1,6 @@
 package elixir.authz
 
-import future.keywords.in
+import future.keywords
 
 default allow := false
 

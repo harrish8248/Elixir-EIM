@@ -39,7 +39,11 @@ class EntityNotFoundError(ElixirError):
 
 
 class PermissionDeniedError(ElixirError):
-    def __init__(self, message: str = "Access denied by enterprise policy.", details: list[dict[str, Any]] | None = None):
+    def __init__(
+        self,
+        message: str = "Access denied by enterprise policy.",
+        details: list[dict[str, Any]] | None = None,
+    ):
         super().__init__(
             message=message,
             code="PERMISSION_DENIED",

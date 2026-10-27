@@ -7,7 +7,7 @@ name = "elixir-eim"
 version = "1.0.0"
 description = "Elixir Enterprise Information Management (Elixir EIM) - Production-Grade Enterprise Content, Records, and Workflow Suite"
 authors = [{ name = "Elixir Enterprise Software Inc.", email = "engineering@elixireim.internal" }]
-requires-python = ">=3.12"
+requires-python = "~=3.13.0"
 dependencies = [
     "fastapi>=0.115.0",
     "uvicorn[standard]>=0.31.0",
@@ -35,6 +35,7 @@ dev = [
     "import-linter>=2.1",
     "ruff>=0.6.9",
     "mypy>=1.11.2",
+    "types-PyYAML>=6.0.12",
 ]
 
 [project.scripts]
@@ -55,7 +56,10 @@ markers = [
 
 [tool.ruff]
 line-length = 100
-target-version = "py312"
+target-version = "py313"
+
+[tool.ruff.lint.per-file-ignores]
+"cli/**" = ["B008"]
 
 [tool.importlinter]
 root_package = "apps.api.app"

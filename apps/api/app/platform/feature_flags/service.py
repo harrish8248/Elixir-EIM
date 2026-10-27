@@ -20,10 +20,10 @@ class FeatureFlagService:
             "module_records_management": True,
             "module_workflow_automation": True,
             "module_search_engine": True,
-            "module_capture_idp": False,       # 1.1 feature
-            "module_case_management": False,   # 1.2 feature
-            "module_guardrailed_ai": False,    # 1.4 feature
-            "module_analytics_bi": False,      # 1.5 feature
+            "module_capture_idp": False,  # 1.1 feature
+            "module_case_management": False,  # 1.2 feature
+            "module_guardrailed_ai": False,  # 1.4 feature
+            "module_analytics_bi": False,  # 1.5 feature
             "strict_magic_bytes_check": True,
             "quarantine_virus_scan": True,
         }

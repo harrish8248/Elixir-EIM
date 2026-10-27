@@ -4,14 +4,16 @@ Alembic Environment Script with Async Engine and Model Metadata.
 
 import asyncio
 from logging.config import fileConfig
+
 from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import async_engine_from_config
+
+import apps.api.app.platform.feature_flags.models
+import apps.api.app.tenancy.models  # noqa
 from apps.api.app.platform.config import settings
 from apps.api.app.platform.events.outbox import Base
-import apps.api.app.tenancy.models  # noqa
-import apps.api.app.platform.feature_flags.models  # noqa
 
 # this is the Alembic Config object
 config = context.config
@@ -25,7 +27,7 @@ target_metadata = Base.metadata
 
 def run_migrations_offline() -> None:
     """Run migrations in 'offline' mode."""
-    url = settings.database_url_sync
+    url = settings.migration_database_url_sync
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -46,7 +48,7 @@ def do_run_migrations(connection: Connection) -> None:
 async def run_async_migrations() -> None:
     """In this scenario we need to create an Engine and associate a connection with the context."""
     configuration = config.get_section(config.config_ini_section) or {}
-    configuration["sqlalchemy.url"] = settings.database_url
+    configuration["sqlalchemy.url"] = settings.migration_database_url
 
     connectable = async_engine_from_config(
         configuration,

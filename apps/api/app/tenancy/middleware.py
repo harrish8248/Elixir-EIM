@@ -43,8 +43,11 @@ class TenancyMiddleware(BaseHTTPMiddleware):
                 tenant_id = uuid.UUID(tenant_header_val)
                 token = tenant_id_ctx.set(tenant_id)
             except ValueError:
-                err = ValidationError(f"Invalid UUID in '{TENANT_HEADER}' header: '{tenant_header_val}'")
+                err = ValidationError(
+                    f"Invalid UUID in '{TENANT_HEADER}' header: '{tenant_header_val}'"
+                )
                 from apps.api.app.platform.errors import elixir_error_handler
+
                 return elixir_error_handler(request, err)
         else:
             token = tenant_id_ctx.set(None)

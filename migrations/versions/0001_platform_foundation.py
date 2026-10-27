@@ -1,19 +1,21 @@
 """0001_platform_foundation
 
 Revision ID: 0001_platform_foundation
-Revises: 
+Revises:
 Create Date: 2026-10-26 14:00:00.000000
 
 """
-from typing import Sequence, Union
-from alembic import op
+
+from collections.abc import Sequence
+
 import sqlalchemy as sa
+from alembic import op
 from sqlalchemy.dialects import postgresql
 
 revision: str = "0001_platform_foundation"
-down_revision: Union[str, None] = None
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | None = None
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
@@ -24,9 +26,21 @@ def upgrade() -> None:
         sa.Column("name", sa.String(128), nullable=False),
         sa.Column("slug", sa.String(64), nullable=False, unique=True),
         sa.Column("status", sa.String(32), nullable=False, server_default="ACTIVE"),
-        sa.Column("settings", postgresql.JSONB(astext_type=sa.Text()), nullable=False, server_default="{}"),
-        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.text("now()")),
-        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.text("now()")),
+        sa.Column(
+            "settings", postgresql.JSONB(astext_type=sa.Text()), nullable=False, server_default="{}"
+        ),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            nullable=False,
+            server_default=sa.text("now()"),
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            nullable=False,
+            server_default=sa.text("now()"),
+        ),
     )
     op.create_index("ix_tenants_status_slug", "tenants", ["status", "slug"])
 
@@ -44,7 +58,12 @@ def upgrade() -> None:
         sa.Column("status", sa.String(32), nullable=False, server_default="PENDING"),
         sa.Column("retry_count", sa.Integer(), nullable=False, server_default="0"),
         sa.Column("last_error", sa.Text(), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.text("now()")),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            nullable=False,
+            server_default=sa.text("now()"),
+        ),
         sa.Column("processed_at", sa.DateTime(timezone=True), nullable=True),
     )
     op.create_index("ix_outbox_events_tenant_status", "outbox_events", ["tenant_id", "status"])
@@ -56,8 +75,18 @@ def upgrade() -> None:
         sa.Column("key", sa.String(64), primary_key=True),
         sa.Column("description", sa.Text(), nullable=False),
         sa.Column("default_enabled", sa.Boolean(), nullable=False, server_default=sa.text("false")),
-        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.text("now()")),
-        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.text("now()")),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            nullable=False,
+            server_default=sa.text("now()"),
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            nullable=False,
+            server_default=sa.text("now()"),
+        ),
     )
 
     # 4. Tenant Feature Flags Table
@@ -68,10 +97,22 @@ def upgrade() -> None:
         sa.Column("flag_key", sa.String(64), nullable=False),
         sa.Column("enabled", sa.Boolean(), nullable=False),
         sa.Column("reason", sa.String(255), nullable=True),
-        sa.Column("created_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.text("now()")),
-        sa.Column("updated_at", sa.DateTime(timezone=True), nullable=False, server_default=sa.text("now()")),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            nullable=False,
+            server_default=sa.text("now()"),
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            nullable=False,
+            server_default=sa.text("now()"),
+        ),
     )
-    op.create_index("uq_tenant_feature_flags", "tenant_feature_flags", ["tenant_id", "flag_key"], unique=True)
+    op.create_index(
+        "uq_tenant_feature_flags", "tenant_feature_flags", ["tenant_id", "flag_key"], unique=True
+    )
 
     # 5. Immutable Audit Events Table (Linear Hash Chain)
     op.create_table(
@@ -81,7 +122,9 @@ def upgrade() -> None:
         sa.Column("sequence_number", sa.BigInteger(), nullable=False),
         sa.Column("prev_hash", sa.String(64), nullable=False),
         sa.Column("current_hash", sa.String(64), nullable=False),
-        sa.Column("timestamp", sa.DateTime(timezone=True), nullable=False, server_default=sa.text("now()")),
+        sa.Column(
+            "timestamp", sa.DateTime(timezone=True), nullable=False, server_default=sa.text("now()")
+        ),
         sa.Column("actor_id", sa.String(128), nullable=False),
         sa.Column("actor_email", sa.String(255), nullable=False),
         sa.Column("action", sa.String(64), nullable=False),
@@ -92,9 +135,13 @@ def upgrade() -> None:
         sa.Column("ip_address", sa.String(45), nullable=True),
         sa.Column("user_agent", sa.String(255), nullable=True),
         sa.Column("correlation_id", sa.String(128), nullable=False),
-        sa.Column("payload", postgresql.JSONB(astext_type=sa.Text()), nullable=False, server_default="{}"),
+        sa.Column(
+            "payload", postgresql.JSONB(astext_type=sa.Text()), nullable=False, server_default="{}"
+        ),
     )
-    op.create_index("ix_audit_events_tenant_seq", "audit_events", ["tenant_id", "sequence_number"], unique=True)
+    op.create_index(
+        "ix_audit_events_tenant_seq", "audit_events", ["tenant_id", "sequence_number"], unique=True
+    )
     op.create_index("ix_audit_events_actor", "audit_events", ["tenant_id", "actor_id"])
 
 

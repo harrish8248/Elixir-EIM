@@ -13,6 +13,6 @@ Elixir EIM is a production-grade, multi-tenant enterprise information management
 
 ## 3. Tier Topology
 1. **Frontend:** React 18 SPA (`apps/web`) using TypeScript, Tailwind CSS, Radix UI, TanStack Query, React Flow, and PDF.js.
-2. **API & Engine:** FastAPI application (`apps/api/app`) running on Python 3.12+ with SQLAlchemy 2 (async).
+2. **API & Engine:** FastAPI application (`apps/api/app`) running on Python 3.13 with SQLAlchemy 2 (async).
 3. **Data Tier:** PostgreSQL 16 (app data, full-text search, RLS), Redis 7 (caching, locking, queues), MinIO/S3 (content blobs and WORM storage).
 4. **Processing & Security:** ClamAV (malware scanning), Gotenberg (PDF/A rendition conversion), Open Policy Agent (Rego rules).

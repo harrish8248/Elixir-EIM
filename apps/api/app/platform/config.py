@@ -3,7 +3,6 @@ Platform Configuration Module.
 Loads environment variables safely using Pydantic Settings.
 """
 
-
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -28,13 +27,23 @@ class PlatformSettings(BaseSettings):
     )
 
     # Database URLs
+    # Application runtime connects as non-superuser elixir_app_role (enforces PostgreSQL RLS)
     database_url: str = Field(
-        default="postgresql+asyncpg://elixir:elixir_secure_pass@localhost:5432/elixir_eim",
+        default="postgresql+asyncpg://elixir_app_role:app_secure_pass@localhost:5432/elixir_eim",
         alias="DATABASE_URL",
     )
     database_url_sync: str = Field(
-        default="postgresql+psycopg://elixir:elixir_secure_pass@localhost:5432/elixir_eim",
+        default="postgresql+psycopg://elixir_app_role:app_secure_pass@localhost:5432/elixir_eim",
         alias="DATABASE_URL_SYNC",
+    )
+    # Migrations run as owner elixir to manage schema, extensions, and tables
+    migration_database_url: str = Field(
+        default="postgresql+asyncpg://elixir:elixir_secure_pass@localhost:5432/elixir_eim",
+        alias="MIGRATION_DATABASE_URL",
+    )
+    migration_database_url_sync: str = Field(
+        default="postgresql+psycopg://elixir:elixir_secure_pass@localhost:5432/elixir_eim",
+        alias="MIGRATION_DATABASE_URL_SYNC",
     )
     database_pool_size: int = Field(default=20, alias="DATABASE_POOL_SIZE")
     database_max_overflow: int = Field(default=10, alias="DATABASE_MAX_OVERFLOW")
@@ -50,9 +59,7 @@ class PlatformSettings(BaseSettings):
     s3_access_key_id: str = Field(default="minioadmin", alias="S3_ACCESS_KEY_ID")
     s3_secret_access_key: str = Field(default="minioadmin_secure", alias="S3_SECRET_ACCESS_KEY")
     s3_bucket_name: str = Field(default="elixir-eim-content", alias="S3_BUCKET_NAME")
-    s3_quarantine_bucket: str = Field(
-        default="elixir-eim-quarantine", alias="S3_QUARANTINE_BUCKET"
-    )
+    s3_quarantine_bucket: str = Field(default="elixir-eim-quarantine", alias="S3_QUARANTINE_BUCKET")
     s3_region: str = Field(default="us-east-1", alias="S3_REGION")
 
     # Policy Engine (OPA)

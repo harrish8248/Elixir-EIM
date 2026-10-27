@@ -3,6 +3,15 @@
 All notable changes to **Elixir Enterprise Information Management (Elixir EIM)** will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-dev] - 2026-10-27 (Stage B Closeout & Hardening)
+### Security & Runtime Hardening
+- **fix(security):** Configured application runtime engine default (`DATABASE_URL`, `DATABASE_URL_SYNC`) to connect strictly as non-superuser `elixir_app_role` with `rolsuper=false` and `rolbypassrls=false`. Alembic migrations isolated to `MIGRATION_DATABASE_URL` running as owner `elixir`.
+- **test(security):** Added async integration test `test_fastapi_app_real_engine_connects_as_non_superuser` proving that the FastAPI app's real database engine asserts non-superuser status with zero RLS bypass capabilities.
+- **chore(docker):** Pinned all Docker image tags to immutable versions in `docker-compose.yml` (`openpolicyagent/opa:0.68.0`, `alpine/minio:RELEASE.2025-10-15T17-29-55Z`, `quay.io/keycloak/keycloak:26.0`, `postgres:16-alpine`, `redis:7-alpine`, `clamav/clamav:1.4`, `gotenberg/gotenberg:8.12`).
+- **chore(python):** Standardized and pinned Python runtime to `3.13` across `pyproject.toml`, GitHub Actions CI pipeline, and architecture documentation; authored ADR 005 justifying Python 3.13 runtime target.
+- **feat(web):** Created `NotConnectedState` design-system component. Eliminated all hardcoded mock data and fake rows across all screens (`Content`, `Records`, `Workflow`, `Search`, `Governance`, `Admin`), replacing them with clear "Pending Live Backend" states.
+- **test(web):** Verified zero console errors across all 6 frontend routes via browser automation.
+
 ## [1.0.0-dev] - 2026-10-26 (Phase 1 Closeout)
 ### Added
 - **feat(platform):** Monorepo structure, Docker Compose local infrastructure, and living documentation suite.
