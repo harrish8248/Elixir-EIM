@@ -11,6 +11,8 @@ from typing import Any
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from apps.api.app.identity.router import auth_router
+from apps.api.app.identity.scim import scim_router
 from apps.api.app.platform.branding import BRANDING
 from apps.api.app.platform.config import settings
 from apps.api.app.platform.correlation import CorrelationIdMiddleware, get_correlation_id
@@ -72,6 +74,12 @@ def create_app() -> FastAPI:
     # Exception Handlers
     app.add_exception_handler(ElixirError, elixir_error_handler)  # type: ignore[arg-type]
     app.add_exception_handler(Exception, unhandled_exception_handler)
+
+    # Authentication & Identity Routers
+    app.include_router(auth_router)
+    app.include_router(scim_router)
+    from apps.api.app.audit.router import audit_router
+    app.include_router(audit_router)
 
     # --------------------------------------------------------------------------
     # System & Health Endpoints

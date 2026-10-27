@@ -32,7 +32,10 @@ class Tenant(Base):
     name: Mapped[str] = mapped_column(String(128), nullable=False)
     slug: Mapped[str] = mapped_column(String(64), nullable=False, unique=True, index=True)
     status: Mapped[TenantStatus] = mapped_column(
-        Enum(TenantStatus), default=TenantStatus.ACTIVE, nullable=False, index=True
+        Enum(TenantStatus, native_enum=False, length=32),
+        default=TenantStatus.ACTIVE,
+        nullable=False,
+        index=True,
     )
     settings: Mapped[dict[str, Any]] = mapped_column(JSONB, default=dict, nullable=False)
 

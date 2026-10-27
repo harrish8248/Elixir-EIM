@@ -3,6 +3,18 @@
 All notable changes to **Elixir Enterprise Information Management (Elixir EIM)** will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0-dev] - 2026-10-27 (Stage C Closeout: Security Stack, Identity, Authorization, Audit Ledger)
+### Security & Identity Stack (C1, C2, C3, C4)
+- **feat(identity):** Implemented OIDC Authorization Code Flow with PKCE against Keycloak 26, JWKS public key validation with rotation handling, secure Redis session store, httpOnly SameSite session cookies, double-submit cookie CSRF mitigation, JIT user provisioning from JWT claims, and Step-Up MFA challenge endpoint.
+- **feat(scim):** Implemented SCIM 2.0 (RFC 7643 / RFC 7644) Users and Groups endpoints (`/api/v1/scim/v2/Users`, `/api/v1/scim/v2/Groups`) supporting per-tenant bearer token authentication, RFC 7644 filtering, pagination, and multi-tenant RLS isolation.
+- **feat(authz):** Built Policy Decision Point (PDP) client integrating with real Open Policy Agent (OPA 0.68.0) container with fail-closed semantics on timeouts or unreachable daemon.
+- **feat(authz):** Authored enterprise Rego policies (`policies/rego/authz.rego`) enforcing RBAC (all 8 roles), ABAC classification vs clearance (Level 1-5), tenant boundary isolation, department segregation, and dual-control step-up requirements. Verified with 10/10 passing tests via `opa test /policies -v`.
+- **feat(pep):** Implemented Policy Enforcement Point (`require_permission` dependency & `@protect` decorator) achieving 100% route coverage check across the FastAPI application. Guaranteed denial audit persistence by committing audit records prior to raising `HTTPException(403)`.
+- **feat(audit):** Implemented append-only cryptographic SHA-256 linear hash-chained audit ledger with PostgreSQL immutability trigger (`trg_audit_events_immutable`) strictly preventing UPDATE and DELETE operations.
+- **feat(cli):** Added `elixir-admin audit verify-chain --tenant=<id>` command to cryptographically audit and verify chain integrity.
+- **feat(web):** Implemented enterprise session bootstrap (`AuthContext.tsx`), Login Screen with direct grant credentials or OIDC flow, 403 Forbidden Access Denied screen, 401 automatic re-login, permission-gated navigation, and design system components (`Modal`, `Toast`, `Tabs`, `ConfirmDialog`, `ErrorState`).
+- **test(security):** Delivered 58 backend integration and unit tests passing with 81% coverage across all security modules (`apps/api/app/pep` 90%, `apps/api/app/audit` 91%, `apps/api/app/pdp` 85%, `apps/api/app/identity` 80%+), 10 Vitest frontend tests passing, 0 TypeScript errors, clean bundle build, and 100% compliance with ruff, mypy, and import-linter.
+
 ## [1.0.0-dev] - 2026-10-27 (Stage B Closeout & Hardening)
 ### Security & Runtime Hardening
 - **fix(security):** Configured application runtime engine default (`DATABASE_URL`, `DATABASE_URL_SYNC`) to connect strictly as non-superuser `elixir_app_role` with `rolsuper=false` and `rolbypassrls=false`. Alembic migrations isolated to `MIGRATION_DATABASE_URL` running as owner `elixir`.

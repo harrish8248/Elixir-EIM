@@ -101,15 +101,54 @@ def migrate(
     console.print("[green][OK] Schema is up to date.[/green]")
 
 
-@app.command()
-def verify_audit_chain(
-    tenant_id: str | None = typer.Option(None, "--tenant-id", help="Filter by tenant UUID"),
+@app.command("verify-audit-chain")
+def verify_audit_chain_cmd(
+    tenant_id: str | None = typer.Option(None, "--tenant-id", "--tenant", help="Filter by tenant UUID"),
 ) -> None:
     """Cryptographically verify the SHA-256 linear hash chain of the audit ledger."""
-    console.print("[cyan]Verifying audit log cryptographic seals...[/cyan]")
-    console.print(
-        "[green][OK] Verified 1,420 sequential audit records. Chain integrity intact (0 violations).[/green]"
-    )
+    import asyncio
+    from typing import Any
+    from uuid import UUID
+
+    from apps.api.app.audit.service import verify_audit_hash_chain
+
+    async def _run() -> Any:
+        from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+
+        from apps.api.app.platform.config import settings
+
+        tid = UUID(tenant_id) if tenant_id else None
+        admin_engine = create_async_engine(settings.migration_database_url)
+        admin_session_factory = async_sessionmaker(admin_engine, class_=AsyncSession, expire_on_commit=False)
+        async with admin_session_factory() as db:
+            summary = await verify_audit_hash_chain(db, tenant_id=tid)
+        await admin_engine.dispose()
+        return summary
+
+    console.print("[cyan]Verifying audit ledger cryptographic SHA-256 hash chain...[/cyan]")
+    try:
+        summary = asyncio.run(_run())
+    except Exception as exc:  # noqa: BLE001
+        console.print(f"[bold red][ERROR] Database connection failed: {exc}[/bold red]")
+        sys.exit(1)
+
+    if summary.is_valid:
+        console.print(
+            f"[bold green][PASS] Verified {summary.total_events} sequential audit records across "
+            f"{summary.tenants_checked} tenant(s). Chain integrity intact (0 violations).[/bold green]"
+        )
+        sys.exit(0)
+    else:
+        console.print(
+            f"[bold red][FAIL] CRITICAL AUDIT INTEGRITY VIOLATION DETECTED! "
+            f"Found {len(summary.violations)} violation(s):[/bold red]"
+        )
+        for v in summary.violations:
+            console.print(
+                f"[red] - Tenant: {v.tenant_id} | Seq: {v.sequence_number} | "
+                f"Type: {v.violation_type} | Details: {v.details}[/red]"
+            )
+        sys.exit(1)
 
 
 DEFAULT_EXPORT_PATH = Path("tenant-config.json")
@@ -160,6 +199,12 @@ def seed_demo() -> None:
         "[green][OK] Seeded 3 tenants: AcroCorp Global, FinCorp Enterprise, BioMed Health.[/green]"
     )
     console.print("[green][OK] Seeded workspaces, folders, file plans, and mock documents.[/green]")
+
+
+# Sub-command group: elixir-admin audit verify-chain --tenant=<id>
+audit_app = typer.Typer(name="audit", help="Audit ledger cryptographic verification commands.")
+audit_app.command("verify-chain")(verify_audit_chain_cmd)
+app.add_typer(audit_app, name="audit")
 
 
 if __name__ == "__main__":

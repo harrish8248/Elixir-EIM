@@ -1,4 +1,4 @@
-import { Search, Bell, HelpCircle, Building2, Shield, User, Sun, Moon } from "lucide-react";
+import { Search, Bell, HelpCircle, Building2, Shield, User, Sun, Moon, LogOut } from "lucide-react";
 import { BRANDING } from "@/config/branding";
 
 export interface TopBarProps {
@@ -9,6 +9,7 @@ export interface TopBarProps {
   userName?: string;
   isDarkMode?: boolean;
   onToggleDarkMode?: () => void;
+  onLogout?: () => void;
 }
 
 export const TopBar: React.FC<TopBarProps> = ({
@@ -19,6 +20,7 @@ export const TopBar: React.FC<TopBarProps> = ({
   userName = "Sarah Chen",
   isDarkMode = false,
   onToggleDarkMode,
+  onLogout,
 }) => {
   return (
     <header className="h-12 bg-brand-950 text-white flex items-center justify-between px-4 border-b border-surface-800 select-none shrink-0 z-30">
@@ -90,17 +92,29 @@ export const TopBar: React.FC<TopBarProps> = ({
 
         <div className="h-4 w-px bg-surface-800" />
 
-        {/* User Badge */}
-        <div className="flex items-center gap-2 text-xs">
-          <div className="w-6 h-6 rounded-full bg-surface-700 flex items-center justify-center text-slate-200">
-            <User className="w-3.5 h-3.5" />
+        {/* User Badge & Logout */}
+        <div className="flex items-center gap-3 text-xs">
+          <div className="flex items-center gap-2">
+            <div className="w-6 h-6 rounded-full bg-surface-700 flex items-center justify-center text-slate-200">
+              <User className="w-3.5 h-3.5" />
+            </div>
+            <div className="flex flex-col text-left leading-tight">
+              <span className="font-medium text-slate-200">{userName}</span>
+              <span className="text-[10px] text-surface-400 font-mono flex items-center gap-1">
+                <Shield className="w-2.5 h-2.5 text-emerald-400" /> {userRole}
+              </span>
+            </div>
           </div>
-          <div className="flex flex-col text-left leading-tight">
-            <span className="font-medium text-slate-200">{userName}</span>
-            <span className="text-[10px] text-surface-400 font-mono flex items-center gap-1">
-              <Shield className="w-2.5 h-2.5 text-emerald-400" /> {userRole}
-            </span>
-          </div>
+
+          {onLogout && (
+            <button
+              onClick={onLogout}
+              title="Sign Out"
+              className="p-1 hover:text-red-400 rounded hover:bg-surface-800 transition-colors text-surface-400"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
+          )}
         </div>
       </div>
     </header>

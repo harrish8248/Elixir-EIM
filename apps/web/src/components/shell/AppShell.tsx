@@ -9,12 +9,16 @@ import { WorkflowView } from "@/modules/workflow/WorkflowView";
 import { SearchView } from "@/modules/search/SearchView";
 import { AdminView } from "@/modules/admin/AdminView";
 
+import { useAuth } from "@/config/AuthContext";
+import { ForbiddenView } from "@/components/auth/ForbiddenView";
+
 function getPathFromHash(): string {
   const hash = window.location.hash.replace(/^#/, "");
   return hash.startsWith("/") ? hash : "/content";
 }
 
 export const AppShell: React.FC = () => {
+  const { user, logout, isForbidden } = useAuth();
   const [currentPath, setCurrentPath] = useState<string>(() => getPathFromHash());
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [tenantName, setTenantName] = useState("AcroCorp Global (US-East)");
@@ -45,7 +49,22 @@ export const AppShell: React.FC = () => {
     }
   };
 
+  const userDisplayName =
+    [user?.first_name, user?.last_name].filter(Boolean).join(" ") ||
+    user?.username ||
+    "Sarah Chen";
+  const userPrimaryRole = user?.roles?.[0] || "RecordsManager";
+
   const renderCurrentView = () => {
+    if (isForbidden || currentPath === "/forbidden") {
+      return (
+        <ForbiddenView
+          reason="Policy Decision Point (PDP) rejected this request: insufficient permissions or clearance level."
+          onGoBack={() => handleNavigate("/content")}
+        />
+      );
+    }
+
     switch (currentPath) {
       case "/records":
         return <RecordsPlanView />;
@@ -71,10 +90,11 @@ export const AppShell: React.FC = () => {
         currentTenant={tenantName}
         onTenantChange={setTenantName}
         onSearchClick={() => handleNavigate("/search")}
-        userRole="RecordsManager"
-        userName="Sarah Chen"
+        userRole={userPrimaryRole}
+        userName={userDisplayName}
         isDarkMode={isDarkMode}
         onToggleDarkMode={toggleDarkMode}
+        onLogout={logout}
       />
 
       {/* Main Workspace Body */}

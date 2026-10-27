@@ -61,6 +61,37 @@ class TenantNotFoundError(ElixirError):
         )
 
 
+class AuthenticationError(ElixirError):
+    def __init__(
+        self, message: str = "Authentication failed.", error_code: str = "AUTHENTICATION_FAILED"
+    ):
+        super().__init__(
+            message=message,
+            code=error_code,
+            status_code=status.HTTP_401_UNAUTHORIZED,
+        )
+
+
+class AuthorizationError(ElixirError):
+    def __init__(
+        self, message: str = "Authorization failed.", error_code: str = "AUTHORIZATION_FAILED"
+    ):
+        super().__init__(
+            message=message,
+            code=error_code,
+            status_code=status.HTTP_403_FORBIDDEN,
+        )
+
+
+class NotFoundError(ElixirError):
+    def __init__(self, message: str = "Resource not found.", error_code: str = "NOT_FOUND"):
+        super().__init__(
+            message=message,
+            code=error_code,
+            status_code=status.HTTP_404_NOT_FOUND,
+        )
+
+
 class AuditIntegrityError(ElixirError):
     def __init__(self, message: str):
         super().__init__(

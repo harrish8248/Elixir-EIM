@@ -2,7 +2,9 @@
 Database Session Factory and Row-Level Security (RLS) Context Propagation.
 """
 
+import os
 from collections.abc import AsyncGenerator
+from typing import Any
 
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import (
@@ -10,17 +12,23 @@ from sqlalchemy.ext.asyncio import (
     async_sessionmaker,
     create_async_engine,
 )
+from sqlalchemy.pool import NullPool
 
 from apps.api.app.platform.config import settings
 from apps.api.app.platform.logging import logger
 from apps.api.app.tenancy.context import get_current_tenant_id
 
 # Async engine for application operations
+engine_kwargs: dict[str, Any] = {"echo": False}
+if os.getenv("TESTING") == "1" or settings.elixir_env == "test":
+    engine_kwargs["poolclass"] = NullPool
+else:
+    engine_kwargs["pool_size"] = settings.database_pool_size
+    engine_kwargs["max_overflow"] = settings.database_max_overflow
+
 engine = create_async_engine(
     settings.database_url,
-    pool_size=settings.database_pool_size,
-    max_overflow=settings.database_max_overflow,
-    echo=False,
+    **engine_kwargs,
 )
 
 # Async session factory
@@ -44,7 +52,7 @@ async def get_db_session() -> AsyncGenerator[AsyncSession]:
             try:
                 # Set PostgreSQL session-local variable for Row-Level Security
                 await session.execute(
-                    text("SET LOCAL app.current_tenant_id = :tenant_id"),
+                    text("SELECT set_config('app.current_tenant_id', :tenant_id, true)"),
                     {"tenant_id": str(tenant_id)},
                 )
             except Exception as exc:

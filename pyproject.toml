@@ -60,6 +60,7 @@ target-version = "py313"
 
 [tool.ruff.lint.per-file-ignores]
 "cli/**" = ["B008"]
+"apps/api/app/**" = ["B008"]
 
 [tool.importlinter]
 root_package = "apps.api.app"
@@ -75,11 +76,7 @@ layers = [
     "apps.api.app.records",
     "apps.api.app.content",
     "apps.api.app.search",
-    "apps.api.app.pep",
-    "apps.api.app.audit",
-    "apps.api.app.guardrails",
-    "apps.api.app.pdp",
-    "apps.api.app.identity",
+    "apps.api.app.pep : apps.api.app.audit : apps.api.app.guardrails : apps.api.app.pdp : apps.api.app.identity",
     "apps.api.app.tenancy",
     "apps.api.app.platform",
 ]
