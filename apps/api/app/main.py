@@ -78,12 +78,12 @@ def create_app() -> FastAPI:
     # Authentication & Identity Routers
     app.include_router(auth_router)
     app.include_router(scim_router)
+    from apps.api.app.admin.router import admin_router
     from apps.api.app.audit.router import audit_router
     from apps.api.app.content.router import content_router
     from apps.api.app.records.router import records_router
-    from apps.api.app.workflow.router import workflow_router
     from apps.api.app.search.router import search_router
-    from apps.api.app.admin.router import admin_router
+    from apps.api.app.workflow.router import workflow_router
     app.include_router(audit_router)
     app.include_router(content_router)
     app.include_router(records_router)

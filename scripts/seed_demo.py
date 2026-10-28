@@ -12,10 +12,9 @@ import asyncio
 import hashlib
 import sys
 import uuid
-from datetime import UTC, datetime
 
 from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 # Database URL for migration owner (can create/manage all data)
 DATABASE_URL = "postgresql+asyncpg://elixir:elixir_secure_pass@localhost:5432/elixir_eim"

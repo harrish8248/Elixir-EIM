@@ -1,7 +1,6 @@
 """Content Services API Router — workspaces, folders, documents, upload, download, versions."""
 
 import hashlib
-import io
 import mimetypes
 import uuid
 from datetime import UTC, datetime
@@ -10,14 +9,30 @@ from typing import Any
 
 import aioboto3  # type: ignore[import-untyped]
 from botocore.exceptions import ClientError  # type: ignore[import-untyped]
-from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, Query, UploadFile, status
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    File,
+    HTTPException,
+    Query,
+    UploadFile,
+    status,
+)
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from apps.api.app.audit.service import record_audit_event
-from apps.api.app.content.models import Document, DocumentComment, DocumentShare, DocumentVersion, Folder, Workspace
+from apps.api.app.content.models import (
+    Document,
+    DocumentComment,
+    DocumentShare,
+    DocumentVersion,
+    Folder,
+    Workspace,
+)
 from apps.api.app.identity.router import get_current_session
 from apps.api.app.identity.session import SessionData
 from apps.api.app.platform.config import settings
@@ -596,7 +611,7 @@ async def upload_document(
     storage_key = f"tenants/{session.tenant_id}/documents/{doc_id}/{filename}"
     try:
         await upload_to_minio(settings.s3_bucket_name, storage_key, content, detected_mime)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         logger.error(f"MinIO upload failed: {exc}")
         raise HTTPException(status_code=500, detail="Storage upload failed. Please try again.") from exc
 
@@ -682,7 +697,7 @@ async def download_document(
 
     try:
         url = await generate_presigned_url(settings.s3_bucket_name, storage_key, expires=300)
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         logger.error(f"Presigned URL generation failed: {exc}")
         raise HTTPException(status_code=500, detail="Could not generate download link") from exc
 
@@ -775,7 +790,7 @@ async def checkout_document(
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found")
     if doc.checkout_by_id and doc.checkout_by_id != session.user_id:
-        raise HTTPException(status_code=409, detail=f"Document is already checked out by another user.")
+        raise HTTPException(status_code=409, detail="Document is already checked out by another user.")
     doc.checkout_by_id = session.user_id
     doc.checkout_at = datetime.now(UTC)
     await db.flush()
@@ -800,9 +815,8 @@ async def checkin_document(
     )).scalar_one_or_none()
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found")
-    if doc.checkout_by_id != session.user_id:
-        if "Admin" not in session.roles and "RecordsManager" not in session.roles:
-            raise HTTPException(status_code=403, detail="You cannot check in a document checked out by another user")
+    if doc.checkout_by_id != session.user_id and "Admin" not in session.roles and "RecordsManager" not in session.roles:
+        raise HTTPException(status_code=403, detail="You cannot check in a document checked out by another user")
     doc.checkout_by_id = None
     doc.checkout_at = None
     await db.flush()
