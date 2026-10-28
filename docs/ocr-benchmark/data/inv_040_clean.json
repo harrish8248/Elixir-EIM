@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Horizon Legal Partners LLP",
+  "invoice_number": "INV-2026-1040",
+  "invoice_date": "2026-07-23",
+  "due_date": "2026-07-28",
+  "po_number": "PO-99040",
+  "currency": "USD",
+  "subtotal": 9150.0,
+  "tax": 915.0,
+  "total": 10065.0,
+  "line_items": [
+    {
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 3,
+      "unit_price": 1800.0,
+      "amount": 5400.0
+    },
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 5,
+      "unit_price": 750.0,
+      "amount": 3750.0
+    }
+  ],
+  "full_text": "INVOICE\nHorizon Legal Partners LLP\n120 Wall Street, Floor 18, New York, NY 10005\nEmail: accounts@horizonlaw.com\nInvoice Number: INV-2026-1040\nInvoice Date: 2026-07-23\nDue Date: 2026-07-28\nPO Number: PO-99040\nCurrency: USD\nPatent Portfolio Filing Review & Filing 3 $1800.00 $5400.00\nHVAC Quarterly Preventative Maintenance 5 $750.00 $3750.00\nSubtotal: $9150.00\nTax: $915.00\nTotal: $10065.00",
+  "doc_id": "inv_040_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_040_clean.png"
+}

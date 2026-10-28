@@ -1,0 +1,43 @@
+{
+  "document_type": "invoice",
+  "vendor": "CloudScale Networks Inc",
+  "invoice_number": "INV-2026-1060",
+  "invoice_date": "2026-05-26",
+  "due_date": "2026-05-28",
+  "po_number": "PO-99060",
+  "currency": "GBP",
+  "subtotal": 9340.0,
+  "tax": 0.0,
+  "total": 9340.0,
+  "line_items": [
+    {
+      "description": "Database Replica Failover Node",
+      "quantity": 2,
+      "unit_price": 280.0,
+      "amount": 560.0
+    },
+    {
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 2,
+      "unit_price": 1800.0,
+      "amount": 3600.0
+    },
+    {
+      "description": "SOC-2 Compliance Continuous Audit Log",
+      "quantity": 3,
+      "unit_price": 1500.0,
+      "amount": 4500.0
+    },
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 2,
+      "unit_price": 340.0,
+      "amount": 680.0
+    }
+  ],
+  "full_text": "INVOICE\nCloudScale Networks Inc\n450 Tech Hub Blvd, San Jose, CA 95110\nEmail: billing@cloudscale.net\nInvoice Number: INV-2026-1060\nInvoice Date: 2026-05-26\nDue Date: 2026-05-28\nPO Number: PO-99060\nCurrency: GBP\nDatabase Replica Failover Node 2 GBP 280.00 GBP 560.00\nPatent Portfolio Filing Review & Filing 2 GBP 1800.00 GBP 3600.00\nSOC-2 Compliance Continuous Audit Log 3 GBP 1500.00 GBP 4500.00\nIndustrial Hydraulic Valve Fitting Kit 2 GBP 340.00 GBP 680.00\nSubtotal: GBP 9340.00\nTax: GBP 0.00\nTotal: GBP 9340.00",
+  "doc_id": "inv_060_deg_skew",
+  "is_degraded": true,
+  "degradation": "skew",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_060_deg_skew.png"
+}

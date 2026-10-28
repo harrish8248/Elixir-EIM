@@ -1,0 +1,43 @@
+{
+  "document_type": "invoice",
+  "vendor": "Apex Strategic Marketing Group",
+  "invoice_number": "INV-2026-1033",
+  "invoice_date": "2026-06-13",
+  "due_date": "2026-06-28",
+  "po_number": "PO-99033",
+  "currency": "USD",
+  "subtotal": 13060.0,
+  "tax": 1077.45,
+  "total": 14137.45,
+  "line_items": [
+    {
+      "description": "Network Security Threat Detection Scan",
+      "quantity": 4,
+      "unit_price": 350.0,
+      "amount": 1400.0
+    },
+    {
+      "description": "Database Replica Failover Node",
+      "quantity": 2,
+      "unit_price": 280.0,
+      "amount": 560.0
+    },
+    {
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 5,
+      "unit_price": 1800.0,
+      "amount": 9000.0
+    },
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 5,
+      "unit_price": 420.0,
+      "amount": 2100.0
+    }
+  ],
+  "full_text": "INVOICE\nApex Strategic Marketing Group\n77 Madison Ave, Suite 300, New York, NY 10016\nEmail: billing@apexmarketing.com\nInvoice Number: INV-2026-1033\nInvoice Date: 2026-06-13\nDue Date: 2026-06-28\nPO Number: PO-99033\nCurrency: USD\nNetwork Security Threat Detection Scan 4 $350.00 $1400.00\nDatabase Replica Failover Node 2 $280.00 $560.00\nPatent Portfolio Filing Review & Filing 5 $1800.00 $9000.00\nHeavy Duty Conveyor Belt Roller 24in 5 $420.00 $2100.00\nSubtotal: $13060.00\nTax: $1077.45\nTotal: $14137.45",
+  "doc_id": "inv_033_deg_low_res",
+  "is_degraded": true,
+  "degradation": "low_res",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_033_deg_low_res.png"
+}

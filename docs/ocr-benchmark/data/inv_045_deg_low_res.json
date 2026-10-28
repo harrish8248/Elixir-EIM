@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "CloudScale Networks Inc",
+  "invoice_number": "INV-2026-1045",
+  "invoice_date": "2026-01-25",
+  "due_date": "2026-01-28",
+  "po_number": "PO-99045",
+  "currency": "USD",
+  "subtotal": 1600.0,
+  "tax": 160.0,
+  "total": 1760.0,
+  "line_items": [
+    {
+      "description": "Managed Cloud Hosting Standard Tier",
+      "quantity": 2,
+      "unit_price": 450.0,
+      "amount": 900.0
+    },
+    {
+      "description": "Network Security Threat Detection Scan",
+      "quantity": 2,
+      "unit_price": 350.0,
+      "amount": 700.0
+    }
+  ],
+  "full_text": "INVOICE\nCloudScale Networks Inc\n450 Tech Hub Blvd, San Jose, CA 95110\nEmail: billing@cloudscale.net\nInvoice Number: INV-2026-1045\nInvoice Date: 2026-01-25\nDue Date: 2026-01-28\nPO Number: PO-99045\nCurrency: USD\nManaged Cloud Hosting Standard Tier 2 $450.00 $900.00\nNetwork Security Threat Detection Scan 2 $350.00 $700.00\nSubtotal: $1600.00\nTax: $160.00\nTotal: $1760.00",
+  "doc_id": "inv_045_deg_low_res",
+  "is_degraded": true,
+  "degradation": "low_res",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_045_deg_low_res.png"
+}

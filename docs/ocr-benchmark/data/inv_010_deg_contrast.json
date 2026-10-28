@@ -1,0 +1,43 @@
+{
+  "document_type": "invoice",
+  "vendor": "Vanguard Security Systems",
+  "invoice_number": "INV-2026-1010",
+  "invoice_date": "2026-05-27",
+  "due_date": "2026-05-28",
+  "po_number": "PO-99010",
+  "currency": "GBP",
+  "subtotal": 7710.0,
+  "tax": 636.08,
+  "total": 8346.08,
+  "line_items": [
+    {
+      "description": "Database Replica Failover Node",
+      "quantity": 2,
+      "unit_price": 280.0,
+      "amount": 560.0
+    },
+    {
+      "description": "Network Security Threat Detection Scan",
+      "quantity": 5,
+      "unit_price": 350.0,
+      "amount": 1750.0
+    },
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 5,
+      "unit_price": 580.0,
+      "amount": 2900.0
+    },
+    {
+      "description": "Legal Retainer - Regulatory Governance",
+      "quantity": 1,
+      "unit_price": 2500.0,
+      "amount": 2500.0
+    }
+  ],
+  "full_text": "INVOICE\nVanguard Security Systems\n310 Cyber Way, Austin, TX 78701\nEmail: accounting@vanguardsec.com\nInvoice Number: INV-2026-1010\nInvoice Date: 2026-05-27\nDue Date: 2026-05-28\nPO Number: PO-99010\nCurrency: GBP\nDatabase Replica Failover Node 2 GBP 280.00 GBP 560.00\nNetwork Security Threat Detection Scan 5 GBP 350.00 GBP 1750.00\nIndustrial Lubricant Drum 55 Gallon 5 GBP 580.00 GBP 2900.00\nLegal Retainer - Regulatory Governance 1 GBP 2500.00 GBP 2500.00\nSubtotal: GBP 7710.00\nTax: GBP 636.08\nTotal: GBP 8346.08",
+  "doc_id": "inv_010_deg_contrast",
+  "is_degraded": true,
+  "degradation": "contrast",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_010_deg_contrast.png"
+}

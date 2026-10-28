@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Titan Global Hardware Corp",
+  "invoice_number": "INV-2026-1014",
+  "invoice_date": "2026-02-23",
+  "due_date": "2026-02-28",
+  "po_number": "PO-99014",
+  "currency": "USD",
+  "subtotal": 387.0,
+  "tax": 19.35,
+  "total": 406.35,
+  "line_items": [
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 3,
+      "unit_price": 89.0,
+      "amount": 267.0
+    },
+    {
+      "description": "Dedicated IPv4 Allocation Subnet /28",
+      "quantity": 1,
+      "unit_price": 120.0,
+      "amount": 120.0
+    }
+  ],
+  "full_text": "INVOICE\nTitan Global Hardware Corp\n101 Machine Way, Detroit, MI 48201\nEmail: invoices@titanhardware.com\nInvoice Number: INV-2026-1014\nInvoice Date: 2026-02-23\nDue Date: 2026-02-28\nPO Number: PO-99014\nCurrency: USD\nSSL/TLS Wildcard Certificate Renewal 3 $89.00 $267.00\nDedicated IPv4 Allocation Subnet /28 1 $120.00 $120.00\nSubtotal: $387.00\nTax: $19.35\nTotal: $406.35",
+  "doc_id": "inv_014_deg_noise_jpeg",
+  "is_degraded": true,
+  "degradation": "noise_jpeg",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_014_deg_noise_jpeg.png"
+}

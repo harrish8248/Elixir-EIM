@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Apex Strategic Marketing Group",
+  "invoice_number": "INV-2026-1053",
+  "invoice_date": "2026-04-10",
+  "due_date": "2026-04-28",
+  "po_number": "PO-99053",
+  "currency": "GBP",
+  "subtotal": 16940.0,
+  "tax": 1397.55,
+  "total": 18337.55,
+  "line_items": [
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 4,
+      "unit_price": 3200.0,
+      "amount": 12800.0
+    },
+    {
+      "description": "Onsite Facility Cleaning & Sanitation",
+      "quantity": 5,
+      "unit_price": 480.0,
+      "amount": 2400.0
+    },
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 3,
+      "unit_price": 580.0,
+      "amount": 1740.0
+    }
+  ],
+  "full_text": "INVOICE\nApex Strategic Marketing Group\n77 Madison Ave, Suite 300, New York, NY 10016\nEmail: billing@apexmarketing.com\nInvoice Number: INV-2026-1053\nInvoice Date: 2026-04-10\nDue Date: 2026-04-28\nPO Number: PO-99053\nCurrency: GBP\nProfessional Staffing - Senior Engineer 4 GBP 3200.00 GBP 12800.00\nOnsite Facility Cleaning & Sanitation 5 GBP 480.00 GBP 2400.00\nIndustrial Lubricant Drum 55 Gallon 3 GBP 580.00 GBP 1740.00\nSubtotal: GBP 16940.00\nTax: GBP 1397.55\nTotal: GBP 18337.55",
+  "doc_id": "inv_053_deg_rotated_90",
+  "is_degraded": true,
+  "degradation": "rotated_90",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_053_deg_rotated_90.png"
+}

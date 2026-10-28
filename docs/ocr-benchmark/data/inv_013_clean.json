@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Apex Strategic Marketing Group",
+  "invoice_number": "INV-2026-1013",
+  "invoice_date": "2026-06-15",
+  "due_date": "2026-06-28",
+  "po_number": "PO-99013",
+  "currency": "EUR",
+  "subtotal": 3200.0,
+  "tax": 0.0,
+  "total": 3200.0,
+  "line_items": [
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 1,
+      "unit_price": 950.0,
+      "amount": 950.0
+    },
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 3,
+      "unit_price": 750.0,
+      "amount": 2250.0
+    }
+  ],
+  "full_text": "INVOICE\nApex Strategic Marketing Group\n77 Madison Ave, Suite 300, New York, NY 10016\nEmail: billing@apexmarketing.com\nInvoice Number: INV-2026-1013\nInvoice Date: 2026-06-15\nDue Date: 2026-06-28\nPO Number: PO-99013\nCurrency: EUR\nEnterprise Support SLA 24x7 Response 1 EUR 950.00 EUR 950.00\nHVAC Quarterly Preventative Maintenance 3 EUR 750.00 EUR 2250.00\nSubtotal: EUR 3200.00\nTax: EUR 0.00\nTotal: EUR 3200.00",
+  "doc_id": "inv_013_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_013_clean.png"
+}

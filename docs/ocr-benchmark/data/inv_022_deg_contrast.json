@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Apex Strategic Marketing Group",
+  "invoice_number": "INV-2026-1022",
+  "invoice_date": "2026-06-08",
+  "due_date": "2026-06-28",
+  "po_number": "PO-99022",
+  "currency": "EUR",
+  "subtotal": 1145.0,
+  "tax": 0.0,
+  "total": 1145.0,
+  "line_items": [
+    {
+      "description": "Precision Steel Ball Bearing Assembly",
+      "quantity": 3,
+      "unit_price": 165.0,
+      "amount": 495.0
+    },
+    {
+      "description": "Contract Drafting & Vendor Addendum",
+      "quantity": 1,
+      "unit_price": 650.0,
+      "amount": 650.0
+    }
+  ],
+  "full_text": "INVOICE\nApex Strategic Marketing Group\n77 Madison Ave, Suite 300, New York, NY 10016\nEmail: billing@apexmarketing.com\nInvoice Number: INV-2026-1022\nInvoice Date: 2026-06-08\nDue Date: 2026-06-28\nPO Number: PO-99022\nCurrency: EUR\nPrecision Steel Ball Bearing Assembly 3 EUR 165.00 EUR 495.00\nContract Drafting & Vendor Addendum 1 EUR 650.00 EUR 650.00\nSubtotal: EUR 1145.00\nTax: EUR 0.00\nTotal: EUR 1145.00",
+  "doc_id": "inv_022_deg_contrast",
+  "is_degraded": true,
+  "degradation": "contrast",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_022_deg_contrast.png"
+}

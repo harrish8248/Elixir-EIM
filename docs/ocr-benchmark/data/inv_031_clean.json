@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Horizon Legal Partners LLP",
+  "invoice_number": "INV-2026-1031",
+  "invoice_date": "2026-05-02",
+  "due_date": "2026-05-17",
+  "po_number": "PO-99031",
+  "currency": "GBP",
+  "subtotal": 6800.0,
+  "tax": 680.0,
+  "total": 7480.0,
+  "line_items": [
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 5,
+      "unit_price": 580.0,
+      "amount": 2900.0
+    },
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 5,
+      "unit_price": 420.0,
+      "amount": 2100.0
+    },
+    {
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 1,
+      "unit_price": 1800.0,
+      "amount": 1800.0
+    }
+  ],
+  "full_text": "INVOICE\nHorizon Legal Partners LLP\n120 Wall Street, Floor 18, New York, NY 10005\nEmail: accounts@horizonlaw.com\nInvoice Number: INV-2026-1031\nInvoice Date: 2026-05-02\nDue Date: 2026-05-17\nPO Number: PO-99031\nCurrency: GBP\nIndustrial Lubricant Drum 55 Gallon 5 GBP 580.00 GBP 2900.00\nHeavy Duty Conveyor Belt Roller 24in 5 GBP 420.00 GBP 2100.00\nPatent Portfolio Filing Review & Filing 1 GBP 1800.00 GBP 1800.00\nSubtotal: GBP 6800.00\nTax: GBP 680.00\nTotal: GBP 7480.00",
+  "doc_id": "inv_031_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_031_clean.png"
+}

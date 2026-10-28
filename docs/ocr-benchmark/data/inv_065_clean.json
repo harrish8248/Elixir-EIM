@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Pinnacle Facility Services",
+  "invoice_number": "INV-2026-1065",
+  "invoice_date": "2026-02-25",
+  "due_date": "2026-02-28",
+  "po_number": "PO-99065",
+  "currency": "GBP",
+  "subtotal": 3650.0,
+  "tax": 182.5,
+  "total": 3832.5,
+  "line_items": [
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 4,
+      "unit_price": 750.0,
+      "amount": 3000.0
+    },
+    {
+      "description": "Contract Drafting & Vendor Addendum",
+      "quantity": 1,
+      "unit_price": 650.0,
+      "amount": 650.0
+    }
+  ],
+  "full_text": "INVOICE\nPinnacle Facility Services\n204 Commercial Rd, Atlanta, GA 30303\nEmail: ar@pinnaclefacility.com\nInvoice Number: INV-2026-1065\nInvoice Date: 2026-02-25\nDue Date: 2026-02-28\nPO Number: PO-99065\nCurrency: GBP\nHVAC Quarterly Preventative Maintenance 4 GBP 750.00 GBP 3000.00\nContract Drafting & Vendor Addendum 1 GBP 650.00 GBP 650.00\nSubtotal: GBP 3650.00\nTax: GBP 182.50\nTotal: GBP 3832.50",
+  "doc_id": "inv_065_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_065_clean.png"
+}

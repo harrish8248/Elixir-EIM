@@ -1,0 +1,43 @@
+{
+  "document_type": "invoice",
+  "vendor": "Vertex Global Logistics",
+  "invoice_number": "INV-2026-1055",
+  "invoice_date": "2026-06-06",
+  "due_date": "2026-06-28",
+  "po_number": "PO-99055",
+  "currency": "USD",
+  "subtotal": 4420.0,
+  "tax": 442.0,
+  "total": 4862.0,
+  "line_items": [
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 1,
+      "unit_price": 750.0,
+      "amount": 750.0
+    },
+    {
+      "description": "Network Security Threat Detection Scan",
+      "quantity": 5,
+      "unit_price": 350.0,
+      "amount": 1750.0
+    },
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 3,
+      "unit_price": 340.0,
+      "amount": 1020.0
+    },
+    {
+      "description": "Managed Cloud Hosting Standard Tier",
+      "quantity": 2,
+      "unit_price": 450.0,
+      "amount": 900.0
+    }
+  ],
+  "full_text": "INVOICE\nVertex Global Logistics\n88 Port Way, Long Beach, CA 90802\nEmail: invoices@vertexlogistics.com\nInvoice Number: INV-2026-1055\nInvoice Date: 2026-06-06\nDue Date: 2026-06-28\nPO Number: PO-99055\nCurrency: USD\nHVAC Quarterly Preventative Maintenance 1 $750.00 $750.00\nNetwork Security Threat Detection Scan 5 $350.00 $1750.00\nIndustrial Hydraulic Valve Fitting Kit 3 $340.00 $1020.00\nManaged Cloud Hosting Standard Tier 2 $450.00 $900.00\nSubtotal: $4420.00\nTax: $442.00\nTotal: $4862.00",
+  "doc_id": "inv_055_deg_blur",
+  "is_degraded": true,
+  "degradation": "blur",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_055_deg_blur.png"
+}

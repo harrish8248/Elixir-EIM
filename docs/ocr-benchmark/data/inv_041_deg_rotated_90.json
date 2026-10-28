@@ -1,0 +1,43 @@
+{
+  "document_type": "invoice",
+  "vendor": "Quantum Dynamic Labs GmbH",
+  "invoice_number": "INV-2026-1041",
+  "invoice_date": "2026-07-13",
+  "due_date": "2026-07-28",
+  "po_number": null,
+  "currency": "USD",
+  "subtotal": 22475.0,
+  "tax": 1123.75,
+  "total": 23598.75,
+  "line_items": [
+    {
+      "description": "Legal Retainer - Regulatory Governance",
+      "quantity": 3,
+      "unit_price": 2500.0,
+      "amount": 7500.0
+    },
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 4,
+      "unit_price": 3200.0,
+      "amount": 12800.0
+    },
+    {
+      "description": "Managed Cloud Hosting Standard Tier",
+      "quantity": 4,
+      "unit_price": 450.0,
+      "amount": 1800.0
+    },
+    {
+      "description": "High-Performance SSD Storage Block 1TB",
+      "quantity": 5,
+      "unit_price": 75.0,
+      "amount": 375.0
+    }
+  ],
+  "full_text": "INVOICE\nQuantum Dynamic Labs GmbH\nTech Park B4, Munich, Germany\nEmail: invoicing@quantumlabs.eu\nInvoice Number: INV-2026-1041\nInvoice Date: 2026-07-13\nDue Date: 2026-07-28\nCurrency: USD\nLegal Retainer - Regulatory Governance 3 $2500.00 $7500.00\nProfessional Staffing - Senior Engineer 4 $3200.00 $12800.00\nManaged Cloud Hosting Standard Tier 4 $450.00 $1800.00\nHigh-Performance SSD Storage Block 1TB 5 $75.00 $375.00\nSubtotal: $22475.00\nTax: $1123.75\nTotal: $23598.75",
+  "doc_id": "inv_041_deg_rotated_90",
+  "is_degraded": true,
+  "degradation": "rotated_90",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_041_deg_rotated_90.png"
+}

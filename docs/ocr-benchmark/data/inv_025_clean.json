@@ -1,0 +1,43 @@
+{
+  "document_type": "invoice",
+  "vendor": "Apex Strategic Marketing Group",
+  "invoice_number": "INV-2026-1025",
+  "invoice_date": "2026-04-23",
+  "due_date": "2026-04-28",
+  "po_number": "PO-99025",
+  "currency": "USD",
+  "subtotal": 14670.0,
+  "tax": 0.0,
+  "total": 14670.0,
+  "line_items": [
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 1,
+      "unit_price": 340.0,
+      "amount": 340.0
+    },
+    {
+      "description": "Onsite Facility Cleaning & Sanitation",
+      "quantity": 1,
+      "unit_price": 480.0,
+      "amount": 480.0
+    },
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 4,
+      "unit_price": 3200.0,
+      "amount": 12800.0
+    },
+    {
+      "description": "Network Security Threat Detection Scan",
+      "quantity": 3,
+      "unit_price": 350.0,
+      "amount": 1050.0
+    }
+  ],
+  "full_text": "INVOICE\nApex Strategic Marketing Group\n77 Madison Ave, Suite 300, New York, NY 10016\nEmail: billing@apexmarketing.com\nInvoice Number: INV-2026-1025\nInvoice Date: 2026-04-23\nDue Date: 2026-04-28\nPO Number: PO-99025\nCurrency: USD\nIndustrial Hydraulic Valve Fitting Kit 1 $340.00 $340.00\nOnsite Facility Cleaning & Sanitation 1 $480.00 $480.00\nProfessional Staffing - Senior Engineer 4 $3200.00 $12800.00\nNetwork Security Threat Detection Scan 3 $350.00 $1050.00\nSubtotal: $14670.00\nTax: $0.00\nTotal: $14670.00",
+  "doc_id": "inv_025_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_025_clean.png"
+}

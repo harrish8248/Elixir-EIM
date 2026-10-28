@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "CloudScale Networks Inc",
+  "invoice_number": "INV-2026-1062",
+  "invoice_date": "2026-07-24",
+  "due_date": "2026-07-28",
+  "po_number": "PO-99062",
+  "currency": "GBP",
+  "subtotal": 3645.0,
+  "tax": 300.71,
+  "total": 3945.71,
+  "line_items": [
+    {
+      "description": "Managed Cloud Hosting Standard Tier",
+      "quantity": 5,
+      "unit_price": 450.0,
+      "amount": 2250.0
+    },
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 5,
+      "unit_price": 89.0,
+      "amount": 445.0
+    },
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 1,
+      "unit_price": 950.0,
+      "amount": 950.0
+    }
+  ],
+  "full_text": "INVOICE\nCloudScale Networks Inc\n450 Tech Hub Blvd, San Jose, CA 95110\nEmail: billing@cloudscale.net\nInvoice Number: INV-2026-1062\nInvoice Date: 2026-07-24\nDue Date: 2026-07-28\nPO Number: PO-99062\nCurrency: GBP\nManaged Cloud Hosting Standard Tier 5 GBP 450.00 GBP 2250.00\nSSL/TLS Wildcard Certificate Renewal 5 GBP 89.00 GBP 445.00\nEnterprise Support SLA 24x7 Response 1 GBP 950.00 GBP 950.00\nSubtotal: GBP 3645.00\nTax: GBP 300.71\nTotal: GBP 3945.71",
+  "doc_id": "inv_062_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_062_clean.png"
+}

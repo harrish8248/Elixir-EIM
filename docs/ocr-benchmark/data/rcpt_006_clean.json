@@ -1,0 +1,25 @@
+{
+  "document_type": "receipt",
+  "vendor": "Airport Cafe & Catering",
+  "invoice_number": "REC-2026-2006",
+  "invoice_date": "2026-10-28",
+  "due_date": "2026-10-28",
+  "po_number": null,
+  "currency": "USD",
+  "subtotal": 147.76,
+  "tax": 11.82,
+  "total": 159.58,
+  "line_items": [
+    {
+      "description": "Office Supplies & Consumables",
+      "quantity": 1,
+      "unit_price": 147.76,
+      "amount": 147.76
+    }
+  ],
+  "full_text": "Airport Cafe & Catering\nCUSTOMER RECEIPT\nReceipt: REC-2026-2006\nDate: 2026-10-28\nPayment: VISA **** 4892\nOffice Supplies & Consumables $147.76\nSUBTOTAL: $147.76\nTAX 8%: $11.82\nTOTAL PAID: $159.58\nTHANK YOU",
+  "doc_id": "rcpt_006_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\rcpt_006_clean.png"
+}

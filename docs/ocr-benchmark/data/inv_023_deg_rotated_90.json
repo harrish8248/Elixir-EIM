@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Nexus Enterprise Staffing",
+  "invoice_number": "INV-2026-1023",
+  "invoice_date": "2026-10-04",
+  "due_date": "2026-10-19",
+  "po_number": "PO-99023",
+  "currency": "GBP",
+  "subtotal": 1980.0,
+  "tax": 0.0,
+  "total": 1980.0,
+  "line_items": [
+    {
+      "description": "Onsite Facility Cleaning & Sanitation",
+      "quantity": 2,
+      "unit_price": 480.0,
+      "amount": 960.0
+    },
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 3,
+      "unit_price": 340.0,
+      "amount": 1020.0
+    }
+  ],
+  "full_text": "INVOICE\nNexus Enterprise Staffing\n500 Broad St, Columbus, OH 43215\nEmail: billing@nexusstaff.com\nInvoice Number: INV-2026-1023\nInvoice Date: 2026-10-04\nDue Date: 2026-10-19\nPO Number: PO-99023\nCurrency: GBP\nOnsite Facility Cleaning & Sanitation 2 GBP 480.00 GBP 960.00\nIndustrial Hydraulic Valve Fitting Kit 3 GBP 340.00 GBP 1020.00\nSubtotal: GBP 1980.00\nTax: GBP 0.00\nTotal: GBP 1980.00",
+  "doc_id": "inv_023_deg_rotated_90",
+  "is_degraded": true,
+  "degradation": "rotated_90",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_023_deg_rotated_90.png"
+}

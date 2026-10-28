@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Acme Industrial Supply LLC",
+  "invoice_number": "INV-2026-1056",
+  "invoice_date": "2026-08-16",
+  "due_date": "2026-08-28",
+  "po_number": "PO-99056",
+  "currency": "USD",
+  "subtotal": 820.0,
+  "tax": 0.0,
+  "total": 820.0,
+  "line_items": [
+    {
+      "description": "Dedicated IPv4 Allocation Subnet /28",
+      "quantity": 4,
+      "unit_price": 120.0,
+      "amount": 480.0
+    },
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 1,
+      "unit_price": 340.0,
+      "amount": 340.0
+    }
+  ],
+  "full_text": "INVOICE\nAcme Industrial Supply LLC\n100 Industrial Parkway, Chicago, IL 60601\nEmail: finance@acmeind.com\nInvoice Number: INV-2026-1056\nInvoice Date: 2026-08-16\nDue Date: 2026-08-28\nPO Number: PO-99056\nCurrency: USD\nDedicated IPv4 Allocation Subnet /28 4 $120.00 $480.00\nIndustrial Hydraulic Valve Fitting Kit 1 $340.00 $340.00\nSubtotal: $820.00\nTax: $0.00\nTotal: $820.00",
+  "doc_id": "inv_056_deg_noise_jpeg",
+  "is_degraded": true,
+  "degradation": "noise_jpeg",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_056_deg_noise_jpeg.png"
+}

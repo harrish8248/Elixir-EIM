@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Quantum Dynamic Labs GmbH",
+  "invoice_number": "INV-2026-1049",
+  "invoice_date": "2026-08-23",
+  "due_date": "2026-08-28",
+  "po_number": "PO-99049",
+  "currency": "EUR",
+  "subtotal": 4100.0,
+  "tax": 410.0,
+  "total": 4510.0,
+  "line_items": [
+    {
+      "description": "Onsite Facility Cleaning & Sanitation",
+      "quantity": 5,
+      "unit_price": 480.0,
+      "amount": 2400.0
+    },
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 5,
+      "unit_price": 340.0,
+      "amount": 1700.0
+    }
+  ],
+  "full_text": "INVOICE\nQuantum Dynamic Labs GmbH\nTech Park B4, Munich, Germany\nEmail: invoicing@quantumlabs.eu\nInvoice Number: INV-2026-1049\nInvoice Date: 2026-08-23\nDue Date: 2026-08-28\nPO Number: PO-99049\nCurrency: EUR\nOnsite Facility Cleaning & Sanitation 5 EUR 480.00 EUR 2400.00\nIndustrial Hydraulic Valve Fitting Kit 5 EUR 340.00 EUR 1700.00\nSubtotal: EUR 4100.00\nTax: EUR 410.00\nTotal: EUR 4510.00",
+  "doc_id": "inv_049_deg_blur",
+  "is_degraded": true,
+  "degradation": "blur",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_049_deg_blur.png"
+}

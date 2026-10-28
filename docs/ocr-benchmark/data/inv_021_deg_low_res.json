@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Quantum Dynamic Labs GmbH",
+  "invoice_number": "INV-2026-1021",
+  "invoice_date": "2026-10-08",
+  "due_date": "2026-10-28",
+  "po_number": null,
+  "currency": "GBP",
+  "subtotal": 9445.0,
+  "tax": 779.21,
+  "total": 10224.21,
+  "line_items": [
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 5,
+      "unit_price": 89.0,
+      "amount": 445.0
+    },
+    {
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 5,
+      "unit_price": 1800.0,
+      "amount": 9000.0
+    }
+  ],
+  "full_text": "INVOICE\nQuantum Dynamic Labs GmbH\nTech Park B4, Munich, Germany\nEmail: invoicing@quantumlabs.eu\nInvoice Number: INV-2026-1021\nInvoice Date: 2026-10-08\nDue Date: 2026-10-28\nCurrency: GBP\nSSL/TLS Wildcard Certificate Renewal 5 GBP 89.00 GBP 445.00\nPatent Portfolio Filing Review & Filing 5 GBP 1800.00 GBP 9000.00\nSubtotal: GBP 9445.00\nTax: GBP 779.21\nTotal: GBP 10224.21",
+  "doc_id": "inv_021_deg_low_res",
+  "is_degraded": true,
+  "degradation": "low_res",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_021_deg_low_res.png"
+}

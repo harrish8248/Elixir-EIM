@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Vanguard Security Systems",
+  "invoice_number": "INV-2026-1052",
+  "invoice_date": "2026-02-08",
+  "due_date": "2026-02-28",
+  "po_number": "PO-99052",
+  "currency": "EUR",
+  "subtotal": 10000.0,
+  "tax": 0.0,
+  "total": 10000.0,
+  "line_items": [
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 4,
+      "unit_price": 750.0,
+      "amount": 3000.0
+    },
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 4,
+      "unit_price": 950.0,
+      "amount": 3800.0
+    },
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 1,
+      "unit_price": 3200.0,
+      "amount": 3200.0
+    }
+  ],
+  "full_text": "INVOICE\nVanguard Security Systems\n310 Cyber Way, Austin, TX 78701\nEmail: accounting@vanguardsec.com\nInvoice Number: INV-2026-1052\nInvoice Date: 2026-02-08\nDue Date: 2026-02-28\nPO Number: PO-99052\nCurrency: EUR\nHVAC Quarterly Preventative Maintenance 4 EUR 750.00 EUR 3000.00\nEnterprise Support SLA 24x7 Response 4 EUR 950.00 EUR 3800.00\nProfessional Staffing - Senior Engineer 1 EUR 3200.00 EUR 3200.00\nSubtotal: EUR 10000.00\nTax: EUR 0.00\nTotal: EUR 10000.00",
+  "doc_id": "inv_052_deg_contrast",
+  "is_degraded": true,
+  "degradation": "contrast",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_052_deg_contrast.png"
+}

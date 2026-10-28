@@ -1,0 +1,43 @@
+{
+  "document_type": "invoice",
+  "vendor": "Nexus Enterprise Staffing",
+  "invoice_number": "INV-2026-1076",
+  "invoice_date": "2026-01-26",
+  "due_date": "2026-01-28",
+  "po_number": "PO-99076",
+  "currency": "USD",
+  "subtotal": 6692.0,
+  "tax": 552.09,
+  "total": 7244.09,
+  "line_items": [
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 3,
+      "unit_price": 750.0,
+      "amount": 2250.0
+    },
+    {
+      "description": "High-Performance SSD Storage Block 1TB",
+      "quantity": 5,
+      "unit_price": 75.0,
+      "amount": 375.0
+    },
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 3,
+      "unit_price": 89.0,
+      "amount": 267.0
+    },
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 4,
+      "unit_price": 950.0,
+      "amount": 3800.0
+    }
+  ],
+  "full_text": "INVOICE\nNexus Enterprise Staffing\n500 Broad St, Columbus, OH 43215\nEmail: billing@nexusstaff.com\nInvoice Number: INV-2026-1076\nInvoice Date: 2026-01-26\nDue Date: 2026-01-28\nPO Number: PO-99076\nCurrency: USD\nHVAC Quarterly Preventative Maintenance 3 $750.00 $2250.00\nHigh-Performance SSD Storage Block 1TB 5 $75.00 $375.00\nSSL/TLS Wildcard Certificate Renewal 3 $89.00 $267.00\nEnterprise Support SLA 24x7 Response 4 $950.00 $3800.00\nSubtotal: $6692.00\nTax: $552.09\nTotal: $7244.09",
+  "doc_id": "inv_076_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_076_clean.png"
+}

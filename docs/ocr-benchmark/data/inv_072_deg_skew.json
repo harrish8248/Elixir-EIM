@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "CloudScale Networks Inc",
+  "invoice_number": "INV-2026-1072",
+  "invoice_date": "2026-08-01",
+  "due_date": "2026-08-28",
+  "po_number": "PO-99072",
+  "currency": "USD",
+  "subtotal": 17317.0,
+  "tax": 1731.7,
+  "total": 19048.7,
+  "line_items": [
+    {
+      "description": "Network Security Threat Detection Scan",
+      "quantity": 3,
+      "unit_price": 350.0,
+      "amount": 1050.0
+    },
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 3,
+      "unit_price": 89.0,
+      "amount": 267.0
+    },
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 5,
+      "unit_price": 3200.0,
+      "amount": 16000.0
+    }
+  ],
+  "full_text": "INVOICE\nCloudScale Networks Inc\n450 Tech Hub Blvd, San Jose, CA 95110\nEmail: billing@cloudscale.net\nInvoice Number: INV-2026-1072\nInvoice Date: 2026-08-01\nDue Date: 2026-08-28\nPO Number: PO-99072\nCurrency: USD\nNetwork Security Threat Detection Scan 3 $350.00 $1050.00\nSSL/TLS Wildcard Certificate Renewal 3 $89.00 $267.00\nProfessional Staffing - Senior Engineer 5 $3200.00 $16000.00\nSubtotal: $17317.00\nTax: $1731.70\nTotal: $19048.70",
+  "doc_id": "inv_072_deg_skew",
+  "is_degraded": true,
+  "degradation": "skew",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_072_deg_skew.png"
+}

@@ -1,0 +1,43 @@
+{
+  "document_type": "invoice",
+  "vendor": "CloudScale Networks Inc",
+  "invoice_number": "INV-2026-1008",
+  "invoice_date": "2026-03-26",
+  "due_date": "2026-03-28",
+  "po_number": "PO-99008",
+  "currency": "EUR",
+  "subtotal": 15121.0,
+  "tax": 0.0,
+  "total": 15121.0,
+  "line_items": [
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 4,
+      "unit_price": 89.0,
+      "amount": 356.0
+    },
+    {
+      "description": "Legal Retainer - Regulatory Governance",
+      "quantity": 5,
+      "unit_price": 2500.0,
+      "amount": 12500.0
+    },
+    {
+      "description": "Onsite Facility Cleaning & Sanitation",
+      "quantity": 3,
+      "unit_price": 480.0,
+      "amount": 1440.0
+    },
+    {
+      "description": "Precision Steel Ball Bearing Assembly",
+      "quantity": 5,
+      "unit_price": 165.0,
+      "amount": 825.0
+    }
+  ],
+  "full_text": "INVOICE\nCloudScale Networks Inc\n450 Tech Hub Blvd, San Jose, CA 95110\nEmail: billing@cloudscale.net\nInvoice Number: INV-2026-1008\nInvoice Date: 2026-03-26\nDue Date: 2026-03-28\nPO Number: PO-99008\nCurrency: EUR\nSSL/TLS Wildcard Certificate Renewal 4 EUR 89.00 EUR 356.00\nLegal Retainer - Regulatory Governance 5 EUR 2500.00 EUR 12500.00\nOnsite Facility Cleaning & Sanitation 3 EUR 480.00 EUR 1440.00\nPrecision Steel Ball Bearing Assembly 5 EUR 165.00 EUR 825.00\nSubtotal: EUR 15121.00\nTax: EUR 0.00\nTotal: EUR 15121.00",
+  "doc_id": "inv_008_deg_noise_jpeg",
+  "is_degraded": true,
+  "degradation": "noise_jpeg",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_008_deg_noise_jpeg.png"
+}

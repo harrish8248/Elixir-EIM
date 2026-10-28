@@ -1,0 +1,25 @@
+{
+  "document_type": "receipt",
+  "vendor": "QuickPrint Center",
+  "invoice_number": "REC-2026-2007",
+  "invoice_date": "2026-10-03",
+  "due_date": "2026-10-03",
+  "po_number": null,
+  "currency": "USD",
+  "subtotal": 145.46,
+  "tax": 11.64,
+  "total": 157.1,
+  "line_items": [
+    {
+      "description": "Office Supplies & Consumables",
+      "quantity": 1,
+      "unit_price": 145.46,
+      "amount": 145.46
+    }
+  ],
+  "full_text": "QuickPrint Center\nCUSTOMER RECEIPT\nReceipt: REC-2026-2007\nDate: 2026-10-03\nPayment: VISA **** 4892\nOffice Supplies & Consumables $145.46\nSUBTOTAL: $145.46\nTAX 8%: $11.64\nTOTAL PAID: $157.10\nTHANK YOU",
+  "doc_id": "rcpt_007_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\rcpt_007_clean.png"
+}

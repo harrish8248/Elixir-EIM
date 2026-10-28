@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Nexus Enterprise Staffing",
+  "invoice_number": "INV-2026-1039",
+  "invoice_date": "2026-05-15",
+  "due_date": "2026-05-28",
+  "po_number": "PO-99039",
+  "currency": "USD",
+  "subtotal": 3120.0,
+  "tax": 0.0,
+  "total": 3120.0,
+  "line_items": [
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 3,
+      "unit_price": 340.0,
+      "amount": 1020.0
+    },
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 5,
+      "unit_price": 420.0,
+      "amount": 2100.0
+    }
+  ],
+  "full_text": "INVOICE\nNexus Enterprise Staffing\n500 Broad St, Columbus, OH 43215\nEmail: billing@nexusstaff.com\nInvoice Number: INV-2026-1039\nInvoice Date: 2026-05-15\nDue Date: 2026-05-28\nPO Number: PO-99039\nCurrency: USD\nIndustrial Hydraulic Valve Fitting Kit 3 $340.00 $1020.00\nHeavy Duty Conveyor Belt Roller 24in 5 $420.00 $2100.00\nSubtotal: $3120.00\nTax: $0.00\nTotal: $3120.00",
+  "doc_id": "inv_039_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_039_clean.png"
+}

@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Vanguard Security Systems",
+  "invoice_number": "INV-2026-1058",
+  "invoice_date": "2026-08-10",
+  "due_date": "2026-08-28",
+  "po_number": "PO-99058",
+  "currency": "EUR",
+  "subtotal": 5020.0,
+  "tax": 251.0,
+  "total": 5271.0,
+  "line_items": [
+    {
+      "description": "Dedicated IPv4 Allocation Subnet /28",
+      "quantity": 2,
+      "unit_price": 120.0,
+      "amount": 240.0
+    },
+    {
+      "description": "SOC-2 Compliance Continuous Audit Log",
+      "quantity": 3,
+      "unit_price": 1500.0,
+      "amount": 4500.0
+    },
+    {
+      "description": "Database Replica Failover Node",
+      "quantity": 1,
+      "unit_price": 280.0,
+      "amount": 280.0
+    }
+  ],
+  "full_text": "INVOICE\nVanguard Security Systems\n310 Cyber Way, Austin, TX 78701\nEmail: accounting@vanguardsec.com\nInvoice Number: INV-2026-1058\nInvoice Date: 2026-08-10\nDue Date: 2026-08-28\nPO Number: PO-99058\nCurrency: EUR\nDedicated IPv4 Allocation Subnet /28 2 EUR 120.00 EUR 240.00\nSOC-2 Compliance Continuous Audit Log 3 EUR 1500.00 EUR 4500.00\nDatabase Replica Failover Node 1 EUR 280.00 EUR 280.00\nSubtotal: EUR 5020.00\nTax: EUR 251.00\nTotal: EUR 5271.00",
+  "doc_id": "inv_058_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_058_clean.png"
+}

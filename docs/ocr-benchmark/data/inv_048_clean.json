@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Titan Global Hardware Corp",
+  "invoice_number": "INV-2026-1048",
+  "invoice_date": "2026-06-18",
+  "due_date": "2026-06-28",
+  "po_number": "PO-99048",
+  "currency": "USD",
+  "subtotal": 2160.0,
+  "tax": 216.0,
+  "total": 2376.0,
+  "line_items": [
+    {
+      "description": "Onsite Facility Cleaning & Sanitation",
+      "quantity": 1,
+      "unit_price": 480.0,
+      "amount": 480.0
+    },
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 4,
+      "unit_price": 420.0,
+      "amount": 1680.0
+    }
+  ],
+  "full_text": "INVOICE\nTitan Global Hardware Corp\n101 Machine Way, Detroit, MI 48201\nEmail: invoices@titanhardware.com\nInvoice Number: INV-2026-1048\nInvoice Date: 2026-06-18\nDue Date: 2026-06-28\nPO Number: PO-99048\nCurrency: USD\nOnsite Facility Cleaning & Sanitation 1 $480.00 $480.00\nHeavy Duty Conveyor Belt Roller 24in 4 $420.00 $1680.00\nSubtotal: $2160.00\nTax: $216.00\nTotal: $2376.00",
+  "doc_id": "inv_048_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_048_clean.png"
+}

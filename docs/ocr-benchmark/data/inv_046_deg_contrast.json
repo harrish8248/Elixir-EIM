@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "CloudScale Networks Inc",
+  "invoice_number": "INV-2026-1046",
+  "invoice_date": "2026-04-15",
+  "due_date": "2026-04-28",
+  "po_number": "PO-99046",
+  "currency": "USD",
+  "subtotal": 5475.0,
+  "tax": 0.0,
+  "total": 5475.0,
+  "line_items": [
+    {
+      "description": "High-Performance SSD Storage Block 1TB",
+      "quantity": 3,
+      "unit_price": 75.0,
+      "amount": 225.0
+    },
+    {
+      "description": "SOC-2 Compliance Continuous Audit Log",
+      "quantity": 1,
+      "unit_price": 1500.0,
+      "amount": 1500.0
+    },
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 5,
+      "unit_price": 750.0,
+      "amount": 3750.0
+    }
+  ],
+  "full_text": "INVOICE\nCloudScale Networks Inc\n450 Tech Hub Blvd, San Jose, CA 95110\nEmail: billing@cloudscale.net\nInvoice Number: INV-2026-1046\nInvoice Date: 2026-04-15\nDue Date: 2026-04-28\nPO Number: PO-99046\nCurrency: USD\nHigh-Performance SSD Storage Block 1TB 3 $75.00 $225.00\nSOC-2 Compliance Continuous Audit Log 1 $1500.00 $1500.00\nHVAC Quarterly Preventative Maintenance 5 $750.00 $3750.00\nSubtotal: $5475.00\nTax: $0.00\nTotal: $5475.00",
+  "doc_id": "inv_046_deg_contrast",
+  "is_degraded": true,
+  "degradation": "contrast",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_046_deg_contrast.png"
+}

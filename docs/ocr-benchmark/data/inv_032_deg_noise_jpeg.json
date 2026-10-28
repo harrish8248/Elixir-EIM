@@ -1,0 +1,43 @@
+{
+  "document_type": "invoice",
+  "vendor": "Apex Strategic Marketing Group",
+  "invoice_number": "INV-2026-1032",
+  "invoice_date": "2026-07-01",
+  "due_date": "2026-07-28",
+  "po_number": null,
+  "currency": "GBP",
+  "subtotal": 9260.0,
+  "tax": 763.95,
+  "total": 10023.95,
+  "line_items": [
+    {
+      "description": "Database Replica Failover Node",
+      "quantity": 3,
+      "unit_price": 280.0,
+      "amount": 840.0
+    },
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 5,
+      "unit_price": 580.0,
+      "amount": 2900.0
+    },
+    {
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 3,
+      "unit_price": 1800.0,
+      "amount": 5400.0
+    },
+    {
+      "description": "Dedicated IPv4 Allocation Subnet /28",
+      "quantity": 1,
+      "unit_price": 120.0,
+      "amount": 120.0
+    }
+  ],
+  "full_text": "INVOICE\nApex Strategic Marketing Group\n77 Madison Ave, Suite 300, New York, NY 10016\nEmail: billing@apexmarketing.com\nInvoice Number: INV-2026-1032\nInvoice Date: 2026-07-01\nDue Date: 2026-07-28\nCurrency: GBP\nDatabase Replica Failover Node 3 GBP 280.00 GBP 840.00\nIndustrial Lubricant Drum 55 Gallon 5 GBP 580.00 GBP 2900.00\nPatent Portfolio Filing Review & Filing 3 GBP 1800.00 GBP 5400.00\nDedicated IPv4 Allocation Subnet /28 1 GBP 120.00 GBP 120.00\nSubtotal: GBP 9260.00\nTax: GBP 763.95\nTotal: GBP 10023.95",
+  "doc_id": "inv_032_deg_noise_jpeg",
+  "is_degraded": true,
+  "degradation": "noise_jpeg",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_032_deg_noise_jpeg.png"
+}

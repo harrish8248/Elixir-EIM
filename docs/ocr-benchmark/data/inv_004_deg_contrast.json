@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Quantum Dynamic Labs GmbH",
+  "invoice_number": "INV-2026-1004",
+  "invoice_date": "2026-06-06",
+  "due_date": "2026-06-28",
+  "po_number": "PO-99004",
+  "currency": "USD",
+  "subtotal": 1878.0,
+  "tax": 93.9,
+  "total": 1971.9,
+  "line_items": [
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 5,
+      "unit_price": 340.0,
+      "amount": 1700.0
+    },
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 2,
+      "unit_price": 89.0,
+      "amount": 178.0
+    }
+  ],
+  "full_text": "INVOICE\nQuantum Dynamic Labs GmbH\nTech Park B4, Munich, Germany\nEmail: invoicing@quantumlabs.eu\nInvoice Number: INV-2026-1004\nInvoice Date: 2026-06-06\nDue Date: 2026-06-28\nPO Number: PO-99004\nCurrency: USD\nIndustrial Hydraulic Valve Fitting Kit 5 $340.00 $1700.00\nSSL/TLS Wildcard Certificate Renewal 2 $89.00 $178.00\nSubtotal: $1878.00\nTax: $93.90\nTotal: $1971.90",
+  "doc_id": "inv_004_deg_contrast",
+  "is_degraded": true,
+  "degradation": "contrast",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_004_deg_contrast.png"
+}

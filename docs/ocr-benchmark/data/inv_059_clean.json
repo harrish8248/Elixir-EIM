@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Vertex Global Logistics",
+  "invoice_number": "INV-2026-1059",
+  "invoice_date": "2026-02-06",
+  "due_date": "2026-02-21",
+  "po_number": "PO-99059",
+  "currency": "EUR",
+  "subtotal": 7255.0,
+  "tax": 725.5,
+  "total": 7980.5,
+  "line_items": [
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 2,
+      "unit_price": 3200.0,
+      "amount": 6400.0
+    },
+    {
+      "description": "Precision Steel Ball Bearing Assembly",
+      "quantity": 3,
+      "unit_price": 165.0,
+      "amount": 495.0
+    },
+    {
+      "description": "Dedicated IPv4 Allocation Subnet /28",
+      "quantity": 3,
+      "unit_price": 120.0,
+      "amount": 360.0
+    }
+  ],
+  "full_text": "INVOICE\nVertex Global Logistics\n88 Port Way, Long Beach, CA 90802\nEmail: invoices@vertexlogistics.com\nInvoice Number: INV-2026-1059\nInvoice Date: 2026-02-06\nDue Date: 2026-02-21\nPO Number: PO-99059\nCurrency: EUR\nProfessional Staffing - Senior Engineer 2 EUR 3200.00 EUR 6400.00\nPrecision Steel Ball Bearing Assembly 3 EUR 165.00 EUR 495.00\nDedicated IPv4 Allocation Subnet /28 3 EUR 120.00 EUR 360.00\nSubtotal: EUR 7255.00\nTax: EUR 725.50\nTotal: EUR 7980.50",
+  "doc_id": "inv_059_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_059_clean.png"
+}

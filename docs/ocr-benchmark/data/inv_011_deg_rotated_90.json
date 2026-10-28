@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Nexus Enterprise Staffing",
+  "invoice_number": "INV-2026-1011",
+  "invoice_date": "2026-06-27",
+  "due_date": "2026-06-28",
+  "po_number": null,
+  "currency": "USD",
+  "subtotal": 1306.0,
+  "tax": 0.0,
+  "total": 1306.0,
+  "line_items": [
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 1,
+      "unit_price": 950.0,
+      "amount": 950.0
+    },
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 4,
+      "unit_price": 89.0,
+      "amount": 356.0
+    }
+  ],
+  "full_text": "INVOICE\nNexus Enterprise Staffing\n500 Broad St, Columbus, OH 43215\nEmail: billing@nexusstaff.com\nInvoice Number: INV-2026-1011\nInvoice Date: 2026-06-27\nDue Date: 2026-06-28\nCurrency: USD\nEnterprise Support SLA 24x7 Response 1 $950.00 $950.00\nSSL/TLS Wildcard Certificate Renewal 4 $89.00 $356.00\nSubtotal: $1306.00\nTax: $0.00\nTotal: $1306.00",
+  "doc_id": "inv_011_deg_rotated_90",
+  "is_degraded": true,
+  "degradation": "rotated_90",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_011_deg_rotated_90.png"
+}

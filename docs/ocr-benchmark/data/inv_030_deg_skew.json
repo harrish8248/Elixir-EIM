@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Acme Industrial Supply LLC",
+  "invoice_number": "INV-2026-1030",
+  "invoice_date": "2026-07-11",
+  "due_date": "2026-07-28",
+  "po_number": "PO-99030",
+  "currency": "USD",
+  "subtotal": 6840.0,
+  "tax": 0.0,
+  "total": 6840.0,
+  "line_items": [
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 5,
+      "unit_price": 580.0,
+      "amount": 2900.0
+    },
+    {
+      "description": "Onsite Facility Cleaning & Sanitation",
+      "quantity": 3,
+      "unit_price": 480.0,
+      "amount": 1440.0
+    },
+    {
+      "description": "Legal Retainer - Regulatory Governance",
+      "quantity": 1,
+      "unit_price": 2500.0,
+      "amount": 2500.0
+    }
+  ],
+  "full_text": "INVOICE\nAcme Industrial Supply LLC\n100 Industrial Parkway, Chicago, IL 60601\nEmail: finance@acmeind.com\nInvoice Number: INV-2026-1030\nInvoice Date: 2026-07-11\nDue Date: 2026-07-28\nPO Number: PO-99030\nCurrency: USD\nIndustrial Lubricant Drum 55 Gallon 5 $580.00 $2900.00\nOnsite Facility Cleaning & Sanitation 3 $480.00 $1440.00\nLegal Retainer - Regulatory Governance 1 $2500.00 $2500.00\nSubtotal: $6840.00\nTax: $0.00\nTotal: $6840.00",
+  "doc_id": "inv_030_deg_skew",
+  "is_degraded": true,
+  "degradation": "skew",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_030_deg_skew.png"
+}

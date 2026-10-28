@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Vanguard Security Systems",
+  "invoice_number": "INV-2026-1018",
+  "invoice_date": "2026-02-25",
+  "due_date": "2026-02-28",
+  "po_number": "PO-99018",
+  "currency": "USD",
+  "subtotal": 14110.0,
+  "tax": 1411.0,
+  "total": 15521.0,
+  "line_items": [
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 4,
+      "unit_price": 3200.0,
+      "amount": 12800.0
+    },
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 1,
+      "unit_price": 750.0,
+      "amount": 750.0
+    },
+    {
+      "description": "Database Replica Failover Node",
+      "quantity": 2,
+      "unit_price": 280.0,
+      "amount": 560.0
+    }
+  ],
+  "full_text": "INVOICE\nVanguard Security Systems\n310 Cyber Way, Austin, TX 78701\nEmail: accounting@vanguardsec.com\nInvoice Number: INV-2026-1018\nInvoice Date: 2026-02-25\nDue Date: 2026-02-28\nPO Number: PO-99018\nCurrency: USD\nProfessional Staffing - Senior Engineer 4 $3200.00 $12800.00\nHVAC Quarterly Preventative Maintenance 1 $750.00 $750.00\nDatabase Replica Failover Node 2 $280.00 $560.00\nSubtotal: $14110.00\nTax: $1411.00\nTotal: $15521.00",
+  "doc_id": "inv_018_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_018_clean.png"
+}

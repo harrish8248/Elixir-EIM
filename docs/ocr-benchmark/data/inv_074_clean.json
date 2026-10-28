@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Nexus Enterprise Staffing",
+  "invoice_number": "INV-2026-1074",
+  "invoice_date": "2026-05-01",
+  "due_date": "2026-05-16",
+  "po_number": "PO-99074",
+  "currency": "USD",
+  "subtotal": 2815.0,
+  "tax": 140.75,
+  "total": 2955.75,
+  "line_items": [
+    {
+      "description": "Precision Steel Ball Bearing Assembly",
+      "quantity": 3,
+      "unit_price": 165.0,
+      "amount": 495.0
+    },
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 4,
+      "unit_price": 580.0,
+      "amount": 2320.0
+    }
+  ],
+  "full_text": "INVOICE\nNexus Enterprise Staffing\n500 Broad St, Columbus, OH 43215\nEmail: billing@nexusstaff.com\nInvoice Number: INV-2026-1074\nInvoice Date: 2026-05-01\nDue Date: 2026-05-16\nPO Number: PO-99074\nCurrency: USD\nPrecision Steel Ball Bearing Assembly 3 $165.00 $495.00\nIndustrial Lubricant Drum 55 Gallon 4 $580.00 $2320.00\nSubtotal: $2815.00\nTax: $140.75\nTotal: $2955.75",
+  "doc_id": "inv_074_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_074_clean.png"
+}

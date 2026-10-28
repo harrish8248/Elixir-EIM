@@ -1,0 +1,25 @@
+{
+  "document_type": "receipt",
+  "vendor": "Metro Office Supplies",
+  "invoice_number": "REC-2026-2004",
+  "invoice_date": "2026-10-05",
+  "due_date": "2026-10-05",
+  "po_number": null,
+  "currency": "USD",
+  "subtotal": 139.43,
+  "tax": 11.15,
+  "total": 150.58,
+  "line_items": [
+    {
+      "description": "Office Supplies & Consumables",
+      "quantity": 1,
+      "unit_price": 139.43,
+      "amount": 139.43
+    }
+  ],
+  "full_text": "Metro Office Supplies\nCUSTOMER RECEIPT\nReceipt: REC-2026-2004\nDate: 2026-10-05\nPayment: VISA **** 4892\nOffice Supplies & Consumables $139.43\nSUBTOTAL: $139.43\nTAX 8%: $11.15\nTOTAL PAID: $150.58\nTHANK YOU",
+  "doc_id": "rcpt_004_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\rcpt_004_clean.png"
+}

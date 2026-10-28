@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Titan Global Hardware Corp",
+  "invoice_number": "INV-2026-1038",
+  "invoice_date": "2026-09-14",
+  "due_date": "2026-09-28",
+  "po_number": "PO-99038",
+  "currency": "EUR",
+  "subtotal": 10900.0,
+  "tax": 899.25,
+  "total": 11799.25,
+  "line_items": [
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 3,
+      "unit_price": 3200.0,
+      "amount": 9600.0
+    },
+    {
+      "description": "Contract Drafting & Vendor Addendum",
+      "quantity": 2,
+      "unit_price": 650.0,
+      "amount": 1300.0
+    }
+  ],
+  "full_text": "INVOICE\nTitan Global Hardware Corp\n101 Machine Way, Detroit, MI 48201\nEmail: invoices@titanhardware.com\nInvoice Number: INV-2026-1038\nInvoice Date: 2026-09-14\nDue Date: 2026-09-28\nPO Number: PO-99038\nCurrency: EUR\nProfessional Staffing - Senior Engineer 3 EUR 3200.00 EUR 9600.00\nContract Drafting & Vendor Addendum 2 EUR 650.00 EUR 1300.00\nSubtotal: EUR 10900.00\nTax: EUR 899.25\nTotal: EUR 11799.25",
+  "doc_id": "inv_038_deg_noise_jpeg",
+  "is_degraded": true,
+  "degradation": "noise_jpeg",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_038_deg_noise_jpeg.png"
+}

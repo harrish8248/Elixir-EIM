@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Acme Industrial Supply LLC",
+  "invoice_number": "INV-2026-1063",
+  "invoice_date": "2026-03-16",
+  "due_date": "2026-03-28",
+  "po_number": "PO-99063",
+  "currency": "EUR",
+  "subtotal": 16875.0,
+  "tax": 1687.5,
+  "total": 18562.5,
+  "line_items": [
+    {
+      "description": "High-Performance SSD Storage Block 1TB",
+      "quantity": 1,
+      "unit_price": 75.0,
+      "amount": 75.0
+    },
+    {
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 4,
+      "unit_price": 1800.0,
+      "amount": 7200.0
+    },
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 3,
+      "unit_price": 3200.0,
+      "amount": 9600.0
+    }
+  ],
+  "full_text": "INVOICE\nAcme Industrial Supply LLC\n100 Industrial Parkway, Chicago, IL 60601\nEmail: finance@acmeind.com\nInvoice Number: INV-2026-1063\nInvoice Date: 2026-03-16\nDue Date: 2026-03-28\nPO Number: PO-99063\nCurrency: EUR\nHigh-Performance SSD Storage Block 1TB 1 EUR 75.00 EUR 75.00\nPatent Portfolio Filing Review & Filing 4 EUR 1800.00 EUR 7200.00\nProfessional Staffing - Senior Engineer 3 EUR 3200.00 EUR 9600.00\nSubtotal: EUR 16875.00\nTax: EUR 1687.50\nTotal: EUR 18562.50",
+  "doc_id": "inv_063_deg_low_res",
+  "is_degraded": true,
+  "degradation": "low_res",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_063_deg_low_res.png"
+}

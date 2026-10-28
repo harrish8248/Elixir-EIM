@@ -1,0 +1,25 @@
+{
+  "document_type": "receipt",
+  "vendor": "Express Courier Logistics",
+  "invoice_number": "REC-2026-2005",
+  "invoice_date": "2026-10-28",
+  "due_date": "2026-10-28",
+  "po_number": null,
+  "currency": "USD",
+  "subtotal": 126.59,
+  "tax": 10.13,
+  "total": 136.72,
+  "line_items": [
+    {
+      "description": "Office Supplies & Consumables",
+      "quantity": 1,
+      "unit_price": 126.59,
+      "amount": 126.59
+    }
+  ],
+  "full_text": "Express Courier Logistics\nCUSTOMER RECEIPT\nReceipt: REC-2026-2005\nDate: 2026-10-28\nPayment: VISA **** 4892\nOffice Supplies & Consumables $126.59\nSUBTOTAL: $126.59\nTAX 8%: $10.13\nTOTAL PAID: $136.72\nTHANK YOU",
+  "doc_id": "rcpt_005_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\rcpt_005_clean.png"
+}

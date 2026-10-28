@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Quantum Dynamic Labs GmbH",
+  "invoice_number": "INV-2026-1034",
+  "invoice_date": "2026-01-10",
+  "due_date": "2026-01-28",
+  "po_number": "PO-99034",
+  "currency": "USD",
+  "subtotal": 5380.0,
+  "tax": 538.0,
+  "total": 5918.0,
+  "line_items": [
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 4,
+      "unit_price": 420.0,
+      "amount": 1680.0
+    },
+    {
+      "description": "Contract Drafting & Vendor Addendum",
+      "quantity": 2,
+      "unit_price": 650.0,
+      "amount": 1300.0
+    },
+    {
+      "description": "Onsite Facility Cleaning & Sanitation",
+      "quantity": 5,
+      "unit_price": 480.0,
+      "amount": 2400.0
+    }
+  ],
+  "full_text": "INVOICE\nQuantum Dynamic Labs GmbH\nTech Park B4, Munich, Germany\nEmail: invoicing@quantumlabs.eu\nInvoice Number: INV-2026-1034\nInvoice Date: 2026-01-10\nDue Date: 2026-01-28\nPO Number: PO-99034\nCurrency: USD\nHeavy Duty Conveyor Belt Roller 24in 4 $420.00 $1680.00\nContract Drafting & Vendor Addendum 2 $650.00 $1300.00\nOnsite Facility Cleaning & Sanitation 5 $480.00 $2400.00\nSubtotal: $5380.00\nTax: $538.00\nTotal: $5918.00",
+  "doc_id": "inv_034_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_034_clean.png"
+}

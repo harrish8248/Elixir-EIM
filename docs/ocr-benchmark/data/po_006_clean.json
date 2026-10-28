@@ -1,0 +1,31 @@
+{
+  "document_type": "purchase_order",
+  "vendor": "Quantum Dynamic Labs GmbH",
+  "invoice_number": null,
+  "invoice_date": "2026-10-12",
+  "due_date": null,
+  "po_number": "PO-2026-7006",
+  "currency": "USD",
+  "subtotal": 12000.0,
+  "tax": 0.0,
+  "total": 12000.0,
+  "line_items": [
+    {
+      "description": "Enterprise Software License Allocation Q4",
+      "quantity": 1,
+      "unit_price": 8500.0,
+      "amount": 8500.0
+    },
+    {
+      "description": "Implementation Services & Onboarding",
+      "quantity": 1,
+      "unit_price": 3500.0,
+      "amount": 3500.0
+    }
+  ],
+  "full_text": "PURCHASE ORDER\nP.O. #: PO-2026-7006\nISSUED BY: AcroCorp Procurement\nVENDOR: Quantum Dynamic Labs GmbH\nOrder Date: 2026-10-12\nEnterprise Software License Allocation Q4 $8500.00\nImplementation Services & Onboarding $3500.00\nAUTHORIZED TOTAL: $12000.00",
+  "doc_id": "po_006_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\po_006_clean.png"
+}

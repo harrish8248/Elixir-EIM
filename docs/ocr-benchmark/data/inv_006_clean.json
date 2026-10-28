@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Quantum Dynamic Labs GmbH",
+  "invoice_number": "INV-2026-1006",
+  "invoice_date": "2026-04-19",
+  "due_date": "2026-04-28",
+  "po_number": "PO-99006",
+  "currency": "USD",
+  "subtotal": 17800.0,
+  "tax": 1468.5,
+  "total": 19268.5,
+  "line_items": [
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 4,
+      "unit_price": 3200.0,
+      "amount": 12800.0
+    },
+    {
+      "description": "Legal Retainer - Regulatory Governance",
+      "quantity": 2,
+      "unit_price": 2500.0,
+      "amount": 5000.0
+    }
+  ],
+  "full_text": "INVOICE\nQuantum Dynamic Labs GmbH\nTech Park B4, Munich, Germany\nEmail: invoicing@quantumlabs.eu\nInvoice Number: INV-2026-1006\nInvoice Date: 2026-04-19\nDue Date: 2026-04-28\nPO Number: PO-99006\nCurrency: USD\nProfessional Staffing - Senior Engineer 4 $3200.00 $12800.00\nLegal Retainer - Regulatory Governance 2 $2500.00 $5000.00\nSubtotal: $17800.00\nTax: $1468.50\nTotal: $19268.50",
+  "doc_id": "inv_006_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_006_clean.png"
+}

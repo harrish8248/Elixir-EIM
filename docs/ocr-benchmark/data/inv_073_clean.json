@@ -1,0 +1,43 @@
+{
+  "document_type": "invoice",
+  "vendor": "Pinnacle Facility Services",
+  "invoice_number": "INV-2026-1073",
+  "invoice_date": "2026-09-13",
+  "due_date": "2026-09-28",
+  "po_number": "PO-99073",
+  "currency": "EUR",
+  "subtotal": 3168.0,
+  "tax": 0.0,
+  "total": 3168.0,
+  "line_items": [
+    {
+      "description": "Dedicated IPv4 Allocation Subnet /28",
+      "quantity": 3,
+      "unit_price": 120.0,
+      "amount": 360.0
+    },
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 2,
+      "unit_price": 89.0,
+      "amount": 178.0
+    },
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 1,
+      "unit_price": 950.0,
+      "amount": 950.0
+    },
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 4,
+      "unit_price": 420.0,
+      "amount": 1680.0
+    }
+  ],
+  "full_text": "INVOICE\nPinnacle Facility Services\n204 Commercial Rd, Atlanta, GA 30303\nEmail: ar@pinnaclefacility.com\nInvoice Number: INV-2026-1073\nInvoice Date: 2026-09-13\nDue Date: 2026-09-28\nPO Number: PO-99073\nCurrency: EUR\nDedicated IPv4 Allocation Subnet /28 3 EUR 120.00 EUR 360.00\nSSL/TLS Wildcard Certificate Renewal 2 EUR 89.00 EUR 178.00\nEnterprise Support SLA 24x7 Response 1 EUR 950.00 EUR 950.00\nHeavy Duty Conveyor Belt Roller 24in 4 EUR 420.00 EUR 1680.00\nSubtotal: EUR 3168.00\nTax: EUR 0.00\nTotal: EUR 3168.00",
+  "doc_id": "inv_073_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_073_clean.png"
+}

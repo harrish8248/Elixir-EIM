@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Vanguard Security Systems",
+  "invoice_number": "INV-2026-1001",
+  "invoice_date": "2026-08-19",
+  "due_date": "2026-08-28",
+  "po_number": "PO-99001",
+  "currency": "USD",
+  "subtotal": 6240.0,
+  "tax": 312.0,
+  "total": 6552.0,
+  "line_items": [
+    {
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 3,
+      "unit_price": 1800.0,
+      "amount": 5400.0
+    },
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 2,
+      "unit_price": 420.0,
+      "amount": 840.0
+    }
+  ],
+  "full_text": "INVOICE\nVanguard Security Systems\n310 Cyber Way, Austin, TX 78701\nEmail: accounting@vanguardsec.com\nInvoice Number: INV-2026-1001\nInvoice Date: 2026-08-19\nDue Date: 2026-08-28\nPO Number: PO-99001\nCurrency: USD\nPatent Portfolio Filing Review & Filing 3 $1800.00 $5400.00\nHeavy Duty Conveyor Belt Roller 24in 2 $420.00 $840.00\nSubtotal: $6240.00\nTax: $312.00\nTotal: $6552.00",
+  "doc_id": "inv_001_deg_blur",
+  "is_degraded": true,
+  "degradation": "blur",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_001_deg_blur.png"
+}

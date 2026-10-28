@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Acme Industrial Supply LLC",
+  "invoice_number": "INV-2026-1051",
+  "invoice_date": "2026-06-06",
+  "due_date": "2026-06-28",
+  "po_number": "PO-99051",
+  "currency": "USD",
+  "subtotal": 6710.0,
+  "tax": 0.0,
+  "total": 6710.0,
+  "line_items": [
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 5,
+      "unit_price": 340.0,
+      "amount": 1700.0
+    },
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 3,
+      "unit_price": 420.0,
+      "amount": 1260.0
+    },
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 5,
+      "unit_price": 750.0,
+      "amount": 3750.0
+    }
+  ],
+  "full_text": "INVOICE\nAcme Industrial Supply LLC\n100 Industrial Parkway, Chicago, IL 60601\nEmail: finance@acmeind.com\nInvoice Number: INV-2026-1051\nInvoice Date: 2026-06-06\nDue Date: 2026-06-28\nPO Number: PO-99051\nCurrency: USD\nIndustrial Hydraulic Valve Fitting Kit 5 $340.00 $1700.00\nHeavy Duty Conveyor Belt Roller 24in 3 $420.00 $1260.00\nHVAC Quarterly Preventative Maintenance 5 $750.00 $3750.00\nSubtotal: $6710.00\nTax: $0.00\nTotal: $6710.00",
+  "doc_id": "inv_051_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_051_clean.png"
+}

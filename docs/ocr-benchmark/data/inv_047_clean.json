@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Apex Strategic Marketing Group",
+  "invoice_number": "INV-2026-1047",
+  "invoice_date": "2026-07-13",
+  "due_date": "2026-07-28",
+  "po_number": "PO-99047",
+  "currency": "USD",
+  "subtotal": 10350.0,
+  "tax": 0.0,
+  "total": 10350.0,
+  "line_items": [
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 3,
+      "unit_price": 950.0,
+      "amount": 2850.0
+    },
+    {
+      "description": "SOC-2 Compliance Continuous Audit Log",
+      "quantity": 5,
+      "unit_price": 1500.0,
+      "amount": 7500.0
+    }
+  ],
+  "full_text": "INVOICE\nApex Strategic Marketing Group\n77 Madison Ave, Suite 300, New York, NY 10016\nEmail: billing@apexmarketing.com\nInvoice Number: INV-2026-1047\nInvoice Date: 2026-07-13\nDue Date: 2026-07-28\nPO Number: PO-99047\nCurrency: USD\nEnterprise Support SLA 24x7 Response 3 $950.00 $2850.00\nSOC-2 Compliance Continuous Audit Log 5 $1500.00 $7500.00\nSubtotal: $10350.00\nTax: $0.00\nTotal: $10350.00",
+  "doc_id": "inv_047_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_047_clean.png"
+}

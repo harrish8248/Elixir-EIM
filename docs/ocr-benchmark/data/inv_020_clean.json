@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Acme Industrial Supply LLC",
+  "invoice_number": "INV-2026-1020",
+  "invoice_date": "2026-08-17",
+  "due_date": "2026-08-28",
+  "po_number": null,
+  "currency": "USD",
+  "subtotal": 1049.0,
+  "tax": 0.0,
+  "total": 1049.0,
+  "line_items": [
+    {
+      "description": "Onsite Facility Cleaning & Sanitation",
+      "quantity": 2,
+      "unit_price": 480.0,
+      "amount": 960.0
+    },
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 1,
+      "unit_price": 89.0,
+      "amount": 89.0
+    }
+  ],
+  "full_text": "INVOICE\nAcme Industrial Supply LLC\n100 Industrial Parkway, Chicago, IL 60601\nEmail: finance@acmeind.com\nInvoice Number: INV-2026-1020\nInvoice Date: 2026-08-17\nDue Date: 2026-08-28\nCurrency: USD\nOnsite Facility Cleaning & Sanitation 2 $480.00 $960.00\nSSL/TLS Wildcard Certificate Renewal 1 $89.00 $89.00\nSubtotal: $1049.00\nTax: $0.00\nTotal: $1049.00",
+  "doc_id": "inv_020_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_020_clean.png"
+}

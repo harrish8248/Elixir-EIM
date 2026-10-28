@@ -1,0 +1,43 @@
+{
+  "document_type": "invoice",
+  "vendor": "Quantum Dynamic Labs GmbH",
+  "invoice_number": "INV-2026-1019",
+  "invoice_date": "2026-08-10",
+  "due_date": "2026-08-28",
+  "po_number": "PO-99019",
+  "currency": "GBP",
+  "subtotal": 10550.0,
+  "tax": 0.0,
+  "total": 10550.0,
+  "line_items": [
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 2,
+      "unit_price": 3200.0,
+      "amount": 6400.0
+    },
+    {
+      "description": "Network Security Threat Detection Scan",
+      "quantity": 1,
+      "unit_price": 350.0,
+      "amount": 350.0
+    },
+    {
+      "description": "Database Replica Failover Node",
+      "quantity": 5,
+      "unit_price": 280.0,
+      "amount": 1400.0
+    },
+    {
+      "description": "Onsite Facility Cleaning & Sanitation",
+      "quantity": 5,
+      "unit_price": 480.0,
+      "amount": 2400.0
+    }
+  ],
+  "full_text": "INVOICE\nQuantum Dynamic Labs GmbH\nTech Park B4, Munich, Germany\nEmail: invoicing@quantumlabs.eu\nInvoice Number: INV-2026-1019\nInvoice Date: 2026-08-10\nDue Date: 2026-08-28\nPO Number: PO-99019\nCurrency: GBP\nProfessional Staffing - Senior Engineer 2 GBP 3200.00 GBP 6400.00\nNetwork Security Threat Detection Scan 1 GBP 350.00 GBP 350.00\nDatabase Replica Failover Node 5 GBP 280.00 GBP 1400.00\nOnsite Facility Cleaning & Sanitation 5 GBP 480.00 GBP 2400.00\nSubtotal: GBP 10550.00\nTax: GBP 0.00\nTotal: GBP 10550.00",
+  "doc_id": "inv_019_deg_blur",
+  "is_degraded": true,
+  "degradation": "blur",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_019_deg_blur.png"
+}

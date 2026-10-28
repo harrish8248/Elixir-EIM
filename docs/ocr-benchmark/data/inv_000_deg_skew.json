@@ -1,0 +1,43 @@
+{
+  "document_type": "invoice",
+  "vendor": "CloudScale Networks Inc",
+  "invoice_number": "INV-2026-1000",
+  "invoice_date": "2026-05-08",
+  "due_date": "2026-05-23",
+  "po_number": null,
+  "currency": "USD",
+  "subtotal": 6089.0,
+  "tax": 0.0,
+  "total": 6089.0,
+  "line_items": [
+    {
+      "description": "SOC-2 Compliance Continuous Audit Log",
+      "quantity": 1,
+      "unit_price": 1500.0,
+      "amount": 1500.0
+    },
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 1,
+      "unit_price": 89.0,
+      "amount": 89.0
+    },
+    {
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 2,
+      "unit_price": 1800.0,
+      "amount": 3600.0
+    },
+    {
+      "description": "Managed Cloud Hosting Standard Tier",
+      "quantity": 2,
+      "unit_price": 450.0,
+      "amount": 900.0
+    }
+  ],
+  "full_text": "INVOICE\nCloudScale Networks Inc\n450 Tech Hub Blvd, San Jose, CA 95110\nEmail: billing@cloudscale.net\nInvoice Number: INV-2026-1000\nInvoice Date: 2026-05-08\nDue Date: 2026-05-23\nCurrency: USD\nSOC-2 Compliance Continuous Audit Log 1 $1500.00 $1500.00\nSSL/TLS Wildcard Certificate Renewal 1 $89.00 $89.00\nPatent Portfolio Filing Review & Filing 2 $1800.00 $3600.00\nManaged Cloud Hosting Standard Tier 2 $450.00 $900.00\nSubtotal: $6089.00\nTax: $0.00\nTotal: $6089.00",
+  "doc_id": "inv_000_deg_skew",
+  "is_degraded": true,
+  "degradation": "skew",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_000_deg_skew.png"
+}

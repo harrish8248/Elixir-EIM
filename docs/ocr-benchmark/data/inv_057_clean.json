@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Nexus Enterprise Staffing",
+  "invoice_number": "INV-2026-1057",
+  "invoice_date": "2026-01-05",
+  "due_date": "2026-01-20",
+  "po_number": null,
+  "currency": "GBP",
+  "subtotal": 11745.0,
+  "tax": 587.25,
+  "total": 12332.25,
+  "line_items": [
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 5,
+      "unit_price": 89.0,
+      "amount": 445.0
+    },
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 4,
+      "unit_price": 950.0,
+      "amount": 3800.0
+    },
+    {
+      "description": "SOC-2 Compliance Continuous Audit Log",
+      "quantity": 5,
+      "unit_price": 1500.0,
+      "amount": 7500.0
+    }
+  ],
+  "full_text": "INVOICE\nNexus Enterprise Staffing\n500 Broad St, Columbus, OH 43215\nEmail: billing@nexusstaff.com\nInvoice Number: INV-2026-1057\nInvoice Date: 2026-01-05\nDue Date: 2026-01-20\nCurrency: GBP\nSSL/TLS Wildcard Certificate Renewal 5 GBP 89.00 GBP 445.00\nEnterprise Support SLA 24x7 Response 4 GBP 950.00 GBP 3800.00\nSOC-2 Compliance Continuous Audit Log 5 GBP 1500.00 GBP 7500.00\nSubtotal: GBP 11745.00\nTax: GBP 587.25\nTotal: GBP 12332.25",
+  "doc_id": "inv_057_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_057_clean.png"
+}

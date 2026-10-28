@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Horizon Legal Partners LLP",
+  "invoice_number": "INV-2026-1005",
+  "invoice_date": "2026-05-21",
+  "due_date": "2026-05-28",
+  "po_number": "PO-99005",
+  "currency": "GBP",
+  "subtotal": 960.0,
+  "tax": 79.2,
+  "total": 1039.2,
+  "line_items": [
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 2,
+      "unit_price": 420.0,
+      "amount": 840.0
+    },
+    {
+      "description": "Dedicated IPv4 Allocation Subnet /28",
+      "quantity": 1,
+      "unit_price": 120.0,
+      "amount": 120.0
+    }
+  ],
+  "full_text": "INVOICE\nHorizon Legal Partners LLP\n120 Wall Street, Floor 18, New York, NY 10005\nEmail: accounts@horizonlaw.com\nInvoice Number: INV-2026-1005\nInvoice Date: 2026-05-21\nDue Date: 2026-05-28\nPO Number: PO-99005\nCurrency: GBP\nHeavy Duty Conveyor Belt Roller 24in 2 GBP 420.00 GBP 840.00\nDedicated IPv4 Allocation Subnet /28 1 GBP 120.00 GBP 120.00\nSubtotal: GBP 960.00\nTax: GBP 79.20\nTotal: GBP 1039.20",
+  "doc_id": "inv_005_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_005_clean.png"
+}

@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Vanguard Security Systems",
+  "invoice_number": "INV-2026-1017",
+  "invoice_date": "2026-07-06",
+  "due_date": "2026-07-28",
+  "po_number": "PO-99017",
+  "currency": "EUR",
+  "subtotal": 1095.0,
+  "tax": 0.0,
+  "total": 1095.0,
+  "line_items": [
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 5,
+      "unit_price": 89.0,
+      "amount": 445.0
+    },
+    {
+      "description": "Contract Drafting & Vendor Addendum",
+      "quantity": 1,
+      "unit_price": 650.0,
+      "amount": 650.0
+    }
+  ],
+  "full_text": "INVOICE\nVanguard Security Systems\n310 Cyber Way, Austin, TX 78701\nEmail: accounting@vanguardsec.com\nInvoice Number: INV-2026-1017\nInvoice Date: 2026-07-06\nDue Date: 2026-07-28\nPO Number: PO-99017\nCurrency: EUR\nSSL/TLS Wildcard Certificate Renewal 5 EUR 89.00 EUR 445.00\nContract Drafting & Vendor Addendum 1 EUR 650.00 EUR 650.00\nSubtotal: EUR 1095.00\nTax: EUR 0.00\nTotal: EUR 1095.00",
+  "doc_id": "inv_017_deg_rotated_90",
+  "is_degraded": true,
+  "degradation": "rotated_90",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_017_deg_rotated_90.png"
+}

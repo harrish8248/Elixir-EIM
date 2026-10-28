@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Horizon Legal Partners LLP",
+  "invoice_number": "INV-2026-1061",
+  "invoice_date": "2026-10-24",
+  "due_date": "2026-10-28",
+  "po_number": "PO-99061",
+  "currency": "USD",
+  "subtotal": 8775.0,
+  "tax": 877.5,
+  "total": 9652.5,
+  "line_items": [
+    {
+      "description": "SOC-2 Compliance Continuous Audit Log",
+      "quantity": 4,
+      "unit_price": 1500.0,
+      "amount": 6000.0
+    },
+    {
+      "description": "Contract Drafting & Vendor Addendum",
+      "quantity": 3,
+      "unit_price": 650.0,
+      "amount": 1950.0
+    },
+    {
+      "description": "Precision Steel Ball Bearing Assembly",
+      "quantity": 5,
+      "unit_price": 165.0,
+      "amount": 825.0
+    }
+  ],
+  "full_text": "INVOICE\nHorizon Legal Partners LLP\n120 Wall Street, Floor 18, New York, NY 10005\nEmail: accounts@horizonlaw.com\nInvoice Number: INV-2026-1061\nInvoice Date: 2026-10-24\nDue Date: 2026-10-28\nPO Number: PO-99061\nCurrency: USD\nSOC-2 Compliance Continuous Audit Log 4 $1500.00 $6000.00\nContract Drafting & Vendor Addendum 3 $650.00 $1950.00\nPrecision Steel Ball Bearing Assembly 5 $165.00 $825.00\nSubtotal: $8775.00\nTax: $877.50\nTotal: $9652.50",
+  "doc_id": "inv_061_deg_blur",
+  "is_degraded": true,
+  "degradation": "blur",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_061_deg_blur.png"
+}

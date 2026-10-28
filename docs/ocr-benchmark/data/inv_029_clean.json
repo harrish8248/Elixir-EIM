@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "CloudScale Networks Inc",
+  "invoice_number": "INV-2026-1029",
+  "invoice_date": "2026-01-28",
+  "due_date": "2026-02-28",
+  "po_number": "PO-99029",
+  "currency": "USD",
+  "subtotal": 3110.0,
+  "tax": 155.5,
+  "total": 3265.5,
+  "line_items": [
+    {
+      "description": "Contract Drafting & Vendor Addendum",
+      "quantity": 3,
+      "unit_price": 650.0,
+      "amount": 1950.0
+    },
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 2,
+      "unit_price": 580.0,
+      "amount": 1160.0
+    }
+  ],
+  "full_text": "INVOICE\nCloudScale Networks Inc\n450 Tech Hub Blvd, San Jose, CA 95110\nEmail: billing@cloudscale.net\nInvoice Number: INV-2026-1029\nInvoice Date: 2026-01-28\nDue Date: 2026-02-28\nPO Number: PO-99029\nCurrency: USD\nContract Drafting & Vendor Addendum 3 $650.00 $1950.00\nIndustrial Lubricant Drum 55 Gallon 2 $580.00 $1160.00\nSubtotal: $3110.00\nTax: $155.50\nTotal: $3265.50",
+  "doc_id": "inv_029_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_029_clean.png"
+}

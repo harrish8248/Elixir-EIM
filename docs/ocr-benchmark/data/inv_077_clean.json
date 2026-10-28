@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Nexus Enterprise Staffing",
+  "invoice_number": "INV-2026-1077",
+  "invoice_date": "2026-04-13",
+  "due_date": "2026-04-28",
+  "po_number": "PO-99077",
+  "currency": "USD",
+  "subtotal": 14240.0,
+  "tax": 1174.8,
+  "total": 15414.8,
+  "line_items": [
+    {
+      "description": "Legal Retainer - Regulatory Governance",
+      "quantity": 5,
+      "unit_price": 2500.0,
+      "amount": 12500.0
+    },
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 3,
+      "unit_price": 580.0,
+      "amount": 1740.0
+    }
+  ],
+  "full_text": "INVOICE\nNexus Enterprise Staffing\n500 Broad St, Columbus, OH 43215\nEmail: billing@nexusstaff.com\nInvoice Number: INV-2026-1077\nInvoice Date: 2026-04-13\nDue Date: 2026-04-28\nPO Number: PO-99077\nCurrency: USD\nLegal Retainer - Regulatory Governance 5 $2500.00 $12500.00\nIndustrial Lubricant Drum 55 Gallon 3 $580.00 $1740.00\nSubtotal: $14240.00\nTax: $1174.80\nTotal: $15414.80",
+  "doc_id": "inv_077_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_077_clean.png"
+}

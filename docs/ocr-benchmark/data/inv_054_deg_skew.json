@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Nexus Enterprise Staffing",
+  "invoice_number": "INV-2026-1054",
+  "invoice_date": "2026-05-08",
+  "due_date": "2026-05-23",
+  "po_number": "PO-99054",
+  "currency": "USD",
+  "subtotal": 4140.0,
+  "tax": 341.55,
+  "total": 4481.55,
+  "line_items": [
+    {
+      "description": "SOC-2 Compliance Continuous Audit Log",
+      "quantity": 2,
+      "unit_price": 1500.0,
+      "amount": 3000.0
+    },
+    {
+      "description": "High-Performance SSD Storage Block 1TB",
+      "quantity": 4,
+      "unit_price": 75.0,
+      "amount": 300.0
+    },
+    {
+      "description": "Database Replica Failover Node",
+      "quantity": 3,
+      "unit_price": 280.0,
+      "amount": 840.0
+    }
+  ],
+  "full_text": "INVOICE\nNexus Enterprise Staffing\n500 Broad St, Columbus, OH 43215\nEmail: billing@nexusstaff.com\nInvoice Number: INV-2026-1054\nInvoice Date: 2026-05-08\nDue Date: 2026-05-23\nPO Number: PO-99054\nCurrency: USD\nSOC-2 Compliance Continuous Audit Log 2 $1500.00 $3000.00\nHigh-Performance SSD Storage Block 1TB 4 $75.00 $300.00\nDatabase Replica Failover Node 3 $280.00 $840.00\nSubtotal: $4140.00\nTax: $341.55\nTotal: $4481.55",
+  "doc_id": "inv_054_deg_skew",
+  "is_degraded": true,
+  "degradation": "skew",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_054_deg_skew.png"
+}

@@ -1,0 +1,43 @@
+{
+  "document_type": "invoice",
+  "vendor": "Pinnacle Facility Services",
+  "invoice_number": "INV-2026-1026",
+  "invoice_date": "2026-05-06",
+  "due_date": "2026-05-28",
+  "po_number": "PO-99026",
+  "currency": "EUR",
+  "subtotal": 7710.0,
+  "tax": 385.5,
+  "total": 8095.5,
+  "line_items": [
+    {
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 2,
+      "unit_price": 1800.0,
+      "amount": 3600.0
+    },
+    {
+      "description": "Managed Cloud Hosting Standard Tier",
+      "quantity": 5,
+      "unit_price": 450.0,
+      "amount": 2250.0
+    },
+    {
+      "description": "SOC-2 Compliance Continuous Audit Log",
+      "quantity": 1,
+      "unit_price": 1500.0,
+      "amount": 1500.0
+    },
+    {
+      "description": "Dedicated IPv4 Allocation Subnet /28",
+      "quantity": 3,
+      "unit_price": 120.0,
+      "amount": 360.0
+    }
+  ],
+  "full_text": "INVOICE\nPinnacle Facility Services\n204 Commercial Rd, Atlanta, GA 30303\nEmail: ar@pinnaclefacility.com\nInvoice Number: INV-2026-1026\nInvoice Date: 2026-05-06\nDue Date: 2026-05-28\nPO Number: PO-99026\nCurrency: EUR\nPatent Portfolio Filing Review & Filing 2 EUR 1800.00 EUR 3600.00\nManaged Cloud Hosting Standard Tier 5 EUR 450.00 EUR 2250.00\nSOC-2 Compliance Continuous Audit Log 1 EUR 1500.00 EUR 1500.00\nDedicated IPv4 Allocation Subnet /28 3 EUR 120.00 EUR 360.00\nSubtotal: EUR 7710.00\nTax: EUR 385.50\nTotal: EUR 8095.50",
+  "doc_id": "inv_026_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_026_clean.png"
+}

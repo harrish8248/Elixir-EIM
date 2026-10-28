@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Vanguard Security Systems",
+  "invoice_number": "INV-2026-1066",
+  "invoice_date": "2026-08-21",
+  "due_date": "2026-08-28",
+  "po_number": "PO-99066",
+  "currency": "USD",
+  "subtotal": 2420.0,
+  "tax": 242.0,
+  "total": 2662.0,
+  "line_items": [
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 3,
+      "unit_price": 340.0,
+      "amount": 1020.0
+    },
+    {
+      "description": "Network Security Threat Detection Scan",
+      "quantity": 4,
+      "unit_price": 350.0,
+      "amount": 1400.0
+    }
+  ],
+  "full_text": "INVOICE\nVanguard Security Systems\n310 Cyber Way, Austin, TX 78701\nEmail: accounting@vanguardsec.com\nInvoice Number: INV-2026-1066\nInvoice Date: 2026-08-21\nDue Date: 2026-08-28\nPO Number: PO-99066\nCurrency: USD\nIndustrial Hydraulic Valve Fitting Kit 3 $340.00 $1020.00\nNetwork Security Threat Detection Scan 4 $350.00 $1400.00\nSubtotal: $2420.00\nTax: $242.00\nTotal: $2662.00",
+  "doc_id": "inv_066_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_066_clean.png"
+}

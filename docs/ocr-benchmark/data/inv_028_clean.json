@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Titan Global Hardware Corp",
+  "invoice_number": "INV-2026-1028",
+  "invoice_date": "2026-04-28",
+  "due_date": "2026-05-28",
+  "po_number": "PO-99028",
+  "currency": "USD",
+  "subtotal": 3210.0,
+  "tax": 160.5,
+  "total": 3370.5,
+  "line_items": [
+    {
+      "description": "Managed Cloud Hosting Standard Tier",
+      "quantity": 4,
+      "unit_price": 450.0,
+      "amount": 1800.0
+    },
+    {
+      "description": "High-Performance SSD Storage Block 1TB",
+      "quantity": 2,
+      "unit_price": 75.0,
+      "amount": 150.0
+    },
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 3,
+      "unit_price": 420.0,
+      "amount": 1260.0
+    }
+  ],
+  "full_text": "INVOICE\nTitan Global Hardware Corp\n101 Machine Way, Detroit, MI 48201\nEmail: invoices@titanhardware.com\nInvoice Number: INV-2026-1028\nInvoice Date: 2026-04-28\nDue Date: 2026-05-28\nPO Number: PO-99028\nCurrency: USD\nManaged Cloud Hosting Standard Tier 4 $450.00 $1800.00\nHigh-Performance SSD Storage Block 1TB 2 $75.00 $150.00\nHeavy Duty Conveyor Belt Roller 24in 3 $420.00 $1260.00\nSubtotal: $3210.00\nTax: $160.50\nTotal: $3370.50",
+  "doc_id": "inv_028_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_028_clean.png"
+}

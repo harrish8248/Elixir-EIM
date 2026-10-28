@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Horizon Legal Partners LLP",
+  "invoice_number": "INV-2026-1068",
+  "invoice_date": "2026-05-17",
+  "due_date": "2026-05-28",
+  "po_number": "PO-99068",
+  "currency": "USD",
+  "subtotal": 18450.0,
+  "tax": 1845.0,
+  "total": 20295.0,
+  "line_items": [
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 4,
+      "unit_price": 3200.0,
+      "amount": 12800.0
+    },
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 5,
+      "unit_price": 750.0,
+      "amount": 3750.0
+    },
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 2,
+      "unit_price": 950.0,
+      "amount": 1900.0
+    }
+  ],
+  "full_text": "INVOICE\nHorizon Legal Partners LLP\n120 Wall Street, Floor 18, New York, NY 10005\nEmail: accounts@horizonlaw.com\nInvoice Number: INV-2026-1068\nInvoice Date: 2026-05-17\nDue Date: 2026-05-28\nPO Number: PO-99068\nCurrency: USD\nProfessional Staffing - Senior Engineer 4 $3200.00 $12800.00\nHVAC Quarterly Preventative Maintenance 5 $750.00 $3750.00\nEnterprise Support SLA 24x7 Response 2 $950.00 $1900.00\nSubtotal: $18450.00\nTax: $1845.00\nTotal: $20295.00",
+  "doc_id": "inv_068_deg_noise_jpeg",
+  "is_degraded": true,
+  "degradation": "noise_jpeg",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_068_deg_noise_jpeg.png"
+}

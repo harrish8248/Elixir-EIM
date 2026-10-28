@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Vertex Global Logistics",
+  "invoice_number": "INV-2026-1044",
+  "invoice_date": "2026-06-25",
+  "due_date": "2026-06-28",
+  "po_number": "PO-99044",
+  "currency": "USD",
+  "subtotal": 3985.0,
+  "tax": 328.76,
+  "total": 4313.76,
+  "line_items": [
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 1,
+      "unit_price": 340.0,
+      "amount": 340.0
+    },
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 5,
+      "unit_price": 89.0,
+      "amount": 445.0
+    },
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 1,
+      "unit_price": 3200.0,
+      "amount": 3200.0
+    }
+  ],
+  "full_text": "INVOICE\nVertex Global Logistics\n88 Port Way, Long Beach, CA 90802\nEmail: invoices@vertexlogistics.com\nInvoice Number: INV-2026-1044\nInvoice Date: 2026-06-25\nDue Date: 2026-06-28\nPO Number: PO-99044\nCurrency: USD\nIndustrial Hydraulic Valve Fitting Kit 1 $340.00 $340.00\nSSL/TLS Wildcard Certificate Renewal 5 $89.00 $445.00\nProfessional Staffing - Senior Engineer 1 $3200.00 $3200.00\nSubtotal: $3985.00\nTax: $328.76\nTotal: $4313.76",
+  "doc_id": "inv_044_deg_noise_jpeg",
+  "is_degraded": true,
+  "degradation": "noise_jpeg",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_044_deg_noise_jpeg.png"
+}

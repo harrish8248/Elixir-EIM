@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Vertex Global Logistics",
+  "invoice_number": "INV-2026-1007",
+  "invoice_date": "2026-09-09",
+  "due_date": "2026-09-28",
+  "po_number": "PO-99007",
+  "currency": "GBP",
+  "subtotal": 11700.0,
+  "tax": 0.0,
+  "total": 11700.0,
+  "line_items": [
+    {
+      "description": "Legal Retainer - Regulatory Governance",
+      "quantity": 2,
+      "unit_price": 2500.0,
+      "amount": 5000.0
+    },
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 5,
+      "unit_price": 580.0,
+      "amount": 2900.0
+    },
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 4,
+      "unit_price": 950.0,
+      "amount": 3800.0
+    }
+  ],
+  "full_text": "INVOICE\nVertex Global Logistics\n88 Port Way, Long Beach, CA 90802\nEmail: invoices@vertexlogistics.com\nInvoice Number: INV-2026-1007\nInvoice Date: 2026-09-09\nDue Date: 2026-09-28\nPO Number: PO-99007\nCurrency: GBP\nLegal Retainer - Regulatory Governance 2 GBP 2500.00 GBP 5000.00\nIndustrial Lubricant Drum 55 Gallon 5 GBP 580.00 GBP 2900.00\nEnterprise Support SLA 24x7 Response 4 GBP 950.00 GBP 3800.00\nSubtotal: GBP 11700.00\nTax: GBP 0.00\nTotal: GBP 11700.00",
+  "doc_id": "inv_007_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_007_clean.png"
+}

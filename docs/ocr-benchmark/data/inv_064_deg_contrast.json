@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Pinnacle Facility Services",
+  "invoice_number": "INV-2026-1064",
+  "invoice_date": "2026-02-28",
+  "due_date": "2026-03-28",
+  "po_number": "PO-99064",
+  "currency": "USD",
+  "subtotal": 26165.0,
+  "tax": 0.0,
+  "total": 26165.0,
+  "line_items": [
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 5,
+      "unit_price": 3200.0,
+      "amount": 16000.0
+    },
+    {
+      "description": "Precision Steel Ball Bearing Assembly",
+      "quantity": 1,
+      "unit_price": 165.0,
+      "amount": 165.0
+    },
+    {
+      "description": "Legal Retainer - Regulatory Governance",
+      "quantity": 4,
+      "unit_price": 2500.0,
+      "amount": 10000.0
+    }
+  ],
+  "full_text": "INVOICE\nPinnacle Facility Services\n204 Commercial Rd, Atlanta, GA 30303\nEmail: ar@pinnaclefacility.com\nInvoice Number: INV-2026-1064\nInvoice Date: 2026-02-28\nDue Date: 2026-03-28\nPO Number: PO-99064\nCurrency: USD\nProfessional Staffing - Senior Engineer 5 $3200.00 $16000.00\nPrecision Steel Ball Bearing Assembly 1 $165.00 $165.00\nLegal Retainer - Regulatory Governance 4 $2500.00 $10000.00\nSubtotal: $26165.00\nTax: $0.00\nTotal: $26165.00",
+  "doc_id": "inv_064_deg_contrast",
+  "is_degraded": true,
+  "degradation": "contrast",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_064_deg_contrast.png"
+}

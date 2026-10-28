@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Nexus Enterprise Staffing",
+  "invoice_number": "INV-2026-1015",
+  "invoice_date": "2026-03-24",
+  "due_date": "2026-03-28",
+  "po_number": "PO-99015",
+  "currency": "GBP",
+  "subtotal": 6900.0,
+  "tax": 690.0,
+  "total": 7590.0,
+  "line_items": [
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 2,
+      "unit_price": 950.0,
+      "amount": 1900.0
+    },
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 1,
+      "unit_price": 3200.0,
+      "amount": 3200.0
+    },
+    {
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 1,
+      "unit_price": 1800.0,
+      "amount": 1800.0
+    }
+  ],
+  "full_text": "INVOICE\nNexus Enterprise Staffing\n500 Broad St, Columbus, OH 43215\nEmail: billing@nexusstaff.com\nInvoice Number: INV-2026-1015\nInvoice Date: 2026-03-24\nDue Date: 2026-03-28\nPO Number: PO-99015\nCurrency: GBP\nEnterprise Support SLA 24x7 Response 2 GBP 950.00 GBP 1900.00\nProfessional Staffing - Senior Engineer 1 GBP 3200.00 GBP 3200.00\nPatent Portfolio Filing Review & Filing 1 GBP 1800.00 GBP 1800.00\nSubtotal: GBP 6900.00\nTax: GBP 690.00\nTotal: GBP 7590.00",
+  "doc_id": "inv_015_deg_low_res",
+  "is_degraded": true,
+  "degradation": "low_res",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_015_deg_low_res.png"
+}

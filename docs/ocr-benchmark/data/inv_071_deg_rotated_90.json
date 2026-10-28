@@ -1,0 +1,43 @@
+{
+  "document_type": "invoice",
+  "vendor": "Quantum Dynamic Labs GmbH",
+  "invoice_number": "INV-2026-1071",
+  "invoice_date": "2026-08-23",
+  "due_date": "2026-08-28",
+  "po_number": null,
+  "currency": "EUR",
+  "subtotal": 18199.0,
+  "tax": 1819.9,
+  "total": 20018.9,
+  "line_items": [
+    {
+      "description": "Network Security Threat Detection Scan",
+      "quantity": 5,
+      "unit_price": 350.0,
+      "amount": 1750.0
+    },
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 5,
+      "unit_price": 3200.0,
+      "amount": 16000.0
+    },
+    {
+      "description": "Dedicated IPv4 Allocation Subnet /28",
+      "quantity": 3,
+      "unit_price": 120.0,
+      "amount": 360.0
+    },
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 1,
+      "unit_price": 89.0,
+      "amount": 89.0
+    }
+  ],
+  "full_text": "INVOICE\nQuantum Dynamic Labs GmbH\nTech Park B4, Munich, Germany\nEmail: invoicing@quantumlabs.eu\nInvoice Number: INV-2026-1071\nInvoice Date: 2026-08-23\nDue Date: 2026-08-28\nCurrency: EUR\nNetwork Security Threat Detection Scan 5 EUR 350.00 EUR 1750.00\nProfessional Staffing - Senior Engineer 5 EUR 3200.00 EUR 16000.00\nDedicated IPv4 Allocation Subnet /28 3 EUR 120.00 EUR 360.00\nSSL/TLS Wildcard Certificate Renewal 1 EUR 89.00 EUR 89.00\nSubtotal: EUR 18199.00\nTax: EUR 1819.90\nTotal: EUR 20018.90",
+  "doc_id": "inv_071_deg_rotated_90",
+  "is_degraded": true,
+  "degradation": "rotated_90",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_071_deg_rotated_90.png"
+}

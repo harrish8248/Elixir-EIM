@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Quantum Dynamic Labs GmbH",
+  "invoice_number": "INV-2026-1050",
+  "invoice_date": "2026-10-09",
+  "due_date": "2026-10-28",
+  "po_number": "PO-99050",
+  "currency": "USD",
+  "subtotal": 3280.0,
+  "tax": 328.0,
+  "total": 3608.0,
+  "line_items": [
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 2,
+      "unit_price": 340.0,
+      "amount": 680.0
+    },
+    {
+      "description": "Contract Drafting & Vendor Addendum",
+      "quantity": 4,
+      "unit_price": 650.0,
+      "amount": 2600.0
+    }
+  ],
+  "full_text": "INVOICE\nQuantum Dynamic Labs GmbH\nTech Park B4, Munich, Germany\nEmail: invoicing@quantumlabs.eu\nInvoice Number: INV-2026-1050\nInvoice Date: 2026-10-09\nDue Date: 2026-10-28\nPO Number: PO-99050\nCurrency: USD\nIndustrial Hydraulic Valve Fitting Kit 2 $340.00 $680.00\nContract Drafting & Vendor Addendum 4 $650.00 $2600.00\nSubtotal: $3280.00\nTax: $328.00\nTotal: $3608.00",
+  "doc_id": "inv_050_deg_noise_jpeg",
+  "is_degraded": true,
+  "degradation": "noise_jpeg",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_050_deg_noise_jpeg.png"
+}

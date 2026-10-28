@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Titan Global Hardware Corp",
+  "invoice_number": "INV-2026-1069",
+  "invoice_date": "2026-03-28",
+  "due_date": "2026-04-28",
+  "po_number": "PO-99069",
+  "currency": "USD",
+  "subtotal": 2880.0,
+  "tax": 288.0,
+  "total": 3168.0,
+  "line_items": [
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 1,
+      "unit_price": 420.0,
+      "amount": 420.0
+    },
+    {
+      "description": "Onsite Facility Cleaning & Sanitation",
+      "quantity": 3,
+      "unit_price": 480.0,
+      "amount": 1440.0
+    },
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 3,
+      "unit_price": 340.0,
+      "amount": 1020.0
+    }
+  ],
+  "full_text": "INVOICE\nTitan Global Hardware Corp\n101 Machine Way, Detroit, MI 48201\nEmail: invoices@titanhardware.com\nInvoice Number: INV-2026-1069\nInvoice Date: 2026-03-28\nDue Date: 2026-04-28\nPO Number: PO-99069\nCurrency: USD\nHeavy Duty Conveyor Belt Roller 24in 1 $420.00 $420.00\nOnsite Facility Cleaning & Sanitation 3 $480.00 $1440.00\nIndustrial Hydraulic Valve Fitting Kit 3 $340.00 $1020.00\nSubtotal: $2880.00\nTax: $288.00\nTotal: $3168.00",
+  "doc_id": "inv_069_deg_low_res",
+  "is_degraded": true,
+  "degradation": "low_res",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_069_deg_low_res.png"
+}

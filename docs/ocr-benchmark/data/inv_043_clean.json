@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Titan Global Hardware Corp",
+  "invoice_number": "INV-2026-1043",
+  "invoice_date": "2026-01-03",
+  "due_date": "2026-01-28",
+  "po_number": "PO-99043",
+  "currency": "EUR",
+  "subtotal": 875.0,
+  "tax": 87.5,
+  "total": 962.5,
+  "line_items": [
+    {
+      "description": "Contract Drafting & Vendor Addendum",
+      "quantity": 1,
+      "unit_price": 650.0,
+      "amount": 650.0
+    },
+    {
+      "description": "High-Performance SSD Storage Block 1TB",
+      "quantity": 3,
+      "unit_price": 75.0,
+      "amount": 225.0
+    }
+  ],
+  "full_text": "INVOICE\nTitan Global Hardware Corp\n101 Machine Way, Detroit, MI 48201\nEmail: invoices@titanhardware.com\nInvoice Number: INV-2026-1043\nInvoice Date: 2026-01-03\nDue Date: 2026-01-28\nPO Number: PO-99043\nCurrency: EUR\nContract Drafting & Vendor Addendum 1 EUR 650.00 EUR 650.00\nHigh-Performance SSD Storage Block 1TB 3 EUR 75.00 EUR 225.00\nSubtotal: EUR 875.00\nTax: EUR 87.50\nTotal: EUR 962.50",
+  "doc_id": "inv_043_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_043_clean.png"
+}

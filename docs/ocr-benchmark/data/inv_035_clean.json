@@ -1,0 +1,37 @@
+{
+  "document_type": "invoice",
+  "vendor": "Horizon Legal Partners LLP",
+  "invoice_number": "INV-2026-1035",
+  "invoice_date": "2026-05-17",
+  "due_date": "2026-05-28",
+  "po_number": "PO-99035",
+  "currency": "GBP",
+  "subtotal": 2408.0,
+  "tax": 0.0,
+  "total": 2408.0,
+  "line_items": [
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 2,
+      "unit_price": 89.0,
+      "amount": 178.0
+    },
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 2,
+      "unit_price": 950.0,
+      "amount": 1900.0
+    },
+    {
+      "description": "Precision Steel Ball Bearing Assembly",
+      "quantity": 2,
+      "unit_price": 165.0,
+      "amount": 330.0
+    }
+  ],
+  "full_text": "INVOICE\nHorizon Legal Partners LLP\n120 Wall Street, Floor 18, New York, NY 10005\nEmail: accounts@horizonlaw.com\nInvoice Number: INV-2026-1035\nInvoice Date: 2026-05-17\nDue Date: 2026-05-28\nPO Number: PO-99035\nCurrency: GBP\nSSL/TLS Wildcard Certificate Renewal 2 GBP 89.00 GBP 178.00\nEnterprise Support SLA 24x7 Response 2 GBP 950.00 GBP 1900.00\nPrecision Steel Ball Bearing Assembly 2 GBP 165.00 GBP 330.00\nSubtotal: GBP 2408.00\nTax: GBP 0.00\nTotal: GBP 2408.00",
+  "doc_id": "inv_035_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_035_clean.png"
+}

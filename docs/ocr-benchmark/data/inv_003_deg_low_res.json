@@ -1,0 +1,31 @@
+{
+  "document_type": "invoice",
+  "vendor": "Titan Global Hardware Corp",
+  "invoice_number": "INV-2026-1003",
+  "invoice_date": "2026-06-19",
+  "due_date": "2026-06-28",
+  "po_number": "PO-99003",
+  "currency": "USD",
+  "subtotal": 1280.0,
+  "tax": 0.0,
+  "total": 1280.0,
+  "line_items": [
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 1,
+      "unit_price": 950.0,
+      "amount": 950.0
+    },
+    {
+      "description": "Precision Steel Ball Bearing Assembly",
+      "quantity": 2,
+      "unit_price": 165.0,
+      "amount": 330.0
+    }
+  ],
+  "full_text": "INVOICE\nTitan Global Hardware Corp\n101 Machine Way, Detroit, MI 48201\nEmail: invoices@titanhardware.com\nInvoice Number: INV-2026-1003\nInvoice Date: 2026-06-19\nDue Date: 2026-06-28\nPO Number: PO-99003\nCurrency: USD\nEnterprise Support SLA 24x7 Response 1 $950.00 $950.00\nPrecision Steel Ball Bearing Assembly 2 $165.00 $330.00\nSubtotal: $1280.00\nTax: $0.00\nTotal: $1280.00",
+  "doc_id": "inv_003_deg_low_res",
+  "is_degraded": true,
+  "degradation": "low_res",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_003_deg_low_res.png"
+}
