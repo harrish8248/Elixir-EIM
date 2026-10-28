@@ -155,6 +155,19 @@ export interface DocumentCommentItem {
   created_at: string;
 }
 
+export interface DocumentOcrText {
+  document_id: string;
+  status: "uploaded" | "scanning" | "processing" | "ready" | "blocked" | "failed" | string;
+  extracted_text: string;
+  page_count: number;
+  confidence: number;
+  language: string;
+  processing_time_ms: number;
+  ocr_engine: string;
+  error_message: string | null;
+  updated_at: string;
+}
+
 // --- Records Models ---
 export interface RetentionScheduleItem {
   id: string;
@@ -502,6 +515,17 @@ export class ElixirApiClient {
 
   getDocumentDownloadUrl(documentId: string, versionId: string): string {
     return `${this.baseUrl}/api/v1/content/documents/${documentId}/versions/${versionId}/download`;
+  }
+
+  async getDocumentOcrText(documentId: string): Promise<DocumentOcrText> {
+    return this.request<DocumentOcrText>(`/api/v1/content/documents/${documentId}/text`);
+  }
+
+  async retryDocumentOcr(documentId: string): Promise<{ document_id: string; status: string; message: string }> {
+    return this.request<{ document_id: string; status: string; message: string }>(
+      `/api/v1/content/documents/${documentId}/retry-ocr`,
+      { method: "POST" }
+    );
   }
 
   // --- Records & Retention Endpoints ---

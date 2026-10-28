@@ -22,6 +22,7 @@ import {
   DocumentItem,
   DocumentVersionItem,
   DocumentCommentItem,
+  DocumentOcrText,
 } from "@/api/client";
 import { Button } from "@/design-system/components/Button";
 import { StatusPill } from "@/design-system/components/StatusPill";
@@ -40,9 +41,11 @@ export const ContentExplorerView: React.FC = () => {
   const [selectedDoc, setSelectedDoc] = useState<DocumentItem | null>(null);
   const [docVersions, setDocVersions] = useState<DocumentVersionItem[]>([]);
   const [docComments, setDocComments] = useState<DocumentCommentItem[]>([]);
+  const [ocrData, setOcrData] = useState<DocumentOcrText | null>(null);
+  const [isRetryingOcr, setIsRetryingOcr] = useState(false);
   const [newCommentText, setNewCommentText] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<"details" | "versions" | "comments">("details");
+  const [activeTab, setActiveTab] = useState<"details" | "versions" | "comments" | "ocr">("details");
 
   // Modals state
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
@@ -131,6 +134,49 @@ export const ContentExplorerView: React.FC = () => {
     };
     fetchDetails();
   }, [selectedDoc]);
+
+  // Poll OCR status every 2 seconds when document is selected
+  useEffect(() => {
+    if (!selectedDoc) {
+      setOcrData(null);
+      return;
+    }
+
+    let isMounted = true;
+    const fetchOcr = async () => {
+      try {
+        const data = await apiClient.getDocumentOcrText(selectedDoc.id);
+        if (isMounted) {
+          setOcrData(data);
+        }
+      } catch {
+        // Silently tolerate during transitions
+      }
+    };
+
+    fetchOcr();
+    const interval = setInterval(fetchOcr, 2000);
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
+  }, [selectedDoc]);
+
+  const handleRetryOcr = async () => {
+    if (!selectedDoc) return;
+    try {
+      setIsRetryingOcr(true);
+      await apiClient.retryDocumentOcr(selectedDoc.id);
+      showNotification("OCR extraction requeued successfully.");
+      const updated = await apiClient.getDocumentOcrText(selectedDoc.id);
+      setOcrData(updated);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "Failed to retry OCR";
+      showNotification(msg, "error");
+    } finally {
+      setIsRetryingOcr(false);
+    }
+  };
 
   // Handlers
   const handleCreateFolder = async (e: React.FormEvent) => {
@@ -609,6 +655,33 @@ export const ContentExplorerView: React.FC = () => {
                     >
                       <MessageSquare className="w-3.5 h-3.5" /> Comments ({docComments.length})
                     </button>
+                    <button
+                      onClick={() => setActiveTab("ocr")}
+                      className={`pb-2 border-b-2 transition-colors flex items-center gap-1.5 ${
+                        activeTab === "ocr"
+                          ? "border-brand-900 text-brand-900 font-semibold"
+                          : "border-transparent text-surface-500 hover:text-surface-800"
+                      }`}
+                    >
+                      <FileText className="w-3.5 h-3.5" /> OCR Extracted Text
+                      {ocrData && (
+                        <span
+                          className={`text-[10px] px-1.5 py-0.5 rounded font-mono uppercase font-semibold ${
+                            ocrData.status === "ready"
+                              ? "bg-emerald-100 text-emerald-800"
+                              : ocrData.status === "processing" || ocrData.status === "scanning"
+                              ? "bg-purple-100 text-purple-800 animate-pulse"
+                              : ocrData.status === "failed"
+                              ? "bg-red-100 text-red-800"
+                              : ocrData.status === "blocked"
+                              ? "bg-amber-100 text-amber-800"
+                              : "bg-blue-100 text-blue-800"
+                          }`}
+                        >
+                          {ocrData.status}
+                        </span>
+                      )}
+                    </button>
                   </div>
 
                   {/* Tab Body */}
@@ -695,6 +768,72 @@ export const ContentExplorerView: React.FC = () => {
                             Post Comment
                           </Button>
                         </form>
+                      </div>
+                    )}
+
+                    {activeTab === "ocr" && (
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between bg-surface-50 p-2.5 rounded-lg border border-surface-200">
+                          <div className="flex items-center gap-4 text-xs">
+                            <div>
+                              <span className="text-surface-500 font-semibold block text-[11px]">Pipeline Status</span>
+                              <span className="font-semibold capitalize text-surface-900">
+                                {ocrData?.status || selectedDoc.status}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-surface-500 font-semibold block text-[11px]">Confidence</span>
+                              <span className="font-mono font-bold text-brand-700">
+                                {ocrData && ocrData.confidence > 0 ? `${ocrData.confidence.toFixed(1)}%` : "N/A"}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-surface-500 font-semibold block text-[11px]">Pages</span>
+                              <span className="font-semibold text-surface-800">
+                                {ocrData?.page_count || 1}
+                              </span>
+                            </div>
+                            <div>
+                              <span className="text-surface-500 font-semibold block text-[11px]">Engine</span>
+                              <span className="font-mono text-[11px] text-surface-600">
+                                {ocrData?.ocr_engine || "Tesseract 5.4.0 + PyMuPDF"}
+                              </span>
+                            </div>
+                          </div>
+                          <Button
+                            variant="secondary"
+                            size="sm"
+                            onClick={handleRetryOcr}
+                            disabled={isRetryingOcr || ocrData?.status === "processing"}
+                            className="flex items-center gap-1 text-xs"
+                          >
+                            <RefreshCw className={`w-3 h-3 ${isRetryingOcr ? "animate-spin" : ""}`} />
+                            {isRetryingOcr ? "Processing..." : "Retry OCR"}
+                          </Button>
+                        </div>
+
+                        {ocrData?.error_message && (
+                          <div className="p-2.5 rounded bg-red-50 border border-red-200 text-red-800 text-xs flex items-center gap-2">
+                            <ShieldAlert className="w-4 h-4 text-red-600 flex-shrink-0" />
+                            <span>OCR Pipeline Error: {ocrData.error_message}</span>
+                          </div>
+                        )}
+
+                        <div className="relative">
+                          <div className="flex items-center justify-between pb-1 text-[11px] text-surface-500 font-medium">
+                            <span>Extracted Text Layer (Monospace Viewer)</span>
+                            {ocrData?.updated_at && (
+                              <span>Updated: {new Date(ocrData.updated_at).toLocaleTimeString()}</span>
+                            )}
+                          </div>
+                          <pre className="font-mono text-xs bg-slate-900 text-slate-100 p-3 rounded-lg overflow-y-auto max-h-48 whitespace-pre-wrap select-all leading-relaxed border border-slate-800">
+                            {ocrData?.extracted_text || (
+                              ocrData?.status === "processing" || ocrData?.status === "scanning"
+                                ? "⏳ OCR extraction in progress... Polling pipeline..."
+                                : "No text extracted from this document."
+                            )}
+                          </pre>
+                        </div>
                       </div>
                     )}
                   </div>

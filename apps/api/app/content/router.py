@@ -33,6 +33,7 @@ from apps.api.app.content.models import (
     Folder,
     Workspace,
 )
+from apps.api.app.content.ocr import process_document_ocr
 from apps.api.app.identity.router import get_current_session
 from apps.api.app.identity.session import SessionData
 from apps.api.app.platform.config import settings
@@ -247,6 +248,12 @@ async def upload_to_minio(bucket: str, key: str, content: bytes, content_type: s
                 await s3.put_object(Bucket=bucket, Key=key, Body=content, ContentType=content_type)
             else:
                 raise
+
+
+async def download_from_minio(bucket: str, key: str) -> bytes:
+    async with await get_s3_client() as s3:
+        resp = await s3.get_object(Bucket=bucket, Key=key)
+        return await resp["Body"].read()
 
 
 async def generate_presigned_url(bucket: str, key: str, expires: int = 300) -> str:
@@ -628,7 +635,7 @@ async def upload_document(
         size_bytes=file_size,
         content_hash=content_hash,
         storage_key=storage_key,
-        status="ready",
+        status="processing",
         created_by_id=session.user_id,
     )
     db.add(doc)
@@ -644,7 +651,7 @@ async def upload_document(
         size_bytes=file_size,
         content_hash=content_hash,
         storage_key=storage_key,
-        status="ready",
+        status="processing",
         scan_result="clean",
         created_by_id=session.user_id,
     )
@@ -654,6 +661,16 @@ async def upload_document(
     # Set current version
     doc.current_version_id = version.id
     await db.flush()
+
+    # Queue asynchronous OCR extraction
+    background_tasks.add_task(
+        process_document_ocr,
+        doc.id,
+        session.tenant_id,
+        content,
+        detected_mime,
+        filename,
+    )
 
     await record_audit_event(
         db, tenant_id=session.tenant_id, actor_id=str(session.user_id),
@@ -1035,3 +1052,104 @@ async def content_stats(
         "blocked_uploads": blocked,
         "declared_records": records,
     }
+
+
+@content_router.get("/documents/{document_id}/text", response_model=dict[str, Any])
+async def get_document_ocr_text(
+    document_id: str,
+    session: SessionData = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db_session),
+) -> dict[str, Any]:
+    """Retrieve OCR extracted text, confidence, page count, and processing status for a document."""
+    doc_uuid = uuid.UUID(document_id)
+    doc = (await db.execute(
+        select(Document).where(Document.id == doc_uuid, Document.tenant_id == session.tenant_id)
+    )).scalar_one_or_none()
+    if not doc:
+        raise HTTPException(status_code=404, detail="Document not found")
+
+    res = (await db.execute(
+        text(
+            """
+            SELECT extracted_text, page_count, confidence, language,
+                   processing_time_ms, ocr_engine, status, error_message, updated_at
+            FROM document_text
+            WHERE document_id = :doc_id AND tenant_id = :tid
+            """
+        ),
+        {"doc_id": doc_uuid, "tid": session.tenant_id},
+    )).mappings().one_or_none()
+
+    if not res:
+        return {
+            "document_id": str(doc_uuid),
+            "status": doc.status or "uploaded",
+            "extracted_text": "",
+            "page_count": 1,
+            "confidence": 0.0,
+            "language": "eng",
+            "processing_time_ms": 0,
+            "ocr_engine": "tesseract-5.4.0+pymupdf",
+            "error_message": None,
+            "updated_at": doc.updated_at.isoformat(),
+        }
+
+    return {
+        "document_id": str(doc_uuid),
+        "status": res["status"],
+        "extracted_text": res["extracted_text"] or "",
+        "page_count": res["page_count"] or 1,
+        "confidence": float(res["confidence"] or 0.0),
+        "language": res["language"] or "eng",
+        "processing_time_ms": res["processing_time_ms"] or 0,
+        "ocr_engine": res["ocr_engine"] or "tesseract-5.4.0+pymupdf",
+        "error_message": res["error_message"],
+        "updated_at": res["updated_at"].isoformat() if res["updated_at"] else "",
+    }
+
+
+@content_router.post("/documents/{document_id}/retry-ocr", response_model=dict[str, Any])
+async def retry_document_ocr(
+    document_id: str,
+    background_tasks: BackgroundTasks,
+    session: SessionData = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db_session),
+) -> dict[str, Any]:
+    """Retry OCR extraction on an existing document."""
+    doc_uuid = uuid.UUID(document_id)
+    doc = (await db.execute(
+        select(Document).where(Document.id == doc_uuid, Document.tenant_id == session.tenant_id)
+    )).scalar_one_or_none()
+    if not doc:
+        raise HTTPException(status_code=404, detail="Document not found")
+
+    if not doc.storage_key:
+        raise HTTPException(status_code=400, detail="Document has no storage key")
+
+    # Fetch content from MinIO
+    content = await download_from_minio(settings.s3_bucket_name, doc.storage_key)
+
+    # Queue background task
+    background_tasks.add_task(
+        process_document_ocr,
+        doc.id,
+        session.tenant_id,
+        content,
+        doc.mime_type or "application/octet-stream",
+        doc.name,
+    )
+
+    # Set status to processing
+    doc.status = "processing"
+    await db.execute(
+        text("UPDATE document_text SET status = 'processing', updated_at = now() WHERE document_id = :id"),
+        {"id": doc.id},
+    )
+    await db.commit()
+
+    return {
+        "document_id": str(doc.id),
+        "status": "processing",
+        "message": "OCR retry queued successfully",
+    }
+
