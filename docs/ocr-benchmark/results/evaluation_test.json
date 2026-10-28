@@ -1,0 +1,150 @@
+{
+  "engine": "tesseract_5.4_idp",
+  "split": "test",
+  "sample_count": 49,
+  "text_quality": {
+    "overall_cer": 49.02,
+    "overall_wer": 65.45,
+    "clean_cer": 44.46,
+    "clean_wer": 57.86,
+    "degraded_cer": 55.63,
+    "degraded_wer": 76.45
+  },
+  "field_extraction": {
+    "overall_key_field_exact_match": 73.75,
+    "clean_key_field_exact_match": 86.55,
+    "degraded_key_field_exact_match": 57.63,
+    "line_item_accuracy": 67.46,
+    "fields": {
+      "vendor": {
+        "exact_match_pct": 45.65,
+        "clean_exact_match_pct": 50.0,
+        "degraded_exact_match_pct": 40.0,
+        "precision": 46.67,
+        "recall": 95.45,
+        "f1": 62.69,
+        "total_samples": 46
+      },
+      "invoice_number": {
+        "exact_match_pct": 79.07,
+        "clean_exact_match_pct": 95.65,
+        "degraded_exact_match_pct": 60.0,
+        "precision": 80.95,
+        "recall": 89.47,
+        "f1": 85.0,
+        "total_samples": 43
+      },
+      "invoice_date": {
+        "exact_match_pct": 84.78,
+        "clean_exact_match_pct": 96.15,
+        "degraded_exact_match_pct": 70.0,
+        "precision": 92.86,
+        "recall": 90.7,
+        "f1": 91.77,
+        "total_samples": 46
+      },
+      "due_date": {
+        "exact_match_pct": 74.42,
+        "clean_exact_match_pct": 86.96,
+        "degraded_exact_match_pct": 60.0,
+        "precision": 100.0,
+        "recall": 74.42,
+        "f1": 85.33,
+        "total_samples": 43
+      },
+      "po_number": {
+        "exact_match_pct": 71.05,
+        "clean_exact_match_pct": 85.71,
+        "degraded_exact_match_pct": 52.94,
+        "precision": 72.97,
+        "recall": 96.43,
+        "f1": 83.08,
+        "total_samples": 38
+      },
+      "currency": {
+        "exact_match_pct": 95.65,
+        "clean_exact_match_pct": 100.0,
+        "degraded_exact_match_pct": 90.0,
+        "precision": 95.65,
+        "recall": 100.0,
+        "f1": 97.78,
+        "total_samples": 46
+      },
+      "subtotal": {
+        "exact_match_pct": 65.22,
+        "clean_exact_match_pct": 92.31,
+        "degraded_exact_match_pct": 30.0,
+        "precision": 68.18,
+        "recall": 93.75,
+        "f1": 78.95,
+        "total_samples": 46
+      },
+      "tax": {
+        "exact_match_pct": 69.57,
+        "clean_exact_match_pct": 84.62,
+        "degraded_exact_match_pct": 50.0,
+        "precision": 94.12,
+        "recall": 72.73,
+        "f1": 82.05,
+        "total_samples": 46
+      },
+      "total": {
+        "exact_match_pct": 78.26,
+        "clean_exact_match_pct": 88.46,
+        "degraded_exact_match_pct": 65.0,
+        "precision": 87.8,
+        "recall": 87.8,
+        "f1": 87.8,
+        "total_samples": 46
+      }
+    }
+  },
+  "classification": {
+    "accuracy": 100.0,
+    "confusion_matrix": {
+      "contract": {
+        "contract": 3
+      },
+      "invoice": {
+        "invoice": 40
+      },
+      "purchase_order": {
+        "purchase_order": 3
+      },
+      "receipt": {
+        "receipt": 3
+      }
+    }
+  },
+  "calibration": {
+    "0-50%": {
+      "accuracy_pct": 0.0,
+      "count": 24,
+      "correct": 0
+    },
+    "50-70%": {
+      "accuracy_pct": 0.0,
+      "count": 0,
+      "correct": 0
+    },
+    "70-90%": {
+      "accuracy_pct": 42.11,
+      "count": 19,
+      "correct": 8
+    },
+    "90-100%": {
+      "accuracy_pct": 80.39,
+      "count": 357,
+      "correct": 287
+    }
+  },
+  "business_metrics": {
+    "stp_rate": 72.5,
+    "stp_auto_approved": 29,
+    "stp_eligible_invoices": 40
+  },
+  "latency": {
+    "p50_ms": 2516.5,
+    "p95_ms": 3235.8
+  }
+}

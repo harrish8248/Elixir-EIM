@@ -1,0 +1,382 @@
+{
+  "CloudScale Networks Inc": {
+    "invoice_number": {
+      "vendor_name": "CloudScale Networks Inc",
+      "field_name": "invoice_number",
+      "rel_x": 0.3143,
+      "rel_y": 0.1341,
+      "rel_w": 0.2689,
+      "rel_h": 0.0273,
+      "sample_count": 84
+    },
+    "invoice_date": {
+      "vendor_name": "CloudScale Networks Inc",
+      "field_name": "invoice_date",
+      "rel_x": 0.0618,
+      "rel_y": 0.1715,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 84
+    },
+    "due_date": {
+      "vendor_name": "CloudScale Networks Inc",
+      "field_name": "due_date",
+      "rel_x": 0.3143,
+      "rel_y": 0.1715,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 84
+    },
+    "total": {
+      "vendor_name": "CloudScale Networks Inc",
+      "field_name": "total",
+      "rel_x": 0.8235,
+      "rel_y": 0.4727,
+      "rel_w": 0.1412,
+      "rel_h": 0.0364,
+      "sample_count": 84
+    }
+  },
+  "Vanguard Security Systems": {
+    "invoice_number": {
+      "vendor_name": "Vanguard Security Systems",
+      "field_name": "invoice_number",
+      "rel_x": 0.347,
+      "rel_y": 0.1227,
+      "rel_w": 0.2235,
+      "rel_h": 0.0249,
+      "sample_count": 120
+    },
+    "invoice_date": {
+      "vendor_name": "Vanguard Security Systems",
+      "field_name": "invoice_date",
+      "rel_x": 0.0529,
+      "rel_y": 0.1568,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 120
+    },
+    "due_date": {
+      "vendor_name": "Vanguard Security Systems",
+      "field_name": "due_date",
+      "rel_x": 0.1707,
+      "rel_y": 0.1659,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 120
+    },
+    "total": {
+      "vendor_name": "Vanguard Security Systems",
+      "field_name": "total",
+      "rel_x": 0.8235,
+      "rel_y": 0.4727,
+      "rel_w": 0.1412,
+      "rel_h": 0.0364,
+      "sample_count": 120
+    }
+  },
+  "Titan Global Hardware Corp": {
+    "invoice_number": {
+      "vendor_name": "Titan Global Hardware Corp",
+      "field_name": "invoice_number",
+      "rel_x": 0.2531,
+      "rel_y": 0.1274,
+      "rel_w": 0.2474,
+      "rel_h": 0.0253,
+      "sample_count": 108
+    },
+    "invoice_date": {
+      "vendor_name": "Titan Global Hardware Corp",
+      "field_name": "invoice_date",
+      "rel_x": 0.0565,
+      "rel_y": 0.1587,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 108
+    },
+    "due_date": {
+      "vendor_name": "Titan Global Hardware Corp",
+      "field_name": "due_date",
+      "rel_x": 0.2234,
+      "rel_y": 0.1656,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 108
+    },
+    "total": {
+      "vendor_name": "Titan Global Hardware Corp",
+      "field_name": "total",
+      "rel_x": 0.8235,
+      "rel_y": 0.4727,
+      "rel_w": 0.1412,
+      "rel_h": 0.0364,
+      "sample_count": 108
+    }
+  },
+  "Quantum Dynamic Labs GmbH": {
+    "invoice_number": {
+      "vendor_name": "Quantum Dynamic Labs GmbH",
+      "field_name": "invoice_number",
+      "rel_x": 0.1706,
+      "rel_y": 0.1214,
+      "rel_w": 0.2327,
+      "rel_h": 0.0249,
+      "sample_count": 120
+    },
+    "invoice_date": {
+      "vendor_name": "Quantum Dynamic Labs GmbH",
+      "field_name": "invoice_date",
+      "rel_x": 0.0529,
+      "rel_y": 0.1481,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 120
+    },
+    "due_date": {
+      "vendor_name": "Quantum Dynamic Labs GmbH",
+      "field_name": "due_date",
+      "rel_x": 0.1529,
+      "rel_y": 0.1589,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 120
+    },
+    "total": {
+      "vendor_name": "Quantum Dynamic Labs GmbH",
+      "field_name": "total",
+      "rel_x": 0.8235,
+      "rel_y": 0.4727,
+      "rel_w": 0.1412,
+      "rel_h": 0.0364,
+      "sample_count": 120
+    }
+  },
+  "Vertex Global Logistics": {
+    "invoice_number": {
+      "vendor_name": "Vertex Global Logistics",
+      "field_name": "invoice_number",
+      "rel_x": 0.1561,
+      "rel_y": 0.128,
+      "rel_w": 0.257,
+      "rel_h": 0.0251,
+      "sample_count": 72
+    },
+    "invoice_date": {
+      "vendor_name": "Vertex Global Logistics",
+      "field_name": "invoice_date",
+      "rel_x": 0.0576,
+      "rel_y": 0.1557,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 72
+    },
+    "due_date": {
+      "vendor_name": "Vertex Global Logistics",
+      "field_name": "due_date",
+      "rel_x": 0.2294,
+      "rel_y": 0.1616,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 72
+    },
+    "total": {
+      "vendor_name": "Vertex Global Logistics",
+      "field_name": "total",
+      "rel_x": 0.8235,
+      "rel_y": 0.4727,
+      "rel_w": 0.1412,
+      "rel_h": 0.0364,
+      "sample_count": 72
+    }
+  },
+  "Nexus Enterprise Staffing": {
+    "invoice_number": {
+      "vendor_name": "Nexus Enterprise Staffing",
+      "field_name": "invoice_number",
+      "rel_x": 0.2733,
+      "rel_y": 0.1304,
+      "rel_w": 0.2578,
+      "rel_h": 0.0257,
+      "sample_count": 132
+    },
+    "invoice_date": {
+      "vendor_name": "Nexus Enterprise Staffing",
+      "field_name": "invoice_date",
+      "rel_x": 0.0593,
+      "rel_y": 0.1649,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 132
+    },
+    "due_date": {
+      "vendor_name": "Nexus Enterprise Staffing",
+      "field_name": "due_date",
+      "rel_x": 0.2652,
+      "rel_y": 0.168,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 132
+    },
+    "total": {
+      "vendor_name": "Nexus Enterprise Staffing",
+      "field_name": "total",
+      "rel_x": 0.8235,
+      "rel_y": 0.4727,
+      "rel_w": 0.1412,
+      "rel_h": 0.0364,
+      "sample_count": 132
+    }
+  },
+  "Apex Strategic Marketing Group": {
+    "invoice_number": {
+      "vendor_name": "Apex Strategic Marketing Group",
+      "field_name": "invoice_number",
+      "rel_x": 0.1402,
+      "rel_y": 0.1258,
+      "rel_w": 0.2503,
+      "rel_h": 0.025,
+      "sample_count": 84
+    },
+    "invoice_date": {
+      "vendor_name": "Apex Strategic Marketing Group",
+      "field_name": "invoice_date",
+      "rel_x": 0.0562,
+      "rel_y": 0.1523,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 84
+    },
+    "due_date": {
+      "vendor_name": "Apex Strategic Marketing Group",
+      "field_name": "due_date",
+      "rel_x": 0.2035,
+      "rel_y": 0.1605,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 84
+    },
+    "total": {
+      "vendor_name": "Apex Strategic Marketing Group",
+      "field_name": "total",
+      "rel_x": 0.8235,
+      "rel_y": 0.4727,
+      "rel_w": 0.1412,
+      "rel_h": 0.0364,
+      "sample_count": 84
+    }
+  },
+  "Pinnacle Facility Services": {
+    "invoice_number": {
+      "vendor_name": "Pinnacle Facility Services",
+      "field_name": "invoice_number",
+      "rel_x": 0.0471,
+      "rel_y": 0.1136,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 24
+    },
+    "invoice_date": {
+      "vendor_name": "Pinnacle Facility Services",
+      "field_name": "invoice_date",
+      "rel_x": 0.0471,
+      "rel_y": 0.1318,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 24
+    },
+    "due_date": {
+      "vendor_name": "Pinnacle Facility Services",
+      "field_name": "due_date",
+      "rel_x": 0.0471,
+      "rel_y": 0.15,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 24
+    },
+    "total": {
+      "vendor_name": "Pinnacle Facility Services",
+      "field_name": "total",
+      "rel_x": 0.8235,
+      "rel_y": 0.4727,
+      "rel_w": 0.1412,
+      "rel_h": 0.0364,
+      "sample_count": 24
+    }
+  },
+  "Acme Industrial Supply LLC": {
+    "invoice_number": {
+      "vendor_name": "Acme Industrial Supply LLC",
+      "field_name": "invoice_number",
+      "rel_x": 0.4725,
+      "rel_y": 0.1339,
+      "rel_w": 0.2528,
+      "rel_h": 0.0273,
+      "sample_count": 120
+    },
+    "invoice_date": {
+      "vendor_name": "Acme Industrial Supply LLC",
+      "field_name": "invoice_date",
+      "rel_x": 0.0614,
+      "rel_y": 0.1763,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 120
+    },
+    "due_date": {
+      "vendor_name": "Acme Industrial Supply LLC",
+      "field_name": "due_date",
+      "rel_x": 0.3049,
+      "rel_y": 0.1763,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 120
+    },
+    "total": {
+      "vendor_name": "Acme Industrial Supply LLC",
+      "field_name": "total",
+      "rel_x": 0.8235,
+      "rel_y": 0.4727,
+      "rel_w": 0.1412,
+      "rel_h": 0.0364,
+      "sample_count": 120
+    }
+  },
+  "Horizon Legal Partners LLP": {
+    "invoice_number": {
+      "vendor_name": "Horizon Legal Partners LLP",
+      "field_name": "invoice_number",
+      "rel_x": 0.0516,
+      "rel_y": 0.1188,
+      "rel_w": 0.2325,
+      "rel_h": 0.0246,
+      "sample_count": 96
+    },
+    "invoice_date": {
+      "vendor_name": "Horizon Legal Partners LLP",
+      "field_name": "invoice_date",
+      "rel_x": 0.0516,
+      "rel_y": 0.14,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 96
+    },
+    "due_date": {
+      "vendor_name": "Horizon Legal Partners LLP",
+      "field_name": "due_date",
+      "rel_x": 0.1176,
+      "rel_y": 0.1541,
+      "rel_w": 0.2118,
+      "rel_h": 0.0227,
+      "sample_count": 96
+    },
+    "total": {
+      "vendor_name": "Horizon Legal Partners LLP",
+      "field_name": "total",
+      "rel_x": 0.8235,
+      "rel_y": 0.4727,
+      "rel_w": 0.1412,
+      "rel_h": 0.0364,
+      "sample_count": 96
+    }
+  }
+}

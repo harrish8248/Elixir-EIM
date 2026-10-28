@@ -201,10 +201,103 @@ def seed_demo() -> None:
     console.print("[green][OK] Seeded workspaces, folders, file plans, and mock documents.[/green]")
 
 
+# Sub-command group: elixir-admin ocr evaluate --split [train|dev|test]
+ocr_app = typer.Typer(name="ocr", help="OCR and IDP evaluation and benchmark commands.")
+
+
+@ocr_app.command("evaluate")
+def evaluate_ocr(
+    split: str = typer.Option("test", "--split", help="Dataset split to evaluate (train, dev, test)"),
+    save_report: bool = typer.Option(True, "--save", help="Save results JSON to docs/ocr-benchmark/results/"),
+) -> None:
+    """Run measured evaluation harness on specified split and display performance metrics."""
+    import json
+    from apps.api.app.content.idp.evaluation import EvaluationHarness
+    from apps.api.app.content.idp.service import IdpService
+
+    console.print(Panel(f"[bold cyan]Elixir EIM — OCR & IDP Evaluation Harness (Split: [bold white]{split}[/bold white])[/bold cyan]"))
+
+    svc = IdpService()
+    svc.learn_from_train_split()
+
+    harness = EvaluationHarness()
+    with console.status(f"[bold green]Evaluating {split} split documents..."):
+        report = harness.evaluate_pipeline(
+            process_fn=svc.process_image_path,
+            split_name=split,
+            engine_name="tesseract_5.4_idp",
+        )
+
+    # 1. Text Quality Table
+    t_text = Table(title=f"Text Recognition Quality (Split: {split}, N={report['sample_count']})", show_header=True)
+    t_text.add_column("Metric", style="cyan")
+    t_text.add_column("Overall", style="bold")
+    t_text.add_column("Clean Documents", style="green")
+    t_text.add_column("Degraded Documents", style="yellow")
+
+    t_text.add_row(
+        "Character Error Rate (CER)",
+        f"{report['text_quality']['overall_cer']}%",
+        f"{report['text_quality']['clean_cer']}%",
+        f"{report['text_quality']['degraded_cer']}%",
+    )
+    t_text.add_row(
+        "Word Error Rate (WER)",
+        f"{report['text_quality']['overall_wer']}%",
+        f"{report['text_quality']['clean_wer']}%",
+        f"{report['text_quality']['degraded_wer']}%",
+    )
+    console.print(t_text)
+
+    # 2. Key-Field Accuracy Table
+    t_fields = Table(title="Field Extraction Performance (Exact-Match & F1)", show_header=True)
+    t_fields.add_column("Field", style="cyan")
+    t_fields.add_column("Overall EM %", style="bold")
+    t_fields.add_column("Clean EM %", style="green")
+    t_fields.add_column("Degraded EM %", style="yellow")
+    t_fields.add_column("Precision", style="white")
+    t_fields.add_column("Recall", style="white")
+    t_fields.add_column("F1 Score", style="bold magenta")
+
+    for fname, fstat in report["field_extraction"]["fields"].items():
+        t_fields.add_row(
+            fname,
+            f"{fstat['exact_match_pct']}%",
+            f"{fstat['clean_exact_match_pct']}%",
+            f"{fstat['degraded_exact_match_pct']}%",
+            f"{fstat['precision']}%",
+            f"{fstat['recall']}%",
+            f"{fstat['f1']}%",
+        )
+    console.print(t_fields)
+
+    # 3. Business & Summary Table
+    t_biz = Table(title="Business Metrics & Straight-Through Processing", show_header=True)
+    t_biz.add_column("Key Indicator", style="cyan")
+    t_biz.add_column("Measured Value", style="bold green")
+
+    t_biz.add_row("Key-Field Exact Match (Clean)", f"{report['field_extraction']['clean_key_field_exact_match']}%")
+    t_biz.add_row("Key-Field Exact Match (Degraded)", f"{report['field_extraction']['degraded_key_field_exact_match']}%")
+    t_biz.add_row("Line-Item Accuracy", f"{report['field_extraction']['line_item_accuracy']}%")
+    t_biz.add_row("Document Classification Accuracy", f"{report['classification']['accuracy']}%")
+    t_biz.add_row("Straight-Through Processing (STP) Rate", f"{report['business_metrics']['stp_rate']}%")
+    t_biz.add_row("Processing Latency (p50)", f"{report['latency']['p50_ms']} ms")
+    t_biz.add_row("Processing Latency (p95)", f"{report['latency']['p95_ms']} ms")
+    console.print(t_biz)
+
+    if save_report:
+        out_p = Path(f"docs/ocr-benchmark/results/evaluation_{split}.json")
+        out_p.parent.mkdir(parents=True, exist_ok=True)
+        with open(out_p, "w", encoding="utf-8") as f:
+            json.dump(report, f, indent=2)
+        console.print(f"[bold green][OK] Detailed metrics report saved to {out_p}[/bold green]")
+
+
 # Sub-command group: elixir-admin audit verify-chain --tenant=<id>
 audit_app = typer.Typer(name="audit", help="Audit ledger cryptographic verification commands.")
 audit_app.command("verify-chain")(verify_audit_chain_cmd)
 app.add_typer(audit_app, name="audit")
+app.add_typer(ocr_app, name="ocr")
 
 
 if __name__ == "__main__":

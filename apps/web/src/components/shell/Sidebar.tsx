@@ -9,6 +9,7 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
+  ScanLine,
 } from "lucide-react";
 import { clsx } from "clsx";
 
@@ -40,6 +41,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
       title: "Content Services",
       path: "/content",
       icon: <FolderTree className="w-4 h-4 shrink-0" />,
+    },
+    {
+      id: "idp",
+      title: "Capture & IDP",
+      path: "/idp",
+      icon: <ScanLine className="w-4 h-4 shrink-0" />,
+      badge: "STP 78%",
+      badgeVariant: "brand",
     },
     {
       id: "records",

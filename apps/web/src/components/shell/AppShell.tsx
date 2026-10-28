@@ -8,13 +8,16 @@ import { TrustDashboardView } from "@/modules/governance/TrustDashboardView";
 import { WorkflowView } from "@/modules/workflow/WorkflowView";
 import { SearchView } from "@/modules/search/SearchView";
 import { AdminView } from "@/modules/admin/AdminView";
+import { CaptureDashboardView } from "@/modules/idp/CaptureDashboardView";
+import { ValidationWorkbenchView } from "@/modules/idp/ValidationWorkbenchView";
 
 import { useAuth } from "@/config/AuthContext";
 import { ForbiddenView } from "@/components/auth/ForbiddenView";
 
 function getPathFromHash(): string {
   const hash = window.location.hash.replace(/^#/, "");
-  return hash.startsWith("/") ? hash : "/content";
+  const path = hash.startsWith("/") ? hash : "/content";
+  return path.split("?")[0];
 }
 
 export const AppShell: React.FC = () => {
@@ -71,6 +74,15 @@ export const AppShell: React.FC = () => {
     }
 
     switch (currentPath) {
+      case "/idp":
+      case "/capture":
+        return <CaptureDashboardView onOpenWorkbench={(jobId) => handleNavigate(`/idp/workbench?jobId=${jobId}`)} />;
+      case "/idp/workbench": {
+        const hashQuery = window.location.hash.split("?")[1] || "";
+        const params = new URLSearchParams(hashQuery);
+        const jobId = params.get("jobId") || "job-inv-001";
+        return <ValidationWorkbenchView jobId={jobId} onBack={() => handleNavigate("/idp")} />;
+      }
       case "/records":
         return <RecordsPlanView />;
       case "/workflow":

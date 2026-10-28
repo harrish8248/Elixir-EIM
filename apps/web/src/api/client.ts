@@ -388,6 +388,18 @@ export class ElixirApiClient {
     return response.json() as Promise<T>;
   }
 
+  public async get<T>(path: string): Promise<T> {
+    return this.request<T>(path, { method: "GET" });
+  }
+
+  public async post<T>(path: string, body?: any): Promise<T> {
+    const isFormData = typeof FormData !== "undefined" && body instanceof FormData;
+    return this.request<T>(path, {
+      method: "POST",
+      body: isFormData ? body : (body ? JSON.stringify(body) : undefined),
+    });
+  }
+
   // --- Identity & Session Endpoints ---
   async getMe(): Promise<UserProfile> {
     return this.request<UserProfile>("/api/v1/auth/me");
