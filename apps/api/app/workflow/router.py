@@ -124,8 +124,9 @@ async def submit_approval(
 
 @workflow_router.get("/tasks", response_model=dict[str, Any])
 async def list_tasks(
-    mine_only: bool = True,
+    mine_only: bool = False,
     task_status: str | None = None,
+    status: str | None = None,
     page: int = Query(1, ge=1),
     page_size: int = Query(50, ge=1, le=100),
     session: SessionData = Depends(get_current_session),
@@ -134,10 +135,11 @@ async def list_tasks(
     """List workflow tasks. mine_only=true shows tasks assigned to the current user."""
     stmt = select(WorkflowTask).where(WorkflowTask.tenant_id == session.tenant_id)
 
+    effective_status = task_status or status
     if mine_only:
         stmt = stmt.where(WorkflowTask.assigned_to_id == session.user_id)
-    if task_status:
-        stmt = stmt.where(WorkflowTask.status == task_status)
+    if effective_status and effective_status.lower() != "all":
+        stmt = stmt.where(func.lower(WorkflowTask.status) == effective_status.lower())
 
     total = (await db.execute(select(func.count()).select_from(stmt.subquery()))).scalar() or 0
     stmt = stmt.order_by(WorkflowTask.created_at.desc()).offset((page - 1) * page_size).limit(page_size)

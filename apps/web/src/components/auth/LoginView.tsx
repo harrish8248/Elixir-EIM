@@ -99,18 +99,51 @@ export const LoginView: React.FC = () => {
                 <UserCheck className="w-3.5 h-3.5 text-brand-700" />
                 <span className="font-medium">Sarah Chen (RecordsManager)</span>
               </div>
-              <span className="text-[10px] text-surface-500">Clearance 3</span>
+              <span className="text-[10px] text-surface-500">Finance · Clearance 3</span>
             </button>
 
             <button
-              onClick={() => handleQuickLogin("john.doe@acrocorp.com")}
+              onClick={() => handleQuickLogin("raj.patel@acrocorp.com")}
               className="flex items-center justify-between p-2 rounded text-xs bg-surface-100 hover:bg-surface-200 text-surface-800 transition-colors"
             >
               <div className="flex items-center gap-2">
-                <UserCheck className="w-3.5 h-3.5 text-emerald-700" />
-                <span className="font-medium">John Doe (KnowledgeWorker)</span>
+                <UserCheck className="w-3.5 h-3.5 text-blue-700" />
+                <span className="font-medium">Raj Patel (Employee)</span>
               </div>
-              <span className="text-[10px] text-surface-500">Clearance 2</span>
+              <span className="text-[10px] text-surface-500">Finance · Clearance 2</span>
+            </button>
+
+            <button
+              onClick={() => handleQuickLogin("maria.santos@acrocorp.com")}
+              className="flex items-center justify-between p-2 rounded text-xs bg-surface-100 hover:bg-surface-200 text-surface-800 transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <UserCheck className="w-3.5 h-3.5 text-purple-700" />
+                <span className="font-medium">Maria Santos (Employee)</span>
+              </div>
+              <span className="text-[10px] text-surface-500">HR · Clearance 1</span>
+            </button>
+
+            <button
+              onClick={() => handleQuickLogin("alex.auditor@acrocorp.com")}
+              className="flex items-center justify-between p-2 rounded text-xs bg-surface-100 hover:bg-surface-200 text-surface-800 transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <UserCheck className="w-3.5 h-3.5 text-amber-700" />
+                <span className="font-medium">Alex Auditor (Auditor)</span>
+              </div>
+              <span className="text-[10px] text-surface-500">Compliance · Clearance 3</span>
+            </button>
+
+            <button
+              onClick={() => handleQuickLogin("admin@acrocorp.com")}
+              className="flex items-center justify-between p-2 rounded text-xs bg-surface-100 hover:bg-surface-200 text-surface-800 transition-colors"
+            >
+              <div className="flex items-center gap-2">
+                <UserCheck className="w-3.5 h-3.5 text-red-700" />
+                <span className="font-medium">Admin (System Admin)</span>
+              </div>
+              <span className="text-[10px] text-surface-500">IT · Clearance 5</span>
             </button>
           </div>
         </div>

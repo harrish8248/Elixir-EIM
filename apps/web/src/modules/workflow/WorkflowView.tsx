@@ -52,10 +52,12 @@ export const WorkflowView: React.FC = () => {
         apiClient.listWorkflowTasks(statusFilter === "all" ? undefined : statusFilter),
         apiClient.listDocuments(),
       ]);
-      setTasks(tasksRes);
-      setDocuments(docsRes);
-      if (docsRes.length > 0 && !selectedDocId) {
-        setSelectedDocId(docsRes[0].id);
+      const safeTasks = Array.isArray(tasksRes) ? tasksRes : (tasksRes as any)?.items || [];
+      const safeDocs = Array.isArray(docsRes) ? docsRes : (docsRes as any)?.items || [];
+      setTasks(safeTasks);
+      setDocuments(safeDocs);
+      if (safeDocs.length > 0 && !selectedDocId) {
+        setSelectedDocId(safeDocs[0].id);
       }
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed to load workflow tasks";
@@ -272,7 +274,7 @@ export const WorkflowView: React.FC = () => {
         <div className="bg-white rounded-lg border border-surface-200 shadow-xs overflow-hidden">
           <DataTable
             columns={columns}
-            data={tasks}
+            data={Array.isArray(tasks) ? tasks : []}
             keyExtractor={(task) => task.id}
             isLoading={isLoading}
             emptyMessage="No workflow approval tasks match your criteria."
@@ -295,7 +297,7 @@ export const WorkflowView: React.FC = () => {
               onChange={(e) => setSelectedDocId(e.target.value)}
               className="w-full px-3 py-2 text-xs border border-surface-300 rounded bg-white"
             >
-              {documents.map((d) => (
+              {(Array.isArray(documents) ? documents : []).map((d) => (
                 <option key={d.id} value={d.id}>
                   {d.name} ({d.classification})
                 </option>

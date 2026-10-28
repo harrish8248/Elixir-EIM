@@ -32,6 +32,8 @@ export function DataTable<T>({
   emptyMessage = "No records found.",
   className,
 }: DataTableProps<T>) {
+  const safeData: T[] = Array.isArray(data) ? data : ((data as any)?.items as T[]) || [];
+
   return (
     <div className={twMerge("w-full border border-surface-200 rounded overflow-hidden bg-white shadow-sm", className)}>
       <div className="overflow-x-auto">
@@ -63,7 +65,7 @@ export function DataTable<T>({
                   ))}
                 </tr>
               ))
-            ) : data.length === 0 ? (
+            ) : safeData.length === 0 ? (
               <tr>
                 <td
                   colSpan={columns.length}
@@ -73,7 +75,7 @@ export function DataTable<T>({
                 </td>
               </tr>
             ) : (
-              data.map((row) => {
+              safeData.map((row) => {
                 const id = keyExtractor(row);
                 const isSelected = selectedId === id;
                 return (

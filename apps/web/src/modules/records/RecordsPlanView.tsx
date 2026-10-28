@@ -68,10 +68,10 @@ export const RecordsPlanView: React.FC = () => {
         apiClient.getDispositionQueue(),
         apiClient.listDocuments(),
       ]);
-      setSchedules(schedulesRes);
-      setHolds(holdsRes);
-      setDispositionQueue(dispRes);
-      setDocuments(docsRes);
+      setSchedules(Array.isArray(schedulesRes) ? schedulesRes : (schedulesRes as any)?.items || []);
+      setHolds(Array.isArray(holdsRes) ? holdsRes : (holdsRes as any)?.items || []);
+      setDispositionQueue(Array.isArray(dispRes) ? dispRes : (dispRes as any)?.items || []);
+      setDocuments(Array.isArray(docsRes) ? docsRes : (docsRes as any)?.items || []);
     } catch (err: unknown) {
       const msg = err instanceof Error ? err.message : "Failed to load records data";
       showNotification(msg, "error");
@@ -277,12 +277,16 @@ export const RecordsPlanView: React.FC = () => {
     },
   ];
 
+  const safeHolds = Array.isArray(holds) ? holds : [];
+  const safeSchedules = Array.isArray(schedules) ? schedules : [];
+  const safeDisposition = Array.isArray(dispositionQueue) ? dispositionQueue : [];
+
   // Tab definitions
   const tabItems = [
     {
       id: "holds",
       label: "Litigation & Legal Holds",
-      badge: holds.filter((h) => h.status === "ACTIVE").length,
+      badge: safeHolds.filter((h) => h.status === "ACTIVE").length,
       icon: <Lock className="w-3.5 h-3.5" />,
       content: (
         <div className="p-4 space-y-4">
@@ -303,7 +307,7 @@ export const RecordsPlanView: React.FC = () => {
           <div className="bg-white rounded-lg border border-surface-200 shadow-xs overflow-hidden">
             <DataTable
               columns={holdColumns}
-              data={holds}
+              data={safeHolds}
               keyExtractor={(h) => h.id}
               isLoading={isLoading}
               emptyMessage="No legal holds currently active."
@@ -315,7 +319,7 @@ export const RecordsPlanView: React.FC = () => {
     {
       id: "schedules",
       label: "Retention Schedules (DoD 5015.02)",
-      badge: schedules.length,
+      badge: safeSchedules.length,
       icon: <FileCheck className="w-3.5 h-3.5" />,
       content: (
         <div className="p-4 space-y-4">
@@ -335,7 +339,7 @@ export const RecordsPlanView: React.FC = () => {
           <div className="bg-white rounded-lg border border-surface-200 shadow-xs overflow-hidden">
             <DataTable
               columns={scheduleColumns}
-              data={schedules}
+              data={safeSchedules}
               keyExtractor={(s) => s.id}
               isLoading={isLoading}
               emptyMessage="No retention schedules configured."
@@ -347,7 +351,7 @@ export const RecordsPlanView: React.FC = () => {
     {
       id: "disposition",
       label: "Defensible Disposition Queue",
-      badge: dispositionQueue.length,
+      badge: safeDisposition.length,
       icon: <Clock className="w-3.5 h-3.5" />,
       content: (
         <div className="p-4 space-y-4">
@@ -356,7 +360,7 @@ export const RecordsPlanView: React.FC = () => {
             Records Manager review and permanent cryptographic certificate generation.
           </p>
           <div className="bg-white rounded-lg border border-surface-200 shadow-xs p-6 text-center">
-            {dispositionQueue.length === 0 ? (
+            {safeDisposition.length === 0 ? (
               <div className="space-y-2">
                 <CheckCircle className="w-8 h-8 text-emerald-600 mx-auto" />
                 <h4 className="text-xs font-bold text-surface-900">Zero Pending Dispositions</h4>
@@ -367,7 +371,7 @@ export const RecordsPlanView: React.FC = () => {
               </div>
             ) : (
               <div className="space-y-2">
-                {dispositionQueue.map((item) => (
+                {safeDisposition.map((item) => (
                   <div key={item.document_id} className="flex items-center justify-between p-3 border rounded text-xs">
                     <span className="font-semibold text-surface-900">{item.name}</span>
                     <span className="text-amber-700 font-mono">Eligible: {item.eligible_at}</span>

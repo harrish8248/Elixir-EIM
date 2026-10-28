@@ -38,10 +38,10 @@ class TenancyMiddleware(BaseHTTPMiddleware):
             return await call_next(request)
 
         tenant_header_val = request.headers.get(TENANT_HEADER)
+        tenant_id = None
         if tenant_header_val:
             try:
                 tenant_id = uuid.UUID(tenant_header_val)
-                token = tenant_id_ctx.set(tenant_id)
             except ValueError:
                 err = ValidationError(
                     f"Invalid UUID in '{TENANT_HEADER}' header: '{tenant_header_val}'"
@@ -50,7 +50,23 @@ class TenancyMiddleware(BaseHTTPMiddleware):
 
                 return elixir_error_handler(request, err)
         else:
-            token = tenant_id_ctx.set(None)
+            session_cookie = request.cookies.get("elixir_session")
+            auth_header = request.headers.get("Authorization")
+            session_id = session_cookie
+            if not session_id and auth_header and auth_header.startswith("Bearer "):
+                candidate = auth_header.split("Bearer ", 1)[1].strip()
+                if "." not in candidate:
+                    session_id = candidate
+            if session_id:
+                try:
+                    from apps.api.app.identity.session import session_manager
+                    session = await session_manager.get_session(session_id)
+                    if session:
+                        tenant_id = session.tenant_id
+                except Exception:
+                    pass
+
+        token = tenant_id_ctx.set(tenant_id)
 
         try:
             response = await call_next(request)

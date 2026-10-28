@@ -17,7 +17,7 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 
 # Database URL for migration owner (can create/manage all data)
-DATABASE_URL = "postgresql+asyncpg://elixir:elixir_secure_pass@localhost:5432/elixir_eim"
+DATABASE_URL = "postgresql+asyncpg://elixir:elixir_secure_pass@127.0.0.1:5432/elixir_eim"
 
 # -------------------------------------------------------------------------
 # Demo data constants

@@ -530,7 +530,8 @@ export class ElixirApiClient {
 
   // --- Records & Retention Endpoints ---
   async listRetentionSchedules(): Promise<RetentionScheduleItem[]> {
-    return this.request<RetentionScheduleItem[]>("/api/v1/records/schedules");
+    const res = await this.request<any>("/api/v1/records/schedules");
+    return Array.isArray(res) ? res : (res?.items || []);
   }
 
   async createRetentionSchedule(payload: CreateRetentionSchedulePayload): Promise<RetentionScheduleItem> {
@@ -541,7 +542,8 @@ export class ElixirApiClient {
   }
 
   async listLegalHolds(): Promise<LegalHoldItem[]> {
-    return this.request<LegalHoldItem[]>("/api/v1/records/holds");
+    const res = await this.request<any>("/api/v1/records/holds");
+    return Array.isArray(res) ? res : (res?.items || []);
   }
 
   async createLegalHold(payload: CreateLegalHoldPayload): Promise<LegalHoldItem> {
@@ -565,18 +567,26 @@ export class ElixirApiClient {
   }
 
   async getDispositionQueue(): Promise<Array<{ document_id: string; name: string; retention_years: number; eligible_at: string; status: string }>> {
-    return this.request<Array<{ document_id: string; name: string; retention_years: number; eligible_at: string; status: string }>>(
-      "/api/v1/records/disposition-queue"
-    );
+    const res = await this.request<any>("/api/v1/records/disposition-queue");
+    return Array.isArray(res) ? res : (res?.items || []);
   }
 
   // --- Workflow Endpoints ---
   async listWorkflowTasks(status?: string, assignedToMe = false): Promise<WorkflowTaskItem[]> {
     const params = new URLSearchParams();
-    if (status) params.set("status", status);
-    if (assignedToMe) params.set("assigned_to_me", "true");
+    if (status && status !== "all") {
+      params.set("status", status);
+      params.set("task_status", status);
+    }
+    if (assignedToMe) {
+      params.set("assigned_to_me", "true");
+      params.set("mine_only", "true");
+    } else {
+      params.set("mine_only", "false");
+    }
     const qs = params.toString() ? `?${params.toString()}` : "";
-    return this.request<WorkflowTaskItem[]>(`/api/v1/workflow/tasks${qs}`);
+    const res = await this.request<any>(`/api/v1/workflow/tasks${qs}`);
+    return Array.isArray(res) ? res : (res?.items || []);
   }
 
   async createWorkflowTask(payload: CreateTaskPayload): Promise<WorkflowTaskItem> {
