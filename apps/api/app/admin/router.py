@@ -8,15 +8,12 @@ from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from apps.api.app.audit.models import AuditEvent
-from apps.api.app.content.models import Document
 from apps.api.app.identity.models import User
 from apps.api.app.identity.router import get_current_session
 from apps.api.app.identity.session import SessionData
 from apps.api.app.platform.branding import BRANDING
 from apps.api.app.platform.config import settings
-from apps.api.app.records.models import LegalHold
 from apps.api.app.tenancy.database import get_db_session
-from apps.api.app.workflow.models import WorkflowTask
 
 admin_router = APIRouter(prefix="/api/v1/admin", tags=["Administration"])
 
@@ -98,8 +95,9 @@ async def update_user(
     db: AsyncSession = Depends(get_db_session),
 ) -> UserOut:
     _require_admin(session)
-    from apps.api.app.audit.service import record_audit_event
     import uuid
+
+    from apps.api.app.audit.service import record_audit_event
     user = (await db.execute(
         select(User).where(User.id == uuid.UUID(user_id), User.tenant_id == session.tenant_id)
     )).scalar_one_or_none()
@@ -227,50 +225,40 @@ async def dashboard_kpis(
 
     # Documents
     total_docs = (await db.execute(
-        select(func.count(Document.id)).where(
-            Document.tenant_id == session.tenant_id,
-            Document.is_trashed.is_(False),
-        )
+        text("SELECT count(*) FROM documents WHERE tenant_id = :tid AND is_trashed = false"),
+        {"tid": session.tenant_id},
     )).scalar() or 0
 
     blocked = (await db.execute(
-        select(func.count(Document.id)).where(
-            Document.tenant_id == session.tenant_id, Document.status == "blocked"
-        )
+        text("SELECT count(*) FROM documents WHERE tenant_id = :tid AND status = 'blocked' AND is_trashed = false"),
+        {"tid": session.tenant_id},
     )).scalar() or 0
 
     declared_records = (await db.execute(
-        select(func.count(Document.id)).where(
-            Document.tenant_id == session.tenant_id, Document.is_record.is_(True)
-        )
+        text("SELECT count(*) FROM documents WHERE tenant_id = :tid AND is_record = true AND is_trashed = false"),
+        {"tid": session.tenant_id},
     )).scalar() or 0
 
     # Legal holds
     active_holds = (await db.execute(
-        select(func.count(LegalHold.id)).where(
-            LegalHold.tenant_id == session.tenant_id, LegalHold.status == "ACTIVE"
-        )
+        text("SELECT count(*) FROM legal_holds WHERE tenant_id = :tid AND status = 'ACTIVE'"),
+        {"tid": session.tenant_id},
     )).scalar() or 0
 
     held_docs = (await db.execute(
-        select(func.count(Document.id)).where(
-            Document.tenant_id == session.tenant_id, Document.status == "held"
-        )
+        text("SELECT count(*) FROM documents WHERE tenant_id = :tid AND status = 'held' AND is_trashed = false"),
+        {"tid": session.tenant_id},
     )).scalar() or 0
 
     # Workflow
     pending_approvals = (await db.execute(
-        select(func.count(WorkflowTask.id)).where(
-            WorkflowTask.tenant_id == session.tenant_id, WorkflowTask.status == "pending"
-        )
+        text("SELECT count(*) FROM workflow_tasks WHERE tenant_id = :tid AND status = 'pending'"),
+        {"tid": session.tenant_id},
     )).scalar() or 0
 
     my_tasks = (await db.execute(
-        select(func.count(WorkflowTask.id)).where(
-            WorkflowTask.tenant_id == session.tenant_id,
-            WorkflowTask.assigned_to_id == session.user_id,
-            WorkflowTask.status == "pending",
-        )
+        text("SELECT count(*) FROM workflow_tasks WHERE tenant_id = :tid AND assigned_to_id = :uid AND status = 'pending'"),
+        {"tid": session.tenant_id, "uid": session.user_id},
     )).scalar() or 0
 
     # Users
@@ -296,7 +284,8 @@ async def dashboard_kpis(
 
     # Storage bytes
     total_bytes = (await db.execute(
-        select(func.coalesce(func.sum(Document.size_bytes), 0)).where(Document.tenant_id == session.tenant_id)
+        text("SELECT coalesce(sum(size_bytes), 0) FROM documents WHERE tenant_id = :tid AND is_trashed = false"),
+        {"tid": session.tenant_id},
     )).scalar() or 0
 
     return {

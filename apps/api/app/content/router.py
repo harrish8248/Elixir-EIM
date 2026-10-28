@@ -188,7 +188,7 @@ def _doc_out(doc: Document) -> DocumentOut:
     )
 
 
-async def get_s3_client():
+async def get_s3_client() -> Any:
     session = aioboto3.Session()
     return session.client(
         "s3",

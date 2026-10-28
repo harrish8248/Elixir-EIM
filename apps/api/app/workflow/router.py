@@ -6,11 +6,10 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from apps.api.app.audit.service import record_audit_event
-from apps.api.app.content.models import Document
 from apps.api.app.identity.router import get_current_session
 from apps.api.app.identity.session import SessionData
 from apps.api.app.tenancy.database import get_db_session
@@ -66,14 +65,13 @@ async def submit_approval(
 ) -> TaskOut:
     """Submit a document for approval. Self-approval is blocked."""
     # Validate document exists and user can access it
-    doc = (await db.execute(
-        select(Document).where(
-            Document.id == uuid.UUID(body.document_id),
-            Document.tenant_id == session.tenant_id,
-        )
-    )).scalar_one_or_none()
-    if not doc:
+    doc_res = (await db.execute(
+        text("SELECT id, name FROM documents WHERE id = :doc_id AND tenant_id = :tid"),
+        {"doc_id": body.document_id, "tid": session.tenant_id},
+    )).mappings().one_or_none()
+    if not doc_res:
         raise HTTPException(status_code=404, detail="Document not found")
+    doc_name = str(doc_res["name"])
 
     # Block self-approval: if assigned to same user as submitter
     if body.assigned_to_id and body.assigned_to_id == str(session.user_id):
@@ -109,12 +107,12 @@ async def submit_approval(
         db, tenant_id=session.tenant_id, actor_id=str(session.user_id),
         actor_email=session.email, action="workflow:approval:submitted",
         resource_type="workflow_task", resource_id=str(task.id), outcome="ALLOW",
-        reason=f"Approval submitted for: {doc.name}",
-        payload={"document_id": str(doc.id), "document_name": doc.name, "priority": body.priority},
+        reason=f"Approval submitted for: {doc_name}",
+        payload={"document_id": str(task.document_id), "document_name": doc_name, "priority": body.priority},
     )
 
     return TaskOut(
-        id=str(task.id), document_id=str(task.document_id), document_name=doc.name,
+        id=str(task.id), document_id=str(task.document_id), document_name=doc_name,
         title=task.title, description=task.description, task_type=task.task_type,
         status=task.status, priority=task.priority,
         submitted_by_email=task.submitted_by_email,
@@ -150,7 +148,8 @@ async def list_tasks(
     for t in tasks:
         doc_name = None
         doc = (await db.execute(
-            select(Document.name).where(Document.id == t.document_id)
+            text("SELECT name FROM documents WHERE id = :doc_id"),
+            {"doc_id": t.document_id},
         )).scalar_one_or_none()
         doc_name = doc
         items.append({

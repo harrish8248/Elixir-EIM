@@ -6,11 +6,10 @@ from typing import Any
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel
-from sqlalchemy import func, select
+from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from apps.api.app.audit.service import record_audit_event
-from apps.api.app.content.models import Document
 from apps.api.app.identity.router import get_current_session
 from apps.api.app.identity.session import SessionData
 from apps.api.app.records.models import LegalHold, LegalHoldTarget, RetentionSchedule
@@ -271,9 +270,8 @@ async def records_stats(
     )).scalar() or 0
 
     declared_records = (await db.execute(
-        select(func.count(Document.id)).where(
-            Document.tenant_id == session.tenant_id, Document.is_record.is_(True)
-        )
+        text("SELECT count(*) FROM documents WHERE tenant_id = :tid AND is_record = true AND is_trashed = false"),
+        {"tid": session.tenant_id},
     )).scalar() or 0
 
     schedules_count = (await db.execute(
