@@ -1,0 +1,174 @@
+{
+  "file_name": "blind_gst_024.png",
+  "is_blind": true,
+  "layout_id": 0,
+  "has_qr": true,
+  "supplier_name": "Godrej & Boyce Mfg Co Ltd",
+  "supplier_gstin": "27AAACG1122R1ZK",
+  "printed_supplier_gstin": "27AAACG1122R1ZK",
+  "was_gstin_corrupted": false,
+  "supplier_pan": "AAACG1122R",
+  "buyer_name": "Tech Mahindra Limited",
+  "buyer_gstin": "27AAACT1024L1ZI",
+  "invoice_number": "BLIND-GST-2026-2024",
+  "invoice_date": "25/07/2026",
+  "due_date": "12/08/2026",
+  "place_of_supply": "Maharashtra",
+  "taxable_amount": 2185000.0,
+  "cgst_amount": 196650.0,
+  "sgst_amount": 196650.0,
+  "igst_amount": 0.0,
+  "total_amount": 2578300.0,
+  "currency": "\u20b9",
+  "boxes": {
+    "irn_qr_code": [
+      0.8529,
+      0.0682,
+      0.9529,
+      0.1455
+    ],
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.2082,
+      0.0818
+    ],
+    "supplier_gstin": [
+      0.0824,
+      0.0985,
+      0.1796,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.0624,
+      0.1091,
+      0.1231,
+      0.1142
+    ],
+    "invoice_number": [
+      0.1255,
+      0.153,
+      0.2322,
+      0.1588
+    ],
+    "invoice_date": [
+      0.4,
+      0.153,
+      0.4494,
+      0.1588
+    ],
+    "place_of_supply": [
+      0.1255,
+      0.1667,
+      0.2063,
+      0.1739
+    ],
+    "due_date": [
+      0.4,
+      0.1667,
+      0.4463,
+      0.1718
+    ],
+    "buyer_name": [
+      0.0431,
+      0.197,
+      0.1533,
+      0.2027
+    ],
+    "buyer_gstin": [
+      0.1333,
+      0.2182,
+      0.2231,
+      0.2239
+    ],
+    "taxable_amount": [
+      0.8431,
+      0.3864,
+      0.9051,
+      0.3924
+    ],
+    "cgst_amount": [
+      0.8431,
+      0.3985,
+      0.9,
+      0.4045
+    ],
+    "sgst_amount": [
+      0.8431,
+      0.4106,
+      0.9,
+      0.4167
+    ],
+    "total_amount": [
+      0.8314,
+      0.4321,
+      0.9161,
+      0.4406
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "84713010",
+      "desc": "Enterprise Rackmount Server Nodes Dual Xeon",
+      "qty": 7,
+      "rate": 75000.0,
+      "taxable": 525000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "84733020",
+      "desc": "High Performance NVMe Solid State Memory Arrays",
+      "qty": 6,
+      "rate": 24500.0,
+      "taxable": 147000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "84713010",
+      "desc": "Enterprise Rackmount Server Nodes Dual Xeon",
+      "qty": 7,
+      "rate": 75000.0,
+      "taxable": 525000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "84733020",
+      "desc": "High Performance NVMe Solid State Memory Arrays",
+      "qty": 6,
+      "rate": 24500.0,
+      "taxable": 147000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 5,
+      "hsn": "99831500",
+      "desc": "Custom ERP Cloud Architecture Consulting Services",
+      "qty": 9,
+      "rate": 16000.0,
+      "taxable": 144000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 6,
+      "hsn": "85044090",
+      "desc": "Modular Online Uninterruptible Power Supply 20kVA",
+      "qty": 5,
+      "rate": 110000.0,
+      "taxable": 550000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 7,
+      "hsn": "85044090",
+      "desc": "Modular Online Uninterruptible Power Supply 20kVA",
+      "qty": 6,
+      "rate": 24500.0,
+      "taxable": 147000.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

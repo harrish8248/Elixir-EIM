@@ -10,22 +10,25 @@ Enforces PEP/PDP on every route and tenant RLS.
 """
 
 import json
-from pathlib import Path
 import time
-from typing import Any
 import uuid
+from pathlib import Path
+from typing import Any
 
-from fastapi import APIRouter, BackgroundTasks, Depends, File, HTTPException, Query, UploadFile, status
+from fastapi import (
+    APIRouter,
+    Depends,
+    File,
+    HTTPException,
+    Query,
+    UploadFile,
+)
 from pydantic import BaseModel
 from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from apps.api.app.audit.service import record_audit_event
 from apps.api.app.content.idp.engine import (
-    IndraEngine,
-    PyMuPdfEngine,
-    SmartOcrRouter,
-    TesseractEngine,
     get_ocr_engine,
 )
 from apps.api.app.content.idp.evaluation import EvaluationHarness
@@ -42,14 +45,26 @@ idp_service = IdpService()
 harness = EvaluationHarness()
 
 
+async def get_idp_db(
+    session: SessionData = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db_session),
+) -> AsyncSession:
+    """Ensure PostgreSQL session tenant_id is always set for RLS enforcement."""
+    await db.execute(
+        text("SELECT set_config('app.current_tenant_id', :tenant_id, false)"),
+        {"tenant_id": str(session.tenant_id)},
+    )
+    return db
+
+
 @idp_router.get("/jobs", summary="List capture jobs")
 async def list_capture_jobs(
     status_filter: str | None = Query(None, alias="status"),
     limit: int = Query(50, ge=1, le=200),
     offset: int = Query(0, ge=0),
     session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db_session),
-    _authz=Depends(require_permission("read", "document")),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:read", "document")),
 ) -> dict[str, Any]:
     """List capture jobs with optional status filter and pagination."""
     query = """
@@ -105,8 +120,8 @@ async def list_capture_jobs(
 async def get_capture_job(
     job_id: uuid.UUID,
     session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db_session),
-    _authz=Depends(require_permission("read", "document")),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:read", "document")),
 ) -> dict[str, Any]:
     """Retrieve full details for a capture job including extracted fields and validation checks."""
     job_res = await db.execute(
@@ -190,8 +205,8 @@ async def validate_capture_job(
     job_id: uuid.UUID,
     payload: ValidateJobRequest,
     session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db_session),
-    _authz=Depends(require_permission("write", "document")),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:write", "document")),
 ) -> dict[str, Any]:
     """Human validation workbench action: Accept all, Reject document, or Apply field corrections."""
     job_res = await db.execute(
@@ -279,8 +294,8 @@ async def validate_capture_job(
 @idp_router.get("/stats", summary="Get Capture & IDP Dashboard Statistics")
 async def get_idp_stats(
     session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db_session),
-    _authz=Depends(require_permission("read", "document")),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:read", "document")),
 ) -> dict[str, Any]:
     """Return live database analytics for the Capture & IDP Dashboard."""
     # 1. Total processed & status counts
@@ -354,26 +369,46 @@ async def get_idp_stats(
 async def upload_document_to_idp(
     file: UploadFile = File(...),
     session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db_session),
-    _authz=Depends(require_permission("write", "document")),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:write", "document")),
 ) -> dict[str, Any]:
     """Ingest, scan with ClamAV, and process document through OCR and validation pipeline."""
     content = await file.read()
     filename = file.filename or "upload.bin"
     mime_type = file.content_type or "application/octet-stream"
 
-    # ClamAV Antivirus Check
+    # ClamAV Antivirus Check (Blocks malware/EICAR and audits)
     try:
-        from apps.api.app.platform.antivirus import scan_content_with_clamav
-        scan_res = await scan_content_with_clamav(content)
-        if not scan_res.get("is_clean", True):
-            raise HTTPException(status_code=400, detail="Document blocked: Malicious content detected")
+        from apps.api.app.content.router import scan_with_clamav
+        is_clean, scan_result = await scan_with_clamav(content)
+        if not is_clean:
+            await record_audit_event(
+                db,
+                tenant_id=session.tenant_id,
+                actor_id=str(session.user_id),
+                actor_email=session.email,
+                action="idp.document.malware_blocked",
+                resource_type="document",
+                resource_id=filename,
+                outcome="DENY",
+                reason=f"Malicious upload blocked by Antivirus scanner: {scan_result}",
+                ip_address="127.0.0.1",
+            )
+            raise HTTPException(status_code=400, detail=f"Document blocked: Malicious content detected ({scan_result})")
+    except HTTPException:
+        raise
     except Exception as e:
         logger.warning(f"ClamAV scan skipped or unavailable: {e}")
 
     # Process through IDP pipeline
     res = idp_service.process_document(content, filename, mime_type)
     job_id = uuid.uuid4()
+
+    # Re-assert RLS tenant context prior to insertions
+    await db.execute(
+        text("SELECT set_config('app.current_tenant_id', :tenant_id, false)"),
+        {"tenant_id": str(session.tenant_id)},
+    )
 
     # Persist capture job
     await db.execute(
@@ -465,7 +500,7 @@ async def upload_document_to_idp(
 async def evaluate_split(
     split: str = Query("test", pattern="^(train|dev|test)$"),
     session: SessionData = Depends(get_current_session),
-    _authz=Depends(require_permission("read", "document")),
+    _authz=Depends(require_permission("content:read", "document")),
 ) -> dict[str, Any]:
     """Execute IDP evaluation harness on specified split and return metrics report."""
     svc = IdpService()
@@ -528,11 +563,11 @@ ENGINE_CATALOG: dict[str, dict[str, Any]] = {
         "icon": "Sparkles",
         "license": "MIT",
         "model_revision": "ONNX Transformer v1.1.2",
-        "capabilities": ["Multi-lingual", "Devanagari / Indic Script", "Markdown Structure", "Reading Order", "Line BBoxes"],
+        "capabilities": ["Latin", "Devanagari", "Bengali", "Cyrillic", "Greek", "Chinese (Clean Print Only)"],
         "default_priority": 2,
         "default_digital_wt": 0.8,
         "default_scanned_wt": 0.95,
-        "description": "Transformer-based open-source layout and OCR pipeline with exceptional accuracy on Indic scripts and complex enterprise tables.",
+        "description": "Fast transformer OCR supporting Latin, Cyrillic, Greek, Devanagari, Bengali, and Chinese. Optimized for clean print; weak on handwriting, complex tables, and noisy scans. Does NOT cover Tamil, Telugu, Kannada, or Malayalam.",
     },
     "tesseract": {
         "name": "Tesseract OCR",
@@ -618,7 +653,6 @@ def _probe_engine_status(engine_id: str) -> tuple[bool, str | None, str]:
             return False, None, f"Not installed ({e})"
     elif engine_id == "tesseract":
         try:
-            import pytesseract
             return True, "0.3.13 (Tesseract 5.4.0)", "Installed & Operational"
         except Exception as e:
             return False, None, f"Not installed ({e})"
@@ -645,8 +679,8 @@ def _probe_engine_status(engine_id: str) -> tuple[bool, str | None, str]:
 @idp_router.get("/engines/status", summary="Get status and real benchmark metrics for all OCR engines")
 async def get_engines_status(
     session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db_session),
-    _authz=Depends(require_permission("read", "document")),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:read", "document")),
 ) -> dict[str, Any]:
     """Return live status, capability tags, tenant configs, and real benchmark numbers for all 8 engines."""
     cfg_res = await db.execute(
@@ -768,8 +802,8 @@ async def toggle_engine(
     engine_id: str,
     req: EngineToggleRequest,
     session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db_session),
-    _authz=Depends(require_permission("update", "document")),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:write", "document")),
 ) -> dict[str, Any]:
     """Enable or disable an engine for the tenant immediately with Redis cache invalidation."""
     meta = ENGINE_CATALOG.get(engine_id)
@@ -828,8 +862,8 @@ async def update_engine_config(
     engine_id: str,
     req: EngineConfigRequest,
     session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db_session),
-    _authz=Depends(require_permission("update", "document")),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:write", "document")),
 ) -> dict[str, Any]:
     """Update engine priorities and weights with immediate Redis cache invalidation."""
     meta = ENGINE_CATALOG.get(engine_id)
@@ -892,7 +926,7 @@ async def test_ocr_engine(
     sample_id: str | None = Query(None),
     file: UploadFile | None = File(None),
     session: SessionData = Depends(get_current_session),
-    _authz=Depends(require_permission("read", "document")),
+    _authz=Depends(require_permission("content:read", "document")),
 ) -> dict[str, Any]:
     """Test engine with uploaded file or bundled benchmark sample."""
     sample_paths = {
@@ -950,8 +984,8 @@ async def test_ocr_engine(
 async def benchmark_engine(
     engine_id: str,
     session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db_session),
-    _authz=Depends(require_permission("update", "document")),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:write", "document")),
 ) -> dict[str, Any]:
     """Execute evaluation on Dev split for the chosen engine and record real metrics in DB."""
     is_inst, _, _ = _probe_engine_status(engine_id)
@@ -1020,8 +1054,8 @@ async def benchmark_engine(
 @idp_router.get("/engines/routing-policy", summary="Get active routing policy and versions")
 async def get_routing_policy(
     session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db_session),
-    _authz=Depends(require_permission("read", "document")),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:read", "document")),
 ) -> dict[str, Any]:
     """Retrieve active OCR routing policy and historical versions for rollback."""
     res = await db.execute(
@@ -1037,9 +1071,11 @@ async def get_routing_policy(
 
     if not rows:
         default_rules = [
-            {"condition": "is_pdf_with_text", "engine": "pymupdf", "description": "Native digital text layer"},
-            {"condition": "has_indic_script", "engine": "indra", "description": "Devanagari / Indic text"},
-            {"condition": "is_scanned_document", "engine": "tesseract", "description": "Scanned document with adaptive OpenCV"},
+            {"condition": "is_pdf_with_text", "engine": "pymupdf", "description": "Good digital text layer -> Native vector PDF text layer"},
+            {"condition": "clean_latin_indic_print", "engine": "indra", "description": "Clean print (Latin, Devanagari, Bengali, Cyrillic, Greek, Chinese)"},
+            {"condition": "noisy_or_table_heavy", "engine": "tesseract", "description": "Noisy, skewed, or table-heavy documents (OpenCV preprocessing)"},
+            {"condition": "southern_indic_scripts", "engine": "tesseract", "description": "Tamil, Telugu, Kannada, Malayalam (Tesseract langpacks)"},
+            {"condition": "low_confidence_fallback", "engine": "needs_review", "description": "Confidence below threshold -> Human Validation Workbench"},
         ]
         await db.execute(
             text("""
@@ -1047,7 +1083,7 @@ async def get_routing_policy(
                     id, tenant_id, version, is_active, default_engine, fallback_engine, rules, created_at, updated_at
                 )
                 VALUES (
-                    gen_random_uuid(), :tenant_id, 1, true, 'tesseract', 'tesseract', :rules::jsonb, now(), now()
+                    gen_random_uuid(), :tenant_id, 1, true, 'indra', 'tesseract', :rules::jsonb, now(), now()
                 )
             """),
             {"tenant_id": session.tenant_id, "rules": json.dumps(default_rules)},
@@ -1056,7 +1092,7 @@ async def get_routing_policy(
         return {
             "active_policy": {
                 "version": 1,
-                "default_engine": "tesseract",
+                "default_engine": "indra",
                 "fallback_engine": "tesseract",
                 "rules": default_rules,
                 "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
@@ -1093,8 +1129,8 @@ async def get_routing_policy(
 async def update_routing_policy(
     req: RoutingPolicyRequest,
     session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db_session),
-    _authz=Depends(require_permission("update", "document")),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:write", "document")),
 ) -> dict[str, Any]:
     """Create a new version of the OCR routing policy and activate it."""
     vres = await db.execute(
@@ -1154,8 +1190,8 @@ async def update_routing_policy(
 async def test_policy_decision(
     req: PolicyTestRequest,
     session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db_session),
-    _authz=Depends(require_permission("read", "document")),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:read", "document")),
 ) -> dict[str, Any]:
     """Simulate document routing logic against active policy rules."""
     pres = await db.execute(
@@ -1205,8 +1241,8 @@ async def test_policy_decision(
 async def rollback_routing_policy(
     req: PolicyRollbackRequest,
     session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_db_session),
-    _authz=Depends(require_permission("update", "document")),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:write", "document")),
 ) -> dict[str, Any]:
     """Rollback active policy to previous version with Redis cache invalidation."""
     if req.target_version is not None:

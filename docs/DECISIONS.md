@@ -41,7 +41,7 @@
 - **Context:** Modern enterprise document capture requires multiple specialized OCR engines (digital vector extraction, neural handwriting, Indic/multilingual scripts, low-contrast scans). Hardcoding a single engine leads to sub-optimal accuracy and single-point-of-failure risks.
 - **Decision:** Implement a modular multi-engine architecture managed through an admin-facing "OCR Engines Control Center" with live status probing, dynamic tenant routing policies, Redis cache invalidation, and automated failover.
   - **PyMuPDF Engine (AGPL-3.0):** Native vector text layer extraction for born-digital PDFs (instant speed, 0% character error).
-  - **Indra OCR Engine (MIT):** ONNX Transformer layout & OCR pipeline optimized for Indic scripts (Hindi/Devanagari) and complex tabular layouts.
+  - **Indra OCR Engine (MIT):** Fast ONNX transformer OCR supporting Latin, Cyrillic, Greek, Devanagari, Bengali, and Chinese for clean print (weak on handwriting, complex tables, noisy scans; does not support Tamil, Telugu, Kannada, or Malayalam).
   - **Tesseract Engine (Apache 2.0):** Production workhorse with adaptive OpenCV preprocessing (OSD, Hough deskew, CLAHE contrast gating, multi-pass PSM).
   - **Secondary & Optional Adapters:** PaddleOCR, docTR, EasyOCR, Surya, and Ollama Vision with graceful degradation and offline status reporting.
   - **Routing Policies:** Versioned policies stored in PostgreSQL with Row-Level Security (RLS) and Redis caching (`ocr_policy:{tenant_id}`). Supports one-click rollback.

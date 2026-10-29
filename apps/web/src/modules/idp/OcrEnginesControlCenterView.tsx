@@ -288,31 +288,62 @@ export const OcrEnginesControlCenterView: React.FC = () => {
         </div>
       )}
 
-      {/* Status Bar Pills */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="p-3 bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-lg shadow-sm">
-          <span className="text-[11px] text-surface-500 uppercase font-semibold">Total Engine Adapters</span>
-          <p className="text-lg font-bold text-surface-900 dark:text-surface-100">{engines.length || 8}</p>
+      {/* Full Error State when initial fetch fails */}
+      {errorMessage && engines.length === 0 && (
+        <div className="p-6 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900 rounded-xl text-center space-y-3">
+          <div className="w-10 h-10 mx-auto rounded-full bg-red-100 dark:bg-red-900/50 flex items-center justify-center text-red-600">
+            <AlertTriangle className="w-5 h-5" />
+          </div>
+          <div>
+            <h3 className="text-sm font-bold text-red-900 dark:text-red-200">Failed to connect to OCR Engines Service</h3>
+            <p className="text-xs text-red-700 dark:text-red-300 mt-1">{errorMessage}</p>
+            <p className="text-[10px] font-mono text-red-500 mt-0.5">Correlation ID: req-ocr-err-{(Date.now()).toString(36)}</p>
+          </div>
+          <button
+            onClick={fetchEngines}
+            className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-red-600 hover:bg-red-700 rounded-lg shadow transition"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+            Retry Connection
+          </button>
         </div>
-        <div className="p-3 bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-lg shadow-sm">
-          <span className="text-[11px] text-surface-500 uppercase font-semibold">Operational & Installed</span>
-          <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
-            {engines.filter((e) => e.is_installed).length} / {engines.length || 8}
-          </p>
+      )}
+
+      {/* Loading Skeleton */}
+      {isRefreshing && engines.length === 0 && (
+        <div className="p-8 text-center space-y-2">
+          <div className="w-8 h-8 border-3 border-brand-600 border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-xs text-surface-500 font-medium">Probing runtime OCR engines status and benchmark data...</p>
         </div>
-        <div className="p-3 bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-lg shadow-sm">
-          <span className="text-[11px] text-surface-500 uppercase font-semibold">Active In Router</span>
-          <p className="text-lg font-bold text-brand-600 dark:text-brand-400">
-            {engines.filter((e) => e.is_enabled).length} Enabled
-          </p>
+      )}
+
+      {/* Status Bar Pills (Rendered only when engines are loaded) */}
+      {engines.length > 0 && (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="p-3 bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-lg shadow-sm">
+            <span className="text-[11px] text-surface-500 uppercase font-semibold">Total Engine Adapters</span>
+            <p className="text-lg font-bold text-surface-900 dark:text-surface-100">{engines.length}</p>
+          </div>
+          <div className="p-3 bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-lg shadow-sm">
+            <span className="text-[11px] text-surface-500 uppercase font-semibold">Operational & Installed</span>
+            <p className="text-lg font-bold text-emerald-600 dark:text-emerald-400">
+              {engines.filter((e) => e.is_installed).length} / {engines.length}
+            </p>
+          </div>
+          <div className="p-3 bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-lg shadow-sm">
+            <span className="text-[11px] text-surface-500 uppercase font-semibold">Active In Router</span>
+            <p className="text-lg font-bold text-brand-600 dark:text-brand-400">
+              {engines.filter((e) => e.is_enabled).length} Enabled
+            </p>
+          </div>
+          <div className="p-3 bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-lg shadow-sm">
+            <span className="text-[11px] text-surface-500 uppercase font-semibold">Active Policy Version</span>
+            <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
+              v{policy?.version || 1} ({policy?.default_engine || "tesseract"})
+            </p>
+          </div>
         </div>
-        <div className="p-3 bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-lg shadow-sm">
-          <span className="text-[11px] text-surface-500 uppercase font-semibold">Active Policy Version</span>
-          <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
-            v{policy?.version || 1} ({policy?.default_engine || "tesseract"})
-          </p>
-        </div>
-      </div>
+      )}
 
       {/* Engine Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -572,6 +603,15 @@ export const OcrEnginesControlCenterView: React.FC = () => {
                 </select>
               </div>
             </div>
+
+            {policy?.default_engine === policy?.fallback_engine && (
+              <div className="p-2.5 bg-amber-50 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-800 rounded-lg text-xs text-amber-800 dark:text-amber-300 flex items-center gap-2">
+                <AlertTriangle className="w-4 h-4 text-amber-600 shrink-0" />
+                <span>
+                  Warning: Failover fallback is identical to the primary engine ({policy?.default_engine}). When this engine encounters an error, no alternate engine is available to recover the document.
+                </span>
+              </div>
+            )}
 
             {/* Rules Table */}
             <div>

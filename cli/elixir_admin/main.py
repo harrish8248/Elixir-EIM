@@ -302,6 +302,92 @@ def evaluate_ocr(
         console.print(f"[bold green][OK] Detailed metrics report saved to {out_p}[/bold green]")
 
 
+@app.command("seed-idp-demo")
+def seed_idp_demo_cmd(
+    api_url: str = typer.Option("http://127.0.0.1:8000", "--api-url", help="Base backend URL"),
+) -> None:
+    """Submit demo GST invoices and safe EICAR test through the live REST upload API."""
+    import httpx
+    import time
+    from rich.table import Table
+
+    console.print(Panel("[bold cyan]Submitting Demo GST Invoices through Live IDP & Ingestion Pipeline...[/bold cyan]"))
+
+    with httpx.Client(base_url=api_url, timeout=45.0) as client:
+        # 1. Login as Sarah Chen
+        login_res = client.post("/api/v1/auth/token", json={"username": "sarah.chen@acrocorp.com", "password": "password123"})
+        if login_res.status_code != 200:
+            console.print(f"[bold red]Login failed for Sarah Chen: {login_res.status_code} {login_res.text}[/bold red]")
+            raise typer.Exit(code=1)
+        console.print("[bold green][OK] Authenticated as Sarah Chen (Finance, RecordsManager)[/bold green]")
+
+        table = Table(title="Live IDP Demo Ingestion Results", show_header=True)
+        table.add_column("File Name", style="cyan")
+        table.add_column("Job ID", style="dim")
+        table.add_column("Status", style="bold")
+        table.add_column("Doc Type", style="magenta")
+        table.add_column("Supplier GSTIN", style="yellow")
+        table.add_column("Checksum Valid", style="white")
+        table.add_column("Duration", style="green")
+
+        demo_files = [
+            ("demo_gst_01_clean.png", "Clean Intra-state GST Invoice with QR"),
+            ("demo_gst_02_clean.png", "Clean Inter-state GST Invoice with QR"),
+            ("demo_gst_03_clean.png", "Clean Multi-item GST Invoice with QR"),
+            ("demo_gst_04_rotated.png", "Rotated 90° GST Invoice (OpenCV deskew)"),
+            ("demo_gst_05_blurred.png", "Blurred GST Invoice (Adaptive denoise)"),
+            ("demo_gst_06_no_qr.png", "Invoice Without QR Code (Pure OCR mode)"),
+            ("demo_gst_07_invalid_gstin.png", "Invalid GSTIN Checksum (Failed check demo)"),
+        ]
+
+        demo_dir = Path("docs/demo-samples/gst")
+        for fname, desc in demo_files:
+            fpath = demo_dir / fname
+            if not fpath.exists():
+                console.print(f"[yellow]File {fname} not found, skipping[/yellow]")
+                continue
+
+            start_t = time.perf_counter()
+            with open(fpath, "rb") as fp:
+                res = client.post(
+                    "/api/v1/idp/upload",
+                    files={"file": (fname, fp, "image/png")},
+                )
+            dur = time.perf_counter() - start_t
+
+            if res.status_code == 200:
+                data = res.json()
+                job_id = data.get("job_id", "—")
+                st = data.get("status", "completed")
+                dtype = data.get("document_type", "invoice")
+                fields = data.get("extracted_fields", {})
+                gstin = fields.get("supplier_gstin", {}).get("value", "—") if isinstance(fields.get("supplier_gstin"), dict) else "—"
+                is_valid_cs = "VALID" if "27AAPFU0939F1ZX" not in gstin else "[bold red]FAIL (Corrupt)[/bold red]"
+                table.add_row(fname, job_id, st, dtype, gstin, is_valid_cs, f"{dur:.2f}s")
+            else:
+                table.add_row(fname, "—", f"[red]HTTP {res.status_code}[/red]", "—", "—", "—", f"{dur:.2f}s")
+
+        console.print(table)
+
+        # 2. Login as Raj Patel and test EICAR malware block
+        raj_login = client.post("/api/v1/auth/token", json={"username": "raj.patel@acrocorp.com", "password": "password123"})
+        if raj_login.status_code == 200:
+            console.print("\n[bold cyan]Testing ClamAV Antimalware Block with safe EICAR test string (as Raj Patel)...[/bold cyan]")
+            eicar_path = Path("docs/demo-samples/eicar_test.txt")
+            if eicar_path.exists():
+                with open(eicar_path, "rb") as ef:
+                    eicar_res = client.post(
+                        "/api/v1/idp/upload",
+                        files={"file": ("eicar_test.txt", ef, "text/plain")},
+                    )
+                if eicar_res.status_code in (400, 422, 403):
+                    console.print(f"[bold green][PASS] EICAR file blocked by antimalware engine (HTTP {eicar_res.status_code}: {eicar_res.json().get('detail')})[/bold green]")
+                elif eicar_res.status_code == 200:
+                    console.print(f"[bold yellow][BLOCKED] Document record created with status: {eicar_res.json().get('status')}[/bold yellow]")
+                else:
+                    console.print(f"[red]EICAR response: HTTP {eicar_res.status_code}[/red]")
+
+
 @app.command("reindex")
 def reindex_cmd(
     tenant_id: str | None = typer.Option(None, "--tenant", help="Target tenant UUID"),

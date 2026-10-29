@@ -1,10 +1,11 @@
-"""Unit tests for Indian GSTIN Base-36 checksum, OCR confusion repair, and offline QR decoding."""
+"""Unit tests for Indian GSTIN Base-36 checksum, OCR confusion repair, state codes, and offline QR decoding."""
 
 import base64
 import json
 import pytest
 
 from apps.api.app.content.idp.gstin import (
+    STATE_CODES,
     calculate_iou,
     compute_gstin_check_char,
     decode_einvoice_qr,
@@ -81,3 +82,18 @@ def test_iou_tracking():
     box5 = [0.0, 0.0, 50.0, 50.0]
     box6 = [100.0, 100.0, 150.0, 150.0]
     assert calculate_iou(box5, box6) == 0.0
+
+
+def test_gst_state_codes_completeness():
+    """Verify required Indian GST state codes are strictly present and accurate."""
+    required = {
+        "33": "Tamil Nadu",
+        "36": "Telangana",
+        "37": "Andhra Pradesh",
+        "38": "Ladakh",
+        "97": "Other Territory",
+        "99": "Centre Jurisdiction",
+    }
+    for code, expected_name in required.items():
+        assert code in STATE_CODES, f"Missing required state code: {code}"
+        assert STATE_CODES[code] == expected_name, f"State code {code} mismatch: expected {expected_name}, got {STATE_CODES[code]}"

@@ -13,10 +13,14 @@ Performs:
 
 from datetime import date, datetime
 from typing import Any
-import uuid
 
-from apps.api.app.content.idp.models import ExtractedField, JobStatus, LineItem, ValidationRuleResult, ValidationSummary
-from apps.api.app.platform.logging import logger
+from apps.api.app.content.idp.models import (
+    ExtractedField,
+    JobStatus,
+    LineItem,
+    ValidationRuleResult,
+    ValidationSummary,
+)
 
 # Seeded Purchase Orders catalog for PO matching
 SEEDED_PURCHASE_ORDERS = {

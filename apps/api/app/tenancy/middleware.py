@@ -27,6 +27,15 @@ UNSCOPED_PATHS = {
 }
 
 
+_session_resolver = None
+
+
+def register_session_resolver(fn) -> None:
+    """Register external session resolver without violating layered architecture boundaries."""
+    global _session_resolver
+    _session_resolver = fn
+
+
 class TenancyMiddleware(BaseHTTPMiddleware):
     """
     Middleware establishing active tenant context for each HTTP request.
@@ -57,12 +66,9 @@ class TenancyMiddleware(BaseHTTPMiddleware):
                 candidate = auth_header.split("Bearer ", 1)[1].strip()
                 if "." not in candidate:
                     session_id = candidate
-            if session_id:
+            if session_id and _session_resolver is not None:
                 try:
-                    from apps.api.app.identity.session import session_manager
-                    session = await session_manager.get_session(session_id)
-                    if session:
-                        tenant_id = session.tenant_id
+                    tenant_id = await _session_resolver(session_id)
                 except Exception:
                     pass
 

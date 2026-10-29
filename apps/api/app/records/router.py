@@ -295,3 +295,35 @@ async def disposition_queue(
     """Retrieve records currently eligible for defensible disposition review."""
     return []
 
+
+@records_router.post("/declare/{document_id}", response_model=dict[str, Any])
+async def declare_record(
+    document_id: str,
+    session: SessionData = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db_session),
+) -> dict[str, Any]:
+    """Declare a content document as an official immutable record."""
+    res = await db.execute(
+        text("UPDATE documents SET is_record = true, updated_at = now() WHERE id = :doc_id AND tenant_id = :tenant_id RETURNING id"),
+        {"doc_id": uuid.UUID(document_id), "tenant_id": session.tenant_id},
+    )
+    doc_row = res.fetchone()
+    if not doc_row:
+        raise HTTPException(status_code=404, detail="Document not found")
+    await db.commit()
+
+    await record_audit_event(
+        db,
+        tenant_id=session.tenant_id,
+        actor_id=str(session.user_id),
+        actor_email=session.email,
+        action="records.document.declare",
+        resource_type="document",
+        resource_id=document_id,
+        outcome="SUCCESS",
+        reason="Document declared as official immutable record",
+        ip_address="127.0.0.1",
+    )
+    return {"status": "success", "is_record": True, "document_id": document_id}
+
+

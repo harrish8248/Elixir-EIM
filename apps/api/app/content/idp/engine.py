@@ -5,20 +5,20 @@ Supports:
 - docTR open-source neural OCR engine (secondary / alternative engine)
 """
 
-from abc import ABC, abstractmethod
 import io
 import os
 import re
 import shutil
 import tempfile
 import time
+from abc import ABC, abstractmethod
 from typing import Any
 
 import cv2
 import numpy as np
-from PIL import Image
 import pymupdf
 import pytesseract  # type: ignore[import-untyped]
+from PIL import Image
 
 from apps.api.app.content.idp.models import BoundingBox, OcrPageResult, OcrResult, OcrWord
 from apps.api.app.platform.config import settings
@@ -37,6 +37,9 @@ TESSERACT_PATH = next(
     shutil.which("tesseract") or "tesseract",
 )
 pytesseract.pytesseract.tesseract_cmd = TESSERACT_PATH
+_custom_tessdata = os.path.abspath("tessdata")
+if os.path.exists(_custom_tessdata) and os.path.exists(os.path.join(_custom_tessdata, "eng.traineddata")):
+    os.environ["TESSDATA_PREFIX"] = _custom_tessdata
 
 
 class OcrEngine(ABC):

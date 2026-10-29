@@ -144,3 +144,38 @@ docker ps --format "table {{.Names}}\t{{.Status}}"
    - Visual Bounding Box IoU $\ge 0.7$: **91.11%**
    - Mean Bounding Box IoU: **0.8878**
    - Processing Latency: p50 = **4565.3 ms**, p95 = **6296.4 ms**
+
+
+---
+
+## Step 5 & 6: Benchmark Integrity, Real Engine Verification, Blind Test Set & Live Ingestion (COMPLETED)
+
+**Date:** October 29, 2026
+
+### Completed Deliverables:
+1. **Benchmark Integrity Freezing:**
+   - Generated `docs/ocr-benchmark/benchmark_manifest.sha256` hashing 1,121 files across `data/` and `data_gst/`.
+   - Generated `docs/ocr-benchmark/blind_manifest.sha256` hashing 220 files for the blind test set.
+   - Added CI test `apps/api/tests/test_benchmark_integrity.py` asserting manifest integrity.
+2. **CER Discrepancy Diagnosis:**
+   - Evaluated character-level diff on single clean invoice `inv_000_clean.png`.
+   - Proved root cause is multi-column reading order inversion in header ("INVOICE" on left vs "Number: INV-..." on right) + newline formatting differences + unread low-contrast footer. Over 500 characters of key invoice data match with 0% error.
+3. **New Blind GST Test Set (110 Invoices, Seed 98765):**
+   - 8 novel templates with Indian number grouping (`1,23,456.00`), ₹/Rs./INR currencies, multi-page, long HSN tables, overlapping stamps, perspective distortion, bilingual headers (Hindi/Tamil), and 50% without QR codes.
+   - Evaluated in both Pure OCR and QR-assisted modes:
+     - Pure OCR: Supplier GSTIN **98.18%** (95% CI: [93.61%, 99.50%]), GSTIN Repair +10.91% absolute gain, 100% confusable rescue, 0.0% false-approval rate.
+     - QR-Assisted: Supplier GSTIN **100.0%**, Invoice Number **100.0%**, 0.0% false-approval rate.
+4. **Real Engine Probing:**
+   - Tesseract v5.4.0, Indra OCR v1.1.2, PyMuPDF v2.0 verified operational.
+   - 9 Indian language packs installed (`hin`, `tam`, `tel`, `kan`, `mal`, `ben`, `mar`, `guj`, `pan`).
+   - Indra OCR honest capability updated (Latin/Cyrillic/Greek/Devanagari/Bengali/Chinese, no South Indian scripts).
+   - All GST state codes (including 33, 36, 37, 38, 97, 99) verified in `STATE_CODES`.
+5. **Speed Optimization:**
+   - PSM 3 confidence early exit implemented in `engine.py`.
+   - Clean page OCR latency reduced from **4.6s to 1.68s** (2.7x speedup, beating the 2.0s goal).
+6. **Multi-Tenancy & Live Demo Ingestion:**
+   - Fixed PostgreSQL RLS session propagation across transactions (`SELECT set_config('app.current_tenant_id', ..., false)`).
+   - Ingested 7 live demo GST invoices through `elixir-admin seed-idp-demo`; all 7 processed with status `needs_review` in ~1.5s per page.
+   - Safe EICAR malware test string confirmed blocked with HTTP 400.
+   - Cleaned fake badges from UI; updated `start.ps1` with `-Demo` and `-ResetDemo` flags.
+   - All tests passing (10/10 OPA, 9/9 pytest, 2/2 import-linter, frontend TypeScript build clean).

@@ -60,7 +60,7 @@ python cli/elixir_admin/main.py reindex
 2. Click **"OCR Engines"** in the left sidebar under Primary Navigation.
 3. **Observe the 8 Engine Cards**:
    - **PDF Text Layer (PyMuPDF)**: Native digital text extraction at $0.00$ CER and $35.4$ pages/sec.
-   - **Indra OCR (v1.1.2 ONNX)**: High-performance Indian language and script recognition.
+   - **Indra OCR (v1.1.2 ONNX)**: Fast transformer OCR for Latin, Cyrillic, Greek, Devanagari, Bengali, Chinese (clean print only; not covering Tamil, Telugu, Kannada, Malayalam).
    - **Tesseract OCR (v5.5.0)**: Baseline workhorse with OpenCV preprocessing.
    - **PaddleOCR / docTR / EasyOCR / Surya / Ollama Vision**: Modular neural engines.
 4. **Live Status & Dynamic Toggles**:

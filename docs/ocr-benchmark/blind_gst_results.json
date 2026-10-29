@@ -1,0 +1,183 @@
+{
+  "evaluated_at": "2026-10-29 17:44:58Z",
+  "ocr_only": {
+    "mode": "OCR-Only",
+    "total_documents": 110,
+    "fields": {
+      "supplier_gstin": {
+        "accuracy_pct": 98.18,
+        "ci_95": [
+          93.61,
+          99.5
+        ],
+        "count": 108,
+        "total": 110
+      },
+      "buyer_gstin": {
+        "accuracy_pct": 97.27,
+        "ci_95": [
+          92.29,
+          99.07
+        ],
+        "count": 107,
+        "total": 110
+      },
+      "invoice_number": {
+        "accuracy_pct": 98.18,
+        "ci_95": [
+          93.61,
+          99.5
+        ],
+        "count": 108,
+        "total": 110
+      },
+      "invoice_date": {
+        "accuracy_pct": 30.91,
+        "ci_95": [
+          23.04,
+          40.07
+        ],
+        "count": 34,
+        "total": 110
+      },
+      "total_amount": {
+        "accuracy_pct": 48.18,
+        "ci_95": [
+          39.06,
+          57.42
+        ],
+        "count": 53,
+        "total": 110
+      },
+      "taxable_amount": {
+        "accuracy_pct": 47.27,
+        "ci_95": [
+          38.19,
+          56.54
+        ],
+        "count": 52,
+        "total": 110
+      }
+    },
+    "gstin_metrics": {
+      "raw_accuracy_pct": 87.27,
+      "repaired_accuracy_pct": 98.18,
+      "gstin_ci_95": [
+        93.61,
+        99.5
+      ],
+      "corrupted_samples": 12,
+      "rescued_samples": 12,
+      "rescue_rate_pct": 100.0
+    },
+    "stp_metrics": {
+      "auto_approved_count": 0,
+      "stp_rate_pct": 0.0,
+      "stp_ci_95": [
+        0.0,
+        3.37
+      ],
+      "auto_approved_precision_pct": 100.0,
+      "auto_precision_ci_95": [
+        0.0,
+        79.35
+      ],
+      "false_approval_rate_pct": 0.0
+    },
+    "latency_ms": {
+      "mean": 4547.5,
+      "p50": 4210.7,
+      "p95": 5833.5
+    }
+  },
+  "qr_assisted": {
+    "mode": "QR-Assisted",
+    "total_documents": 110,
+    "fields": {
+      "supplier_gstin": {
+        "accuracy_pct": 100.0,
+        "ci_95": [
+          96.63,
+          100.0
+        ],
+        "count": 110,
+        "total": 110
+      },
+      "buyer_gstin": {
+        "accuracy_pct": 100.0,
+        "ci_95": [
+          96.63,
+          100.0
+        ],
+        "count": 110,
+        "total": 110
+      },
+      "invoice_number": {
+        "accuracy_pct": 100.0,
+        "ci_95": [
+          96.63,
+          100.0
+        ],
+        "count": 110,
+        "total": 110
+      },
+      "invoice_date": {
+        "accuracy_pct": 63.64,
+        "ci_95": [
+          54.33,
+          72.02
+        ],
+        "count": 70,
+        "total": 110
+      },
+      "total_amount": {
+        "accuracy_pct": 70.0,
+        "ci_95": [
+          60.88,
+          77.77
+        ],
+        "count": 77,
+        "total": 110
+      },
+      "taxable_amount": {
+        "accuracy_pct": 47.27,
+        "ci_95": [
+          38.19,
+          56.54
+        ],
+        "count": 52,
+        "total": 110
+      }
+    },
+    "gstin_metrics": {
+      "raw_accuracy_pct": 89.09,
+      "repaired_accuracy_pct": 100.0,
+      "gstin_ci_95": [
+        96.63,
+        100.0
+      ],
+      "corrupted_samples": 12,
+      "rescued_samples": 12,
+      "rescue_rate_pct": 100.0
+    },
+    "stp_metrics": {
+      "auto_approved_count": 0,
+      "stp_rate_pct": 0.0,
+      "stp_ci_95": [
+        0.0,
+        3.37
+      ],
+      "auto_approved_precision_pct": 100.0,
+      "auto_precision_ci_95": [
+        0.0,
+        79.35
+      ],
+      "false_approval_rate_pct": 0.0
+    },
+    "latency_ms": {
+      "mean": 4671.7,
+      "p50": 4377.7,
+      "p95": 5803.3
+    }
+  }
+}

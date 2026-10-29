@@ -27,6 +27,7 @@ export const SearchView: React.FC = () => {
   const [total, setTotal] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const [popularQueries, setPopularQueries] = useState<string[]>([]);
 
   // Autocomplete & Keyboard Shortcuts
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -45,42 +46,9 @@ export const SearchView: React.FC = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  useEffect(() => {
-    const trimmed = query.trim();
-    if (!trimmed || trimmed.length < 2) {
-      setSuggestions([]);
-      setShowSuggestions(false);
-      return;
-    }
-
-    const timer = setTimeout(async () => {
-      try {
-        const res = await apiClient.get<string[]>(`/api/v1/search/autocomplete?q=${encodeURIComponent(trimmed)}`);
-        if (Array.isArray(res) && res.length > 0) {
-          setSuggestions(res);
-          setShowSuggestions(true);
-        } else {
-          setSuggestions([]);
-          setShowSuggestions(false);
-        }
-      } catch {
-        setSuggestions([]);
-      }
-    }, 200);
-
-    return () => clearTimeout(timer);
-  }, [query]);
-
   const executeSearch = useCallback(
     async (searchQuery: string, cls?: string, dept?: string) => {
       const q = searchQuery.trim();
-      if (!q) {
-        setResults([]);
-        setTotal(null);
-        setHasSearched(false);
-        return;
-      }
-
       try {
         setIsLoading(true);
         setHasSearched(true);
@@ -99,6 +67,20 @@ export const SearchView: React.FC = () => {
     },
     []
   );
+
+  // Initial browse load and popular queries from database
+  useEffect(() => {
+    executeSearch("", selectedCls, selectedDept);
+    apiClient
+      .get<string[]>("/api/v1/search/popular-queries")
+      .then((res) => {
+        if (Array.isArray(res)) {
+          setPopularQueries(res);
+          setSuggestions(res);
+        }
+      })
+      .catch(() => setPopularQueries([]));
+  }, []);
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -165,26 +147,28 @@ export const SearchView: React.FC = () => {
               </div>
             )}
           </div>
-          <Button type="submit" variant="primary" size="md" disabled={!query.trim() || isLoading}>
+          <Button type="submit" variant="primary" size="md" disabled={isLoading}>
             {isLoading ? "Searching..." : "Search"}
           </Button>
         </form>
 
-        {/* Quick query chips */}
-        <div className="flex items-center gap-2 text-xs">
-          <span className="text-surface-400 flex items-center gap-1 font-medium">
-            <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Popular queries:
-          </span>
-          {["Finance", "Policy", "Contracts", "DOJ", "Q3", "Vendor"].map((chip) => (
-            <button
-              key={chip}
-              onClick={() => handleQuickChip(chip)}
-              className="px-2 py-0.5 rounded-full bg-surface-100 hover:bg-surface-200 text-surface-700 text-[11px] font-medium transition-colors"
-            >
-              {chip}
-            </button>
-          ))}
-        </div>
+        {/* Quick query chips (only displayed when database returns popular queries) */}
+        {popularQueries.length > 0 && (
+          <div className="flex items-center gap-2 text-xs">
+            <span className="text-surface-400 flex items-center gap-1 font-medium">
+              <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Popular queries:
+            </span>
+            {popularQueries.map((chip) => (
+              <button
+                key={chip}
+                onClick={() => handleQuickChip(chip)}
+                className="px-2 py-0.5 rounded-full bg-surface-100 hover:bg-surface-200 text-surface-700 text-[11px] font-medium transition-colors"
+              >
+                {chip}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Search Content & Facets */}

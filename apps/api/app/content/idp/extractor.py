@@ -8,20 +8,24 @@ Combines:
 - Output normalization for ISO dates, amounts, currencies, and invoice numbers
 """
 
-from abc import ABC, abstractmethod
-import json
 import re
+from abc import ABC, abstractmethod
 from typing import Any
 
-from apps.api.app.content.idp.models import BoundingBox, ExtractedField, LineItem, OcrPageResult, OcrResult, OcrWord
+from apps.api.app.content.idp.models import (
+    BoundingBox,
+    ExtractedField,
+    LineItem,
+    OcrPageResult,
+    OcrResult,
+    OcrWord,
+)
 from apps.api.app.content.idp.normalizers import (
     normalize_amount,
-    normalize_currency,
     normalize_date,
     normalize_invoice_number,
     normalize_po_number,
 )
-from apps.api.app.platform.logging import logger
 
 ANCHORS = {
     "invoice_number": [

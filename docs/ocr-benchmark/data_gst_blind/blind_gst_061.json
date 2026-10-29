@@ -1,0 +1,162 @@
+{
+  "file_name": "blind_gst_061.png",
+  "is_blind": true,
+  "layout_id": 5,
+  "has_qr": false,
+  "supplier_name": "Godrej & Boyce Mfg Co Ltd",
+  "supplier_gstin": "27AAACG1122R1ZK",
+  "printed_supplier_gstin": "27AAACG1122R1ZK",
+  "was_gstin_corrupted": false,
+  "supplier_pan": "AAACG1122R",
+  "buyer_name": "Zomato Hyperpure Private Limited",
+  "buyer_gstin": "06AABCZ9988X1ZM",
+  "invoice_number": "BLIND-GST-2026-2061",
+  "invoice_date": "2026-01-15",
+  "due_date": "2026-02-02",
+  "place_of_supply": "Haryana",
+  "taxable_amount": 947000.0,
+  "cgst_amount": 0.0,
+  "sgst_amount": 0.0,
+  "igst_amount": 170460.0,
+  "total_amount": 1117460.0,
+  "currency": "INR",
+  "boxes": {
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.2082,
+      0.0818
+    ],
+    "supplier_gstin": [
+      0.0824,
+      0.0985,
+      0.1796,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.0624,
+      0.1091,
+      0.1231,
+      0.1142
+    ],
+    "invoice_number": [
+      0.1255,
+      0.153,
+      0.2322,
+      0.1588
+    ],
+    "invoice_date": [
+      0.4,
+      0.153,
+      0.451,
+      0.1588
+    ],
+    "place_of_supply": [
+      0.1255,
+      0.1667,
+      0.1859,
+      0.1739
+    ],
+    "due_date": [
+      0.4,
+      0.1667,
+      0.4471,
+      0.1718
+    ],
+    "buyer_name": [
+      0.0431,
+      0.197,
+      0.2082,
+      0.2042
+    ],
+    "buyer_gstin": [
+      0.1333,
+      0.2182,
+      0.2294,
+      0.2239
+    ],
+    "taxable_amount": [
+      0.8431,
+      0.3864,
+      0.911,
+      0.3924
+    ],
+    "igst_amount": [
+      0.8431,
+      0.4045,
+      0.911,
+      0.4106
+    ],
+    "total_amount": [
+      0.8314,
+      0.4321,
+      0.9306,
+      0.4406
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "99822100",
+      "desc": "Legal Compliance & Statutory GST Audit Services",
+      "qty": 11,
+      "rate": 16000.0,
+      "taxable": 176000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "85176290",
+      "desc": "High Speed Gigabit Optical Fiber Transceiver Switch",
+      "qty": 6,
+      "rate": 8500.0,
+      "taxable": 51000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "99831500",
+      "desc": "Custom ERP Cloud Architecture Consulting Services",
+      "qty": 5,
+      "rate": 75000.0,
+      "taxable": 375000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "84713010",
+      "desc": "Enterprise Rackmount Server Nodes Dual Xeon",
+      "qty": 6,
+      "rate": 8500.0,
+      "taxable": 51000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 5,
+      "hsn": "84713010",
+      "desc": "Enterprise Rackmount Server Nodes Dual Xeon",
+      "qty": 6,
+      "rate": 8500.0,
+      "taxable": 51000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 6,
+      "hsn": "99822100",
+      "desc": "Legal Compliance & Statutory GST Audit Services",
+      "qty": 6,
+      "rate": 24500.0,
+      "taxable": 147000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 7,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 6,
+      "rate": 16000.0,
+      "taxable": 96000.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

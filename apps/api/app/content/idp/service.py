@@ -4,18 +4,15 @@ Coordinates OCR preprocessing, document classification, field extraction,
 continuous learning templates, and business validation rules.
 """
 
-from pathlib import Path
 import time
+from pathlib import Path
 from typing import Any
-import uuid
-
-from PIL import Image
 
 from apps.api.app.content.idp.classifier import DocumentClassifier
-from apps.api.app.content.idp.engine import DoctrEngine, OcrEngine, TesseractEngine
+from apps.api.app.content.idp.engine import OcrEngine, TesseractEngine
 from apps.api.app.content.idp.extractor import InvoiceExtractor
 from apps.api.app.content.idp.learning import VendorTemplateStore
-from apps.api.app.content.idp.models import BoundingBox, DocumentType, JobStatus, OcrResult
+from apps.api.app.content.idp.models import BoundingBox, DocumentType, OcrResult
 from apps.api.app.content.idp.validation import ValidationEngine
 from apps.api.app.platform.logging import logger
 
@@ -68,7 +65,9 @@ class IdpService:
                         if cand_words:
                             cand_text = " ".join(w.text for w in cand_words).strip()
                             if fname == "invoice_number":
-                                from apps.api.app.content.idp.normalizers import normalize_invoice_number
+                                from apps.api.app.content.idp.normalizers import (
+                                    normalize_invoice_number,
+                                )
                                 nv = normalize_invoice_number(cand_text)
                                 if nv:
                                     fields[fname].field_value = nv

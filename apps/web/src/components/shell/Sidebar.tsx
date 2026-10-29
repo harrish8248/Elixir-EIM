@@ -48,16 +48,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       title: "Capture & IDP",
       path: "/idp",
       icon: <ScanLine className="w-4 h-4 shrink-0" />,
-      badge: "STP 78%",
-      badgeVariant: "brand",
     },
     {
       id: "ocr_engines",
       title: "OCR Engines",
       path: "/idp/engines",
       icon: <Cpu className="w-4 h-4 shrink-0" />,
-      badge: "8 Ready",
-      badgeVariant: "neutral",
     },
     {
       id: "records",

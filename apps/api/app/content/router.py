@@ -472,6 +472,7 @@ async def list_documents(
 
 
 @content_router.get("/nodes/{document_id}", response_model=DocumentOut)
+@content_router.get("/documents/{document_id}", response_model=DocumentOut)
 async def get_document(
     document_id: str,
     session: SessionData = Depends(get_current_session),
@@ -531,6 +532,7 @@ async def update_document(
 
 
 @content_router.post("/upload", response_model=DocumentOut, status_code=status.HTTP_201_CREATED)
+@content_router.post("/documents/upload", response_model=DocumentOut, status_code=status.HTTP_201_CREATED)
 async def upload_document(
     file: UploadFile = File(...),
     workspace_id: str = Query(...),
@@ -728,6 +730,8 @@ async def download_document(
 
 
 @content_router.post("/nodes/{document_id}/trash", status_code=status.HTTP_204_NO_CONTENT)
+@content_router.delete("/nodes/{document_id}", status_code=status.HTTP_204_NO_CONTENT)
+@content_router.delete("/documents/{document_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def trash_document(
     document_id: str,
     session: SessionData = Depends(get_current_session),
@@ -794,6 +798,7 @@ async def restore_document(
 
 
 @content_router.post("/nodes/{document_id}/checkout", status_code=status.HTTP_204_NO_CONTENT)
+@content_router.post("/documents/{document_id}/checkout", status_code=status.HTTP_204_NO_CONTENT)
 async def checkout_document(
     document_id: str,
     session: SessionData = Depends(get_current_session),
@@ -820,6 +825,7 @@ async def checkout_document(
 
 
 @content_router.post("/nodes/{document_id}/checkin", status_code=status.HTTP_204_NO_CONTENT)
+@content_router.post("/documents/{document_id}/checkin", status_code=status.HTTP_204_NO_CONTENT)
 async def checkin_document(
     document_id: str,
     session: SessionData = Depends(get_current_session),
@@ -846,6 +852,7 @@ async def checkin_document(
 
 
 @content_router.get("/nodes/{document_id}/versions", response_model=list[DocumentVersionOut])
+@content_router.get("/documents/{document_id}/versions", response_model=list[DocumentVersionOut])
 async def list_versions(
     document_id: str,
     session: SessionData = Depends(get_current_session),
@@ -883,6 +890,7 @@ async def list_versions(
 
 
 @content_router.get("/nodes/{document_id}/comments", response_model=list[dict])
+@content_router.get("/documents/{document_id}/comments", response_model=list[dict])
 async def list_comments(
     document_id: str,
     session: SessionData = Depends(get_current_session),
@@ -908,6 +916,7 @@ async def list_comments(
 
 
 @content_router.post("/nodes/{document_id}/comments", status_code=status.HTTP_201_CREATED)
+@content_router.post("/documents/{document_id}/comments", status_code=status.HTTP_201_CREATED)
 async def add_comment(
     document_id: str,
     body: AddCommentRequest,

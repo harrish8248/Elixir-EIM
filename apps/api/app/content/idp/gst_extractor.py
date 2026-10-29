@@ -10,10 +10,10 @@ Provides:
 - Bounding box extraction with IoU computation against ground truth.
 """
 
-from dataclasses import dataclass, field
-import json
 import re
+from dataclasses import dataclass, field
 from typing import Any
+
 from PIL import Image
 
 from apps.api.app.content.idp.gstin import (
@@ -23,8 +23,12 @@ from apps.api.app.content.idp.gstin import (
     repair_gstin_ocr,
     validate_gstin,
 )
-from apps.api.app.content.idp.models import BoundingBox, ExtractedField, LineItem, OcrPageResult, OcrResult, OcrWord
-from apps.api.app.content.idp.normalizers import normalize_amount, normalize_date, normalize_invoice_number
+from apps.api.app.content.idp.models import (
+    BoundingBox,
+    ExtractedField,
+    OcrResult,
+    OcrWord,
+)
 from apps.api.app.platform.logging import logger
 
 try:

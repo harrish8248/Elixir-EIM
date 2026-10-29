@@ -1,0 +1,162 @@
+{
+  "file_name": "blind_gst_001.png",
+  "is_blind": true,
+  "layout_id": 1,
+  "has_qr": false,
+  "supplier_name": "Titan Company Limited",
+  "supplier_gstin": "29AAACT8080H1Z1",
+  "printed_supplier_gstin": "29AAACT8080H1Z1",
+  "was_gstin_corrupted": false,
+  "supplier_pan": "AAACT8080H",
+  "buyer_name": "Zomato Hyperpure Private Limited",
+  "buyer_gstin": "06AABCZ9988X1ZM",
+  "invoice_number": "BLIND-GST-2026-2001",
+  "invoice_date": "24/07/2026",
+  "due_date": "11/08/2026",
+  "place_of_supply": "Haryana",
+  "taxable_amount": 3519000.0,
+  "cgst_amount": 0.0,
+  "sgst_amount": 0.0,
+  "igst_amount": 633420.0,
+  "total_amount": 4152420.0,
+  "currency": "\u20b9",
+  "boxes": {
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.1835,
+      0.0818
+    ],
+    "supplier_gstin": [
+      0.0824,
+      0.0985,
+      0.1761,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.0624,
+      0.1091,
+      0.1212,
+      0.1142
+    ],
+    "invoice_number": [
+      0.1255,
+      0.153,
+      0.2322,
+      0.1588
+    ],
+    "invoice_date": [
+      0.4,
+      0.153,
+      0.4494,
+      0.1588
+    ],
+    "place_of_supply": [
+      0.1255,
+      0.1667,
+      0.1859,
+      0.1739
+    ],
+    "due_date": [
+      0.4,
+      0.1667,
+      0.4463,
+      0.1718
+    ],
+    "buyer_name": [
+      0.0431,
+      0.197,
+      0.2082,
+      0.2042
+    ],
+    "buyer_gstin": [
+      0.1333,
+      0.2182,
+      0.2294,
+      0.2239
+    ],
+    "taxable_amount": [
+      0.8431,
+      0.3864,
+      0.9051,
+      0.3924
+    ],
+    "igst_amount": [
+      0.8431,
+      0.4045,
+      0.9,
+      0.4106
+    ],
+    "total_amount": [
+      0.8314,
+      0.4321,
+      0.9161,
+      0.4406
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "85044090",
+      "desc": "Modular Online Uninterruptible Power Supply 20kVA",
+      "qty": 7,
+      "rate": 75000.0,
+      "taxable": 525000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "84713010",
+      "desc": "Enterprise Rackmount Server Nodes Dual Xeon",
+      "qty": 7,
+      "rate": 110000.0,
+      "taxable": 770000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "84713010",
+      "desc": "Enterprise Rackmount Server Nodes Dual Xeon",
+      "qty": 5,
+      "rate": 75000.0,
+      "taxable": 375000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "85044090",
+      "desc": "Modular Online Uninterruptible Power Supply 20kVA",
+      "qty": 9,
+      "rate": 75000.0,
+      "taxable": 675000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 5,
+      "hsn": "85176290",
+      "desc": "High Speed Gigabit Optical Fiber Transceiver Switch",
+      "qty": 4,
+      "rate": 8500.0,
+      "taxable": 34000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 6,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 12,
+      "rate": 75000.0,
+      "taxable": 900000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 7,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 5,
+      "rate": 48000.0,
+      "taxable": 240000.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

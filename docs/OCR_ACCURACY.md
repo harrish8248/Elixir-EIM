@@ -168,3 +168,42 @@ The confidence scores are monotonic with actual accuracy: high confidence (>90%)
 | **total_amount** | **100.0%** | **0.7754** | Pass | Taxable + Taxes == Total Verified (100%) |
 | **bank_account** | **100.0%** | **0.9150** | Pass | Regex extraction with word bounding box |
 | **bank_ifsc** | **86.7%** | **0.8504** | Pass | Character confusion repair (1->I, 0->O) |
+
+
+---
+
+## 9. Blind GST Invoices Benchmark (110 Novel Invoices, 8 Layouts, Seed 98765)
+
+**Dataset:** 110 Blind Indian GST Invoices generated at **300 DPI** ($2550 \times 3300$) using seed `98765`, completely separated from development data.  
+**Features:** 8 brand new templates, Indian number grouping (`1,23,456.00`), currency variants (Rs., INR, ₹), diverse date formats (DD/MM/YYYY, DD-Mon-YYYY, YYYY-MM-DD), long HSN line-item tables (4–7 items), stamps/signatures overlapping text, perspective distortions, bilingual headers (Hindi/Tamil), confusable GSTIN characters (O/0, I/1, S/5, B/8, Z/2), and **50% of documents without QR codes**.  
+**Execution:** Measured strictly via `scripts/evaluate_blind_gst.py` in both Pure OCR and QR-Assisted modes.
+
+### Comparison: Pure OCR (No QR) vs. QR-Assisted Capture
+
+| Metric | Mode A: Pure OCR (No QR) | Mode B: QR-Assisted Capture | 95% Confidence Interval (Wilson - Pure OCR) | 95% Confidence Interval (Wilson - QR-Assisted) |
+|---|---|---|---|---|
+| **Supplier GSTIN Accuracy** | **98.18%** | **100.0%** | [93.61%, 99.50%] | [96.63%, 100.0%] |
+| **Buyer GSTIN Accuracy** | **97.27%** | **100.0%** | [92.29%, 99.07%] | [96.63%, 100.0%] |
+| **GSTIN Before -> After Repair** | **87.27% -> 98.18%** | **89.09% -> 100.0%** | +10.91% absolute gain | +10.91% absolute gain |
+| **Confusable GSTIN Rescue Rate**| **100.0% (12/12)** | **100.0% (12/12)** | Rescued via Checksum Repair | Rescued via Checksum & QR |
+| **Invoice Number Accuracy** | **98.18%** | **100.0%** | [93.61%, 99.50%] | [96.63%, 100.0%] |
+| **Invoice Date Accuracy** | **30.91%** | **63.64%** | [23.04%, 40.07%] | [54.33%, 72.02%] |
+| **Total Amount Accuracy** | **48.18%** | **70.00%** | [39.06%, 57.42%] | [60.88%, 77.77%] |
+| **Taxable Amount Accuracy** | **47.27%** | **47.27%** | [38.19%, 56.54%] | [38.19%, 56.54%] |
+| **STP Rate (Auto-Approved)** | **0.0%** | **0.0%** | [0.0%, 3.37%] | [0.0%, 3.37%] |
+| **Auto-Approved Precision** | **100.0%** | **100.0%** | Safety Goal Met | Safety Goal Met |
+| **False-Approval Rate** | **0.0%** | **0.0%** | Strict Zero-Leak Safety | Strict Zero-Leak Safety |
+| **p50 Processing Latency** | **4210.7 ms** | **4377.7 ms** | Multi-item complex table | Multi-item complex table |
+| **p95 Processing Latency** | **5833.5 ms** | **5803.3 ms** | Multi-item complex table | Multi-item complex table |
+
+---
+
+## 10. Real Indian Invoice Samples Status
+
+The directory `docs/real-samples/` is currently **empty**.  
+To add and evaluate real customer or vendor Indian invoices through the live Elixir EIM system:
+1. Copy 15–20 real invoice images (`.png`, `.jpg`, `.pdf`) into `docs/real-samples/`.
+2. Run `python -m cli.elixir_admin.main seed-idp-demo --api-url http://127.0.0.1:8000` or upload via the web UI at `http://localhost:5173/idp/dashboard`.
+3. Open the **Validation Workbench** (`http://localhost:5173/idp/workbench/:jobId`) in your browser.
+4. Review extracted fields (Supplier GSTIN, Buyer GSTIN, Invoice Number, Taxable Value, CGST/SGST/IGST, Total Amount) and apply any necessary corrections.
+5. Click **Submit Validation** (`Accept` or `Save Corrections`). Your validated human inputs are automatically committed to PostgreSQL `field_corrections` and become the permanent ground truth benchmark for continuous learning!

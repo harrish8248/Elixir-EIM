@@ -5,7 +5,7 @@ Elixir EIM incorporates and interfaces with open-source optical character recogn
 | Component / Engine | License | Upstream Project / Repository | Role in Elixir EIM | Distribution & Usage Notes |
 |---|---|---|---|---|
 | **PyMuPDF (`fitz`)** | **AGPL-3.0** | Artifex Software / PyMuPDF | Digital PDF Text Layer Extraction | High-speed native vector stream parser; only accessed via service layer. |
-| **Indra OCR** | **MIT** | DataLab TO (`datalab-to/indra-ocr`) | Indic / Multilingual Transformer OCR | ONNX layout analysis and text recognition for Hindi and complex enterprise layouts. |
+| **Indra OCR** | **MIT** | DataLab TO (`datalab-to/indra-ocr`) | Multilingual Neural OCR | Fast transformer OCR supporting Latin, Cyrillic, Greek, Devanagari, Bengali, and Chinese. Optimized for clean print; weak on handwriting, complex tables, and noisy scans. Does NOT cover Tamil, Telugu, Kannada, or Malayalam. |
 | **Tesseract OCR (`pytesseract`)** | **Apache 2.0** | Ray Smith / Google / Tesseract-OCR | Primary Production OCR Engine | Default baseline engine with adaptive OpenCV preprocessing and multi-pass PSM. |
 | **OpenCV (`opencv-python-headless`)** | **Apache 2.0** | OpenCV Team | Image Preprocessing Pipeline | Image deskew, CLAHE contrast enhancement, bilateral filtering, Hough line transforms. |
 | **scikit-learn** | **BSD 3-Clause** | scikit-learn developers | Document Type Classifier | TF-IDF vectorization and Multinomial Logistic Regression for automated document classification. |

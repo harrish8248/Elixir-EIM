@@ -1,0 +1,141 @@
+{
+  "file_name": "blind_gst_097.png",
+  "is_blind": true,
+  "layout_id": 1,
+  "has_qr": false,
+  "supplier_name": "Havells India Limited",
+  "supplier_gstin": "07AAACH1289G1ZO",
+  "printed_supplier_gstin": "07AAACH1289G1ZO",
+  "was_gstin_corrupted": false,
+  "supplier_pan": "AAACH1289G",
+  "buyer_name": "Bharat Heavy Electricals Ltd",
+  "buyer_gstin": "07AAACB0001B1ZW",
+  "invoice_number": "BLIND-GST-2026-2097",
+  "invoice_date": "15/03/2026",
+  "due_date": "02/04/2026",
+  "place_of_supply": "Delhi",
+  "taxable_amount": 246100.0,
+  "cgst_amount": 22149.0,
+  "sgst_amount": 22149.0,
+  "igst_amount": 0.0,
+  "total_amount": 290398.0,
+  "currency": "Rs.",
+  "boxes": {
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.1694,
+      0.08
+    ],
+    "supplier_gstin": [
+      0.0824,
+      0.0985,
+      0.18,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.0624,
+      0.1091,
+      0.1227,
+      0.1142
+    ],
+    "invoice_number": [
+      0.1255,
+      0.153,
+      0.2322,
+      0.1588
+    ],
+    "invoice_date": [
+      0.4,
+      0.153,
+      0.4494,
+      0.1588
+    ],
+    "place_of_supply": [
+      0.1255,
+      0.1667,
+      0.171,
+      0.1739
+    ],
+    "due_date": [
+      0.4,
+      0.1667,
+      0.4463,
+      0.1718
+    ],
+    "buyer_name": [
+      0.0431,
+      0.197,
+      0.1788,
+      0.2042
+    ],
+    "buyer_gstin": [
+      0.1333,
+      0.2182,
+      0.2325,
+      0.2239
+    ],
+    "taxable_amount": [
+      0.8431,
+      0.3409,
+      0.909,
+      0.347
+    ],
+    "cgst_amount": [
+      0.8431,
+      0.353,
+      0.9012,
+      0.3591
+    ],
+    "sgst_amount": [
+      0.8431,
+      0.3652,
+      0.9012,
+      0.3712
+    ],
+    "total_amount": [
+      0.8314,
+      0.3867,
+      0.9216,
+      0.3952
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "99871900",
+      "desc": "HVAC Precision Server Room Environmental Control",
+      "qty": 1,
+      "rate": 75000.0,
+      "taxable": 75000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "85044090",
+      "desc": "Modular Online Uninterruptible Power Supply 20kVA",
+      "qty": 1,
+      "rate": 8500.0,
+      "taxable": 8500.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "99871900",
+      "desc": "HVAC Precision Server Room Environmental Control",
+      "qty": 3,
+      "rate": 4200.0,
+      "taxable": 12600.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "99831500",
+      "desc": "Custom ERP Cloud Architecture Consulting Services",
+      "qty": 2,
+      "rate": 75000.0,
+      "taxable": 150000.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

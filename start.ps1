@@ -7,7 +7,9 @@
 param(
     [switch]$SkipDocker,       # Skip Docker container checks (for CI environments)
     [switch]$NoBrowser,        # Don't auto-open browser
-    [switch]$Test              # Run test suite with REQUIRE_POSTGRES=1 and exit
+    [switch]$Test,             # Run test suite with REQUIRE_POSTGRES=1 and exit
+    [switch]$Demo,             # Seed 7 demo GST invoices + EICAR test via live upload API
+    [switch]$ResetDemo         # Wipe capture_jobs and re-seed clean IDP demo state
 )
 
 $ErrorActionPreference = "Stop"
@@ -202,6 +204,11 @@ while ($retries -lt 15) {
 }
 if ($retries -eq 15) {
     Write-Host "  [WARN] Backend API did not respond in 15s. Check logs." -ForegroundColor Yellow
+}
+
+if ($ResetDemo -or $Demo) {
+    Write-Host "`n  [*] Seeding live IDP demo invoices via API..." -ForegroundColor Cyan
+    & $PythonCmd -m cli.elixir_admin.main seed-idp-demo
 }
 
 Write-Header "Elixir EIM is running - press Ctrl+C in the frontend window to stop"

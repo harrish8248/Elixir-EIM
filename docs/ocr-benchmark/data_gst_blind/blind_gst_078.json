@@ -1,0 +1,168 @@
+{
+  "file_name": "blind_gst_078.png",
+  "is_blind": true,
+  "layout_id": 6,
+  "has_qr": true,
+  "supplier_name": "Dr Reddys Laboratories Ltd",
+  "supplier_gstin": "36AAACD1199K1ZH",
+  "printed_supplier_gstin": "36AAACD1199K12H",
+  "was_gstin_corrupted": true,
+  "supplier_pan": "AAACD1199K",
+  "buyer_name": "Tech Mahindra Limited",
+  "buyer_gstin": "27AAACT1024L1ZI",
+  "invoice_number": "BLIND-GST-2026-2078",
+  "invoice_date": "2026-04-09",
+  "due_date": "2026-05-24",
+  "place_of_supply": "Maharashtra",
+  "taxable_amount": 1936500.0,
+  "cgst_amount": 0.0,
+  "sgst_amount": 0.0,
+  "igst_amount": 348570.0,
+  "total_amount": 2285070.0,
+  "currency": "INR",
+  "boxes": {
+    "irn_qr_code": [
+      0.8529,
+      0.0682,
+      0.9529,
+      0.1455
+    ],
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.2102,
+      0.0818
+    ],
+    "supplier_gstin": [
+      0.0824,
+      0.0985,
+      0.1784,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.0624,
+      0.1091,
+      0.1216,
+      0.1142
+    ],
+    "invoice_number": [
+      0.1255,
+      0.153,
+      0.2322,
+      0.1588
+    ],
+    "invoice_date": [
+      0.4,
+      0.153,
+      0.451,
+      0.1588
+    ],
+    "place_of_supply": [
+      0.1255,
+      0.1667,
+      0.2063,
+      0.1739
+    ],
+    "due_date": [
+      0.4,
+      0.1667,
+      0.4471,
+      0.1718
+    ],
+    "buyer_name": [
+      0.0431,
+      0.197,
+      0.1533,
+      0.2027
+    ],
+    "buyer_gstin": [
+      0.1333,
+      0.2182,
+      0.2231,
+      0.2239
+    ],
+    "taxable_amount": [
+      0.8431,
+      0.3864,
+      0.9161,
+      0.3924
+    ],
+    "igst_amount": [
+      0.8431,
+      0.4045,
+      0.911,
+      0.4106
+    ],
+    "total_amount": [
+      0.8314,
+      0.4321,
+      0.9306,
+      0.4406
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "99871900",
+      "desc": "HVAC Precision Server Room Environmental Control",
+      "qty": 3,
+      "rate": 75000.0,
+      "taxable": 225000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "84713010",
+      "desc": "Enterprise Rackmount Server Nodes Dual Xeon",
+      "qty": 11,
+      "rate": 48000.0,
+      "taxable": 528000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "84733020",
+      "desc": "High Performance NVMe Solid State Memory Arrays",
+      "qty": 10,
+      "rate": 75000.0,
+      "taxable": 750000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 5,
+      "rate": 16000.0,
+      "taxable": 80000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 5,
+      "hsn": "99822100",
+      "desc": "Legal Compliance & Statutory GST Audit Services",
+      "qty": 9,
+      "rate": 8500.0,
+      "taxable": 76500.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 6,
+      "hsn": "85044090",
+      "desc": "Modular Online Uninterruptible Power Supply 20kVA",
+      "qty": 10,
+      "rate": 8500.0,
+      "taxable": 85000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 7,
+      "hsn": "99822100",
+      "desc": "Legal Compliance & Statutory GST Audit Services",
+      "qty": 12,
+      "rate": 16000.0,
+      "taxable": 192000.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

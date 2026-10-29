@@ -50,9 +50,9 @@ async def get_db_session() -> AsyncGenerator[AsyncSession]:
         tenant_id = get_current_tenant_id()
         if tenant_id:
             try:
-                # Set PostgreSQL session-local variable for Row-Level Security
+                # Set PostgreSQL session variable for Row-Level Security across transactions
                 await session.execute(
-                    text("SELECT set_config('app.current_tenant_id', :tenant_id, true)"),
+                    text("SELECT set_config('app.current_tenant_id', :tenant_id, false)"),
                     {"tenant_id": str(tenant_id)},
                 )
             except Exception as exc:

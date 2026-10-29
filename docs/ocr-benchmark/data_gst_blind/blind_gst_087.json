@@ -1,0 +1,135 @@
+{
+  "file_name": "blind_gst_087.png",
+  "is_blind": true,
+  "layout_id": 7,
+  "has_qr": false,
+  "supplier_name": "Larsen & Toubro Heavy Engineering",
+  "supplier_gstin": "24AAACL6789K1Z0",
+  "printed_supplier_gstin": "24AAACL6789K1Z0",
+  "was_gstin_corrupted": false,
+  "supplier_pan": "AAACL6789K",
+  "buyer_name": "AcroCorp India Private Limited",
+  "buyer_gstin": "27AABCA9876M1ZY",
+  "invoice_number": "BLIND-GST-2026-2087",
+  "invoice_date": "09-Aug-2026",
+  "due_date": "24-Sep-2026",
+  "place_of_supply": "Maharashtra",
+  "taxable_amount": 1060800.0,
+  "cgst_amount": 0.0,
+  "sgst_amount": 0.0,
+  "igst_amount": 190944.0,
+  "total_amount": 1251744.0,
+  "currency": "\u20b9",
+  "boxes": {
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.2624,
+      0.0818
+    ],
+    "supplier_gstin": [
+      0.0824,
+      0.0985,
+      0.1761,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.0624,
+      0.1091,
+      0.12,
+      0.1142
+    ],
+    "invoice_number": [
+      0.1255,
+      0.153,
+      0.2322,
+      0.1588
+    ],
+    "invoice_date": [
+      0.4,
+      0.153,
+      0.46,
+      0.1603
+    ],
+    "place_of_supply": [
+      0.1255,
+      0.1667,
+      0.2063,
+      0.1739
+    ],
+    "due_date": [
+      0.4,
+      0.1667,
+      0.4533,
+      0.1733
+    ],
+    "buyer_name": [
+      0.0431,
+      0.197,
+      0.1914,
+      0.2042
+    ],
+    "buyer_gstin": [
+      0.1333,
+      0.2182,
+      0.231,
+      0.2239
+    ],
+    "taxable_amount": [
+      0.8431,
+      0.3409,
+      0.9051,
+      0.347
+    ],
+    "igst_amount": [
+      0.8431,
+      0.3591,
+      0.9,
+      0.3652
+    ],
+    "total_amount": [
+      0.8314,
+      0.3867,
+      0.9161,
+      0.3952
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "99871900",
+      "desc": "HVAC Precision Server Room Environmental Control",
+      "qty": 12,
+      "rate": 75000.0,
+      "taxable": 900000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "85176290",
+      "desc": "High Speed Gigabit Optical Fiber Transceiver Switch",
+      "qty": 10,
+      "rate": 4200.0,
+      "taxable": 42000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "99822100",
+      "desc": "Legal Compliance & Statutory GST Audit Services",
+      "qty": 12,
+      "rate": 8500.0,
+      "taxable": 102000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "99831500",
+      "desc": "Custom ERP Cloud Architecture Consulting Services",
+      "qty": 4,
+      "rate": 4200.0,
+      "taxable": 16800.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

@@ -6,7 +6,6 @@ with keyword and structural layout heuristics.
 
 import json
 from pathlib import Path
-from typing import Any
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression

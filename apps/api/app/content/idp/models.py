@@ -2,11 +2,12 @@
 Data models and schemas for Elixir EIM Intelligent Document Processing (IDP).
 """
 
-from datetime import date, datetime
+import uuid
+from datetime import datetime
 from enum import Enum
 from typing import Any
-import uuid
-from pydantic import BaseModel, Field
+
+from pydantic import BaseModel
 
 
 class JobStatus(str, Enum):

@@ -1,0 +1,153 @@
+{
+  "file_name": "blind_gst_005.png",
+  "is_blind": true,
+  "layout_id": 5,
+  "has_qr": false,
+  "supplier_name": "Titan Company Limited",
+  "supplier_gstin": "29AAACT8080H1Z1",
+  "printed_supplier_gstin": "29AAACT8080H121",
+  "was_gstin_corrupted": true,
+  "supplier_pan": "AAACT8080H",
+  "buyer_name": "Tech Mahindra Limited",
+  "buyer_gstin": "27AAACT1024L1ZI",
+  "invoice_number": "BLIND-GST-2026-2005",
+  "invoice_date": "26-Sep-2026",
+  "due_date": "13-Oct-2026",
+  "place_of_supply": "Maharashtra",
+  "taxable_amount": 2288400.0,
+  "cgst_amount": 0.0,
+  "sgst_amount": 0.0,
+  "igst_amount": 411912.0,
+  "total_amount": 2700312.0,
+  "currency": "Rs.",
+  "boxes": {
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.1835,
+      0.0818
+    ],
+    "supplier_gstin": [
+      0.0824,
+      0.0985,
+      0.1753,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.0624,
+      0.1091,
+      0.1212,
+      0.1142
+    ],
+    "invoice_number": [
+      0.1255,
+      0.153,
+      0.2322,
+      0.1588
+    ],
+    "invoice_date": [
+      0.4,
+      0.153,
+      0.4584,
+      0.1603
+    ],
+    "place_of_supply": [
+      0.1255,
+      0.1667,
+      0.2063,
+      0.1739
+    ],
+    "due_date": [
+      0.4,
+      0.1667,
+      0.4518,
+      0.1718
+    ],
+    "buyer_name": [
+      0.0431,
+      0.197,
+      0.1533,
+      0.2027
+    ],
+    "buyer_gstin": [
+      0.1333,
+      0.2182,
+      0.2231,
+      0.2239
+    ],
+    "taxable_amount": [
+      0.8431,
+      0.3712,
+      0.9141,
+      0.3773
+    ],
+    "igst_amount": [
+      0.8431,
+      0.3894,
+      0.909,
+      0.3955
+    ],
+    "total_amount": [
+      0.8314,
+      0.417,
+      0.9286,
+      0.4255
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 2,
+      "rate": 4200.0,
+      "taxable": 8400.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "99831500",
+      "desc": "Custom ERP Cloud Architecture Consulting Services",
+      "qty": 12,
+      "rate": 16000.0,
+      "taxable": 192000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "85044090",
+      "desc": "Modular Online Uninterruptible Power Supply 20kVA",
+      "qty": 7,
+      "rate": 16000.0,
+      "taxable": 112000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "85176290",
+      "desc": "High Speed Gigabit Optical Fiber Transceiver Switch",
+      "qty": 8,
+      "rate": 110000.0,
+      "taxable": 880000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 5,
+      "hsn": "85044090",
+      "desc": "Modular Online Uninterruptible Power Supply 20kVA",
+      "qty": 8,
+      "rate": 24500.0,
+      "taxable": 196000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 6,
+      "hsn": "85044090",
+      "desc": "Modular Online Uninterruptible Power Supply 20kVA",
+      "qty": 12,
+      "rate": 75000.0,
+      "taxable": 900000.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

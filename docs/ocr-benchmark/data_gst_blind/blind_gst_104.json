@@ -1,0 +1,159 @@
+{
+  "file_name": "blind_gst_104.png",
+  "is_blind": true,
+  "layout_id": 0,
+  "has_qr": true,
+  "supplier_name": "Asian Paints Limited",
+  "supplier_gstin": "27AAACA3322T1ZG",
+  "printed_supplier_gstin": "27AAACA3322T1ZG",
+  "was_gstin_corrupted": false,
+  "supplier_pan": "AAACA3322T",
+  "buyer_name": "Zomato Hyperpure Private Limited",
+  "buyer_gstin": "06AABCZ9988X1ZM",
+  "invoice_number": "BLIND-GST-2026-2104",
+  "invoice_date": "2026-07-27",
+  "due_date": "2026-08-14",
+  "place_of_supply": "Haryana",
+  "taxable_amount": 1812500.0,
+  "cgst_amount": 0.0,
+  "sgst_amount": 0.0,
+  "igst_amount": 326250.0,
+  "total_amount": 2138750.0,
+  "currency": "\u20b9",
+  "boxes": {
+    "irn_qr_code": [
+      0.8529,
+      0.0682,
+      0.9529,
+      0.1455
+    ],
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.1678,
+      0.08
+    ],
+    "supplier_gstin": [
+      0.0824,
+      0.0985,
+      0.1784,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.0624,
+      0.1091,
+      0.1208,
+      0.1142
+    ],
+    "invoice_number": [
+      0.1255,
+      0.153,
+      0.2322,
+      0.1588
+    ],
+    "invoice_date": [
+      0.4,
+      0.153,
+      0.451,
+      0.1588
+    ],
+    "place_of_supply": [
+      0.1255,
+      0.1667,
+      0.1859,
+      0.1739
+    ],
+    "due_date": [
+      0.4,
+      0.1667,
+      0.4471,
+      0.1718
+    ],
+    "buyer_name": [
+      0.0431,
+      0.197,
+      0.2082,
+      0.2042
+    ],
+    "buyer_gstin": [
+      0.1333,
+      0.2182,
+      0.2294,
+      0.2239
+    ],
+    "taxable_amount": [
+      0.8431,
+      0.3712,
+      0.9051,
+      0.3773
+    ],
+    "igst_amount": [
+      0.8431,
+      0.3894,
+      0.9,
+      0.3955
+    ],
+    "total_amount": [
+      0.8314,
+      0.417,
+      0.9161,
+      0.4255
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "99831500",
+      "desc": "Custom ERP Cloud Architecture Consulting Services",
+      "qty": 6,
+      "rate": 8500.0,
+      "taxable": 51000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "99831500",
+      "desc": "Custom ERP Cloud Architecture Consulting Services",
+      "qty": 4,
+      "rate": 75000.0,
+      "taxable": 300000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "99822100",
+      "desc": "Legal Compliance & Statutory GST Audit Services",
+      "qty": 10,
+      "rate": 48000.0,
+      "taxable": 480000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "84713010",
+      "desc": "Enterprise Rackmount Server Nodes Dual Xeon",
+      "qty": 5,
+      "rate": 24500.0,
+      "taxable": 122500.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 5,
+      "hsn": "85044090",
+      "desc": "Modular Online Uninterruptible Power Supply 20kVA",
+      "qty": 4,
+      "rate": 8500.0,
+      "taxable": 34000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 6,
+      "hsn": "99871900",
+      "desc": "HVAC Precision Server Room Environmental Control",
+      "qty": 11,
+      "rate": 75000.0,
+      "taxable": 825000.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

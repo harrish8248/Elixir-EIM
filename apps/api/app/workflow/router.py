@@ -177,6 +177,7 @@ async def list_tasks(
 
 
 @workflow_router.post("/tasks/{task_id}/decide", response_model=dict[str, Any])
+@workflow_router.post("/tasks/{task_id}/complete", response_model=dict[str, Any])
 async def decide_task(
     task_id: str,
     body: DecisionRequest,

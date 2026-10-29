@@ -161,6 +161,12 @@ async def record_audit_event(
     now = datetime.now(UTC)
     now_iso = now.strftime("%Y-%m-%dT%H:%M:%S.%fZ")
 
+    # Set PostgreSQL tenant context for RLS enforcement
+    await db.execute(
+        text("SELECT set_config('app.current_tenant_id', :tenant_id, false)"),
+        {"tenant_id": str(tenant_id)},
+    )
+
     # 1. Acquire exclusive lock on target tenant to prevent concurrent sequence races
     await db.execute(
         text("SELECT id FROM tenants WHERE id = :tenant_id FOR UPDATE"),
