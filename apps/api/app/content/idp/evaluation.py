@@ -12,12 +12,13 @@ Computes real, measured metrics across Train, Dev, and Test splits:
 - Page Processing Latency (p50, p95)
 """
 
+import collections
 import json
 import math
+import os
 import re
 import time
 from collections import defaultdict
-import os
 from pathlib import Path
 from typing import Any
 
@@ -74,6 +75,40 @@ def compute_wer(reference: str, hypothesis: str) -> float:
         return 0.0 if not hyp_words else 1.0
     dist = levenshtein_distance(ref_words, hyp_words)
     return min(dist / max(len(ref_words), 1), 1.0)
+
+
+def compute_multiset_cer(reference: str, hypothesis: str) -> float:
+    """Order-insensitive Character Multiset Error Rate:
+    Measures character frequency deviations without penalizing multi-column reading order.
+    """
+    ref_norm = normalize_eval_text(reference)
+    hyp_norm = normalize_eval_text(hypothesis)
+    ref_counts = collections.Counter(ref_norm)
+    hyp_counts = collections.Counter(hyp_norm)
+    intersection = sum((ref_counts & hyp_counts).values())
+    total_ref = sum(ref_counts.values())
+    total_hyp = sum(hyp_counts.values())
+    if total_ref == 0:
+        return 0.0 if total_hyp == 0 else 1.0
+    error = (max(total_ref, total_hyp) - intersection) / total_ref
+    return min(max(error, 0.0), 1.0)
+
+
+def compute_multiset_wer(reference: str, hypothesis: str) -> float:
+    """Order-insensitive Token/Word Multiset Error Rate:
+    Measures word set intersection without reading-order inversion penalty.
+    """
+    ref_words = normalize_eval_text(reference).split()
+    hyp_words = normalize_eval_text(hypothesis).split()
+    ref_counts = collections.Counter(ref_words)
+    hyp_counts = collections.Counter(hyp_words)
+    intersection = sum((ref_counts & hyp_counts).values())
+    total_ref = sum(ref_counts.values())
+    total_hyp = sum(hyp_counts.values())
+    if total_ref == 0:
+        return 0.0 if total_hyp == 0 else 1.0
+    error = (max(total_ref, total_hyp) - intersection) / total_ref
+    return min(max(error, 0.0), 1.0)
 
 
 def wilson_confidence_interval(k: int, n: int, confidence: float = 0.95) -> tuple[float, float]:

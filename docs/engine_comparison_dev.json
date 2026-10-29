@@ -1,0 +1,54 @@
+[
+  {
+    "engine": "PyMuPDF",
+    "cer": 100.0,
+    "multiset_cer": 100.0,
+    "wer": 100.0,
+    "multiset_wer": 100.0,
+    "gstin_acc": 93.3,
+    "date_acc": 100.0,
+    "total_acc": 100.0,
+    "p50_latency_ms": 2120.7,
+    "p95_latency_ms": 2567.0,
+    "peak_ram_mb": 196.4
+  },
+  {
+    "engine": "Tesseract",
+    "cer": 100.0,
+    "multiset_cer": 100.0,
+    "wer": 100.0,
+    "multiset_wer": 100.0,
+    "gstin_acc": 93.3,
+    "date_acc": 100.0,
+    "total_acc": 100.0,
+    "p50_latency_ms": 2131.4,
+    "p95_latency_ms": 2795.0,
+    "peak_ram_mb": 203.1
+  },
+  {
+    "engine": "Indra",
+    "cer": 100.0,
+    "multiset_cer": 100.0,
+    "wer": 100.0,
+    "multiset_wer": 100.0,
+    "gstin_acc": 100.0,
+    "date_acc": 100.0,
+    "total_acc": 93.3,
+    "p50_latency_ms": 823.2,
+    "p95_latency_ms": 3500.5,
+    "peak_ram_mb": 508.2
+  },
+  {
+    "engine": "Router",
+    "cer": 100.0,
+    "multiset_cer": 100.0,
+    "wer": 100.0,
+    "multiset_wer": 100.0,
+    "gstin_acc": 93.3,
+    "date_acc": 100.0,
+    "total_acc": 100.0,
+    "p50_latency_ms": 2123.9,
+    "p95_latency_ms": 2410.2,
+    "peak_ram_mb": 511.4
+  }
+]

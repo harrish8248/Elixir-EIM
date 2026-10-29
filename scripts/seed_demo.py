@@ -393,20 +393,13 @@ async def seed_demo(session: AsyncSession) -> None:
 
     await session.commit()
     print("\n[OK] Demo data seeded successfully!")
-    print("\nDemo Credentials:")
+    print("\nDemo Credentials (Unified password: password123):")
     print("  Tenant: AcroCorp Global (US-East)")
-    print("  Sarah Chen  (Records Manager, Finance, RESTRICTED):  sarah.chen / demo123!")
-    print("  Raj Patel   (Employee, Finance, CONFIDENTIAL):        raj.patel / demo123!")
-    print("  Maria Santos (Employee, HR, INTERNAL):                maria.santos / demo123!")
-    print("  Alex Auditor (Auditor, Compliance, RESTRICTED):       alex.auditor / demo123!")
-    print("  Admin        (Admin, IT, RESTRICTED):                  admin / demo123!")
-    print("\nDemo Credentials:")
-    print("  Tenant: AcroCorp Global (US-East)")
-    print("  Sarah Chen  (Records Manager, Finance, RESTRICTED):  sarah.chen / demo123!")
-    print("  Raj Patel   (Employee, Finance, CONFIDENTIAL):        raj.patel / demo123!")
-    print("  Maria Santos (Employee, HR, INTERNAL):                maria.santos / demo123!")
-    print("  Alex Auditor (Auditor, Compliance, RESTRICTED):       alex.auditor / demo123!")
-    print("  Admin        (Admin, IT, RESTRICTED):                  admin / demo123!")
+    print("  Sarah Chen   (Admin / Records Manager, Finance, RESTRICTED):  sarah.chen / password123")
+    print("  Raj Patel    (Employee, Finance, CONFIDENTIAL):               raj.patel / password123")
+    print("  Maria Santos (Employee, HR, INTERNAL):                       maria.santos / password123")
+    print("  Alex Auditor (Auditor, Compliance, RESTRICTED):              alex.auditor / password123")
+    print("  Admin        (Admin, IT, RESTRICTED):                         admin / password123")
 
 
 async def main() -> None:

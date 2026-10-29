@@ -128,7 +128,7 @@ def verify_audit_chain_cmd(
     console.print("[cyan]Verifying audit ledger cryptographic SHA-256 hash chain...[/cyan]")
     try:
         summary = asyncio.run(_run())
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         console.print(f"[bold red][ERROR] Database connection failed: {exc}[/bold red]")
         sys.exit(1)
 
@@ -307,8 +307,9 @@ def seed_idp_demo_cmd(
     api_url: str = typer.Option("http://127.0.0.1:8000", "--api-url", help="Base backend URL"),
 ) -> None:
     """Submit demo GST invoices and safe EICAR test through the live REST upload API."""
-    import httpx
     import time
+
+    import httpx
     from rich.table import Table
 
     console.print(Panel("[bold cyan]Submitting Demo GST Invoices through Live IDP & Ingestion Pipeline...[/bold cyan]"))
@@ -396,6 +397,7 @@ def reindex_cmd(
 ) -> None:
     """Rebuild search index vectors from document OCR text and extracted IDP fields."""
     import asyncio
+
     from apps.api.app.search.service import reindex_search_vectors
     console.print(f"[bold blue]Reindexing search vectors for tenant {tenant_id or 'all'}...[/bold blue]")
     count = asyncio.run(reindex_search_vectors(tenant_id))
@@ -408,8 +410,9 @@ hardware_app = typer.Typer(name="hardware", help="Hardware profiling and adaptiv
 @hardware_app.command("detect")
 def hardware_detect_cmd() -> None:
     """Detect host CPU, RAM, GPU, battery status, and compute adaptive OCR execution policy."""
-    from apps.api.app.content.idp.hardware import HardwareProfiler
     from rich.table import Table
+
+    from apps.api.app.content.idp.hardware import HardwareProfiler
 
     profiler = HardwareProfiler()
     prof = profiler.probe()
@@ -456,11 +459,13 @@ def hardware_detect_cmd() -> None:
 @hardware_app.command("calibrate")
 def hardware_calibrate_cmd() -> None:
     """Run quick benchmark across enabled engines to measure real latency and peak RAM."""
-    import time
-    from PIL import Image, ImageDraw
     import json
+    import time
+
+    from PIL import Image, ImageDraw
+
+    from apps.api.app.content.idp.engine import PyMuPdfEngine, TesseractEngine
     from apps.api.app.content.idp.hardware import HardwareProfiler
-    from apps.api.app.content.idp.engine import TesseractEngine, PyMuPdfEngine
 
     console.print("[bold cyan]Running hardware calibration benchmarks on local machine...[/bold cyan]")
     prof = HardwareProfiler().probe()

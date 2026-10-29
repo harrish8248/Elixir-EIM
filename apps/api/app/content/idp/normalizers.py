@@ -26,6 +26,11 @@ CURRENCY_MAP = {
     "A$": "AUD",
     "AUD": "AUD",
     "CHF": "CHF",
+    "₹": "INR",
+    "RS.": "INR",
+    "RS": "INR",
+    "INR": "INR",
+    "RUPEES": "INR",
 }
 
 DATE_PATTERNS = [
@@ -39,32 +44,54 @@ DATE_PATTERNS = [
 ]
 
 
-def normalize_date(value: Any) -> str | None:
+def normalize_date(value: Any, prefer_dmy: bool = False) -> str | None:
     """Normalize any date representation to ISO 8601 (YYYY-MM-DD)."""
     if not value:
         return None
     val_str = str(value).strip()
 
-    # Direct ISO 8601 check: YYYY-MM-DD
+    # 1. Direct ISO 8601: YYYY-MM-DD
     iso_match = re.search(r"\b(20\d{2})[-/.](0?[1-9]|1[0-2])[-/.](0?[1-9]|[12]\d|3[01])\b", val_str)
     if iso_match:
         y, m, d = iso_match.groups()
         return f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
 
-    # Month day year: e.g. 10/25/2026 or 10-25-2026
-    mdy_match = re.search(r"\b(0?[1-9]|1[0-2])[-/.](0?[1-9]|[12]\d|3[01])[-/.](20\d{2})\b", val_str)
-    if mdy_match:
-        m, d, y = mdy_match.groups()
-        return f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
+    # 2. DD-Mon-YYYY or DD/Mon/YYYY (e.g. 01-Apr-2026, 24/Oct/2026)
+    mon_match = re.search(
+        r"\b(0?[1-9]|[12]\d|3[01])[-/.](Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*[-/.](20\d{2})\b",
+        val_str,
+        re.IGNORECASE,
+    )
+    if mon_match:
+        d, mon_str, y = mon_match.groups()
+        month_map = {
+            "jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+            "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12,
+        }
+        m = month_map.get(mon_str.lower()[:3], 1)
+        return f"{int(y):04d}-{m:02d}-{int(d):02d}"
 
-    # Day month year: e.g. 25/10/2026
-    dmy_match = re.search(r"\b(0?[1-9]|[12]\d|3[01])[-/.](0?[1-9]|1[0-2])[-/.](20\d{2})\b", val_str)
-    if dmy_match:
-        d, m, y = dmy_match.groups()
-        return f"{int(y):04d}-{int(m):02d}-{int(d):02d}"
+    # 3. Handle numeric slash/hyphen dates
+    num_match = re.search(r"\b(\d{1,2})[-/.](\d{1,2})[-/.](20\d{2})\b", val_str)
+    if num_match:
+        p1, p2, y_int = int(num_match.group(1)), int(num_match.group(2)), int(num_match.group(3))
+        if p1 > 12:  # Must be Day/Month/Year
+            d_val, m_val = p1, p2
+        elif p2 > 12:  # Must be Month/Day/Year
+            m_val, d_val = p1, p2
+        elif prefer_dmy:  # Ambiguous, but prefer DMY (Indian/UK)
+            d_val, m_val = p1, p2
+        else:  # Ambiguous, default to MDY (US)
+            m_val, d_val = p1, p2
+        if 1 <= m_val <= 12 and 1 <= d_val <= 31:
+            return f"{y_int:04d}-{m_val:02d}-{d_val:02d}"
 
-    # Textual month parsing: "May 8, 2026" or "8 May 2026"
+    # 4. Textual month parsing
     for fmt in [
+        "%d-%b-%Y",
+        "%d-%B-%Y",
+        "%d/%b/%Y",
+        "%d/%B/%Y",
         "%B %d, %Y",
         "%b %d, %Y",
         "%B %d %Y",
@@ -72,11 +99,10 @@ def normalize_date(value: Any) -> str | None:
         "%d %B %Y",
         "%d %b %Y",
         "%Y-%m-%d",
-        "%m/%d/%Y",
-        "%d/%m/%Y",
+        "%d/%m/%Y" if prefer_dmy else "%m/%d/%Y",
+        "%m/%d/%Y" if prefer_dmy else "%d/%m/%Y",
     ]:
         try:
-            # clean ordinal suffixes like 1st, 2nd, 3rd, 4th
             clean = re.sub(r"(\d+)(?:st|nd|rd|th)", r"\1", val_str)
             dt = datetime.strptime(clean, fmt)
             return dt.strftime("%Y-%m-%d")
@@ -87,7 +113,7 @@ def normalize_date(value: Any) -> str | None:
 
 
 def normalize_amount(value: Any) -> float | None:
-    """Normalize numeric amount to 2-decimal float."""
+    """Normalize numeric amount to 2-decimal float, handling Indian number grouping and currency symbols."""
     if value is None:
         return None
     if isinstance(value, (int, float)):
@@ -97,7 +123,7 @@ def normalize_amount(value: Any) -> float | None:
     if not val_str:
         return None
 
-    # Handle negative amounts formatted as (123.45) or -123.45
+    # Handle negative amounts
     is_negative = False
     if val_str.startswith("(") and val_str.endswith(")"):
         is_negative = True
@@ -106,21 +132,21 @@ def normalize_amount(value: Any) -> float | None:
         is_negative = True
         val_str = val_str[1:]
 
-    # Remove currency symbols and non-numeric noise except commas and dots
-    cleaned = re.sub(r"[^\d,.]", "", val_str)
+    # Remove currency words/symbols and trailing '/-' notation
+    val_str = re.sub(r"(?:INR|₹|Rs\.?|RS\.?|USD|\$|EUR|€|GBP|£)", "", val_str, flags=re.IGNORECASE)
+    val_str = val_str.rstrip("/- \t\n")
+
+    cleaned = re.sub(r"[^\d,.]", "", val_str).rstrip(".")
     if not cleaned:
         return None
 
-    # Determine European (1.234,56) vs US (1,234.56) format
+    # Determine European (1.234,56) vs US/Indian (1,23,456.56 or 1,234.56)
     if "," in cleaned and "." in cleaned:
         if cleaned.rfind(",") > cleaned.rfind("."):
-            # European format: replace . with empty, , with .
             cleaned = cleaned.replace(".", "").replace(",", ".")
         else:
-            # US format: remove comma
             cleaned = cleaned.replace(",", "")
     elif "," in cleaned and "." not in cleaned:
-        # Check if single comma is decimal separator (e.g. 1234,50)
         parts = cleaned.split(",")
         if len(parts) == 2 and len(parts[1]) in (1, 2):
             cleaned = f"{parts[0]}.{parts[1]}"

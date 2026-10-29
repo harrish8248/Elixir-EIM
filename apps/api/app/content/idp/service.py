@@ -54,7 +54,7 @@ class IdpService:
 
         # 3. Field & Line-Item Extraction (Invoice focus)
         if doc_type in [DocumentType.INVOICE, DocumentType.PURCHASE_ORDER, DocumentType.RECEIPT]:
-            is_gst = bool(re.search(r"\b(GST|GSTIN|CGST|SGST|IGST|HSN|SAC)\b", ocr_result.full_text, re.I))
+            is_gst = bool(re.search(r"\b(GST|GSTIN|CGST|SGST|IGST|HSN|SAC)\b", ocr_result.full_text, re.IGNORECASE))
             if is_gst:
                 gst_ext = GstInvoiceExtractor()
                 pil_img = None
@@ -99,7 +99,9 @@ class IdpService:
                                         fields[fname].confidence = 0.94
                                         fields[fname].extraction_method = "learned_template_prior"
                                 elif fname == "total":
-                                    from apps.api.app.content.idp.normalizers import normalize_amount
+                                    from apps.api.app.content.idp.normalizers import (
+                                        normalize_amount,
+                                    )
                                     nv = normalize_amount(cand_text)
                                     if nv is not None:
                                         fields[fname].field_value = nv

@@ -167,3 +167,4 @@ For demonstrations and day-to-day development, launch with the newly implemented
 ```
 - Starts only the **6 core services** (`postgres`, `redis`, `minio`, `keycloak`, `opa`, `clamav`).
 - Completely bypasses the 2.47 GB Gotenberg container.
+

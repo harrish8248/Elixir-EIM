@@ -97,9 +97,9 @@ export const LoginView: React.FC = () => {
             >
               <div className="flex items-center gap-2">
                 <UserCheck className="w-3.5 h-3.5 text-brand-700" />
-                <span className="font-medium">Sarah Chen (RecordsManager)</span>
+                <span className="font-medium">Sarah Chen (Admin, global)</span>
               </div>
-              <span className="text-[10px] text-surface-500">Finance · Clearance 3</span>
+              <span className="text-[10px] text-surface-500">Global Admin · Clearance 3</span>
             </button>
 
             <button
@@ -108,7 +108,7 @@ export const LoginView: React.FC = () => {
             >
               <div className="flex items-center gap-2">
                 <UserCheck className="w-3.5 h-3.5 text-blue-700" />
-                <span className="font-medium">Raj Patel (Employee)</span>
+                <span className="font-medium">Raj Patel (Finance, acro-finance)</span>
               </div>
               <span className="text-[10px] text-surface-500">Finance · Clearance 2</span>
             </button>
@@ -119,7 +119,7 @@ export const LoginView: React.FC = () => {
             >
               <div className="flex items-center gap-2">
                 <UserCheck className="w-3.5 h-3.5 text-purple-700" />
-                <span className="font-medium">Maria Santos (Employee)</span>
+                <span className="font-medium">Maria Santos (HR, acro-hr)</span>
               </div>
               <span className="text-[10px] text-surface-500">HR · Clearance 1</span>
             </button>

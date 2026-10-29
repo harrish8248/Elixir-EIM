@@ -125,7 +125,7 @@ def require_permission(
             )
             # Commit the audit record immediately so 403 HTTPException does not roll it back
             await db.commit()
-        except Exception as audit_err:  # noqa: BLE001
+        except Exception as audit_err:
             logger.error(f"Audit log recording error: {audit_err}")
 
         # Enforce Decision

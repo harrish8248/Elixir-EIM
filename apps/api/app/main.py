@@ -40,7 +40,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None]:
     try:
         discovered = module_registry.discover_modules(modules_root)
         logger.info(f"Loaded {len(discovered)} modules: {module_registry.startup_order()}")
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         logger.error(f"Error during module discovery: {exc}")
 
     yield

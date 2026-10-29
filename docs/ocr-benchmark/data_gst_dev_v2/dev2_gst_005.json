@@ -1,0 +1,153 @@
+{
+  "file_name": "dev2_gst_005.png",
+  "is_dev": true,
+  "layout_id": 5,
+  "has_qr": false,
+  "supplier_name": "Titan Company Limited",
+  "supplier_gstin": "29AAACT8080H1Z1",
+  "printed_supplier_gstin": "29AAACT8080H121",
+  "was_gstin_corrupted": true,
+  "supplier_pan": "AAACT8080H",
+  "buyer_name": "Bharat Heavy Electricals Ltd",
+  "buyer_gstin": "07AAACB0001B1ZW",
+  "invoice_number": "DEV2-GST-2026-5005",
+  "invoice_date": "2026-12-25",
+  "due_date": "2026-01-12",
+  "place_of_supply": "Delhi",
+  "taxable_amount": 664400.0,
+  "cgst_amount": 0.0,
+  "sgst_amount": 0.0,
+  "igst_amount": 119592.0,
+  "total_amount": 783992.0,
+  "currency": "\u20b9",
+  "boxes": {
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.1835,
+      0.0818
+    ],
+    "supplier_gstin": [
+      0.1235,
+      0.0985,
+      0.2165,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.2812,
+      0.0985,
+      0.3467,
+      0.1042
+    ],
+    "invoice_number": [
+      0.1137,
+      0.1712,
+      0.2153,
+      0.177
+    ],
+    "invoice_date": [
+      0.4573,
+      0.1712,
+      0.5082,
+      0.177
+    ],
+    "due_date": [
+      0.7506,
+      0.1712,
+      0.7976,
+      0.1764
+    ],
+    "place_of_supply": [
+      0.0431,
+      0.1833,
+      0.1533,
+      0.19
+    ],
+    "buyer_name": [
+      0.0431,
+      0.2167,
+      0.1788,
+      0.2239
+    ],
+    "buyer_gstin": [
+      0.1118,
+      0.2379,
+      0.211,
+      0.2436
+    ],
+    "taxable_amount": [
+      0.7255,
+      0.3879,
+      0.7859,
+      0.3948
+    ],
+    "igst_amount": [
+      0.7255,
+      0.4015,
+      0.7824,
+      0.4076
+    ],
+    "total_amount": [
+      0.7255,
+      0.4209,
+      0.8031,
+      0.4294
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "84713010",
+      "desc": "Enterprise Rackmount Server Nodes Dual Xeon",
+      "qty": 4,
+      "rate": 16000.0,
+      "taxable": 64000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "99831500",
+      "desc": "Custom ERP Cloud Architecture Consulting Services",
+      "qty": 3,
+      "rate": 16000.0,
+      "taxable": 48000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 7,
+      "rate": 16000.0,
+      "taxable": 112000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 2,
+      "rate": 4200.0,
+      "taxable": 8400.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 5,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 3,
+      "rate": 48000.0,
+      "taxable": 144000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 6,
+      "hsn": "84713010",
+      "desc": "Enterprise Rackmount Server Nodes Dual Xeon",
+      "qty": 6,
+      "rate": 48000.0,
+      "taxable": 288000.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

@@ -171,7 +171,7 @@ async def auth_callback(
             at_claims = jose_jwt.get_unverified_claims(access_token)
             if "realm_access" in at_claims:
                 claims["realm_access"] = at_claims["realm_access"]
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             logger.debug(f"Optional realm_access extraction skipped: {exc}")
 
     # JIT Provisioning
@@ -283,7 +283,7 @@ async def direct_token_login(
             at_claims = jose_jwt.get_unverified_claims(access_token)
             if "realm_access" in at_claims:
                 claims["realm_access"] = at_claims["realm_access"]
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             logger.debug(f"Optional realm_access extraction skipped: {exc}")
 
     # JIT User Provisioning
@@ -325,7 +325,7 @@ async def direct_token_login(
             outcome="ALLOW",
             reason="Keycloak direct grant token authenticated",
         )
-    except Exception as audit_exc:  # noqa: BLE001
+    except Exception as audit_exc:
         logger.warning(f"Failed to record login audit event: {audit_exc}")
 
     return UserProfileResponse(
@@ -388,7 +388,7 @@ async def logout(
             outcome="ALLOW",
             reason="User voluntary sign out",
         )
-    except Exception as audit_exc:  # noqa: BLE001
+    except Exception as audit_exc:
         logger.warning(f"Failed to record logout audit event: {audit_exc}")
 
     await session_manager.revoke_session(session.session_id)

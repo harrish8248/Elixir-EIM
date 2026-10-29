@@ -32,11 +32,11 @@ from apps.api.app.audit.service import record_audit_event
 from apps.api.app.content.idp.engine import (
     get_ocr_engine,
 )
+from apps.api.app.content.idp.evaluation import EvaluationHarness
 from apps.api.app.content.idp.hardware import (
     ENGINE_RESOURCE_PROFILES,
     HardwareProfiler,
 )
-from apps.api.app.content.idp.evaluation import EvaluationHarness
 from apps.api.app.content.idp.models import ValidateJobRequest
 from apps.api.app.content.idp.service import IdpService
 from apps.api.app.identity.router import get_current_session

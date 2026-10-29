@@ -79,3 +79,4 @@ Measured directly from `.venv/Lib/site-packages`:
 | **Total** | **1,105 files** | **460.82 MB** | **All files SHA-256 verified against frozen manifest** |
 
 *Note: Benchmark dataset directory can be relocated to secondary storage via the `ELIXIR_DATA_DIR` environment variable.*
+

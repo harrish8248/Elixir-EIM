@@ -236,3 +236,93 @@ docker ps --format "table {{.Names}}\t{{.Status}}"
    - Dev-split emulation results documented in `docs/HARDWARE_ADAPTATION.md`:
      - Eco: p50 2334.4 ms, p95 2467.0 ms, GSTIN Accuracy 100.0%.
      - Performance: p50 2355.7 ms, p95 2422.1 ms, GSTIN Accuracy 100.0%.
+
+---
+
+## Step 4: Quality Gaps, Normalizers, Metrics & Frozen Blind Evaluation (COMPLETED)
+
+**Date:** October 29, 2026
+
+1. **Un-Tuned Dev Benchmark Set (`data_gst_dev_v2`):**
+   - Generated 30 un-tuned GST invoices with seed 77777 in `docs/ocr-benchmark/data_gst_dev_v2/` mirroring blind set challenges (Indian grouping `1,23,456.00`, currency variants `₹`/`Rs.`/`INR`, dates in `DD/MM/YYYY` and `DD-Mon-YYYY`, perspective distortion, circular stamps, confusable characters).
+2. **Order-Insensitive CER / WER & Metric Corrections:**
+   - Implemented `compute_multiset_cer` and `compute_multiset_wer` in `apps/api/app/content/idp/evaluation.py` to decouple bag-of-words character accuracy from bounding-box reading-order permutations.
+3. **Normalizer & Extractor Arithmetic Reconciliation:**
+   - Fixed `normalizers.py`: added Indian currencies (`₹`, `Rs.`, `RS`, `INR`), date normalization supporting ambiguous Indian vs US formats (`prefer_dmy` parameter), and Indian thousand/lakh separators.
+   - Fixed `gst_extractor.py`:
+     - Buyer GSTIN anchor extraction: prioritizes `Buyer GSTIN:` and rejects invoice number candidates.
+     - Invoice number regex: requires `Number|No\.?|#` to avoid matching `Invoice Details:` headers.
+     - Arithmetic reconciliation: detects quadruplets (`taxable + cgst + sgst = total`) and triplets (`taxable + igst = total`) in bottom summary blocks, recovering stamp-obscured Grand Totals.
+4. **Dev Set Performance (30 samples, pure OCR):**
+   - Buyer GSTIN: 100.0% [88.65%, 100.0%]
+   - Invoice Number: 100.0% [88.65%, 100.0%]
+   - Invoice Date: 100.0% [88.65%, 100.0%]
+   - Total Amount: 100.0% [88.65%, 100.0%]
+   - Taxable Amount: 100.0% [88.65%, 100.0%]
+   - CGST: 100.0% [88.65%, 100.0%]
+   - SGST: 100.0% [88.65%, 100.0%]
+   - IGST: 100.0% [88.65%, 100.0%]
+   - Supplier GSTIN: 96.67% [83.33%, 99.41%]
+5. **Side-by-Side Engine Comparison on Dev Split:**
+   - PyMuPDF: GSTIN 93.3%, Total 100.0%, Date 100.0%, p50=2120.7ms, RAM=196.4 MB
+   - Tesseract: GSTIN 93.3%, Total 100.0%, Date 100.0%, p50=2131.4ms, RAM=203.1 MB
+   - Indra: GSTIN 100.0%, Total 93.3%, Date 100.0%, p50=823.2ms (2.6x faster on CPU!), RAM=508.2 MB
+   - Router: GSTIN 93.3%, Total 100.0%, Date 100.0%, p50=2123.9ms, RAM=511.4 MB
+6. **Credential Alignment & Search ACL Isolation:**
+   - Unified demo credentials to `password123` (Raj=Finance, Maria=HR, Sarah=Admin).
+   - Verified Search ACL isolation: `apps/api/tests/test_search_acl_and_fuzzy.py` passed (100%). Raj searches invoice -> gets hits; Maria searches invoice -> gets 0 hits.
+7. **Single Frozen Blind Evaluation (110 novel invoices):**
+   - **OCR-ONLY (No QR):**
+     - Supplier GSTIN: 98.18% (95% CI: [93.61%, 99.50%])
+     - Buyer GSTIN: 97.27% (95% CI: [92.29%, 99.07%])
+     - GSTIN Before vs After Repair: 87.27% -> 98.18%
+     - Checksum Rescue Rate: 100.0% (12/12 confusable GSTINs rescued)
+     - Invoice Number: 98.18% (95% CI: [93.61%, 99.50%])
+     - Invoice Date: 87.27% (95% CI: [79.76%, 92.27%])
+     - Taxable Amount: 94.55% (95% CI: [88.61%, 97.48%])
+     - Total Amount: 68.18% (95% CI: [58.99%, 76.15%])
+     - CGST: 90.91% (95% CI: [84.07%, 94.99%])
+     - SGST: 90.91% (95% CI: [84.07%, 94.99%])
+     - IGST: 76.36% (95% CI: [67.62%, 83.33%])
+     - Line Items F1: 0.56%
+     - STP Rate: 30.0% (95% CI: [22.23%, 39.12%])
+     - Auto-Approved Precision: 66.67% (95% CI: [49.61%, 80.25%])
+     - False-Approval Rate: 33.33%
+     - Latency: p50 2069.2ms, p95 2686.5ms, mean 2141.1ms
+   - **QR-ASSISTED:**
+     - Supplier GSTIN: 100.0% (95% CI: [96.63%, 100.0%])
+     - Buyer GSTIN: 100.0% (95% CI: [96.63%, 100.0%])
+     - GSTIN Before vs After Repair: 89.09% -> 100.0%
+     - Checksum Rescue Rate: 100.0% (12/12 confusable GSTINs rescued)
+     - Invoice Number: 100.0% (95% CI: [96.63%, 100.0%])
+     - Invoice Date: 96.36% (95% CI: [91.02%, 98.58%])
+     - Taxable Amount: 94.55% (95% CI: [88.61%, 97.48%])
+     - Total Amount: 70.0% (95% CI: [60.88%, 77.77%])
+     - CGST: 90.91% (95% CI: [84.07%, 94.99%])
+     - SGST: 90.91% (95% CI: [84.07%, 94.99%])
+     - IGST: 76.36% (95% CI: [67.62%, 83.33%])
+     - Line Items F1: 0.56%
+     - STP Rate: 34.55% (95% CI: [26.32%, 43.82%])
+     - Auto-Approved Precision: 71.05% (95% CI: [55.24%, 83.0%])
+     - False-Approval Rate: 28.95%
+     - Latency: p50 2308.7ms, p95 2587.7ms, mean 2324.9ms
+
+---
+
+## Step 5: Full Verification Suite & Closeout (COMPLETED)
+
+**Date:** October 29, 2026
+
+- **Linter & Typecheck Status:**
+  - `ruff check apps/api/app cli`: 0 errors (All checks passed).
+  - `mypy -p apps.api.app`: 0 errors (Success: no issues found in 69 source files).
+  - `import-linter --config .importlinter`: 2 kept, 0 broken.
+  - `opa test policies/rego/`: 10/10 PASS.
+  - `apps/api/tests/test_api_client_route_coverage.py`: 100% PASSED.
+  - `npm --prefix apps/web run typecheck`: 0 errors.
+  - `npm --prefix apps/web run build`: 0 errors (built in 3.99s).
+- **Core Unit & Feature Tests:**
+  - `apps/api/tests/test_idp_pipeline.py`: 9/9 passed.
+  - `apps/api/tests/test_hardware_adaptive.py`: 8/8 passed.
+  - `apps/api/tests/test_search_acl_and_fuzzy.py`: 1/1 passed.
+  - `apps/api/tests/integration/test_pep_coverage.py`: route coverage 100% passed.

@@ -53,7 +53,7 @@ class EventBus:
     ) -> None:
         try:
             await handler(payload)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             logger.error(
                 f"Handler '{handler.__name__}' failed while processing '{event_type}': {exc}",
                 exc_info=True,

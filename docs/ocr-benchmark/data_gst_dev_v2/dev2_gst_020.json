@@ -1,0 +1,159 @@
+{
+  "file_name": "dev2_gst_020.png",
+  "is_dev": true,
+  "layout_id": 4,
+  "has_qr": true,
+  "supplier_name": "Bajaj Electricals Ltd",
+  "supplier_gstin": "27AAACB4433D1Z6",
+  "printed_supplier_gstin": "27AAACB4433D1Z6",
+  "was_gstin_corrupted": false,
+  "supplier_pan": "AAACB4433D",
+  "buyer_name": "Bharat Heavy Electricals Ltd",
+  "buyer_gstin": "07AAACB0001B1ZW",
+  "invoice_number": "DEV2-GST-2026-5020",
+  "invoice_date": "2026-08-06",
+  "due_date": "2026-09-21",
+  "place_of_supply": "Delhi",
+  "taxable_amount": 2333600.0,
+  "cgst_amount": 0.0,
+  "sgst_amount": 0.0,
+  "igst_amount": 420048.0,
+  "total_amount": 2753648.0,
+  "currency": "INR",
+  "boxes": {
+    "irn_qr_code": [
+      0.8529,
+      0.0682,
+      0.9529,
+      0.1455
+    ],
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.1635,
+      0.0818
+    ],
+    "supplier_gstin": [
+      0.1235,
+      0.0985,
+      0.2184,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.2812,
+      0.0985,
+      0.3478,
+      0.1042
+    ],
+    "invoice_number": [
+      0.1137,
+      0.1712,
+      0.2153,
+      0.177
+    ],
+    "invoice_date": [
+      0.4573,
+      0.1712,
+      0.5082,
+      0.177
+    ],
+    "due_date": [
+      0.7506,
+      0.1712,
+      0.7976,
+      0.1764
+    ],
+    "place_of_supply": [
+      0.0431,
+      0.1833,
+      0.1533,
+      0.19
+    ],
+    "buyer_name": [
+      0.0431,
+      0.2167,
+      0.1788,
+      0.2239
+    ],
+    "buyer_gstin": [
+      0.1118,
+      0.2379,
+      0.211,
+      0.2436
+    ],
+    "taxable_amount": [
+      0.7255,
+      0.3879,
+      0.8035,
+      0.3948
+    ],
+    "igst_amount": [
+      0.7255,
+      0.4015,
+      0.7933,
+      0.4076
+    ],
+    "total_amount": [
+      0.7255,
+      0.4209,
+      0.8247,
+      0.4294
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "99831500",
+      "desc": "Custom ERP Cloud Architecture Consulting Services",
+      "qty": 7,
+      "rate": 110000.0,
+      "taxable": 770000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 3,
+      "rate": 110000.0,
+      "taxable": 330000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "85044090",
+      "desc": "Modular Online Uninterruptible Power Supply 20kVA",
+      "qty": 10,
+      "rate": 75000.0,
+      "taxable": 750000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 2,
+      "rate": 75000.0,
+      "taxable": 150000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 5,
+      "hsn": "84733020",
+      "desc": "High Performance NVMe Solid State Memory Arrays",
+      "qty": 8,
+      "rate": 4200.0,
+      "taxable": 33600.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 6,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 4,
+      "rate": 75000.0,
+      "taxable": 300000.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

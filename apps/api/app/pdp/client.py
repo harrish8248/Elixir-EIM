@@ -121,7 +121,7 @@ class PdpClient:
                 reason=f"Policy Decision Point timeout after {self.timeout}s - fail closed",
                 obligations=["audit_log", "pdp_timeout_alert"],
             )
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             logger.error(f"PDP connection error to {self.endpoint}: {exc}")
             return PdpDecision(
                 result="deny",

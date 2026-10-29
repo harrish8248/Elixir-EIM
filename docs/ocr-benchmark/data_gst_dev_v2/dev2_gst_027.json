@@ -1,0 +1,162 @@
+{
+  "file_name": "dev2_gst_027.png",
+  "is_dev": true,
+  "layout_id": 3,
+  "has_qr": false,
+  "supplier_name": "Sun Pharmaceutical Industries Ltd",
+  "supplier_gstin": "24AAACS4455P1Z0",
+  "printed_supplier_gstin": "24AAACS4455P1Z0",
+  "was_gstin_corrupted": false,
+  "supplier_pan": "AAACS4455P",
+  "buyer_name": "Tech Mahindra Limited",
+  "buyer_gstin": "27AAACT1024L1ZI",
+  "invoice_number": "DEV2-GST-2026-5027",
+  "invoice_date": "2026-04-14",
+  "due_date": "2026-05-01",
+  "place_of_supply": "Maharashtra",
+  "taxable_amount": 1734200.0,
+  "cgst_amount": 0.0,
+  "sgst_amount": 0.0,
+  "igst_amount": 312156.0,
+  "total_amount": 2046356.0,
+  "currency": "\u20b9",
+  "boxes": {
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.2518,
+      0.08
+    ],
+    "supplier_gstin": [
+      0.1235,
+      0.0985,
+      0.2169,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.2812,
+      0.0985,
+      0.3463,
+      0.1042
+    ],
+    "invoice_number": [
+      0.1137,
+      0.1712,
+      0.2153,
+      0.177
+    ],
+    "invoice_date": [
+      0.4573,
+      0.1712,
+      0.5082,
+      0.177
+    ],
+    "due_date": [
+      0.7506,
+      0.1712,
+      0.7976,
+      0.1764
+    ],
+    "place_of_supply": [
+      0.0431,
+      0.1833,
+      0.1847,
+      0.19
+    ],
+    "buyer_name": [
+      0.0431,
+      0.2167,
+      0.1533,
+      0.2224
+    ],
+    "buyer_gstin": [
+      0.1118,
+      0.2379,
+      0.2016,
+      0.2436
+    ],
+    "taxable_amount": [
+      0.7255,
+      0.403,
+      0.7914,
+      0.41
+    ],
+    "igst_amount": [
+      0.7255,
+      0.4167,
+      0.7824,
+      0.4227
+    ],
+    "total_amount": [
+      0.7255,
+      0.4361,
+      0.8102,
+      0.4445
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "85176290",
+      "desc": "High Speed Gigabit Optical Fiber Transceiver Switch",
+      "qty": 1,
+      "rate": 110000.0,
+      "taxable": 110000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "99871900",
+      "desc": "HVAC Precision Server Room Environmental Control",
+      "qty": 5,
+      "rate": 8500.0,
+      "taxable": 42500.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 1,
+      "rate": 8500.0,
+      "taxable": 8500.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 6,
+      "rate": 110000.0,
+      "taxable": 660000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 5,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 10,
+      "rate": 4200.0,
+      "taxable": 42000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 6,
+      "hsn": "84713010",
+      "desc": "Enterprise Rackmount Server Nodes Dual Xeon",
+      "qty": 11,
+      "rate": 4200.0,
+      "taxable": 46200.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 7,
+      "hsn": "99871900",
+      "desc": "HVAC Precision Server Room Environmental Control",
+      "qty": 11,
+      "rate": 75000.0,
+      "taxable": 825000.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

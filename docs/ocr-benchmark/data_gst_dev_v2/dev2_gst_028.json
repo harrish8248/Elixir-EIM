@@ -1,0 +1,141 @@
+{
+  "file_name": "dev2_gst_028.png",
+  "is_dev": true,
+  "layout_id": 4,
+  "has_qr": true,
+  "supplier_name": "Larsen & Toubro Heavy Engineering",
+  "supplier_gstin": "24AAACL6789K1Z0",
+  "printed_supplier_gstin": "24AAACL6789K1Z0",
+  "was_gstin_corrupted": false,
+  "supplier_pan": "AAACL6789K",
+  "buyer_name": "Wipro Enterprise Solutions Ltd",
+  "buyer_gstin": "29AAACW8901H1Z4",
+  "invoice_number": "DEV2-GST-2026-5028",
+  "invoice_date": "21-Mar-2026",
+  "due_date": "08-Apr-2026",
+  "place_of_supply": "Karnataka",
+  "taxable_amount": 1700000.0,
+  "cgst_amount": 0.0,
+  "sgst_amount": 0.0,
+  "igst_amount": 306000.0,
+  "total_amount": 2006000.0,
+  "currency": "Rs.",
+  "boxes": {
+    "irn_qr_code": [
+      0.8529,
+      0.0682,
+      0.9529,
+      0.1455
+    ],
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.2624,
+      0.0818
+    ],
+    "supplier_gstin": [
+      0.1235,
+      0.0985,
+      0.2173,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.2812,
+      0.0985,
+      0.3467,
+      0.1042
+    ],
+    "invoice_number": [
+      0.1137,
+      0.1712,
+      0.2153,
+      0.177
+    ],
+    "invoice_date": [
+      0.4573,
+      0.1712,
+      0.5153,
+      0.177
+    ],
+    "due_date": [
+      0.7506,
+      0.1712,
+      0.802,
+      0.1779
+    ],
+    "place_of_supply": [
+      0.0431,
+      0.1833,
+      0.1749,
+      0.19
+    ],
+    "buyer_name": [
+      0.0431,
+      0.2167,
+      0.1925,
+      0.2239
+    ],
+    "buyer_gstin": [
+      0.1118,
+      0.2379,
+      0.209,
+      0.2436
+    ],
+    "taxable_amount": [
+      0.7255,
+      0.3576,
+      0.8016,
+      0.3645
+    ],
+    "igst_amount": [
+      0.7255,
+      0.3712,
+      0.7914,
+      0.3773
+    ],
+    "total_amount": [
+      0.7255,
+      0.3906,
+      0.8227,
+      0.3991
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "84713010",
+      "desc": "Enterprise Rackmount Server Nodes Dual Xeon",
+      "qty": 9,
+      "rate": 8500.0,
+      "taxable": 76500.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 6,
+      "rate": 75000.0,
+      "taxable": 450000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "99871900",
+      "desc": "HVAC Precision Server Room Environmental Control",
+      "qty": 10,
+      "rate": 110000.0,
+      "taxable": 1100000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "99831500",
+      "desc": "Custom ERP Cloud Architecture Consulting Services",
+      "qty": 3,
+      "rate": 24500.0,
+      "taxable": 73500.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

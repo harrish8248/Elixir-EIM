@@ -5,13 +5,12 @@ import os
 import shutil
 import time
 import uuid
-from typing import Any
 
-from PIL import Image
 import pymupdf
 import pytesseract  # type: ignore[import-untyped]
+from PIL import Image
 from sqlalchemy import text
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 from apps.api.app.platform.config import settings
 from apps.api.app.platform.logging import logger

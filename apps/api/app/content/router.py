@@ -227,7 +227,7 @@ async def scan_with_clamav(content: bytes) -> tuple[bool, str]:
             return True, "clean"
         else:
             return False, result
-    except Exception as exc:  # noqa: BLE001
+    except Exception as exc:
         logger.warning(f"ClamAV scan error (treating as clean for non-blocking): {exc}")
         return True, "scan_unavailable"
 

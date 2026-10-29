@@ -152,7 +152,7 @@ async def system_health(
     try:
         await db.execute(text("SELECT 1"))
         checks["database"] = "UP"
-    except Exception:  # noqa: BLE001
+    except Exception:
         checks["database"] = "DOWN"
 
     # Redis
@@ -161,7 +161,7 @@ async def system_health(
         r = await session_manager.get_redis()
         await r.ping()
         checks["redis"] = "UP"
-    except Exception:  # noqa: BLE001
+    except Exception:
         checks["redis"] = "DOWN"
 
     # OPA
@@ -170,7 +170,7 @@ async def system_health(
         async with httpx.AsyncClient(timeout=3.0) as client:
             resp = await client.get("http://localhost:8181/health")
             checks["opa"] = "UP" if resp.status_code == 200 else "DOWN"
-    except Exception:  # noqa: BLE001
+    except Exception:
         checks["opa"] = "DOWN"
 
     # MinIO
@@ -186,7 +186,7 @@ async def system_health(
         ) as s3:
             await s3.list_buckets()
         checks["storage"] = "UP"
-    except Exception:  # noqa: BLE001
+    except Exception:
         checks["storage"] = "DOWN"
 
     overall = "HEALTHY" if all(v == "UP" for v in checks.values()) else "DEGRADED"

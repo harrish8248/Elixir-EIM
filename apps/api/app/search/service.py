@@ -1,7 +1,5 @@
 """Search indexing service for PostgreSQL FTS and Trigram matching."""
 
-import uuid
-from typing import Any
 from sqlalchemy import text
 
 from apps.api.app.platform.logging import logger

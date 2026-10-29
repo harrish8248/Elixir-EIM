@@ -4,14 +4,17 @@ Evaluates in two modes:
   Mode A: OCR-Only (QR decoding strictly disabled)
   Mode B: QR-Assisted (Full hybrid capture pipeline)
 Calculates:
-  - Exact match accuracy for all fields
+  - Exact match accuracy for all key fields (Supplier/Buyer GSTIN, Number, Date, Total, Taxable, CGST, SGST, IGST)
   - 95% Wilson Score Confidence Intervals
   - GSTIN accuracy before vs after position-aware & checksum repair
-  - GSTIN rescue rate
+  - GSTIN rescue rate on confusable characters
+  - Line items Precision, Recall, and F1
+  - Reading-order vs Multiset CER and WER
   - STP rate, auto-approved precision, false approval rate
   - Latency: p50, p95, mean
 """
 
+import collections
 import json
 import math
 from pathlib import Path
@@ -23,19 +26,19 @@ from PIL import Image
 from apps.api.app.content.idp.engine import TesseractEngine, OcrResult
 from apps.api.app.content.idp.gst_extractor import GstInvoiceExtractor
 from apps.api.app.content.idp.validation import ValidationEngine
+from apps.api.app.content.idp.evaluation import (
+    compute_cer,
+    compute_wer,
+    compute_multiset_cer,
+    compute_multiset_wer,
+    wilson_confidence_interval,
+)
+
 
 def wilson_ci(k: int, n: int, confidence: float = 0.95) -> tuple[float, float]:
     """Calculate 95% Wilson score confidence interval for a binomial proportion."""
-    if n == 0:
-        return 0.0, 0.0
-    z = 1.95996  # 95% confidence
-    p = k / n
-    denom = 1 + (z**2) / n
-    center = (p + (z**2) / (2 * n)) / denom
-    margin = (z * math.sqrt((p * (1 - p) / n) + ((z**2) / (4 * (n**2))))) / denom
-    lower = max(0.0, center - margin)
-    upper = min(1.0, center + margin)
-    return round(lower * 100, 2), round(upper * 100, 2)
+    return wilson_confidence_interval(k, n, confidence)
+
 
 def evaluate_mode(blind_dir: Path, ocr_engine: TesseractEngine, extractor: GstInvoiceExtractor, allow_qr: bool):
     image_files = sorted(list(blind_dir.glob("blind_gst_*.png")))
@@ -48,6 +51,9 @@ def evaluate_mode(blind_dir: Path, ocr_engine: TesseractEngine, extractor: GstIn
         "invoice_date",
         "total_amount",
         "taxable_amount",
+        "cgst",
+        "sgst",
+        "igst",
     ]
 
     field_correct = {f: 0 for f in fields_to_track}
@@ -55,6 +61,16 @@ def evaluate_mode(blind_dir: Path, ocr_engine: TesseractEngine, extractor: GstIn
     repaired_gstin_correct = 0
     corrupted_count = 0
     rescued_count = 0
+
+    reading_cers = []
+    reading_wers = []
+    multiset_cers = []
+    multiset_wers = []
+
+    # Line item metrics
+    total_gt_items = 0
+    total_pred_items = 0
+    total_matched_items = 0
 
     latencies = []
     auto_approved = 0
@@ -89,7 +105,22 @@ def evaluate_mode(blind_dir: Path, ocr_engine: TesseractEngine, extractor: GstIn
         dur = (time.perf_counter() - t0) * 1000
         latencies.append(dur)
 
-        # Track GSTIN repair metrics
+        # 3. CER and WER comparison against ground truth text
+        item_texts = " ".join([f"{it.get('hsn', '')} {it.get('desc', '')} {it.get('qty', '')} {it.get('rate', '')} {it.get('taxable', '')}" for it in gt.get("line_items", [])])
+        ref_text = (
+            f"TAX INVOICE {gt.get('supplier_name', '')} {gt.get('supplier_gstin', '')} {gt.get('supplier_pan', '')} "
+            f"{gt.get('invoice_number', '')} {gt.get('invoice_date', '')} {gt.get('due_date', '')} {gt.get('place_of_supply', '')} "
+            f"{gt.get('buyer_name', '')} {gt.get('buyer_gstin', '')} {item_texts} "
+            f"{gt.get('taxable_amount', '')} {gt.get('cgst_amount', 0.0)} {gt.get('sgst_amount', 0.0)} {gt.get('igst_amount', 0.0)} {gt.get('total_amount', '')}"
+        )
+        hyp_text = page_res.full_text
+
+        reading_cers.append(compute_cer(ref_text, hyp_text))
+        reading_wers.append(compute_wer(ref_text, hyp_text))
+        multiset_cers.append(compute_multiset_cer(ref_text, hyp_text))
+        multiset_wers.append(compute_multiset_wer(ref_text, hyp_text))
+
+        # 4. Track GSTIN repair metrics
         true_supplier_gstin = gt["supplier_gstin"]
         was_corrupted = gt.get("was_gstin_corrupted", False)
         if was_corrupted:
@@ -102,26 +133,29 @@ def evaluate_mode(blind_dir: Path, ocr_engine: TesseractEngine, extractor: GstIn
         printed_gstin = gt.get("printed_supplier_gstin", true_supplier_gstin)
         if not was_corrupted and final_gstin == true_supplier_gstin:
             raw_gstin_correct += 1
-        elif was_corrupted:
-            # If corrupted, raw was wrong
-            pass
 
         if final_gstin == true_supplier_gstin:
             repaired_gstin_correct += 1
             if was_corrupted:
                 rescued_count += 1
 
-        # Field evaluation
+        # 5. Field evaluation
         is_all_key_correct = True
         for fname in fields_to_track:
             gt_val = gt.get(fname)
-            ext_field = extracted.get(fname)
-            ext_val = ext_field.field_value if ext_field else None
+            if fname == "taxable_amount" and gt_val is None:
+                gt_val = gt.get("taxable_value")
+            elif fname == "cgst" and gt_val is None:
+                gt_val = gt.get("cgst_amount", 0.0)
+            elif fname == "sgst" and gt_val is None:
+                gt_val = gt.get("sgst_amount", 0.0)
+            elif fname == "igst" and gt_val is None:
+                gt_val = gt.get("igst_amount", 0.0)
 
-            # Handle field name differences
-            if fname == "taxable_amount" and not ext_val:
+            ext_field = extracted.get(fname)
+            if fname == "taxable_amount" and not ext_field:
                 ext_field = extracted.get("taxable_value")
-                ext_val = ext_field.field_value if ext_field else None
+            ext_val = ext_field.field_value if ext_field else None
 
             matched = False
             if gt_val is not None and ext_val is not None:
@@ -140,8 +174,28 @@ def evaluate_mode(blind_dir: Path, ocr_engine: TesseractEngine, extractor: GstIn
             else:
                 is_all_key_correct = False
 
-        # Validation & STP decision
-        val_res = validator.validate(fields=extracted, line_items=[])
+        # 6. Line item evaluation
+        gt_items = gt.get("line_items", [])
+        pred_items = gst_res.line_items or []
+        total_gt_items += len(gt_items)
+        total_pred_items += len(pred_items)
+
+        matched_for_doc = 0
+        used_preds = set()
+        for g_it in gt_items:
+            g_amt = g_it.get("taxable")
+            for p_idx, p_it in enumerate(pred_items):
+                if p_idx in used_preds:
+                    continue
+                if p_it.amount is not None and g_amt is not None:
+                    if abs(float(p_it.amount) - float(g_amt)) < 1.0:
+                        matched_for_doc += 1
+                        used_preds.add(p_idx)
+                        break
+        total_matched_items += matched_for_doc
+
+        # 7. Validation & STP decision
+        val_res = validator.validate(fields=extracted, line_items=gst_res.line_items)
         if val_res.is_approved:
             auto_approved += 1
             if is_all_key_correct:
@@ -174,10 +228,34 @@ def evaluate_mode(blind_dir: Path, ocr_engine: TesseractEngine, extractor: GstIn
     rep_acc = (repaired_gstin_correct / total) * 100
     rescue_pct = (rescued_count / max(corrupted_count, 1)) * 100
 
+    # Line item precision, recall, f1
+    item_precision = (total_matched_items / max(total_pred_items, 1)) * 100
+    item_recall = (total_matched_items / max(total_gt_items, 1)) * 100
+    item_f1 = (
+        (2 * item_precision * item_recall) / (item_precision + item_recall)
+        if (item_precision + item_recall) > 0
+        else 0.0
+    )
+
     return {
         "mode": "QR-Assisted" if allow_qr else "OCR-Only",
         "total_documents": total,
         "fields": field_results,
+        "cer_wer": {
+            "reading_order_cer": round(float(np.mean(reading_cers)) * 100, 2),
+            "reading_order_wer": round(float(np.mean(reading_wers)) * 100, 2),
+            "multiset_cer": round(float(np.mean(multiset_cers)) * 100, 2),
+            "multiset_wer": round(float(np.mean(multiset_wers)) * 100, 2),
+        },
+        "line_items": {
+            "gt_items": total_gt_items,
+            "pred_items": total_pred_items,
+            "matched_items": total_matched_items,
+            "precision_pct": round(item_precision, 2),
+            "recall_pct": round(item_recall, 2),
+            "f1_pct": round(item_f1, 2),
+            "f1_ci_95": wilson_ci(total_matched_items, total_gt_items),
+        },
         "gstin_metrics": {
             "raw_accuracy_pct": round(raw_acc, 2),
             "repaired_accuracy_pct": round(rep_acc, 2),
@@ -200,6 +278,7 @@ def evaluate_mode(blind_dir: Path, ocr_engine: TesseractEngine, extractor: GstIn
             "p95": round(float(np.percentile(latencies, 95)), 1),
         },
     }
+
 
 def main():
     blind_dir = Path("docs/ocr-benchmark/data_gst_blind")
@@ -230,17 +309,25 @@ def main():
     print("="*70)
     for mode_name, res in [("OCR-ONLY (No QR)", res_ocr_only), ("QR-ASSISTED", res_qr_assisted)]:
         print(f"\n>>> MODE: {mode_name}")
-        print(f"  Supplier GSTIN Accuracy:  {res['gstin_metrics']['repaired_accuracy_pct']}% (95% CI: {res['gstin_metrics']['gstin_ci_95']})")
+        print(f"  Supplier GSTIN Accuracy:      {res['fields']['supplier_gstin']['accuracy_pct']}% (95% CI: {res['fields']['supplier_gstin']['ci_95']})")
+        print(f"  Buyer GSTIN Accuracy:         {res['fields']['buyer_gstin']['accuracy_pct']}% (95% CI: {res['fields']['buyer_gstin']['ci_95']})")
         print(f"  GSTIN Before vs After Repair: {res['gstin_metrics']['raw_accuracy_pct']}% -> {res['gstin_metrics']['repaired_accuracy_pct']}%")
-        print(f"  Checksum Rescue Rate:     {res['gstin_metrics']['rescue_rate_pct']}% ({res['gstin_metrics']['rescued_samples']}/{res['gstin_metrics']['corrupted_samples']} confusable GSTINs rescued)")
-        print(f"  Invoice Number Accuracy:  {res['fields']['invoice_number']['accuracy_pct']}% (95% CI: {res['fields']['invoice_number']['ci_95']})")
-        print(f"  Invoice Date Accuracy:    {res['fields']['invoice_date']['accuracy_pct']}% (95% CI: {res['fields']['invoice_date']['ci_95']})")
-        print(f"  Total Amount Accuracy:    {res['fields']['total_amount']['accuracy_pct']}% (95% CI: {res['fields']['total_amount']['ci_95']})")
-        print(f"  Taxable Amount Accuracy:  {res['fields']['taxable_amount']['accuracy_pct']}% (95% CI: {res['fields']['taxable_amount']['ci_95']})")
-        print(f"  STP Rate:                 {res['stp_metrics']['stp_rate_pct']}% (95% CI: {res['stp_metrics']['stp_ci_95']})")
-        print(f"  Auto-Approved Precision:  {res['stp_metrics']['auto_approved_precision_pct']}%")
-        print(f"  False-Approval Rate:      {res['stp_metrics']['false_approval_rate_pct']}%")
-        print(f"  Latency (p50 / p95 / mean): {res['latency_ms']['p50']}ms / {res['latency_ms']['p95']}ms / {res['latency_ms']['mean']}ms")
+        print(f"  Checksum Rescue Rate:         {res['gstin_metrics']['rescue_rate_pct']}% ({res['gstin_metrics']['rescued_samples']}/{res['gstin_metrics']['corrupted_samples']} confusable GSTINs rescued)")
+        print(f"  Invoice Number Accuracy:      {res['fields']['invoice_number']['accuracy_pct']}% (95% CI: {res['fields']['invoice_number']['ci_95']})")
+        print(f"  Invoice Date Accuracy:        {res['fields']['invoice_date']['accuracy_pct']}% (95% CI: {res['fields']['invoice_date']['ci_95']})")
+        print(f"  Total Amount Accuracy:        {res['fields']['total_amount']['accuracy_pct']}% (95% CI: {res['fields']['total_amount']['ci_95']})")
+        print(f"  Taxable Amount Accuracy:      {res['fields']['taxable_amount']['accuracy_pct']}% (95% CI: {res['fields']['taxable_amount']['ci_95']})")
+        print(f"  CGST Accuracy:                {res['fields']['cgst']['accuracy_pct']}% (95% CI: {res['fields']['cgst']['ci_95']})")
+        print(f"  SGST Accuracy:                {res['fields']['sgst']['accuracy_pct']}% (95% CI: {res['fields']['sgst']['ci_95']})")
+        print(f"  IGST Accuracy:                {res['fields']['igst']['accuracy_pct']}% (95% CI: {res['fields']['igst']['ci_95']})")
+        print(f"  Line Items F1:                {res['line_items']['f1_pct']}% (Precision: {res['line_items']['precision_pct']}%, Recall: {res['line_items']['recall_pct']}%)")
+        print(f"  Reading-Order CER / WER:      {res['cer_wer']['reading_order_cer']}% / {res['cer_wer']['reading_order_wer']}%")
+        print(f"  Multiset CER / WER:           {res['cer_wer']['multiset_cer']}% / {res['cer_wer']['multiset_wer']}%")
+        print(f"  STP Rate:                     {res['stp_metrics']['stp_rate_pct']}% (95% CI: {res['stp_metrics']['stp_ci_95']})")
+        print(f"  Auto-Approved Precision:      {res['stp_metrics']['auto_approved_precision_pct']}% (95% CI: {res['stp_metrics']['auto_precision_ci_95']})")
+        print(f"  False-Approval Rate:          {res['stp_metrics']['false_approval_rate_pct']}%")
+        print(f"  Latency (p50 / p95 / mean):   {res['latency_ms']['p50']}ms / {res['latency_ms']['p95']}ms / {res['latency_ms']['mean']}ms")
+
 
 if __name__ == "__main__":
     main()

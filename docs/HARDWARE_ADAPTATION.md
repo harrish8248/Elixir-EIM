@@ -86,3 +86,4 @@ Measured across 10 dev-split invoices using `scripts/eval_hardware_emulation.py`
 ### Trade-off Analysis
 1. **Latency Profile**: Eco mode (at 200 DPI with 2 threads) achieves faster median image decoding and page processing (p50: 2334.4ms vs 2355.7ms) due to significantly reduced image raster size (44% fewer pixels per page), but shows higher p95 latency on complex, dense pages where OCR character segmentations require more passes.
 2. **Field Extraction Fidelity**: On clean and structured documents, GSTIN extraction accuracy remains rock-solid at **100.0%** across both modes, confirming that 200 DPI is fully sufficient for high-confidence rule-based regex and Base-36 checksum validation when battery conservation is needed.
+

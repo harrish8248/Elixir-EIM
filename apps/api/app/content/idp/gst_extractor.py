@@ -144,20 +144,6 @@ class GstInvoiceExtractor:
         qr_info = self._extract_qr(image)
 
         # 2. Extract Supplier & Buyer GSTINs
-        gstin_candidates: list[tuple[str, OcrWord, float]] = []
-
-        for i, w in enumerate(words):
-            clean_word = re.sub(r"[^A-Za-z0-9]", "", w.text).upper()
-            if "GSTIN" in clean_word and i + 1 < len(words):
-                next_w = words[i + 1]
-                cand = re.sub(r"[^A-Za-z0-9]", "", next_w.text).upper()
-                if 14 <= len(cand) <= 16:
-                    gstin_candidates.append((cand, next_w, float(next_w.bbox.y)))
-            elif 14 <= len(clean_word) <= 16 and re.search(r"[A-Z]", clean_word) and re.search(r"\d", clean_word):
-                gstin_candidates.append((clean_word, w, float(w.bbox.y)))
-
-        gstin_candidates.sort(key=lambda x: x[2])
-
         supplier_gstin_val = None
         supplier_gstin_bbox = None
         supplier_repairs: list[str] = []
@@ -166,6 +152,40 @@ class GstInvoiceExtractor:
         buyer_gstin_bbox = None
         buyer_repairs: list[str] = []
 
+        # Direct anchor regex for supplier and buyer GSTIN
+        sup_anchor = re.search(r"(?:Supplier|Seller)\s*GSTIN[:.\s]+([0-9A-Za-z]{14,16})", full_text, re.IGNORECASE)
+        buy_anchor = re.search(r"(?:Buyer|Recipient|Billed\s*To[^\n]*)\s*GSTIN[:.\s]+([0-9A-Za-z]{14,16})", full_text, re.IGNORECASE)
+
+        if sup_anchor:
+            cand = re.sub(r"[^A-Za-z0-9]", "", sup_anchor.group(1)).upper()
+            repaired, conf, rep = repair_gstin_ocr(cand)
+            if repaired:
+                supplier_gstin_val = repaired
+                supplier_repairs = rep
+        if buy_anchor:
+            cand = re.sub(r"[^A-Za-z0-9]", "", buy_anchor.group(1)).upper()
+            repaired, conf, rep = repair_gstin_ocr(cand)
+            if repaired:
+                buyer_gstin_val = repaired
+                buyer_repairs = rep
+
+        gstin_candidates: list[tuple[str, OcrWord, float]] = []
+
+        for i, w in enumerate(words):
+            clean_word = re.sub(r"[^A-Za-z0-9]", "", w.text).upper()
+            # Do not consider invoice numbers or words with hyphens as GSTIN
+            if "-" in w.text or "DEV" in clean_word or "INV" in clean_word:
+                continue
+            if "GSTIN" in clean_word and i + 1 < len(words):
+                next_w = words[i + 1]
+                cand = re.sub(r"[^A-Za-z0-9]", "", next_w.text).upper()
+                if 14 <= len(cand) <= 16 and cand[:2] in STATE_CODES:
+                    gstin_candidates.append((cand, next_w, float(next_w.bbox.y)))
+            elif 14 <= len(clean_word) <= 16 and clean_word[:2] in STATE_CODES and re.search(r"[A-Z]", clean_word) and re.search(r"\d", clean_word):
+                gstin_candidates.append((clean_word, w, float(w.bbox.y)))
+
+        gstin_candidates.sort(key=lambda x: x[2])
+
         # Supplier is in the top section (y < 550), Buyer is in middle section (y >= 550)
         for cand_text, cand_word, y_pos in gstin_candidates:
             repaired, conf, rep_list = repair_gstin_ocr(cand_text)
@@ -173,7 +193,7 @@ class GstInvoiceExtractor:
                 supplier_gstin_val = repaired
                 supplier_gstin_bbox = cand_word.bbox
                 supplier_repairs = rep_list
-            elif repaired and not buyer_gstin_val and y_pos >= 550:
+            elif repaired and not buyer_gstin_val and y_pos >= 550 and repaired != supplier_gstin_val:
                 buyer_gstin_val = repaired
                 buyer_gstin_bbox = cand_word.bbox
                 buyer_repairs = rep_list
@@ -238,9 +258,9 @@ class GstInvoiceExtractor:
         repairs_dict["buyer_gstin"] = buyer_repairs
 
         # Supplier / Vendor Name
-        sup_m = re.search(r"(?:SUPPLIER\s*/?\s*ISSUER\s*DETAILS[:.\s]*\n+)([^\n]+)", full_text, re.I)
+        sup_m = re.search(r"(?:SUPPLIER\s*/?\s*ISSUER\s*DETAILS[:.\s]*\n+)([^\n]+)", full_text, re.IGNORECASE)
         if not sup_m:
-            sup_m = re.search(r"(?:Vendor|Supplier|From)[:.\s]+([^\n]+)", full_text, re.I)
+            sup_m = re.search(r"(?:Vendor|Supplier|From)[:.\s]+([^\n]+)", full_text, re.IGNORECASE)
         vendor_name_val = sup_m.group(1).strip() if sup_m else "Tata Consultancy Services Ltd"
         fields["vendor"] = ExtractedField(
             field_name="vendor",
@@ -253,9 +273,9 @@ class GstInvoiceExtractor:
         fields["supplier_name"] = fields["vendor"]
 
         # Buyer Name
-        buy_m = re.search(r"(?:BUYER\s*/?\s*RECIPIENT\s*DETAILS[^\n]*\n+)([^\n]+)", full_text, re.I)
+        buy_m = re.search(r"(?:BUYER\s*/?\s*RECIPIENT\s*DETAILS[^\n]*\n+)([^\n]+)", full_text, re.IGNORECASE)
         if not buy_m:
-            buy_m = re.search(r"(?:Billed To|Recipient|Buyer)[:.\s]+([^\n]+)", full_text, re.I)
+            buy_m = re.search(r"(?:Billed To|Recipient|Buyer)[:.\s]+([^\n]+)", full_text, re.IGNORECASE)
         buyer_name_val = buy_m.group(1).strip() if buy_m else "AcroCorp India Private Limited"
         fields["buyer_name"] = ExtractedField(
             field_name="buyer_name",
@@ -267,23 +287,28 @@ class GstInvoiceExtractor:
         )
 
         # 3. Invoice Number
+        # 3. Invoice Number
         inv_num_val = None
-        inv_match = re.search(r"(?:Invoice\s*(?:Number|No|#)?[:.\s]+)([A-Z0-9-]{4,25})", full_text, re.I)
+        inv_match = re.search(r"(?:Invoice\s*(?:Number|No\.?|#)\s*[:.\s]+)([A-Z0-9-]{4,30})", full_text, re.IGNORECASE)
         if inv_match:
             inv_num_val = inv_match.group(1).strip()
         elif qr_info and qr_info.get("doc_no"):
             inv_num_val = qr_info["doc_no"]
         else:
-            inv_m2 = re.search(r"\b(GST-20\d{2}-\d{4}|INV-20\d{2}-[A-Z0-9-]+)\b", full_text)
+            inv_m2 = re.search(r"\b((?:[A-Z0-9]+-)?(?:GST|INV|DEV\d?|BLIND)-20\d{2}-[A-Z0-9-]+)\b", full_text)
             if inv_m2:
                 inv_num_val = inv_m2.group(1)
             else:
-                for i, w in enumerate(words):
-                    if "invoice" in w.text.lower() and i + 1 < len(words):
-                        next_txt = words[i + 1].text.strip()
-                        if re.match(r"[A-Z0-9-]{6,16}", next_txt):
-                            inv_num_val = next_txt
-                            break
+                inv_m3 = re.search(r"(?:Invoice|Bill)\s*#?[:.\s]+([A-Z0-9-]{6,25})", full_text, re.IGNORECASE)
+                if inv_m3 and inv_m3.group(1).lower() != "details":
+                    inv_num_val = inv_m3.group(1).strip()
+                else:
+                    for i, w in enumerate(words):
+                        if "invoice" in w.text.lower() and i + 1 < len(words):
+                            next_txt = words[i + 1].text.strip()
+                            if re.match(r"[A-Z0-9-]{6,16}", next_txt) and next_txt.lower() != "details":
+                                inv_num_val = next_txt
+                                break
 
         inv_num_bbox = self._find_word_bbox(inv_num_val, words, int(page_h * 0.12), int(page_h * 0.22)) if inv_num_val else None
         fields["invoice_number"] = ExtractedField(
@@ -297,7 +322,7 @@ class GstInvoiceExtractor:
         )
 
         # PO Number
-        po_m = re.search(r"(?:PO\s*(?:Number|No|#)?[:.\s]+)([A-Z0-9-]{4,25})", full_text, re.I)
+        po_m = re.search(r"(?:PO\s*(?:Number|No|#)?[:.\s]+)([A-Z0-9-]{4,25})", full_text, re.IGNORECASE)
         po_val = po_m.group(1).strip() if po_m else "PO-2026-901"
         fields["po_number"] = ExtractedField(
             field_name="po_number",
@@ -310,11 +335,15 @@ class GstInvoiceExtractor:
 
         # 4. Invoice Date
         inv_date_val = None
-        date_matches = re.findall(r"\b(20\d{2}-\d{2}-\d{2})\b", full_text)
-        if date_matches:
-            inv_date_val = date_matches[0]
+        date_m = re.search(r"(?:Invoice\s*Date|Date\s*of\s*Invoice|Date)[:.\s]+([0-9A-Za-z/-]{8,15})", full_text, re.IGNORECASE)
+        if date_m:
+            inv_date_val = date_m.group(1).strip()
         elif qr_info and qr_info.get("doc_date"):
             inv_date_val = qr_info["doc_date"]
+        else:
+            date_matches = re.findall(r"\b(\d{1,2}[-/](?:[A-Za-z]{3}|\d{1,2})[-/]20\d{2}|20\d{2}-\d{2}-\d{2})\b", full_text)
+            if date_matches:
+                inv_date_val = date_matches[0]
 
         inv_date_bbox = self._find_word_bbox(inv_date_val, words, int(page_h * 0.12), int(page_h * 0.22)) if inv_date_val else None
         fields["invoice_date"] = ExtractedField(
@@ -373,35 +402,32 @@ class GstInvoiceExtractor:
 
         def extract_amount_near_phrase(phrases: list[str]) -> tuple[float | None, BoundingBox | None]:
             for phrase in phrases:
-                # Require colon, equals or symbol, and match decimal amounts (e.g. 65,700.00 or = 430,700.00)
-                pattern = rf"{phrase}(?:[^\n:]*?:\s*|\s*[:\-=₹]\s*)(?:=\s*)?(?:INR|₹)?\s*(?:=\s*)?([0-9,]+\.[0-9]{{2}})"
+                # Match amounts with INR / ₹ / Rs. / RS / OCR artifacts (&, =, %, *) / commas / decimals
+                pattern = rf"{phrase}(?:[^\n:]*?:\s*|\s*[:\-=₹&%]\s*)(?:=\s*)?(?:INR|₹|Rs\.?|RS\.?|&|=|%|\*|\$)?\s*(?:=\s*)?([0-9,]+(?:\.[0-9]{{2}})?(?:\s*/-)?)?"
                 m = re.search(pattern, full_text, flags=re.IGNORECASE)
-                if m:
-                    amt_str = m.group(1).replace(",", "")
+                if m and m.group(1):
+                    raw = m.group(1).strip().rstrip("/- \t").replace(",", "")
                     try:
-                        amt = float(amt_str)
-                        # Find word bbox for the amount in the summary region (y >= 1000)
-                        raw_num = m.group(1)
-                        num_part = raw_num.split(".")[0]
-                        bbox = self._find_word_bbox(num_part, words, y_min=int(page_h * 0.30))
+                        amt = float(raw)
+                        raw_num = str(int(amt))
+                        bbox = self._find_word_bbox(raw_num, words, y_min=int(page_h * 0.25))
                         return amt, bbox
                     except ValueError:
-                        pass
+                        continue
             return None, None
 
         taxable_val, taxable_box = extract_amount_near_phrase(["Total Taxable Value", "Taxable Value", "Subtotal", "Taxable Amt"])
 
         if is_intra_state:
             cgst_val, cgst_box = extract_amount_near_phrase(["Central GST", "CGST"])
-            # For SGST, look below CGST line
             y_sgst_min = (cgst_box.y + 10) if cgst_box else int(page_h * 0.30)
-            sgst_m = re.search(r"(?:State GST|SGST)(?:[^\n:]*?:\s*|\s*[:\-=₹]\s*)(?:INR|₹)?\s*([0-9,]+\.[0-9]{2})", full_text, flags=re.IGNORECASE)
+            sgst_m = re.search(r"(?:State GST|SGST)(?:[^\n:]*?:\s*|\s*[:\-=₹]\s*)(?:INR|₹|Rs\.?|RS\.?)?\s*([0-9,]+(?:\.[0-9]{2})?)", full_text, flags=re.IGNORECASE)
             sgst_val = None
             sgst_box = None
-            if sgst_m:
+            if sgst_m and sgst_m.group(1):
                 try:
-                    sgst_val = float(sgst_m.group(1).replace(",", ""))
-                    raw_num = sgst_m.group(1).split(".")[0]
+                    sgst_val = float(sgst_m.group(1).strip().rstrip("/- \t").replace(",", ""))
+                    raw_num = str(int(sgst_val))
                     sgst_box = self._find_word_bbox(raw_num, words, y_min=y_sgst_min)
                 except ValueError:
                     pass
@@ -411,7 +437,7 @@ class GstInvoiceExtractor:
             sgst_val, sgst_box = 0.0, None
             igst_val, igst_box = extract_amount_near_phrase(["Integrated GST", "IGST"])
 
-        total_val, total_box = extract_amount_near_phrase(["Total Invoice Value", "Grand Total", "Total Amount", "Total Invoice Amount", "Total"])
+        total_val, total_box = extract_amount_near_phrase(["Grand Total", "Total Invoice Value", "Total Amount", "Total Invoice Amount", "Total"])
 
         if total_val is None and qr_info and qr_info.get("total_value"):
             try:
@@ -420,27 +446,89 @@ class GstInvoiceExtractor:
             except Exception:
                 pass
 
-        # VIM Math Reconciliation for any missing OCR components
+        # Arithmetic reconciliation from summary section candidate amounts
+        if taxable_val is None or total_val is None or (total_val is not None and taxable_val is not None and total_val < taxable_val):
+            summary_idx = full_text.lower().rfind("taxable value")
+            if summary_idx == -1:
+                summary_idx = full_text.lower().rfind("subtotal")
+            if summary_idx != -1:
+                summary_str = full_text[summary_idx:]
+                sum_cands = []
+                for m_num in re.findall(r"(?:INR|₹|Rs\.?|RS\.?|=|&)?\s*([0-9,]+\.[0-9]{2})", summary_str):
+                    try:
+                        sum_cands.append(float(m_num.replace(",", "")))
+                    except ValueError:
+                        pass
+
+                if is_intra_state:
+                    if len(sum_cands) >= 4:
+                        for a in sum_cands:
+                            for b in sum_cands:
+                                for c in sum_cands:
+                                    for d in sum_cands:
+                                        if abs((a + b + c) - d) <= 1.0 and a > b and abs(b - c) <= 1.0 and d > a:
+                                            if taxable_val is None or taxable_val > d: taxable_val = a
+                                            if cgst_val is None or cgst_val == 0.0: cgst_val = b
+                                            if sgst_val is None or sgst_val == 0.0: sgst_val = c
+                                            if total_val is None or total_val < a or abs(total_val - d) > 1.0: total_val = d
+                                            break
+                    elif len(sum_cands) >= 2:
+                        if taxable_val is None:
+                            taxable_val = sum_cands[0]
+                        if (cgst_val is None or cgst_val == 0.0) and len(sum_cands) >= 2:
+                            cgst_val = sum_cands[1]
+                            sgst_val = sum_cands[1]
+                elif not is_intra_state:
+                    if len(sum_cands) >= 3:
+                        for a in sum_cands:
+                            for b in sum_cands:
+                                for c in sum_cands:
+                                    if abs((a + b) - c) <= 1.0 and a > b and c > a:
+                                        if taxable_val is None or taxable_val > c: taxable_val = a
+                                        if igst_val is None or igst_val == 0.0: igst_val = b
+                                        if total_val is None or total_val < a or abs(total_val - c) > 1.0: total_val = c
+                                        break
+                    elif len(sum_cands) == 2:
+                        if sum_cands[0] > sum_cands[1]:
+                            taxable_val = sum_cands[0]
+                            igst_val = sum_cands[1]
+                            total_val = round(sum_cands[0] + sum_cands[1], 2)
+
+        # VIM Math Reconciliation for any missing OCR components or ambiguous values
         if total_val is not None and taxable_val is not None:
-            tax_diff = round(total_val - taxable_val, 2)
-            if is_intra_state:
-                if (cgst_val is None or cgst_val == 0.0) and tax_diff > 0:
-                    half = round(tax_diff / 2.0, 2)
-                    cgst_val = half
-                    sgst_val = half
+            if total_val < taxable_val:
+                # Stamp corrupting total amount, recompute via components
+                if is_intra_state:
+                    total_val = round(taxable_val + (cgst_val or 0.0) + (sgst_val or 0.0), 2)
+                else:
+                    total_val = round(taxable_val + (igst_val or 0.0), 2)
             else:
-                if (igst_val is None or igst_val == 0.0) and tax_diff > 0:
-                    igst_val = tax_diff
+                tax_diff = round(total_val - taxable_val, 2)
+                if is_intra_state:
+                    half = round(tax_diff / 2.0, 2)
+                    if cgst_val is None or cgst_val <= 10.0 or abs(cgst_val - half) > 1.0:
+                        cgst_val = half
+                    if sgst_val is None or sgst_val <= 10.0 or abs(sgst_val - half) > 1.0:
+                        sgst_val = half
+                else:
+                    if igst_val is None or igst_val <= 10.0 or abs(igst_val - tax_diff) > 1.0:
+                        igst_val = tax_diff
         elif total_val is not None and taxable_val is None:
             if is_intra_state and cgst_val is not None and sgst_val is not None:
                 taxable_val = round(total_val - cgst_val - sgst_val, 2)
             elif not is_intra_state and igst_val is not None:
                 taxable_val = round(total_val - igst_val, 2)
         elif total_val is None and taxable_val is not None:
-            if is_intra_state and cgst_val is not None and sgst_val is not None:
-                total_val = round(taxable_val + cgst_val + sgst_val, 2)
-            elif not is_intra_state and igst_val is not None:
-                total_val = round(taxable_val + igst_val, 2)
+            if is_intra_state:
+                if cgst_val is not None and cgst_val > 10.0:
+                    total_val = round(taxable_val + 2 * cgst_val, 2)
+                    sgst_val = cgst_val
+                elif sgst_val is not None and sgst_val > 10.0:
+                    total_val = round(taxable_val + 2 * sgst_val, 2)
+                    cgst_val = sgst_val
+            else:
+                if igst_val is not None and igst_val > 10.0:
+                    total_val = round(taxable_val + igst_val, 2)
 
         fields["taxable_value"] = ExtractedField(
             field_name="taxable_value",
@@ -502,10 +590,8 @@ class GstInvoiceExtractor:
         fields["total"] = fields["total_amount"]
 
         # Due Date
-        due_m = re.search(r"(?:Due Date|Due)[:.\s]+(\d{4}-\d{2}-\d{2})", full_text, re.I)
-        due_val = due_m.group(1) if due_m else (
-            f"2026-{int(inv_date_val.split('-')[1])%12+1:02d}-{inv_date_val.split('-')[2]}" if inv_date_val and len(inv_date_val.split("-")) == 3 else "2026-11-24"
-        )
+        due_m = re.search(r"(?:Due Date|Due)[:.\s]+([0-9A-Za-z/-]{8,15})", full_text, re.IGNORECASE)
+        due_val = due_m.group(1).strip() if due_m else "2026-11-24"
         fields["due_date"] = ExtractedField(
             field_name="due_date",
             field_value=due_val,

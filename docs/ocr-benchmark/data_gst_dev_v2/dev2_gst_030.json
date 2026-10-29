@@ -1,0 +1,141 @@
+{
+  "file_name": "dev2_gst_030.png",
+  "is_dev": true,
+  "layout_id": 6,
+  "has_qr": true,
+  "supplier_name": "Bajaj Electricals Ltd",
+  "supplier_gstin": "27AAACB4433D1Z6",
+  "printed_supplier_gstin": "27AAACB4433D1Z6",
+  "was_gstin_corrupted": false,
+  "supplier_pan": "AAACB4433D",
+  "buyer_name": "Zomato Hyperpure Private Limited",
+  "buyer_gstin": "06AABCZ9988X1ZM",
+  "invoice_number": "DEV2-GST-2026-5030",
+  "invoice_date": "13/12/2026",
+  "due_date": "28/01/2026",
+  "place_of_supply": "Haryana",
+  "taxable_amount": 1026200.0,
+  "cgst_amount": 0.0,
+  "sgst_amount": 0.0,
+  "igst_amount": 184716.0,
+  "total_amount": 1210916.0,
+  "currency": "\u20b9",
+  "boxes": {
+    "irn_qr_code": [
+      0.8529,
+      0.0682,
+      0.9529,
+      0.1455
+    ],
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.1635,
+      0.0818
+    ],
+    "supplier_gstin": [
+      0.1235,
+      0.0985,
+      0.2184,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.2812,
+      0.0985,
+      0.3478,
+      0.1042
+    ],
+    "invoice_number": [
+      0.1137,
+      0.1712,
+      0.2153,
+      0.177
+    ],
+    "invoice_date": [
+      0.4573,
+      0.1712,
+      0.5067,
+      0.177
+    ],
+    "due_date": [
+      0.7506,
+      0.1712,
+      0.7969,
+      0.1764
+    ],
+    "place_of_supply": [
+      0.0431,
+      0.1833,
+      0.1675,
+      0.19
+    ],
+    "buyer_name": [
+      0.0431,
+      0.2167,
+      0.2082,
+      0.2239
+    ],
+    "buyer_gstin": [
+      0.1118,
+      0.2379,
+      0.2078,
+      0.2436
+    ],
+    "taxable_amount": [
+      0.7255,
+      0.3576,
+      0.7914,
+      0.3645
+    ],
+    "igst_amount": [
+      0.7255,
+      0.3712,
+      0.7824,
+      0.3773
+    ],
+    "total_amount": [
+      0.7255,
+      0.3906,
+      0.8102,
+      0.3991
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 10,
+      "rate": 75000.0,
+      "taxable": 750000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "85044090",
+      "desc": "Modular Online Uninterruptible Power Supply 20kVA",
+      "qty": 5,
+      "rate": 16000.0,
+      "taxable": 80000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "99831500",
+      "desc": "Custom ERP Cloud Architecture Consulting Services",
+      "qty": 11,
+      "rate": 4200.0,
+      "taxable": 46200.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "99831500",
+      "desc": "Custom ERP Cloud Architecture Consulting Services",
+      "qty": 2,
+      "rate": 75000.0,
+      "taxable": 150000.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

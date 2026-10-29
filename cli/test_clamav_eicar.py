@@ -14,7 +14,7 @@ def connect_clamav(host: str = "localhost", port: int = 3310) -> socket.socket:
             s.settimeout(5)
             s.connect(sockaddr)
             return s
-        except Exception as e:  # noqa: BLE001 — intentional: try each addrinfo entry
+        except Exception as e:
             last_err = e
             continue
     raise last_err or RuntimeError(f"Could not connect to {host}:{port}")

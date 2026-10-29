@@ -54,3 +54,4 @@ if not wsl_vhdx:
 print("\n--- WSL VHDX FILES ---")
 for v in wsl_vhdx:
     print(f"{str(v):<60} : {v.stat().st_size / (1024*1024):>10.2f} MB")
+

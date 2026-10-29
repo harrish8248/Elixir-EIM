@@ -1,0 +1,144 @@
+{
+  "file_name": "dev2_gst_015.png",
+  "is_dev": true,
+  "layout_id": 7,
+  "has_qr": false,
+  "supplier_name": "Larsen & Toubro Heavy Engineering",
+  "supplier_gstin": "24AAACL6789K1Z0",
+  "printed_supplier_gstin": "24AAACL6789K1Z0",
+  "was_gstin_corrupted": false,
+  "supplier_pan": "AAACL6789K",
+  "buyer_name": "Tech Mahindra Limited",
+  "buyer_gstin": "27AAACT1024L1ZI",
+  "invoice_number": "DEV2-GST-2026-5015",
+  "invoice_date": "25-Nov-2026",
+  "due_date": "12-Dec-2026",
+  "place_of_supply": "Maharashtra",
+  "taxable_amount": 1418300.0,
+  "cgst_amount": 0.0,
+  "sgst_amount": 0.0,
+  "igst_amount": 255294.0,
+  "total_amount": 1673594.0,
+  "currency": "\u20b9",
+  "boxes": {
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.2624,
+      0.0818
+    ],
+    "supplier_gstin": [
+      0.1235,
+      0.0985,
+      0.2173,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.2812,
+      0.0985,
+      0.3467,
+      0.1042
+    ],
+    "invoice_number": [
+      0.1137,
+      0.1712,
+      0.2153,
+      0.177
+    ],
+    "invoice_date": [
+      0.4573,
+      0.1712,
+      0.5165,
+      0.177
+    ],
+    "due_date": [
+      0.7506,
+      0.1712,
+      0.8039,
+      0.1764
+    ],
+    "place_of_supply": [
+      0.0431,
+      0.1833,
+      0.1847,
+      0.19
+    ],
+    "buyer_name": [
+      0.0431,
+      0.2167,
+      0.1533,
+      0.2224
+    ],
+    "buyer_gstin": [
+      0.1118,
+      0.2379,
+      0.2016,
+      0.2436
+    ],
+    "taxable_amount": [
+      0.7255,
+      0.3727,
+      0.7914,
+      0.3797
+    ],
+    "igst_amount": [
+      0.7255,
+      0.3864,
+      0.7824,
+      0.3924
+    ],
+    "total_amount": [
+      0.7255,
+      0.4058,
+      0.8102,
+      0.4142
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "84733020",
+      "desc": "High Performance NVMe Solid State Memory Arrays",
+      "qty": 2,
+      "rate": 4200.0,
+      "taxable": 8400.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "99822100",
+      "desc": "Legal Compliance & Statutory GST Audit Services",
+      "qty": 3,
+      "rate": 16000.0,
+      "taxable": 48000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "85176290",
+      "desc": "High Speed Gigabit Optical Fiber Transceiver Switch",
+      "qty": 11,
+      "rate": 110000.0,
+      "taxable": 1210000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "85044090",
+      "desc": "Modular Online Uninterruptible Power Supply 20kVA",
+      "qty": 5,
+      "rate": 24500.0,
+      "taxable": 122500.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 5,
+      "hsn": "99871900",
+      "desc": "HVAC Precision Server Room Environmental Control",
+      "qty": 7,
+      "rate": 4200.0,
+      "taxable": 29400.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

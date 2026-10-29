@@ -1,0 +1,135 @@
+{
+  "file_name": "dev2_gst_017.png",
+  "is_dev": true,
+  "layout_id": 1,
+  "has_qr": false,
+  "supplier_name": "Asian Paints Limited",
+  "supplier_gstin": "27AAACA3322T1ZG",
+  "printed_supplier_gstin": "27AAACA3322T1ZG",
+  "was_gstin_corrupted": false,
+  "supplier_pan": "AAACA3322T",
+  "buyer_name": "Zomato Hyperpure Private Limited",
+  "buyer_gstin": "06AABCZ9988X1ZM",
+  "invoice_number": "DEV2-GST-2026-5017",
+  "invoice_date": "2026-04-27",
+  "due_date": "2026-05-14",
+  "place_of_supply": "Haryana",
+  "taxable_amount": 790200.0,
+  "cgst_amount": 0.0,
+  "sgst_amount": 0.0,
+  "igst_amount": 142236.0,
+  "total_amount": 932436.0,
+  "currency": "\u20b9",
+  "boxes": {
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.1678,
+      0.08
+    ],
+    "supplier_gstin": [
+      0.1235,
+      0.0985,
+      0.2196,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.2812,
+      0.0985,
+      0.3467,
+      0.1042
+    ],
+    "invoice_number": [
+      0.1137,
+      0.1712,
+      0.2153,
+      0.177
+    ],
+    "invoice_date": [
+      0.4573,
+      0.1712,
+      0.5082,
+      0.177
+    ],
+    "due_date": [
+      0.7506,
+      0.1712,
+      0.7976,
+      0.1764
+    ],
+    "place_of_supply": [
+      0.0431,
+      0.1833,
+      0.1675,
+      0.19
+    ],
+    "buyer_name": [
+      0.0431,
+      0.2167,
+      0.2082,
+      0.2239
+    ],
+    "buyer_gstin": [
+      0.1118,
+      0.2379,
+      0.2078,
+      0.2436
+    ],
+    "taxable_amount": [
+      0.7255,
+      0.3576,
+      0.7859,
+      0.3645
+    ],
+    "igst_amount": [
+      0.7255,
+      0.3712,
+      0.7824,
+      0.3773
+    ],
+    "total_amount": [
+      0.7255,
+      0.3906,
+      0.8031,
+      0.3991
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "84733020",
+      "desc": "High Performance NVMe Solid State Memory Arrays",
+      "qty": 6,
+      "rate": 75000.0,
+      "taxable": 450000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "84733020",
+      "desc": "High Performance NVMe Solid State Memory Arrays",
+      "qty": 3,
+      "rate": 4200.0,
+      "taxable": 12600.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "99822100",
+      "desc": "Legal Compliance & Statutory GST Audit Services",
+      "qty": 12,
+      "rate": 24500.0,
+      "taxable": 294000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "85176290",
+      "desc": "High Speed Gigabit Optical Fiber Transceiver Switch",
+      "qty": 8,
+      "rate": 4200.0,
+      "taxable": 33600.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

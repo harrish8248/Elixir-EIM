@@ -6,15 +6,13 @@ Ensures Elixir EIM adapts automatically to any host environment:
 - Strict privacy: Never reads or logs document content.
 """
 
-from dataclasses import asdict, dataclass, field
-from enum import Enum
-import json
 import os
-from pathlib import Path
 import platform
 import shutil
 import subprocess
-import time
+from dataclasses import dataclass, field
+from enum import Enum
+from pathlib import Path
 from typing import Any
 
 import psutil
@@ -378,3 +376,4 @@ class HardwareProfiler:
                 "is_active": device != "SKIPPED",
             }
         return mapping
+

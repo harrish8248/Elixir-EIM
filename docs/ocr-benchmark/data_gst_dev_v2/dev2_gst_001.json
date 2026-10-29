@@ -1,0 +1,153 @@
+{
+  "file_name": "dev2_gst_001.png",
+  "is_dev": true,
+  "layout_id": 1,
+  "has_qr": false,
+  "supplier_name": "Dr Reddys Laboratories Ltd",
+  "supplier_gstin": "36AAACD1199K1ZH",
+  "printed_supplier_gstin": "36AAACD1199K1ZH",
+  "was_gstin_corrupted": false,
+  "supplier_pan": "AAACD1199K",
+  "buyer_name": "Wipro Enterprise Solutions Ltd",
+  "buyer_gstin": "29AAACW8901H1Z4",
+  "invoice_number": "DEV2-GST-2026-5001",
+  "invoice_date": "01-Apr-2026",
+  "due_date": "16-May-2026",
+  "place_of_supply": "Karnataka",
+  "taxable_amount": 606900.0,
+  "cgst_amount": 0.0,
+  "sgst_amount": 0.0,
+  "igst_amount": 109242.0,
+  "total_amount": 716142.0,
+  "currency": "Rs.",
+  "boxes": {
+    "supplier_name": [
+      0.0431,
+      0.073,
+      0.2102,
+      0.0818
+    ],
+    "supplier_gstin": [
+      0.1235,
+      0.0985,
+      0.2204,
+      0.1042
+    ],
+    "supplier_pan": [
+      0.2812,
+      0.0985,
+      0.3478,
+      0.1042
+    ],
+    "invoice_number": [
+      0.1137,
+      0.1712,
+      0.2153,
+      0.177
+    ],
+    "invoice_date": [
+      0.4573,
+      0.1712,
+      0.5149,
+      0.1785
+    ],
+    "due_date": [
+      0.7506,
+      0.1712,
+      0.8051,
+      0.1779
+    ],
+    "place_of_supply": [
+      0.0431,
+      0.1833,
+      0.1749,
+      0.19
+    ],
+    "buyer_name": [
+      0.0431,
+      0.2167,
+      0.1925,
+      0.2239
+    ],
+    "buyer_gstin": [
+      0.1118,
+      0.2379,
+      0.209,
+      0.2436
+    ],
+    "taxable_amount": [
+      0.7255,
+      0.3879,
+      0.7961,
+      0.3948
+    ],
+    "igst_amount": [
+      0.7255,
+      0.4015,
+      0.7914,
+      0.4076
+    ],
+    "total_amount": [
+      0.7255,
+      0.4209,
+      0.8157,
+      0.4294
+    ]
+  },
+  "line_items": [
+    {
+      "sl": 1,
+      "hsn": "85044090",
+      "desc": "Modular Online Uninterruptible Power Supply 20kVA",
+      "qty": 8,
+      "rate": 16000.0,
+      "taxable": 128000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 11,
+      "rate": 16000.0,
+      "taxable": 176000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "99831300",
+      "desc": "Annual SLA Cybersecurity Penetration Testing",
+      "qty": 12,
+      "rate": 8500.0,
+      "taxable": 102000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "99822100",
+      "desc": "Legal Compliance & Statutory GST Audit Services",
+      "qty": 6,
+      "rate": 24500.0,
+      "taxable": 147000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 5,
+      "hsn": "99822100",
+      "desc": "Legal Compliance & Statutory GST Audit Services",
+      "qty": 7,
+      "rate": 4200.0,
+      "taxable": 29400.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 6,
+      "hsn": "99822100",
+      "desc": "Legal Compliance & Statutory GST Audit Services",
+      "qty": 1,
+      "rate": 24500.0,
+      "taxable": 24500.0,
+      "tax_pct": 18.0
+    }
+  ]
+}

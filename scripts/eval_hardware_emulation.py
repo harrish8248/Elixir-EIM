@@ -53,3 +53,4 @@ print(f"ECO MODE (Low-spec / Battery):")
 print(f"  p50 Latency: {p50_eco:.1f}ms | p95 Latency: {p95_eco:.1f}ms | GSTIN Accuracy: {acc_eco:.1f}%")
 print(f"PERFORMANCE MODE (Workstation):")
 print(f"  p50 Latency: {p50_perf:.1f}ms | p95 Latency: {p95_perf:.1f}ms | GSTIN Accuracy: {acc_perf:.1f}%")
+
