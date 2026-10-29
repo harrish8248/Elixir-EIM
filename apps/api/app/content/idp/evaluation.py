@@ -17,10 +17,11 @@ import math
 import re
 import time
 from collections import defaultdict
+import os
 from pathlib import Path
 from typing import Any
 
-BENCHMARK_DIR = Path("docs/ocr-benchmark")
+BENCHMARK_DIR = Path(os.environ.get("ELIXIR_DATA_DIR", "docs/ocr-benchmark"))
 DATA_DIR = BENCHMARK_DIR / "data"
 SPLITS_PATH = BENCHMARK_DIR / "splits.json"
 

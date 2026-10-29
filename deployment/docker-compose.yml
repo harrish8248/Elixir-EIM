@@ -92,6 +92,7 @@ services:
   gotenberg:
     image: gotenberg/gotenberg:8.12
     container_name: elixir-gotenberg
+    profiles: ["preview"]
     restart: unless-stopped
     ports:
       - "3000:3000"

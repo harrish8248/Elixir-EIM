@@ -9,7 +9,8 @@ param(
     [switch]$NoBrowser,        # Don't auto-open browser
     [switch]$Test,             # Run test suite with REQUIRE_POSTGRES=1 and exit
     [switch]$Demo,             # Seed 7 demo GST invoices + EICAR test via live upload API
-    [switch]$ResetDemo         # Wipe capture_jobs and re-seed clean IDP demo state
+    [switch]$ResetDemo,        # Wipe capture_jobs and re-seed clean IDP demo state
+    [switch]$Lite              # Lite mode: start only core 6 demo containers (no Gotenberg)
 )
 
 $ErrorActionPreference = "Stop"
@@ -100,8 +101,17 @@ if (-not $SkipDocker) {
             $null = Start-Process -FilePath "wsl" -ArgumentList "sleep infinity" -WindowStyle Hidden -ErrorAction SilentlyContinue
         }
 
-        $expectedContainers = @("elixir-postgres","elixir-redis","elixir-minio","elixir-keycloak","elixir-opa","elixir-gotenberg","elixir-clamav")
+        $expectedContainers = if ($Lite) {
+            @("elixir-postgres","elixir-redis","elixir-minio","elixir-keycloak","elixir-opa","elixir-clamav")
+        } else {
+            @("elixir-postgres","elixir-redis","elixir-minio","elixir-keycloak","elixir-opa","elixir-clamav")
+        }
         $runningContainers = (docker ps --format '{{.Names}}' 2>&1) -split "`n" | ForEach-Object { $_.Trim() }
+
+        if ($Lite -and ($runningContainers -contains "elixir-gotenberg")) {
+            Write-Host "  [*] Stopping Gotenberg in -Lite mode to reclaim ~2.5 GB memory/disk..." -ForegroundColor Cyan
+            docker stop elixir-gotenberg | Out-Null
+        }
 
         $missingContainers = $expectedContainers | Where-Object { $_ -notin $runningContainers }
         if ($missingContainers.Count -gt 0) {

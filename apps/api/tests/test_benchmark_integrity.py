@@ -4,10 +4,11 @@ Fails if any file in the frozen benchmarks (data/ and data_gst/) has been modifi
 """
 
 import hashlib
+import os
 from pathlib import Path
 import pytest
 
-MANIFEST_PATH = Path("docs/ocr-benchmark/benchmark_manifest.sha256")
+MANIFEST_PATH = Path(os.environ.get("ELIXIR_DATA_DIR", "docs/ocr-benchmark")) / "benchmark_manifest.sha256"
 
 
 def test_benchmark_frozen_manifest_integrity():
