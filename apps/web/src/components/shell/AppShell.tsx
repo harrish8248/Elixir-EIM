@@ -10,6 +10,7 @@ import { SearchView } from "@/modules/search/SearchView";
 import { AdminView } from "@/modules/admin/AdminView";
 import { CaptureDashboardView } from "@/modules/idp/CaptureDashboardView";
 import { ValidationWorkbenchView } from "@/modules/idp/ValidationWorkbenchView";
+import { OcrEnginesControlCenterView } from "@/modules/idp/OcrEnginesControlCenterView";
 
 import { useAuth } from "@/config/AuthContext";
 import { ForbiddenView } from "@/components/auth/ForbiddenView";
@@ -77,6 +78,8 @@ export const AppShell: React.FC = () => {
       case "/idp":
       case "/capture":
         return <CaptureDashboardView onOpenWorkbench={(jobId) => handleNavigate(`/idp/workbench?jobId=${jobId}`)} />;
+      case "/idp/engines":
+        return <OcrEnginesControlCenterView />;
       case "/idp/workbench": {
         const hashQuery = window.location.hash.split("?")[1] || "";
         const params = new URLSearchParams(hashQuery);

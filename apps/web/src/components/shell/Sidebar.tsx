@@ -10,6 +10,7 @@ import {
   ChevronLeft,
   ChevronRight,
   ScanLine,
+  Cpu,
 } from "lucide-react";
 import { clsx } from "clsx";
 
@@ -49,6 +50,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
       icon: <ScanLine className="w-4 h-4 shrink-0" />,
       badge: "STP 78%",
       badgeVariant: "brand",
+    },
+    {
+      id: "ocr_engines",
+      title: "OCR Engines",
+      path: "/idp/engines",
+      icon: <Cpu className="w-4 h-4 shrink-0" />,
+      badge: "8 Ready",
+      badgeVariant: "neutral",
     },
     {
       id: "records",

@@ -8,7 +8,9 @@ Supports:
 from abc import ABC, abstractmethod
 import io
 import os
+import re
 import shutil
+import tempfile
 import time
 from typing import Any
 
@@ -434,4 +436,374 @@ class DoctrEngine(OcrEngine):
 
     def process_document(self, content: bytes, filename: str, mime_type: str) -> OcrResult:
         return self.fallback.process_document(content, filename, mime_type)
+
+
+class PyMuPdfEngine(OcrEngine):
+    """
+    PyMuPDF Native Text Layer OCR Engine.
+    Directly extracts embedded vector text and word bounding boxes from digital PDFs with zero optical degradation.
+    Falls back to TesseractEngine if document is scanned (less than 15 embedded words) or an image.
+    """
+
+    def __init__(self, name: str = "pymupdf"):
+        self.name = name
+        self.fallback = TesseractEngine(name="pymupdf_fallback_tesseract")
+
+    def process_image(self, image: Image.Image | np.ndarray, page_number: int = 1) -> OcrPageResult:
+        return self.fallback.process_image(image, page_number)
+
+    def process_document(self, content: bytes, filename: str, mime_type: str) -> OcrResult:
+        is_pdf = mime_type == "application/pdf" or filename.lower().endswith(".pdf")
+        if not is_pdf:
+            return self.fallback.process_document(content, filename, mime_type)
+
+        start_time = time.perf_counter()
+        try:
+            doc = pymupdf.open(stream=content, filetype="pdf")
+            pages: list[OcrPageResult] = []
+            has_scanned_page = False
+
+            for page_idx, page in enumerate(doc, start=1):
+                raw_words = page.get_text("words")
+                if len(raw_words) < 15:
+                    has_scanned_page = True
+                    break
+
+                rect = page.rect
+                page_w = int(rect.width) or 850
+                page_h = int(rect.height) or 1100
+
+                words = []
+                for w in raw_words:
+                    x0, y0, x1, y1, word_str, *_ = w
+                    words.append(
+                        OcrWord(
+                            text=str(word_str),
+                            confidence=100.0,
+                            bbox=BoundingBox(
+                                x=int(x0),
+                                y=int(y0),
+                                width=max(int(x1 - x0), 1),
+                                height=max(int(y1 - y0), 1),
+                                page=page_idx,
+                            ),
+                        )
+                    )
+
+                full_text = page.get_text("text").strip()
+                pages.append(
+                    OcrPageResult(
+                        page_number=page_idx,
+                        width=page_w,
+                        height=page_h,
+                        full_text=full_text,
+                        words=words,
+                        mean_confidence=100.0,
+                        engine=self.name,
+                    )
+                )
+
+            if has_scanned_page or not pages:
+                return self.fallback.process_document(content, filename, mime_type)
+
+            elapsed_ms = (time.perf_counter() - start_time) * 1000.0
+            return OcrResult(
+                pages=pages,
+                full_text="\n\n".join(p.full_text for p in pages).strip(),
+                mean_confidence=100.0,
+                engine=self.name,
+                processing_time_ms=round(elapsed_ms, 2),
+            )
+        except Exception as e:
+            logger.warning(f"PyMuPDF native extraction failed ({e}), falling back to Tesseract")
+            return self.fallback.process_document(content, filename, mime_type)
+
+
+class IndraEngine(OcrEngine):
+    """
+    Indra OCR Engine (Open-Source Neural Layout Parser & Transformer).
+    Superior for multilingual, Indic/Devanagari script, and complex table layouts.
+    Gracefully falls back to Tesseract on error or timeout.
+    """
+
+    def __init__(self, name: str = "indra"):
+        self.name = name
+        self.fallback = TesseractEngine(name="indra_fallback_tesseract")
+        self._converter = None
+        self._init_error = None
+
+    def _get_converter(self):
+        if self._converter is None and self._init_error is None:
+            try:
+                import indra_ocr
+                self._converter = indra_ocr.load()
+            except Exception as e:
+                self._init_error = str(e)
+                logger.warning(f"Indra OCR unavailable ({e}), using Tesseract fallback")
+        return self._converter
+
+    def process_image(self, image: Image.Image | np.ndarray, page_number: int = 1) -> OcrPageResult:
+        conv = self._get_converter()
+        if conv is None:
+            return self.fallback.process_image(image, page_number)
+
+        tmp_path = None
+        try:
+            if isinstance(image, np.ndarray):
+                pil_img = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB)) if len(image.shape) == 3 else Image.fromarray(image)
+            else:
+                pil_img = image
+
+            w, h = pil_img.size
+            with tempfile.NamedTemporaryFile(suffix=".png", delete=False) as tmp:
+                tmp_path = tmp.name
+                pil_img.save(tmp_path, format="PNG")
+
+            words: list[OcrWord] = []
+            full_lines: list[str] = []
+            confs: list[float] = []
+
+            for pno, page in conv.convert(tmp_path):
+                if hasattr(page, "lines"):
+                    for line in page.lines:
+                        txt = getattr(line, "text", "").strip()
+                        if not txt:
+                            continue
+                        full_lines.append(txt)
+                        lconf = float(getattr(line, "conf", 0.95))
+                        confs.append(lconf)
+
+                        box = getattr(line, "box", None)
+                        if box and len(box) == 4:
+                            x0, y0, x1, y1 = box
+                            lwidth = max(x1 - x0, 1.0)
+                            tokens = txt.split()
+                            total_chars = max(sum(len(t) for t in tokens), 1)
+                            curr_x = x0
+                            for tok in tokens:
+                                tw = (len(tok) / total_chars) * lwidth
+                                words.append(
+                                    OcrWord(
+                                        text=tok,
+                                        confidence=round(lconf * 100.0, 2),
+                                        bbox=BoundingBox(
+                                            x=int(curr_x),
+                                            y=int(y0),
+                                            width=max(int(tw), 1),
+                                            height=max(int(y1 - y0), 1),
+                                            page=page_number,
+                                        ),
+                                    )
+                                )
+                                curr_x += tw
+
+            mean_conf = round((sum(confs) / max(len(confs), 1)) * 100.0, 2) if confs else 90.0
+            return OcrPageResult(
+                page_number=page_number,
+                width=w,
+                height=h,
+                full_text="\n".join(full_lines),
+                words=words,
+                mean_confidence=mean_conf,
+                engine=self.name,
+            )
+        except Exception as e:
+            logger.warning(f"Indra processing error ({e}), falling back to Tesseract")
+            return self.fallback.process_image(image, page_number)
+        finally:
+            if tmp_path and os.path.exists(tmp_path):
+                try:
+                    os.remove(tmp_path)
+                except OSError:
+                    pass
+
+    def process_document(self, content: bytes, filename: str, mime_type: str) -> OcrResult:
+        conv = self._get_converter()
+        if conv is None:
+            return self.fallback.process_document(content, filename, mime_type)
+
+        start_time = time.perf_counter()
+        ext = ".pdf" if (mime_type == "application/pdf" or filename.lower().endswith(".pdf")) else ".png"
+        tmp_path = None
+        try:
+            with tempfile.NamedTemporaryFile(suffix=ext, delete=False) as tmp:
+                tmp.write(content)
+                tmp_path = tmp.name
+
+            pages: list[OcrPageResult] = []
+            for pno, page in conv.convert(tmp_path):
+                page_idx = pno + 1 if isinstance(pno, int) else len(pages) + 1
+                words: list[OcrWord] = []
+                full_lines: list[str] = []
+                confs: list[float] = []
+
+                if hasattr(page, "lines"):
+                    for line in page.lines:
+                        txt = getattr(line, "text", "").strip()
+                        if not txt:
+                            continue
+                        full_lines.append(txt)
+                        lconf = float(getattr(line, "conf", 0.95))
+                        confs.append(lconf)
+
+                        box = getattr(line, "box", None)
+                        if box and len(box) == 4:
+                            x0, y0, x1, y1 = box
+                            lwidth = max(x1 - x0, 1.0)
+                            tokens = txt.split()
+                            total_chars = max(sum(len(t) for t in tokens), 1)
+                            curr_x = x0
+                            for tok in tokens:
+                                tw = (len(tok) / total_chars) * lwidth
+                                words.append(
+                                    OcrWord(
+                                        text=tok,
+                                        confidence=round(lconf * 100.0, 2),
+                                        bbox=BoundingBox(
+                                            x=int(curr_x),
+                                            y=int(y0),
+                                            width=max(int(tw), 1),
+                                            height=max(int(y1 - y0), 1),
+                                            page=page_idx,
+                                        ),
+                                    )
+                                )
+                                curr_x += tw
+
+                mean_conf = round((sum(confs) / max(len(confs), 1)) * 100.0, 2) if confs else 90.0
+                pages.append(
+                    OcrPageResult(
+                        page_number=page_idx,
+                        width=2550,
+                        height=3300,
+                        full_text="\n".join(full_lines),
+                        words=words,
+                        mean_confidence=mean_conf,
+                        engine=self.name,
+                    )
+                )
+
+            if not pages:
+                return self.fallback.process_document(content, filename, mime_type)
+
+            elapsed_ms = (time.perf_counter() - start_time) * 1000.0
+            return OcrResult(
+                pages=pages,
+                full_text="\n\n".join(p.full_text for p in pages).strip(),
+                mean_confidence=round(sum(p.mean_confidence for p in pages) / max(len(pages), 1), 2),
+                engine=self.name,
+                processing_time_ms=round(elapsed_ms, 2),
+            )
+        except Exception as e:
+            logger.warning(f"Indra process_document error ({e}), falling back to Tesseract")
+            return self.fallback.process_document(content, filename, mime_type)
+        finally:
+            if tmp_path and os.path.exists(tmp_path):
+                try:
+                    os.remove(tmp_path)
+                except OSError:
+                    pass
+
+
+class SmartOcrRouter(OcrEngine):
+    """
+    Adaptive Multi-Tenant OCR Router.
+    Intelligently routes documents to the optimal engine based on:
+    - Native digital text layer -> PyMuPDF
+    - Devanagari / Indic text detected -> Indra OCR
+    - Scanned / Degraded layout -> Adaptive Tesseract (OSD, Deskew, CLAHE, Multi-pass PSM)
+    - Custom tenant rules with automatic fallback
+    """
+
+    def __init__(
+        self,
+        default_engine: str = "tesseract",
+        fallback_engine: str = "tesseract",
+        rules: list[dict[str, Any]] | None = None,
+    ):
+        self.name = "smart_router"
+        self.default_engine_name = default_engine
+        self.fallback_engine_name = fallback_engine
+        self.rules = rules or []
+        self._engines: dict[str, OcrEngine] = {}
+
+    def _get_engine(self, name: str) -> OcrEngine:
+        if name not in self._engines:
+            if name == "pymupdf":
+                self._engines[name] = PyMuPdfEngine()
+            elif name == "indra":
+                self._engines[name] = IndraEngine()
+            elif name == "doctr":
+                self._engines[name] = DoctrEngine()
+            else:
+                self._engines[name] = TesseractEngine(enable_adaptive=True)
+        return self._engines[name]
+
+    def resolve_engine_for_document(self, content: bytes, filename: str, mime_type: str) -> tuple[str, str]:
+        """Determine target engine and decision reason based on document characteristics."""
+        is_pdf = mime_type == "application/pdf" or filename.lower().endswith(".pdf")
+
+        # 1. Check for digital PDF with text layer
+        if is_pdf:
+            try:
+                doc = pymupdf.open(stream=content, filetype="pdf")
+                total_words = sum(len(p.get_text("words")) for p in doc)
+                if total_words >= 30:
+                    return "pymupdf", "digital_pdf_text_layer"
+            except Exception:
+                pass
+
+        # 2. Check for Indic / Devanagari characters if text snippet available
+        try:
+            snippet = content[:4096].decode("utf-8", errors="ignore")
+            if re.search(r"[\u0900-\u097F]", snippet):
+                return "indra", "devanagari_indic_script"
+        except Exception:
+            pass
+
+        # 3. Rule matching
+        for rule in self.rules:
+            condition = rule.get("condition")
+            target = rule.get("engine")
+            if condition == "is_pdf" and is_pdf and target:
+                return target, "rule_is_pdf"
+            if condition == "is_scanned" and not is_pdf and target:
+                return target, "rule_is_scanned"
+
+        return self.default_engine_name, "default_route"
+
+    def process_image(self, image: Image.Image | np.ndarray, page_number: int = 1) -> OcrPageResult:
+        engine = self._get_engine(self.default_engine_name)
+        try:
+            return engine.process_image(image, page_number)
+        except Exception as e:
+            logger.warning(f"Router engine {self.default_engine_name} failed ({e}), falling back to {self.fallback_engine_name}")
+            return self._get_engine(self.fallback_engine_name).process_image(image, page_number)
+
+    def process_document(self, content: bytes, filename: str, mime_type: str) -> OcrResult:
+        chosen_name, reason = self.resolve_engine_for_document(content, filename, mime_type)
+        logger.info(f"SmartOcrRouter selected engine '{chosen_name}' for {filename} (reason: {reason})")
+
+        engine = self._get_engine(chosen_name)
+        try:
+            return engine.process_document(content, filename, mime_type)
+        except Exception as e:
+            logger.warning(f"Engine {chosen_name} failed ({e}), attempting fallback {self.fallback_engine_name}")
+            fallback = self._get_engine(self.fallback_engine_name)
+            return fallback.process_document(content, filename, mime_type)
+
+
+def get_ocr_engine(engine_id: str = "tesseract") -> OcrEngine:
+    """Factory function returning configured OCR engine instance."""
+    normalized = engine_id.lower().strip()
+    if normalized in ("pymupdf", "pdf_layer", "text_layer"):
+        return PyMuPdfEngine()
+    elif normalized in ("indra", "indra_ocr"):
+        return IndraEngine()
+    elif normalized in ("doctr", "doctr_neural"):
+        return DoctrEngine()
+    elif normalized in ("router", "smart_router", "auto"):
+        return SmartOcrRouter()
+    return TesseractEngine(enable_adaptive=True)
+
 

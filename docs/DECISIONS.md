@@ -36,3 +36,15 @@
 - **Decision:** Utilize open-source Tesseract (via `pytesseract` 0.3.13) integrated with `pymupdf` (2.0) via asynchronous FastAPI BackgroundTasks. For Windows and WSL2 host environments, standardize on UB-Mannheim Tesseract-OCR (`C:\Program Files\Tesseract-OCR\tesseract.exe`) with a configurable `TESSERACT_CMD` environment variable, falling back gracefully to system PATH. PDFs utilize PyMuPDF direct text extraction for native digital text layers first; pages with sparse text (< 50 characters) are dynamically rasterized at 150 DPI and processed through Tesseract. Extracted text, page count, language, and confidence scores are persisted in a dedicated `document_text` table with PostgreSQL Row-Level Security (RLS).
 - **Consequences:** Provides ultra-fast native Windows OCR performance without virtualization or network hop latency, robust fallback for scanned documents, and strict multi-tenant isolation in storage and search.
 
+## ADR 007: OCR Engines Control Center, Multi-Tenant Dynamic Routing & Failover Architecture
+- **Status:** Accepted
+- **Context:** Modern enterprise document capture requires multiple specialized OCR engines (digital vector extraction, neural handwriting, Indic/multilingual scripts, low-contrast scans). Hardcoding a single engine leads to sub-optimal accuracy and single-point-of-failure risks.
+- **Decision:** Implement a modular multi-engine architecture managed through an admin-facing "OCR Engines Control Center" with live status probing, dynamic tenant routing policies, Redis cache invalidation, and automated failover.
+  - **PyMuPDF Engine (AGPL-3.0):** Native vector text layer extraction for born-digital PDFs (instant speed, 0% character error).
+  - **Indra OCR Engine (MIT):** ONNX Transformer layout & OCR pipeline optimized for Indic scripts (Hindi/Devanagari) and complex tabular layouts.
+  - **Tesseract Engine (Apache 2.0):** Production workhorse with adaptive OpenCV preprocessing (OSD, Hough deskew, CLAHE contrast gating, multi-pass PSM).
+  - **Secondary & Optional Adapters:** PaddleOCR, docTR, EasyOCR, Surya, and Ollama Vision with graceful degradation and offline status reporting.
+  - **Routing Policies:** Versioned policies stored in PostgreSQL with Row-Level Security (RLS) and Redis caching (`ocr_policy:{tenant_id}`). Supports one-click rollback.
+- **Consequences:** Empowers tenants to optimize OCR speed and accuracy per document type while ensuring zero data loss and automated failover to Tesseract.
+
+
