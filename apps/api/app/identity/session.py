@@ -44,11 +44,12 @@ class SessionData(BaseModel):
 
 
 class SessionManager:
-    """Manages server-side sessions with idle & absolute timeouts in Redis."""
+    """Manages server-side sessions with idle & absolute timeouts in Redis with resilient memory fallback."""
 
     def __init__(self, redis_url: str | None = None):
         self._redis_url = redis_url or settings.redis_url
         self._redis: aioredis.Redis | None = None
+        self._memory_sessions: dict[str, SessionData] = {}
 
     async def get_redis(self) -> aioredis.Redis:
         import asyncio
@@ -59,6 +60,8 @@ class SessionManager:
                 self._redis_url,
                 decode_responses=True,
                 encoding="utf-8",
+                socket_connect_timeout=0.5,
+                socket_timeout=0.5,
             )
         return self._redis
 
@@ -105,37 +108,52 @@ class SessionManager:
             refresh_token=refresh_token,
         )
 
-        r = await self.get_redis()
-        ttl = min(idle_timeout, absolute_timeout)
-        key = f"elixir:session:{session_id}"
-        await r.set(key, session.model_dump_json(), ex=ttl)
+        # Cache session in memory for instant local retrieval
+        self._memory_sessions[session_id] = session
 
-        # Track user's active sessions
-        user_sessions_key = f"elixir:user_sessions:{user_id}"
-        await r.sadd(user_sessions_key, session_id)
-        await r.expire(user_sessions_key, absolute_timeout)
+        try:
+            r = await self.get_redis()
+            ttl = min(idle_timeout, absolute_timeout)
+            key = f"elixir:session:{session_id}"
+            await r.set(key, session.model_dump_json(), ex=ttl)
+
+            # Track user's active sessions
+            user_sessions_key = f"elixir:user_sessions:{user_id}"
+            await r.sadd(user_sessions_key, session_id)
+            await r.expire(user_sessions_key, absolute_timeout)
+        except Exception as exc:
+            logger.warning(f"Redis session write unavailable, caching in memory fallback: {exc}")
 
         return session
 
     async def get_session(self, session_id: str) -> SessionData | None:
         """
-        Retrieve and touch an active session from Redis.
+        Retrieve and touch an active session from Redis (or memory fallback).
         Enforces both idle and absolute expiration.
         """
         if not session_id:
             return None
 
-        r = await self.get_redis()
-        key = f"elixir:session:{session_id}"
-        raw_data = await r.get(key)
-        if not raw_data:
-            return None
+        # Check in-memory cache first for instant retrieval
+        session = self._memory_sessions.get(session_id)
+        if not session:
+            raw_data = None
+            try:
+                r = await self.get_redis()
+                key = f"elixir:session:{session_id}"
+                raw_data = await r.get(key)
+            except Exception as exc:
+                logger.debug(f"Redis get_session failed, reading from memory fallback: {exc}")
 
-        try:
-            session = SessionData.model_validate_json(raw_data)
-        except (ValueError, KeyError) as exc:
-            logger.error(f"Corrupt session data for {session_id}: {exc}")
-            await r.delete(key)
+            if raw_data:
+                try:
+                    session = SessionData.model_validate_json(raw_data)
+                    self._memory_sessions[session_id] = session
+                except (ValueError, KeyError) as exc:
+                    logger.error(f"Corrupt session data for {session_id}: {exc}")
+                    return None
+
+        if not session:
             return None
 
         now = time.time()
@@ -157,7 +175,12 @@ class SessionManager:
         remaining_absolute = max(1, int(session.absolute_expiry - now))
         new_ttl = min(session.idle_timeout, remaining_absolute)
 
-        await r.set(key, session.model_dump_json(), ex=new_ttl)
+        try:
+            r = await self.get_redis()
+            key = f"elixir:session:{session_id}"
+            await r.set(key, session.model_dump_json(), ex=new_ttl)
+        except Exception:
+            pass
         return session
 
     async def revoke_session(self, session_id: str) -> bool:

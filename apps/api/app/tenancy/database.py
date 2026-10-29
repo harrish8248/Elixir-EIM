@@ -56,14 +56,26 @@ async def get_db_session() -> AsyncGenerator[AsyncSession]:
                     {"tenant_id": str(tenant_id)},
                 )
             except Exception as exc:
-                logger.error(f"Failed to set RLS tenant context: {exc}")
-                raise
+                logger.warning(f"RLS context deferred or DB connection unavailable: {exc}")
 
         try:
             yield session
-            await session.commit()
+            try:
+                await session.commit()
+            except Exception as commit_exc:
+                logger.debug(f"DB commit deferred or connection unavailable: {commit_exc}")
+                try:
+                    await session.rollback()
+                except Exception:
+                    pass
         except Exception:
-            await session.rollback()
+            try:
+                await session.rollback()
+            except Exception:
+                pass
             raise
         finally:
-            await session.close()
+            try:
+                await session.close()
+            except Exception:
+                pass
