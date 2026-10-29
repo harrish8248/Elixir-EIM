@@ -250,6 +250,7 @@ export interface SearchResultItem {
   is_record: boolean;
   created_at: string;
   rank: number;
+  snippet?: string | null;
 }
 
 export interface SearchResponse {

@@ -293,6 +293,18 @@ def evaluate_ocr(
         console.print(f"[bold green][OK] Detailed metrics report saved to {out_p}[/bold green]")
 
 
+@app.command("reindex")
+def reindex_cmd(
+    tenant_id: str | None = typer.Option(None, "--tenant", help="Target tenant UUID"),
+) -> None:
+    """Rebuild search index vectors from document OCR text and extracted IDP fields."""
+    import asyncio
+    from apps.api.app.search.service import reindex_search_vectors
+    console.print(f"[bold blue]Reindexing search vectors for tenant {tenant_id or 'all'}...[/bold blue]")
+    count = asyncio.run(reindex_search_vectors(tenant_id))
+    console.print(f"[bold green][OK] Successfully reindexed {count} documents.[/bold green]")
+
+
 # Sub-command group: elixir-admin audit verify-chain --tenant=<id>
 audit_app = typer.Typer(name="audit", help="Audit ledger cryptographic verification commands.")
 audit_app.command("verify-chain")(verify_audit_chain_cmd)

@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import {
   Search,
   Filter,
@@ -28,6 +28,49 @@ export const SearchView: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
 
+  // Autocomplete & Keyboard Shortcuts
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+        searchInputRef.current?.select();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    const trimmed = query.trim();
+    if (!trimmed || trimmed.length < 2) {
+      setSuggestions([]);
+      setShowSuggestions(false);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      try {
+        const res = await apiClient.get<string[]>(`/api/v1/search/autocomplete?q=${encodeURIComponent(trimmed)}`);
+        if (Array.isArray(res) && res.length > 0) {
+          setSuggestions(res);
+          setShowSuggestions(true);
+        } else {
+          setSuggestions([]);
+          setShowSuggestions(false);
+        }
+      } catch {
+        setSuggestions([]);
+      }
+    }, 200);
+
+    return () => clearTimeout(timer);
+  }, [query]);
+
   const executeSearch = useCallback(
     async (searchQuery: string, cls?: string, dept?: string) => {
       const q = searchQuery.trim();
@@ -45,7 +88,7 @@ export const SearchView: React.FC = () => {
           classification: cls,
           department: dept,
         });
-        setResults(res.results || []);
+        setResults((res as any).items || res.results || []);
         setTotal(res.total || 0);
         setFacets(res.facets || { classifications: {}, departments: {} });
       } catch (err) {
@@ -89,12 +132,38 @@ export const SearchView: React.FC = () => {
           <div className="relative flex-1">
             <Search className="w-4 h-4 text-surface-400 absolute left-3 top-1/2 -translate-y-1/2" />
             <input
+              ref={searchInputRef}
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search across documents, legal holds, audit events, metadata..."
-              className="w-full pl-9 pr-4 py-2.5 text-xs bg-surface-50 border border-surface-300 rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white text-surface-900"
+              onFocus={() => suggestions.length > 0 && setShowSuggestions(true)}
+              placeholder="Search across documents, invoices, GSTINs, OCR text (Ctrl+K)..."
+              className="w-full pl-9 pr-16 py-2.5 text-xs bg-surface-50 border border-surface-300 rounded-lg shadow-inner focus:outline-none focus:ring-2 focus:ring-brand-500 focus:bg-white text-surface-900"
             />
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-surface-400 font-mono border border-surface-200 bg-surface-100 px-1.5 py-0.5 rounded pointer-events-none">
+              Ctrl+K
+            </span>
+
+            {/* Autocomplete Dropdown */}
+            {showSuggestions && suggestions.length > 0 && (
+              <div className="absolute left-0 right-0 top-full mt-1 bg-white border border-surface-200 rounded-lg shadow-lg z-30 py-1 divide-y divide-surface-100 text-xs">
+                {suggestions.map((s, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    onClick={() => {
+                      setQuery(s);
+                      setShowSuggestions(false);
+                      executeSearch(s, selectedCls, selectedDept);
+                    }}
+                    className="w-full text-left px-3 py-2 hover:bg-surface-50 text-surface-800 flex items-center justify-between"
+                  >
+                    <span>{s}</span>
+                    <span className="text-[10px] text-brand-600 font-medium">Search →</span>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           <Button type="submit" variant="primary" size="md" disabled={!query.trim() || isLoading}>
             {isLoading ? "Searching..." : "Search"}
@@ -234,7 +303,14 @@ export const SearchView: React.FC = () => {
                 />
               </div>
 
-              {doc.description && <p className="text-xs text-surface-600 line-clamp-2">{doc.description}</p>}
+              {doc.snippet ? (
+                <p
+                  className="text-xs text-surface-600 line-clamp-2 [&>mark]:bg-amber-200 [&>mark]:text-amber-950 [&>mark]:font-semibold [&>mark]:px-0.5 [&>mark]:rounded"
+                  dangerouslySetInnerHTML={{ __html: doc.snippet }}
+                />
+              ) : doc.description ? (
+                <p className="text-xs text-surface-600 line-clamp-2">{doc.description}</p>
+              ) : null}
 
               <div className="flex items-center gap-4 text-[11px] text-surface-400 pt-1 border-t border-surface-100 font-mono">
                 <span>Dept: {doc.department || "Enterprise"}</span>
