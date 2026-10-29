@@ -108,7 +108,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       )}
       {items.map((item) => {
-        const isActive = currentPath.startsWith(item.path);
+        const isActive =
+          currentPath === item.path ||
+          (item.path !== "/idp" && currentPath.startsWith(item.path + "/")) ||
+          (item.path === "/idp" && currentPath.startsWith("/idp/workbench"));
         return (
           <button
             key={item.id}
