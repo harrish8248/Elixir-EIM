@@ -1,0 +1,164 @@
+{
+  "invoice_number": "GST-2027-1011",
+  "invoice_date": "2026-11-27",
+  "due_date": "2026-04-20",
+  "supplier_name": "Reliance Corporate IT Services",
+  "supplier_gstin": "27AABCR4567G1Z8",
+  "supplier_pan": "AABCR4567G",
+  "buyer_name": "Apex Global Services India Ltd",
+  "buyer_gstin": "29AABCA5432N1ZG",
+  "buyer_pan": "AABCA5432N",
+  "place_of_supply": "Karnataka (29)",
+  "taxable_value": 550000.0,
+  "cgst": 0.0,
+  "sgst": 0.0,
+  "igst": 99000.0,
+  "cess": 0.0,
+  "total_amount": 649000.0,
+  "amount_in_words": "INR Six Lakh Forty Nine Thousand Only",
+  "bank_name": "Axis Bank Ltd",
+  "bank_account": "98765432100011",
+  "bank_ifsc": "UTIB0000789",
+  "irn": "000000000009f0655db58c9eea1d504e3d812bc76d11a64f4dbb3d1602008bd6",
+  "is_intra_state": false,
+  "field_boxes": {
+    "irn_qr_code": [
+      0.8451,
+      0.0697,
+      0.9451,
+      0.147
+    ],
+    "supplier_name": [
+      0.051,
+      0.0776,
+      0.2373,
+      0.0864
+    ],
+    "supplier_gstin": [
+      0.0902,
+      0.103,
+      0.1855,
+      0.1088
+    ],
+    "supplier_pan": [
+      0.0702,
+      0.1136,
+      0.1306,
+      0.1188
+    ],
+    "invoice_number": [
+      0.1333,
+      0.1591,
+      0.2051,
+      0.1648
+    ],
+    "invoice_date": [
+      0.3843,
+      0.1591,
+      0.4353,
+      0.1648
+    ],
+    "place_of_supply": [
+      0.1333,
+      0.1742,
+      0.2027,
+      0.1815
+    ],
+    "buyer_name": [
+      0.051,
+      0.2033,
+      0.2373,
+      0.2121
+    ],
+    "buyer_gstin": [
+      0.0902,
+      0.2288,
+      0.1875,
+      0.2345
+    ],
+    "buyer_pan": [
+      0.278,
+      0.2288,
+      0.3373,
+      0.2339
+    ],
+    "taxable_value": [
+      0.8431,
+      0.3697,
+      0.8925,
+      0.3767
+    ],
+    "igst": [
+      0.8431,
+      0.3818,
+      0.8843,
+      0.3879
+    ],
+    "cgst": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sgst": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "total_amount": [
+      0.8353,
+      0.3973,
+      0.9094,
+      0.4058
+    ],
+    "amount_in_words": [
+      0.051,
+      0.3803,
+      0.2424,
+      0.3876
+    ],
+    "bank_name": [
+      0.051,
+      0.4076,
+      0.1624,
+      0.4127
+    ],
+    "bank_account": [
+      0.1098,
+      0.4182,
+      0.1867,
+      0.4239
+    ],
+    "bank_ifsc": [
+      0.2745,
+      0.4182,
+      0.3369,
+      0.4239
+    ]
+  },
+  "items": [
+    {
+      "sl": 1,
+      "hsn": "998713",
+      "desc": "Maintenance & Repair of Datacenter Infrastructure",
+      "qty": 8,
+      "rate": 60000.0,
+      "taxable": 480000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "998315",
+      "desc": "Enterprise Software Licensing & Annual Maintenance",
+      "qty": 2,
+      "rate": 35000.0,
+      "taxable": 70000.0,
+      "tax_pct": 18.0
+    }
+  ],
+  "image_path": "docs/ocr-benchmark/data_gst/gst_011_clean.png",
+  "is_degraded": false,
+  "degradation_type": "clean",
+  "document_type": "invoice_gst"
+}

@@ -208,10 +208,19 @@ ocr_app = typer.Typer(name="ocr", help="OCR and IDP evaluation and benchmark com
 @ocr_app.command("evaluate")
 def evaluate_ocr(
     split: str = typer.Option("test", "--split", help="Dataset split to evaluate (train, dev, test)"),
+    dataset: str = typer.Option("standard", "--dataset", help="Dataset to evaluate ('standard' or 'gst')"),
+    engine: str = typer.Option("tesseract", "--engine", help="OCR engine ('tesseract', 'indra', 'router')"),
     save_report: bool = typer.Option(True, "--save", help="Save results JSON to docs/ocr-benchmark/results/"),
 ) -> None:
     """Run measured evaluation harness on specified split and display performance metrics."""
     import json
+
+    if dataset.lower() == "gst":
+        from scripts.evaluate_gst import evaluate_gst_dataset
+        console.print(Panel(f"[bold cyan]Elixir EIM — Indian GST IDP Benchmark (Split: [bold white]{split}[/bold white], Engine: [bold white]{engine}[/bold white])[/bold cyan]"))
+        report = evaluate_gst_dataset(split=split, engine_name=engine)
+        return
+
     from apps.api.app.content.idp.evaluation import EvaluationHarness
     from apps.api.app.content.idp.service import IdpService
 

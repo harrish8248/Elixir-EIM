@@ -1,0 +1,173 @@
+{
+  "invoice_number": "GST-2026-1034",
+  "invoice_date": "2026-12-25",
+  "due_date": "2026-08-07",
+  "supplier_name": "Wipro Enterprise Solutions Ltd",
+  "supplier_gstin": "29AAACW8901H1Z4",
+  "supplier_pan": "AAACW8901H",
+  "buyer_name": "Bharat Digital Commerce Ltd",
+  "buyer_gstin": "36AAACB4321Q1ZL",
+  "buyer_pan": "AAACB4321Q",
+  "place_of_supply": "Telangana (36)",
+  "taxable_value": 67000.0,
+  "cgst": 0.0,
+  "sgst": 0.0,
+  "igst": 12060.0,
+  "cess": 0.0,
+  "total_amount": 79060.0,
+  "amount_in_words": "INR Seventy Nine Thousand Sixty Only",
+  "bank_name": "Axis Bank Ltd",
+  "bank_account": "98765432100034",
+  "bank_ifsc": "UTIB0000789",
+  "irn": "00000000001279233714943ae37a6a7205d02820f2786bf89670e46baa8fb676",
+  "is_intra_state": false,
+  "field_boxes": {
+    "irn_qr_code": [
+      0.8451,
+      0.0697,
+      0.9451,
+      0.147
+    ],
+    "supplier_name": [
+      0.051,
+      0.0776,
+      0.2376,
+      0.0864
+    ],
+    "supplier_gstin": [
+      0.0902,
+      0.103,
+      0.1875,
+      0.1088
+    ],
+    "supplier_pan": [
+      0.0702,
+      0.1136,
+      0.1322,
+      0.1188
+    ],
+    "invoice_number": [
+      0.1333,
+      0.1591,
+      0.2051,
+      0.1648
+    ],
+    "invoice_date": [
+      0.3843,
+      0.1591,
+      0.4353,
+      0.1648
+    ],
+    "place_of_supply": [
+      0.1333,
+      0.1742,
+      0.2039,
+      0.1815
+    ],
+    "buyer_name": [
+      0.051,
+      0.2033,
+      0.2251,
+      0.2121
+    ],
+    "buyer_gstin": [
+      0.0902,
+      0.2288,
+      0.1863,
+      0.2352
+    ],
+    "buyer_pan": [
+      0.278,
+      0.2288,
+      0.338,
+      0.2342
+    ],
+    "taxable_value": [
+      0.8431,
+      0.3697,
+      0.8871,
+      0.3767
+    ],
+    "igst": [
+      0.8431,
+      0.3818,
+      0.8843,
+      0.3879
+    ],
+    "cgst": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sgst": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "total_amount": [
+      0.8353,
+      0.3973,
+      0.9024,
+      0.4058
+    ],
+    "amount_in_words": [
+      0.051,
+      0.3803,
+      0.238,
+      0.3876
+    ],
+    "bank_name": [
+      0.051,
+      0.4076,
+      0.1624,
+      0.4127
+    ],
+    "bank_account": [
+      0.1098,
+      0.4182,
+      0.1867,
+      0.4239
+    ],
+    "bank_ifsc": [
+      0.2745,
+      0.4182,
+      0.3369,
+      0.4239
+    ]
+  },
+  "items": [
+    {
+      "sl": 1,
+      "hsn": "998313",
+      "desc": "Information Technology (IT) Consulting & Support Services",
+      "qty": 3,
+      "rate": 5000.0,
+      "taxable": 15000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "998313",
+      "desc": "Information Technology (IT) Consulting & Support Services",
+      "qty": 2,
+      "rate": 18500.0,
+      "taxable": 37000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "998314",
+      "desc": "Internet Telecommunication & Cloud Hosting Bandwidth",
+      "qty": 6,
+      "rate": 2500.0,
+      "taxable": 15000.0,
+      "tax_pct": 18.0
+    }
+  ],
+  "image_path": "docs/ocr-benchmark/data_gst/gst_034_clean.png",
+  "is_degraded": false,
+  "degradation_type": "clean",
+  "document_type": "invoice_gst"
+}

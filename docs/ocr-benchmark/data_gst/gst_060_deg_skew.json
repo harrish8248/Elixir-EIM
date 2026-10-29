@@ -1,0 +1,164 @@
+{
+  "invoice_number": "GST-2026-1060",
+  "invoice_date": "2026-11-02",
+  "due_date": "2026-09-15",
+  "supplier_name": "Infosys Technologies Pvt Ltd",
+  "supplier_gstin": "29AABCI1234F1ZX",
+  "supplier_pan": "AABCI1234F",
+  "buyer_name": "Apex Global Services India Ltd",
+  "buyer_gstin": "29AABCA5432N1ZG",
+  "buyer_pan": "AABCA5432N",
+  "place_of_supply": "Karnataka (29)",
+  "taxable_value": 106500.0,
+  "cgst": 9585.0,
+  "sgst": 9585.0,
+  "igst": 0.0,
+  "cess": 0.0,
+  "total_amount": 125670.0,
+  "amount_in_words": "INR One Lakh Twenty Five Thousand Six Hundred Seventy Only",
+  "bank_name": "ICICI Bank Limited",
+  "bank_account": "98765432100060",
+  "bank_ifsc": "ICIC0000456",
+  "irn": "00000000000d0f44b6c6fbd6a4db52993326efba17b068bcdcac61d181c26d4e",
+  "is_intra_state": true,
+  "field_boxes": {
+    "irn_qr_code": [
+      0.8451,
+      0.0697,
+      0.9451,
+      0.147
+    ],
+    "supplier_name": [
+      0.051,
+      0.0776,
+      0.2282,
+      0.0864
+    ],
+    "supplier_gstin": [
+      0.0902,
+      0.103,
+      0.1808,
+      0.1088
+    ],
+    "supplier_pan": [
+      0.0702,
+      0.1136,
+      0.1251,
+      0.1188
+    ],
+    "invoice_number": [
+      0.1333,
+      0.1591,
+      0.2051,
+      0.1648
+    ],
+    "invoice_date": [
+      0.3843,
+      0.1591,
+      0.4353,
+      0.1648
+    ],
+    "place_of_supply": [
+      0.1333,
+      0.1742,
+      0.2027,
+      0.1815
+    ],
+    "buyer_name": [
+      0.051,
+      0.2033,
+      0.2373,
+      0.2121
+    ],
+    "buyer_gstin": [
+      0.0902,
+      0.2288,
+      0.1875,
+      0.2345
+    ],
+    "buyer_pan": [
+      0.278,
+      0.2288,
+      0.3373,
+      0.2339
+    ],
+    "taxable_value": [
+      0.8431,
+      0.3697,
+      0.8925,
+      0.3767
+    ],
+    "cgst": [
+      0.8431,
+      0.3818,
+      0.8792,
+      0.3879
+    ],
+    "sgst": [
+      0.8431,
+      0.3933,
+      0.8792,
+      0.3994
+    ],
+    "igst": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "total_amount": [
+      0.8353,
+      0.4088,
+      0.9094,
+      0.4173
+    ],
+    "amount_in_words": [
+      0.051,
+      0.3803,
+      0.358,
+      0.3876
+    ],
+    "bank_name": [
+      0.051,
+      0.4076,
+      0.1831,
+      0.4127
+    ],
+    "bank_account": [
+      0.1098,
+      0.4182,
+      0.1867,
+      0.4239
+    ],
+    "bank_ifsc": [
+      0.2745,
+      0.4182,
+      0.3333,
+      0.4239
+    ]
+  },
+  "items": [
+    {
+      "sl": 1,
+      "hsn": "998313",
+      "desc": "Information Technology (IT) Consulting & Support Services",
+      "qty": 9,
+      "rate": 2500.0,
+      "taxable": 22500.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "998313",
+      "desc": "Information Technology (IT) Consulting & Support Services",
+      "qty": 7,
+      "rate": 12000.0,
+      "taxable": 84000.0,
+      "tax_pct": 18.0
+    }
+  ],
+  "image_path": "docs/ocr-benchmark/data_gst/gst_060_deg_skew.png",
+  "is_degraded": true,
+  "degradation_type": "skew",
+  "document_type": "invoice_gst"
+}

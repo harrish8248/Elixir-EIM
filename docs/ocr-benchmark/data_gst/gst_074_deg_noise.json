@@ -1,0 +1,173 @@
+{
+  "invoice_number": "GST-2026-1074",
+  "invoice_date": "2026-11-19",
+  "due_date": "2026-01-25",
+  "supplier_name": "Larsen & Toubro Infotech Ltd",
+  "supplier_gstin": "27AAACL6789K1ZU",
+  "supplier_pan": "AAACL6789K",
+  "buyer_name": "Zenith Logistics Solutions LLP",
+  "buyer_gstin": "07AAFCZ8765P1Z7",
+  "buyer_pan": "AAFCZ8765P",
+  "place_of_supply": "Delhi (07)",
+  "taxable_value": 316000.0,
+  "cgst": 0.0,
+  "sgst": 0.0,
+  "igst": 56880.0,
+  "cess": 0.0,
+  "total_amount": 372880.0,
+  "amount_in_words": "INR Three Lakh Seventy Two Thousand Eight Hundred Eighty Only",
+  "bank_name": "Axis Bank Ltd",
+  "bank_account": "98765432100074",
+  "bank_ifsc": "UTIB0000789",
+  "irn": "00000000000834730616130664f6336f575c794d1c31dc0732ce6913ea9c4687",
+  "is_intra_state": false,
+  "field_boxes": {
+    "irn_qr_code": [
+      0.8451,
+      0.0697,
+      0.9451,
+      0.147
+    ],
+    "supplier_name": [
+      0.051,
+      0.0776,
+      0.2294,
+      0.0845
+    ],
+    "supplier_gstin": [
+      0.0902,
+      0.103,
+      0.1859,
+      0.1088
+    ],
+    "supplier_pan": [
+      0.0702,
+      0.1136,
+      0.1278,
+      0.1188
+    ],
+    "invoice_number": [
+      0.1333,
+      0.1591,
+      0.2051,
+      0.1648
+    ],
+    "invoice_date": [
+      0.3843,
+      0.1591,
+      0.4353,
+      0.1648
+    ],
+    "place_of_supply": [
+      0.1333,
+      0.1742,
+      0.1788,
+      0.1815
+    ],
+    "buyer_name": [
+      0.051,
+      0.2033,
+      0.238,
+      0.2121
+    ],
+    "buyer_gstin": [
+      0.0902,
+      0.2288,
+      0.182,
+      0.2345
+    ],
+    "buyer_pan": [
+      0.278,
+      0.2288,
+      0.3361,
+      0.2339
+    ],
+    "taxable_value": [
+      0.8431,
+      0.3697,
+      0.8925,
+      0.3767
+    ],
+    "igst": [
+      0.8431,
+      0.3818,
+      0.8843,
+      0.3879
+    ],
+    "cgst": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sgst": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "total_amount": [
+      0.8353,
+      0.3973,
+      0.9094,
+      0.4058
+    ],
+    "amount_in_words": [
+      0.051,
+      0.3803,
+      0.3729,
+      0.3876
+    ],
+    "bank_name": [
+      0.051,
+      0.4076,
+      0.1624,
+      0.4127
+    ],
+    "bank_account": [
+      0.1098,
+      0.4182,
+      0.1867,
+      0.4239
+    ],
+    "bank_ifsc": [
+      0.2745,
+      0.4182,
+      0.3369,
+      0.4239
+    ]
+  },
+  "items": [
+    {
+      "sl": 1,
+      "hsn": "847130",
+      "desc": "Server Rack Infrastructure Hardware Units",
+      "qty": 2,
+      "rate": 35000.0,
+      "taxable": 70000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "998713",
+      "desc": "Maintenance & Repair of Datacenter Infrastructure",
+      "qty": 6,
+      "rate": 35000.0,
+      "taxable": 210000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "998222",
+      "desc": "Accounting & Auditing Compliance Professional Services",
+      "qty": 3,
+      "rate": 12000.0,
+      "taxable": 36000.0,
+      "tax_pct": 18.0
+    }
+  ],
+  "image_path": "docs/ocr-benchmark/data_gst/gst_074_deg_noise.png",
+  "is_degraded": true,
+  "degradation_type": "noise",
+  "document_type": "invoice_gst"
+}

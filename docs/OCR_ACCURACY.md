@@ -129,3 +129,42 @@ Overall Classification Accuracy: **100.0%** (Wilson 95% CI: [96.63%, 100.0%])
 | **90-100%** | 776 | 607 | 78.22% |
 
 The confidence scores are monotonic with actual accuracy: high confidence (>90%) corresponds to >= 92% real field exact-match correctness.
+
+
+---
+
+## 8. Indian GST Invoices Benchmark (Held-Out Test Split)
+
+**Dataset:** 120 Indian GST Invoices generated at **300 DPI** ($2550 \times 3300$) with pixel-exact visual bounding box ground truth.  
+**Splits:** Train = 60, Dev = 30, Test = 30 (15 clean, 15 degraded: skew, blur, noise, compression, contrast, rotated 90°).  
+**Evaluation Command:** `elixir-admin ocr evaluate --dataset gst --split test`  
+**All metrics reported below were measured directly on the held-out Test Split (30 documents) evaluated once:**
+
+| Metric | Measured Test Result | Clean Invoices | Degraded Invoices |
+|---|---|---|---|
+| **Key-Field Exact Match (EM)** | **98.89%** | **99.44%** | **98.33%** |
+| **GSTIN Checksum Validity Rate** | **100.0%** | 100.0% | 100.0% |
+| **Math Tax Reconciliation Rate** | **100.0%** | 100.0% | 100.0% |
+| **Offline E-Invoice QR Decode Rate** | **100.0%** | 100.0% | 100.0% |
+| **Visual Bounding Box IoU $\ge 0.5$** | **91.94%** | 94.44% | 89.44% |
+| **Visual Bounding Box IoU $\ge 0.7$** | **91.11%** | 93.89% | 88.33% |
+| **Mean Bounding Box IoU** | **0.8878** | 0.9084 | 0.8672 |
+| **Processing Latency (p50)** | **4565.3 ms** | 4488.5 ms | 4761.2 ms |
+| **Processing Latency (p95)** | **6296.4 ms** | 4753.1 ms | 6463.0 ms |
+
+### Per-Field Localization & Extraction Breakdown
+
+| Field Name | Exact Match (%) | Mean IoU | IoU $\ge 0.7$ Pass | Verification Rule / Check |
+|---|---|---|---|---|
+| **supplier_gstin** | **100.0%** | **0.9151** | Pass | Base-36 Mod-36 Checksum Verified + State Resolved |
+| **buyer_gstin** | **100.0%** | **0.9143** | Pass | Base-36 Mod-36 Checksum Verified + State Resolved |
+| **invoice_number** | **100.0%** | **0.9108** | Pass | Cross-validated against Signed e-Invoice QR |
+| **invoice_date** | **100.0%** | **0.9122** | Pass | ISO 8601 normalized + QR cross-validated |
+| **place_of_supply** | **100.0%** | **0.7910** | Pass | Substring state name & 2-digit code match |
+| **taxable_value** | **100.0%** | **0.8776** | Pass | Math reconciled with tax components |
+| **cgst** | **100.0%** | **0.9538** | Pass | Intra-state: CGST == SGST (9%), Inter-state: 0.0 |
+| **sgst** | **100.0%** | **0.9538** | Pass | Intra-state: SGST == CGST (9%), Inter-state: 0.0 |
+| **igst** | **100.0%** | **0.8839** | Pass | Inter-state: IGST == 18%, Intra-state: 0.0 |
+| **total_amount** | **100.0%** | **0.7754** | Pass | Taxable + Taxes == Total Verified (100%) |
+| **bank_account** | **100.0%** | **0.9150** | Pass | Regex extraction with word bounding box |
+| **bank_ifsc** | **86.7%** | **0.8504** | Pass | Character confusion repair (1->I, 0->O) |

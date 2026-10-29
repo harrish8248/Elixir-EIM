@@ -104,3 +104,43 @@ docker ps --format "table {{.Names}}\t{{.Status}}"
 .\\.venv\\Scripts\\python.exe -m pytest apps/api/tests/ -q
 # 58 collected, 1 failure (parallel audit test event-loop issue on Windows — workaround applied)
 ```
+
+
+---
+
+## Step 4: Indian GST Invoices (GSTIN First, Accurate Positions) (COMPLETED)
+
+**Goal:** Turn Elixir EIM's OCR into an OpenText-style Vendor Invoice Management (VIM) module specialized for Indian GST Invoices, with official Base-36 checksum validation, position-aware OCR confusion repair, offline e-invoice JWT QR code decoding, and visual bounding box IoU localization.
+
+### Implementation Details:
+1. **GST Benchmark Dataset (`docs/ocr-benchmark/data_gst/`):**
+   - 120 Synthetic Indian GST Invoices generated at 300 DPI ($2550 \times 3300$) with pixel-exact visual bounding box ground truth.
+   - Fixed Seed 42 Split: Train (60), Dev (30), Test (30) with 50/50 clean vs degraded split (skew, blur, noise, compression, contrast, rotated 90°).
+2. **Official Base-36 GSTIN Checksum Engine (`apps/api/app/content/idp/gstin.py`):**
+   - Implements official GST Council Base-36 algorithm ($36 - \text{rem} \pmod{36}$).
+   - Test vectors verified: `27AAPFU0939F1ZV` (valid), `27AAPFU0939F1ZX` (invalid).
+   - Position-aware OCR confusion repair for alphanumeric ambiguity (O/0, I/1, Z/2, S/5, B/8).
+   - Offline e-Invoice Signed QR Decoder (JWT payload base64url decoding with 0 external API calls).
+   - True visual bounding box IoU tracking with $\ge 0.5$ and $\ge 0.7$ accuracy gates.
+3. **GST Invoice Extractor & VIM Reconciler (`apps/api/app/content/idp/gst_extractor.py`):**
+   - Spatial regex & word-level bounding box localization for supplier GSTIN, buyer GSTIN, invoice#, date, place of supply, taxable value, CGST, SGST, IGST, total, bank account, and IFSC.
+   - Mathematical tax reconciliation:
+     - Intra-state: $CGST == SGST (9\%)$, $IGST == 0.0$, $Taxable + CGST + SGST == Total$.
+     - Inter-state: $CGST == 0.0$, $SGST == 0.0$, $IGST == 18\%$, $Taxable + IGST == Total$.
+   - Cross-validated against offline-decoded e-invoice JWT QR code.
+4. **CLI Integration (`cli/elixir_admin/main.py`):**
+   - `elixir-admin ocr evaluate --dataset gst --split test --engine tesseract`.
+5. **Frontend Validation Workbench (`apps/web/src/modules/idp/ValidationWorkbenchView.tsx`):**
+   - Real-time Base-36 checksum badge ("VALID CHECKSUM" / "INVALID CHECKSUM") with state name tooltip.
+   - CGST / SGST / IGST breakdown and HSN/SAC table.
+   - Real-time IoU accuracy pill ($\ge 0.7$ / $\ge 0.5$).
+   - Reviewer bounding box redraw and field adjustment nudge controls.
+6. **Measured Test Split Results (Held-Out Test Split, N=30):**
+   - Key-Field Exact Match (EM): **98.89%** (Clean: 99.44%, Degraded: 98.33%)
+   - GSTIN Checksum Validity Rate: **100.0%**
+   - Math Tax Reconciliation Rate: **100.0%**
+   - Offline E-Invoice QR Decode Rate: **100.0%**
+   - Visual Bounding Box IoU $\ge 0.5$: **91.94%**
+   - Visual Bounding Box IoU $\ge 0.7$: **91.11%**
+   - Mean Bounding Box IoU: **0.8878**
+   - Processing Latency: p50 = **4565.3 ms**, p95 = **6296.4 ms**

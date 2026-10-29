@@ -19,7 +19,7 @@ pytestmark = pytest.mark.postgres
 
 raw_url = os.getenv(
     "DATABASE_URL_SYNC",
-    "postgresql://elixir:elixir_secure_pass@localhost:5432/elixir_eim",
+    "postgresql://elixir:elixir_secure_pass@127.0.0.1:5432/elixir_eim",
 )
 DATABASE_URL = raw_url.replace("postgresql+psycopg://", "postgresql://")
 

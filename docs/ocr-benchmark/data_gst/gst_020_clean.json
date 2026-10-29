@@ -1,0 +1,182 @@
+{
+  "invoice_number": "GST-2027-1020",
+  "invoice_date": "2026-04-17",
+  "due_date": "2026-01-11",
+  "supplier_name": "Tata Consultancy Services Ltd",
+  "supplier_gstin": "27AAACT2718E1ZM",
+  "supplier_pan": "AAACT2718E",
+  "buyer_name": "Zenith Logistics Solutions LLP",
+  "buyer_gstin": "07AAFCZ8765P1Z7",
+  "buyer_pan": "AAFCZ8765P",
+  "place_of_supply": "Delhi (07)",
+  "taxable_value": 505500.0,
+  "cgst": 0.0,
+  "sgst": 0.0,
+  "igst": 90990.0,
+  "cess": 0.0,
+  "total_amount": 596490.0,
+  "amount_in_words": "INR Five Lakh Ninety Six Thousand Four Hundred Ninety Only",
+  "bank_name": "State Bank of India",
+  "bank_account": "98765432100020",
+  "bank_ifsc": "SBIN0001234",
+  "irn": "00000000000845ef281cefb201cbdb8a07c65b693ebab1cf6fc0281a5c93e13d",
+  "is_intra_state": false,
+  "field_boxes": {
+    "irn_qr_code": [
+      0.8451,
+      0.0697,
+      0.9451,
+      0.147
+    ],
+    "supplier_name": [
+      0.051,
+      0.0776,
+      0.2361,
+      0.0864
+    ],
+    "supplier_gstin": [
+      0.0902,
+      0.103,
+      0.1863,
+      0.1088
+    ],
+    "supplier_pan": [
+      0.0702,
+      0.1136,
+      0.1286,
+      0.1188
+    ],
+    "invoice_number": [
+      0.1333,
+      0.1591,
+      0.2051,
+      0.1648
+    ],
+    "invoice_date": [
+      0.3843,
+      0.1591,
+      0.4353,
+      0.1648
+    ],
+    "place_of_supply": [
+      0.1333,
+      0.1742,
+      0.1788,
+      0.1815
+    ],
+    "buyer_name": [
+      0.051,
+      0.2033,
+      0.238,
+      0.2121
+    ],
+    "buyer_gstin": [
+      0.0902,
+      0.2288,
+      0.182,
+      0.2345
+    ],
+    "buyer_pan": [
+      0.278,
+      0.2288,
+      0.3361,
+      0.2339
+    ],
+    "taxable_value": [
+      0.8431,
+      0.3697,
+      0.8925,
+      0.3767
+    ],
+    "igst": [
+      0.8431,
+      0.3818,
+      0.8843,
+      0.3879
+    ],
+    "cgst": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sgst": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "total_amount": [
+      0.8353,
+      0.3973,
+      0.9094,
+      0.4058
+    ],
+    "amount_in_words": [
+      0.051,
+      0.3803,
+      0.3498,
+      0.3876
+    ],
+    "bank_name": [
+      0.051,
+      0.4076,
+      0.1843,
+      0.4127
+    ],
+    "bank_account": [
+      0.1098,
+      0.4182,
+      0.1867,
+      0.4239
+    ],
+    "bank_ifsc": [
+      0.2745,
+      0.4182,
+      0.3373,
+      0.4239
+    ]
+  },
+  "items": [
+    {
+      "sl": 1,
+      "hsn": "847130",
+      "desc": "Server Rack Infrastructure Hardware Units",
+      "qty": 10,
+      "rate": 5000.0,
+      "taxable": 50000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "998315",
+      "desc": "Enterprise Software Licensing & Annual Maintenance",
+      "qty": 6,
+      "rate": 60000.0,
+      "taxable": 360000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "998313",
+      "desc": "Information Technology (IT) Consulting & Support Services",
+      "qty": 8,
+      "rate": 5000.0,
+      "taxable": 40000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "998222",
+      "desc": "Accounting & Auditing Compliance Professional Services",
+      "qty": 3,
+      "rate": 18500.0,
+      "taxable": 55500.0,
+      "tax_pct": 18.0
+    }
+  ],
+  "image_path": "docs/ocr-benchmark/data_gst/gst_020_clean.png",
+  "is_degraded": false,
+  "degradation_type": "clean",
+  "document_type": "invoice_gst"
+}

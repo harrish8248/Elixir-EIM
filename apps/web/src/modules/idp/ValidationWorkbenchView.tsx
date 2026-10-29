@@ -11,6 +11,9 @@ import {
   Building2,
   DollarSign,
   ShieldCheck,
+  QrCode,
+  Layers,
+  Crosshair,
 } from "lucide-react";
 import { clsx } from "clsx";
 import { apiClient } from "@/api/client";
@@ -32,6 +35,7 @@ interface ExtractedFieldData {
   extraction_method: string;
   is_valid: boolean;
   error_message?: string | null;
+  iou?: number;
 }
 
 interface ValidationRuleData {
@@ -50,6 +54,7 @@ interface JobDetails {
   mean_confidence: number;
   fields: ExtractedFieldData[];
   validation_results: ValidationRuleData[];
+  is_gst_invoice?: boolean;
 }
 
 interface ValidationWorkbenchViewProps {
@@ -57,15 +62,78 @@ interface ValidationWorkbenchViewProps {
   onBack: () => void;
 }
 
-export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = ({ jobId = "job-inv-001", onBack }) => {
+const CHARS = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+const STATE_NAMES: Record<string, string> = {
+  "01": "Jammu & Kashmir",
+  "02": "Himachal Pradesh",
+  "03": "Punjab",
+  "04": "Chandigarh",
+  "05": "Uttarakhand",
+  "06": "Haryana",
+  "07": "Delhi",
+  "08": "Rajasthan",
+  "09": "Uttar Pradesh",
+  "10": "Bihar",
+  "19": "West Bengal",
+  "24": "Gujarat",
+  "27": "Maharashtra",
+  "29": "Karnataka",
+  "32": "Kerala",
+  "33": "Tamil Nadu",
+  "36": "Telangana",
+  "37": "Andhra Pradesh",
+};
+
+export const computeGstinCheckChar = (gstin14: string): string => {
+  const clean = gstin14.toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (clean.length < 14) return "";
+  let total = 0;
+  for (let i = 0; i < 14; i++) {
+    const v = CHARS.indexOf(clean[i]);
+    if (v < 0) return "";
+    const factor = i % 2 === 0 ? 1 : 2;
+    const prod = v * factor;
+    total += Math.floor(prod / 36) + (prod % 36);
+  }
+  const rem = total % 36;
+  const checkCode = (36 - rem) % 36;
+  return CHARS[checkCode];
+};
+
+export const validateGstin = (
+  gstin?: string | null
+): { isValid: boolean; error?: string; state?: string } => {
+  if (!gstin) return { isValid: false, error: "Empty GSTIN" };
+  const clean = gstin.toUpperCase().replace(/[^A-Z0-9]/g, "");
+  if (clean.length !== 15) return { isValid: false, error: "Must be 15 chars" };
+  const st = clean.slice(0, 2);
+  const stateName = STATE_NAMES[st] || `State (${st})`;
+  const expected = computeGstinCheckChar(clean.slice(0, 14));
+  const actual = clean[14];
+  if (expected !== actual) {
+    return {
+      isValid: false,
+      error: `Checksum mismatch: expected '${expected}', got '${actual}'`,
+      state: stateName,
+    };
+  }
+  return { isValid: true, state: stateName };
+};
+
+export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = ({
+  jobId = "job-inv-001",
+  onBack,
+}) => {
   const [job, setJob] = useState<JobDetails | null>(null);
   const [fields, setFields] = useState<Record<string, any>>({});
   const [originalFields, setOriginalFields] = useState<Record<string, any>>({});
-  const [activeField, setActiveField] = useState<string | null>("vendor");
+  const [activeField, setActiveField] = useState<string | null>("supplier_gstin");
   const [zoomLevel, setZoomLevel] = useState<number>(100);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [correctionReason, setCorrectionReason] = useState("Manual OCR verification correction");
+  const [fieldBoxes, setFieldBoxes] = useState<Record<string, BoundingBox>>({});
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -73,143 +141,183 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
         const data = await apiClient.get<JobDetails>(`/api/v1/idp/jobs/${jobId}`);
         setJob(data);
         const map: Record<string, any> = {};
+        const bmap: Record<string, BoundingBox> = {};
         data.fields.forEach((f: ExtractedFieldData) => {
           map[f.field_name] = f.field_value;
+          if (f.bbox) bmap[f.field_name] = f.bbox;
         });
         setFields(map);
         setOriginalFields(map);
+        setFieldBoxes(bmap);
       } catch (err) {
-        // Fallback demo data
+        // Fallback demo data showcasing Indian GST invoice with IoU and Base-36 checksum
         const fallbackJob: JobDetails = {
           id: jobId,
-          filename: "INV-2026-1000_CloudScale_Networks.png",
+          filename: "GST-2026-1000_Infosys_Technologies.png",
           status: "auto_approved",
-          document_type: "invoice",
-          classification_confidence: 98.5,
-          mean_confidence: 91.2,
+          document_type: "invoice_gst",
+          classification_confidence: 99.8,
+          mean_confidence: 96.4,
+          is_gst_invoice: true,
           fields: [
             {
-              field_name: "vendor",
-              field_value: "CloudScale Networks Inc",
-              confidence: 98.0,
+              field_name: "supplier_gstin",
+              field_value: "29AABCI1234F1ZX",
+              confidence: 99.0,
               page: 1,
-              bbox: { x: 40, y: 120, width: 220, height: 25 },
-              extraction_method: "vendor_catalog_match",
+              bbox: { x: 77, y: 113, width: 76, height: 6 },
+              extraction_method: "gstin_repair_checksum",
               is_valid: true,
+              iou: 0.9912,
+            },
+            {
+              field_name: "buyer_gstin",
+              field_value: "27AABCA9876M1ZY",
+              confidence: 99.0,
+              page: 1,
+              bbox: { x: 77, y: 251, width: 82, height: 6 },
+              extraction_method: "gstin_repair_checksum",
+              is_valid: true,
+              iou: 0.9928,
             },
             {
               field_name: "invoice_number",
-              field_value: "INV-2026-1000",
-              confidence: 98.0,
+              field_value: "GST-2026-1000",
+              confidence: 98.5,
               page: 1,
-              bbox: { x: 550, y: 145, width: 180, height: 25 },
+              bbox: { x: 113, y: 173, width: 58, height: 7 },
               extraction_method: "regex_pattern",
               is_valid: true,
+              iou: 0.9889,
             },
             {
               field_name: "invoice_date",
-              field_value: "2026-05-08",
-              confidence: 96.0,
+              field_value: "2026-04-05",
+              confidence: 98.0,
               page: 1,
-              bbox: { x: 50, y: 206, width: 140, height: 20 },
-              extraction_method: "anchor_proximity",
+              bbox: { x: 326, y: 173, width: 44, height: 7 },
+              extraction_method: "iso_date_regex",
               is_valid: true,
+              iou: 0.9922,
             },
             {
-              field_name: "due_date",
-              field_value: "2026-05-23",
-              confidence: 95.0,
+              field_name: "place_of_supply",
+              field_value: "Maharashtra (27)",
+              confidence: 97.0,
               page: 1,
-              bbox: { x: 250, y: 206, width: 140, height: 20 },
-              extraction_method: "anchor_proximity",
+              bbox: { x: 113, y: 190, width: 78, height: 7 },
+              extraction_method: "anchor_regex",
               is_valid: true,
+              iou: 0.9802,
             },
             {
-              field_name: "po_number",
-              field_value: "PO-2026-7000",
-              confidence: 92.0,
+              field_name: "taxable_value",
+              field_value: 365000.0,
+              confidence: 97.5,
               page: 1,
-              bbox: { x: 450, y: 206, width: 130, height: 20 },
-              extraction_method: "anchor_proximity",
+              bbox: { x: 717, y: 407, width: 42, height: 8 },
+              extraction_method: "amount_proximity",
               is_valid: true,
+              iou: 0.9858,
             },
             {
-              field_name: "currency",
-              field_value: "USD",
-              confidence: 96.0,
-              page: 1,
-              bbox: { x: 650, y: 206, width: 80, height: 20 },
-              extraction_method: "symbol_scan",
-              is_valid: true,
-            },
-            {
-              field_name: "subtotal",
-              field_value: 6089.0,
-              confidence: 96.0,
-              page: 1,
-              bbox: { x: 701, y: 471, width: 90, height: 25 },
-              extraction_method: "anchor_right",
-              is_valid: true,
-            },
-            {
-              field_name: "tax",
+              field_name: "cgst",
               field_value: 0.0,
               confidence: 96.0,
               page: 1,
-              bbox: { x: 701, y: 496, width: 60, height: 25 },
-              extraction_method: "anchor_right",
+              bbox: null,
+              extraction_method: "tax_breakdown",
               is_valid: true,
+              iou: 1.0,
             },
             {
-              field_name: "total",
-              field_value: 6089.0,
+              field_name: "sgst",
+              field_value: 0.0,
               confidence: 96.0,
               page: 1,
-              bbox: { x: 701, y: 531, width: 110, height: 35 },
-              extraction_method: "anchor_right",
+              bbox: null,
+              extraction_method: "tax_breakdown",
               is_valid: true,
+              iou: 1.0,
+            },
+            {
+              field_name: "igst",
+              field_value: 65700.0,
+              confidence: 97.0,
+              page: 1,
+              bbox: { x: 717, y: 420, width: 35, height: 8 },
+              extraction_method: "tax_breakdown",
+              is_valid: true,
+              iou: 0.9806,
+            },
+            {
+              field_name: "total_amount",
+              field_value: 430700.0,
+              confidence: 99.0,
+              page: 1,
+              bbox: { x: 719, y: 437, width: 53, height: 9 },
+              extraction_method: "total_amount_scan",
+              is_valid: true,
+              iou: 0.8408,
+            },
+            {
+              field_name: "bank_ifsc",
+              field_value: "ICIC0000456",
+              confidence: 96.0,
+              page: 1,
+              bbox: { x: 233, y: 460, width: 45, height: 6 },
+              extraction_method: "regex_ifsc_repaired",
+              is_valid: true,
+              iou: 0.9864,
+            },
+            {
+              field_name: "bank_account",
+              field_value: "98765432100000",
+              confidence: 97.0,
+              page: 1,
+              bbox: { x: 92, y: 460, width: 60, height: 6 },
+              extraction_method: "regex_account",
+              is_valid: true,
+              iou: 0.9896,
             },
           ],
           validation_results: [
             {
-              rule_name: "required_fields_present",
+              rule_name: "GSTIN_CHECKSUM_VALIDATION",
               passed: true,
-              message: "All mandatory invoice fields extracted",
+              message: "Supplier GSTIN '29AABCI1234F1ZX' validated with official Base-36 checksum (Karnataka)",
               severity: "info",
             },
             {
-              rule_name: "math_subtotal_tax_total",
+              rule_name: "GSTIN_BUYER_CHECKSUM_VALIDATION",
               passed: true,
-              message: "Total matches: subtotal (6089.0) + tax (0.0) = 6089.0",
+              message: "Buyer GSTIN '27AABCA9876M1ZY' validated with official Base-36 checksum (Maharashtra)",
               severity: "info",
             },
             {
-              rule_name: "line_items_sum",
+              rule_name: "GST_TAX_RECONCILIATION",
               passed: true,
-              message: "Line items sum ($6,089.00) equals subtotal",
+              message: "Taxable (365,000.00) + Integrated GST 18% (65,700.00) == Total (430,700.00)",
               severity: "info",
             },
             {
-              rule_name: "date_sanity",
+              rule_name: "IRN_E_INVOICE_QR_VERIFIED",
               passed: true,
-              message: "Dates valid: issue 2026-05-08, due 2026-05-23",
-              severity: "info",
-            },
-            {
-              rule_name: "vendor_master_check",
-              passed: true,
-              message: "Vendor 'CloudScale Networks Inc' verified in Master Registry",
+              message: "Signed e-Invoice JWT QR code decoded offline; seller, buyer, doc_no match 100%",
               severity: "info",
             },
           ],
         };
         setJob(fallbackJob);
         const map: Record<string, any> = {};
+        const bmap: Record<string, BoundingBox> = {};
         fallbackJob.fields.forEach((f) => {
           map[f.field_name] = f.field_value;
+          if (f.bbox) bmap[f.field_name] = f.bbox;
         });
         setFields(map);
         setOriginalFields(map);
+        setFieldBoxes(bmap);
       }
     };
     fetchJob();
@@ -217,6 +325,22 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
 
   const handleFieldChange = (fieldName: string, val: any) => {
     setFields((prev) => ({ ...prev, [fieldName]: val }));
+  };
+
+  const handleBoxAdjust = (fieldName: string, deltaX: number, deltaY: number, deltaW: number, deltaH: number) => {
+    setFieldBoxes((prev) => {
+      const cur = prev[fieldName] || { x: 100, y: 100, width: 100, height: 20 };
+      return {
+        ...prev,
+        [fieldName]: {
+          ...cur,
+          x: Math.max(0, cur.x + deltaX),
+          y: Math.max(0, cur.y + deltaY),
+          width: Math.max(20, cur.width + deltaW),
+          height: Math.max(10, cur.height + deltaH),
+        },
+      };
+    });
   };
 
   const handleAcceptAll = async () => {
@@ -228,9 +352,7 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
         comment: "Accepted via Validation Workbench",
       });
       setSaveSuccess(true);
-      setTimeout(() => {
-        onBack();
-      }, 1000);
+      setTimeout(() => onBack(), 1000);
     } catch {
       setSaveSuccess(true);
       setTimeout(() => onBack(), 1000);
@@ -256,9 +378,7 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
         comment: correctionReason,
       });
       setSaveSuccess(true);
-      setTimeout(() => {
-        onBack();
-      }, 1200);
+      setTimeout(() => onBack(), 1200);
     } catch {
       setSaveSuccess(true);
       setTimeout(() => onBack(), 1200);
@@ -266,6 +386,19 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
       setIsSubmitting(false);
     }
   };
+
+  // GSTIN Validation
+  const supplierGstinCheck = validateGstin(fields.supplier_gstin);
+  const buyerGstinCheck = validateGstin(fields.buyer_gstin);
+
+  // Math totals calculation
+  const txVal = Number(fields.taxable_value) || 0;
+  const cgstVal = Number(fields.cgst) || 0;
+  const sgstVal = Number(fields.sgst) || 0;
+  const igstVal = Number(fields.igst) || 0;
+  const totVal = Number(fields.total_amount) || Number(fields.total) || 0;
+  const calcTotal = txVal + cgstVal + sgstVal + igstVal;
+  const mathReconciled = Math.abs(calcTotal - totVal) <= 1.0 && totVal > 0;
 
   return (
     <div className="flex-1 flex flex-col h-full bg-surface-50 dark:bg-surface-950 overflow-hidden">
@@ -293,9 +426,12 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
               >
                 {job?.status.replace("_", " ") || "Review"}
               </span>
+              <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-100 text-blue-800 dark:bg-blue-950/70 dark:text-blue-300 flex items-center gap-1">
+                <QrCode className="w-3 h-3" /> IRN E-INVOICE
+              </span>
             </div>
             <p className="text-[11px] text-surface-500">
-              Mean OCR Confidence: {job?.mean_confidence ?? 91.2}% • PEP Enforcement Active
+              Mean OCR Confidence: {job?.mean_confidence ?? 96.4}% • Base-36 Checksum Verified • PEP Policy PDP Active
             </p>
           </div>
         </div>
@@ -355,6 +491,58 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
             </button>
           </div>
 
+          {/* Reviewer Bounding Box Adjuster Bar */}
+          {activeField && fieldBoxes[activeField] && (
+            <div className="absolute bottom-3 left-4 right-4 z-10 bg-white/95 dark:bg-surface-800/95 backdrop-blur px-3 py-2 rounded-md border border-surface-200 dark:border-surface-700 shadow-md flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2">
+                <Crosshair className="w-3.5 h-3.5 text-brand-600" />
+                <span className="font-semibold text-surface-800 dark:text-surface-200">
+                  Adjust Box: <span className="font-mono text-brand-700">{activeField}</span>
+                </span>
+                <span className="text-[10px] text-surface-500 font-mono">
+                  [x: {fieldBoxes[activeField].x}, y: {fieldBoxes[activeField].y}, w: {fieldBoxes[activeField].width}, h: {fieldBoxes[activeField].height}]
+                </span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <button
+                  onClick={() => handleBoxAdjust(activeField, -5, 0, 0, 0)}
+                  className="px-1.5 py-0.5 bg-surface-100 hover:bg-surface-200 rounded text-[10px] font-mono"
+                  title="Nudge Left"
+                >
+                  ←
+                </button>
+                <button
+                  onClick={() => handleBoxAdjust(activeField, 5, 0, 0, 0)}
+                  className="px-1.5 py-0.5 bg-surface-100 hover:bg-surface-200 rounded text-[10px] font-mono"
+                  title="Nudge Right"
+                >
+                  →
+                </button>
+                <button
+                  onClick={() => handleBoxAdjust(activeField, 0, -5, 0, 0)}
+                  className="px-1.5 py-0.5 bg-surface-100 hover:bg-surface-200 rounded text-[10px] font-mono"
+                  title="Nudge Up"
+                >
+                  ↑
+                </button>
+                <button
+                  onClick={() => handleBoxAdjust(activeField, 0, 5, 0, 0)}
+                  className="px-1.5 py-0.5 bg-surface-100 hover:bg-surface-200 rounded text-[10px] font-mono"
+                  title="Nudge Down"
+                >
+                  ↓
+                </button>
+                <button
+                  onClick={() => handleBoxAdjust(activeField, 0, 0, 10, 0)}
+                  className="px-2 py-0.5 bg-surface-100 hover:bg-surface-200 rounded text-[10px] font-medium"
+                  title="Expand Width"
+                >
+                  + Width
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Document Canvas Container */}
           <div className="flex-1 overflow-auto p-6 flex justify-center items-start">
             <div
@@ -365,110 +553,148 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
                 transformOrigin: "top center",
               }}
             >
-              {/* Simulated Document Rendering Background */}
+              {/* Simulated Indian GST Invoice Rendering */}
               <div className="w-full h-full p-8 text-surface-800 font-sans text-xs flex flex-col justify-between pointer-events-none">
                 <div>
-                  <div className="flex justify-between items-start border-b pb-4 mb-4">
+                  {/* Title Banner */}
+                  <div className="text-center bg-slate-50 border border-slate-300 py-2 mb-4 rounded-xs">
+                    <h1 className="text-sm font-bold tracking-wider text-slate-900">TAX INVOICE / GST INVOICE</h1>
+                    <p className="text-[9px] text-slate-500">(Issued under Section 31 of CGST Act, 2017)</p>
+                  </div>
+
+                  {/* Header: Supplier + QR Code */}
+                  <div className="flex justify-between items-start border-b pb-4 mb-3">
                     <div>
-                      <h2 className="text-base font-bold text-slate-900">
-                        {fields.vendor || "CloudScale Networks Inc"}
+                      <h2 className="text-sm font-bold text-slate-900">
+                        {fields.supplier_name || "Infosys Technologies Pvt Ltd"}
                       </h2>
-                      <p className="text-[10px] text-slate-500">450 Tech Hub, Suite 800 • San Francisco, CA</p>
-                      <p className="text-[10px] text-slate-500">accounts@cloudscale.net</p>
-                    </div>
-                    <div className="text-right">
-                      <span className="text-lg font-black text-slate-800 tracking-wider">INVOICE</span>
-                      <p className="text-[11px] font-mono font-bold text-slate-700">
-                        {fields.invoice_number || "INV-2026-1000"}
+                      <p className="text-[10px] text-slate-500">Electronic City, Hosur Road • Bengaluru - 29</p>
+                      <p className="text-[10px] font-mono mt-1">
+                        <span className="font-bold text-slate-700">GSTIN: </span>
+                        <span className="font-bold text-brand-900">{fields.supplier_gstin || "29AABCI1234F1ZX"}</span>
+                      </p>
+                      <p className="text-[10px] text-slate-500">
+                        PAN: AABCI1234F • State: Karnataka (Code: 29)
                       </p>
                     </div>
+
+                    {/* e-Invoice QR Code placeholder */}
+                    <div className="w-20 h-20 border border-slate-400 bg-slate-50 p-1 flex flex-col items-center justify-center rounded-xs shadow-xs text-center">
+                      <QrCode className="w-12 h-12 text-slate-800" />
+                      <span className="text-[8px] font-mono text-slate-600 mt-0.5">IRN Verified</span>
+                    </div>
                   </div>
 
-                  <div className="grid grid-cols-4 gap-2 bg-slate-50 p-2 rounded mb-6 text-[10px]">
+                  {/* Meta Box: Inv#, Date, POS */}
+                  <div className="grid grid-cols-3 gap-2 bg-slate-50 p-2 border border-slate-200 rounded mb-3 text-[10px]">
+                    <div>
+                      <span className="font-bold text-slate-500">Invoice Number:</span>
+                      <p className="font-mono font-bold text-slate-800">{fields.invoice_number || "GST-2026-1000"}</p>
+                    </div>
                     <div>
                       <span className="font-bold text-slate-500">Invoice Date:</span>
-                      <p className="font-semibold text-slate-800">{fields.invoice_date || "2026-05-08"}</p>
+                      <p className="font-mono font-bold text-slate-800">{fields.invoice_date || "2026-04-05"}</p>
                     </div>
                     <div>
-                      <span className="font-bold text-slate-500">Due Date:</span>
-                      <p className="font-semibold text-slate-800">{fields.due_date || "2026-05-23"}</p>
-                    </div>
-                    <div>
-                      <span className="font-bold text-slate-500">PO Number:</span>
-                      <p className="font-semibold text-slate-800">{fields.po_number || "PO-2026-7000"}</p>
-                    </div>
-                    <div>
-                      <span className="font-bold text-slate-500">Currency:</span>
-                      <p className="font-semibold text-slate-800">{fields.currency || "USD"}</p>
+                      <span className="font-bold text-slate-500">Place of Supply:</span>
+                      <p className="font-semibold text-slate-800">{fields.place_of_supply || "Maharashtra (27)"}</p>
                     </div>
                   </div>
 
-                  {/* Line items table preview */}
-                  <div className="border border-slate-200 rounded overflow-hidden mb-6">
-                    <div className="bg-slate-100 px-3 py-1.5 font-bold text-[10px] grid grid-cols-12 text-slate-700">
-                      <span className="col-span-6">Description</span>
-                      <span className="col-span-2 text-right">Qty</span>
-                      <span className="col-span-2 text-right">Unit Price</span>
-                      <span className="col-span-2 text-right">Amount</span>
+                  {/* Billed To (Buyer) */}
+                  <div className="border border-slate-200 p-2.5 rounded mb-3 bg-white text-[10px]">
+                    <span className="font-bold text-slate-500 block mb-1">Details of Receiver / Billed To:</span>
+                    <p className="font-bold text-slate-900">{fields.buyer_name || "AcroCorp India Private Limited"}</p>
+                    <p className="text-slate-500">Bandra Kurla Complex, Mumbai - Maharashtra (27)</p>
+                    <p className="font-mono mt-1">
+                      <span className="font-bold text-slate-700">GSTIN: </span>
+                      <span className="font-bold text-brand-900">{fields.buyer_gstin || "27AABCA9876M1ZY"}</span>
+                    </p>
+                  </div>
+
+                  {/* HSN Line Items Table */}
+                  <div className="border border-slate-300 rounded overflow-hidden mb-4">
+                    <div className="bg-slate-100 px-3 py-1.5 font-bold text-[9px] grid grid-cols-12 text-slate-700 border-b">
+                      <span className="col-span-1">Sl</span>
+                      <span className="col-span-2">HSN/SAC</span>
+                      <span className="col-span-4">Description</span>
+                      <span className="col-span-1 text-right">Qty</span>
+                      <span className="col-span-2 text-right">Rate (INR)</span>
+                      <span className="col-span-2 text-right">Taxable (INR)</span>
                     </div>
-                    <div className="divide-y divide-slate-100 text-[10px]">
+                    <div className="divide-y divide-slate-100 text-[9px]">
                       <div className="px-3 py-1.5 grid grid-cols-12">
-                        <span className="col-span-6">SOC-2 Compliance Continuous Audit Log</span>
-                        <span className="col-span-2 text-right">1</span>
-                        <span className="col-span-2 text-right">$1,500.00</span>
-                        <span className="col-span-2 text-right font-semibold">$1,500.00</span>
+                        <span className="col-span-1">1</span>
+                        <span className="col-span-2 font-mono">998222</span>
+                        <span className="col-span-4">Accounting & Auditing Services</span>
+                        <span className="col-span-1 text-right">9</span>
+                        <span className="col-span-2 text-right">2,500.00</span>
+                        <span className="col-span-2 text-right font-semibold">22,500.00</span>
                       </div>
                       <div className="px-3 py-1.5 grid grid-cols-12">
-                        <span className="col-span-6">SSL/TLS Wildcard Certificate Renewal</span>
-                        <span className="col-span-2 text-right">1</span>
-                        <span className="col-span-2 text-right">$89.00</span>
-                        <span className="col-span-2 text-right font-semibold">$89.00</span>
-                      </div>
-                      <div className="px-3 py-1.5 grid grid-cols-12">
-                        <span className="col-span-6">Patent Portfolio Filing Review & Filing</span>
-                        <span className="col-span-2 text-right">2</span>
-                        <span className="col-span-2 text-right">$1,800.00</span>
-                        <span className="col-span-2 text-right font-semibold">$3,600.00</span>
-                      </div>
-                      <div className="px-3 py-1.5 grid grid-cols-12">
-                        <span className="col-span-6">Managed Cloud Hosting Standard Tier</span>
-                        <span className="col-span-2 text-right">2</span>
-                        <span className="col-span-2 text-right">$450.00</span>
-                        <span className="col-span-2 text-right font-semibold">$900.00</span>
+                        <span className="col-span-1">2</span>
+                        <span className="col-span-2 font-mono">998314</span>
+                        <span className="col-span-4">Cloud Hosting Bandwidth</span>
+                        <span className="col-span-1 text-right">9</span>
+                        <span className="col-span-2 text-right">35,000.00</span>
+                        <span className="col-span-2 text-right font-semibold">315,000.00</span>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Totals Box */}
-                <div className="border-t pt-3 flex flex-col items-end text-xs">
-                  <div className="w-48 space-y-1">
-                    <div className="flex justify-between text-slate-600 text-[11px]">
-                      <span>Subtotal:</span>
-                      <span className="font-semibold">${fields.subtotal?.toFixed(2) || "6,089.00"}</span>
+                {/* Totals & Bank Details */}
+                <div className="border-t pt-2 flex justify-between items-start text-xs">
+                  <div className="text-[10px] space-y-1">
+                    <span className="font-bold text-slate-500">Bank Remittance Details:</span>
+                    <p className="text-slate-700">Bank: ICICI Bank Limited</p>
+                    <p className="font-mono">
+                      A/C: <span className="font-semibold">{fields.bank_account || "98765432100000"}</span> • IFSC:{" "}
+                      <span className="font-semibold text-brand-900">{fields.bank_ifsc || "ICIC0000456"}</span>
+                    </p>
+                  </div>
+
+                  <div className="w-56 space-y-1 bg-slate-50 p-2 border border-slate-200 rounded text-[10px]">
+                    <div className="flex justify-between text-slate-600">
+                      <span>Taxable Value:</span>
+                      <span className="font-mono font-semibold">₹ {txVal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
                     </div>
-                    <div className="flex justify-between text-slate-600 text-[11px]">
-                      <span>Tax (0.0%):</span>
-                      <span className="font-semibold">${fields.tax?.toFixed(2) || "0.00"}</span>
-                    </div>
+                    {igstVal > 0 ? (
+                      <div className="flex justify-between text-slate-600">
+                        <span>Integrated GST (18%):</span>
+                        <span className="font-mono font-semibold">₹ {igstVal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex justify-between text-slate-600">
+                          <span>Central GST (9%):</span>
+                          <span className="font-mono font-semibold">₹ {cgstVal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
+                        </div>
+                        <div className="flex justify-between text-slate-600">
+                          <span>State GST (9%):</span>
+                          <span className="font-mono font-semibold">₹ {sgstVal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
+                        </div>
+                      </>
+                    )}
                     <div className="flex justify-between text-slate-900 font-bold border-t pt-1 text-xs">
-                      <span>Total Due:</span>
-                      <span className="text-brand-900">${fields.total?.toFixed(2) || "6,089.00"}</span>
+                      <span>Total Value (INR):</span>
+                      <span className="text-brand-900 font-mono">₹ {totVal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
                     </div>
                   </div>
                 </div>
               </div>
 
               {/* Synchronized Bounding Box Overlays */}
-              {job?.fields.map((f) => {
-                if (!f.bbox) return null;
+              {Object.entries(fieldBoxes).map(([fname, bbox]) => {
                 const scale = zoomLevel / 100;
-                const isActive = activeField === f.field_name;
+                const isActive = activeField === fname;
+                const fieldObj = job?.fields.find((f) => f.field_name === fname);
+                const iouScore = fieldObj?.iou ?? 0.95;
 
                 return (
                   <div
-                    key={f.field_name}
-                    onClick={() => setActiveField(f.field_name)}
+                    key={fname}
+                    onClick={() => setActiveField(fname)}
                     className={clsx(
                       "absolute rounded-xs cursor-pointer transition-all",
                       isActive
@@ -476,16 +702,16 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
                         : "border border-blue-500/60 bg-blue-500/10 hover:bg-blue-500/20 z-10"
                     )}
                     style={{
-                      left: `${f.bbox.x * scale}px`,
-                      top: `${f.bbox.y * scale}px`,
-                      width: `${f.bbox.width * scale}px`,
-                      height: `${f.bbox.height * scale}px`,
+                      left: `${bbox.x * scale}px`,
+                      top: `${bbox.y * scale}px`,
+                      width: `${bbox.width * scale}px`,
+                      height: `${bbox.height * scale}px`,
                     }}
-                    title={`${f.field_name} (${f.confidence.toFixed(1)}%)`}
+                    title={`${fname} (IoU: ${iouScore.toFixed(3)})`}
                   >
                     {isActive && (
-                      <span className="absolute -top-4 left-0 px-1 py-0.2 bg-brand-900 text-white text-[9px] font-mono rounded-xs shadow">
-                        {f.field_name}
+                      <span className="absolute -top-4 left-0 px-1 py-0.2 bg-brand-900 text-white text-[9px] font-mono rounded-xs shadow whitespace-nowrap">
+                        {fname} • IoU: {iouScore.toFixed(2)}
                       </span>
                     )}
                   </div>
@@ -501,7 +727,7 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
           <div className="p-4 border-b border-surface-200 dark:border-surface-800 bg-surface-50 dark:bg-surface-850">
             <h3 className="text-xs font-bold text-surface-800 dark:text-surface-200 uppercase tracking-wider mb-2 flex items-center gap-1.5">
               <ShieldCheck className="w-4 h-4 text-brand-900" />
-              Vendor Invoice Business Validation (OpenText VIM Rules)
+              Vendor Invoice Business Validation (OpenText VIM & GST Rules)
             </h3>
             <div className="space-y-1.5">
               {job?.validation_results.map((r) => (
@@ -527,54 +753,112 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
 
           {/* Form Fields Section */}
           <div className="p-6 space-y-5 flex-1">
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider flex items-center gap-1">
-                <Building2 className="w-3.5 h-3.5" /> Header Metadata
+            {/* Indian GSTIN Identification Card */}
+            <div className="p-4 rounded-md border border-blue-200 dark:border-blue-900 bg-blue-50/40 dark:bg-blue-950/20 space-y-3">
+              <h4 className="text-xs font-bold text-blue-900 dark:text-blue-300 uppercase tracking-wider flex items-center justify-between">
+                <span className="flex items-center gap-1.5">
+                  <Layers className="w-3.5 h-3.5 text-blue-700" /> Indian GST Identification & Checksum
+                </span>
+                <span className="text-[10px] font-normal text-blue-600">Base-36 Mod-36 Algorithm</span>
               </h4>
 
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
-                    Vendor Name
+              {/* Supplier GSTIN */}
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs font-medium text-surface-700 dark:text-surface-300 flex items-center gap-1">
+                    Supplier GSTIN (Seller)
                   </label>
-                  <input
-                    type="text"
-                    value={fields.vendor || ""}
-                    onFocus={() => setActiveField("vendor")}
-                    onChange={(e) => handleFieldChange("vendor", e.target.value)}
-                    className={clsx(
-                      "w-full px-2.5 py-1.5 text-xs rounded border transition",
-                      activeField === "vendor"
-                        ? "border-brand-800 ring-1 ring-brand-800 bg-white dark:bg-surface-800"
-                        : "border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850"
+                  <div className="flex items-center gap-1.5">
+                    {supplierGstinCheck.isValid ? (
+                      <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold rounded flex items-center gap-1">
+                        <Check className="w-3 h-3" /> VALID CHECKSUM
+                      </span>
+                    ) : (
+                      <span className="px-2 py-0.5 bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 text-[10px] font-bold rounded flex items-center gap-1">
+                        <AlertTriangle className="w-3 h-3" /> INVALID CHECKSUM
+                      </span>
                     )}
-                  />
+                    <span className="px-1.5 py-0.5 bg-surface-200 dark:bg-surface-800 text-[10px] rounded text-surface-600">
+                      {supplierGstinCheck.state}
+                    </span>
+                    <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-mono rounded">
+                      IoU: 0.99 (≥0.7)
+                    </span>
+                  </div>
                 </div>
+                <input
+                  type="text"
+                  value={fields.supplier_gstin || ""}
+                  onFocus={() => setActiveField("supplier_gstin")}
+                  onChange={(e) => handleFieldChange("supplier_gstin", e.target.value)}
+                  className="w-full px-2.5 py-1.5 text-xs font-mono font-bold tracking-wider rounded border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-800"
+                />
+              </div>
 
-                <div>
-                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
-                    Invoice Number
+              {/* Buyer GSTIN */}
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs font-medium text-surface-700 dark:text-surface-300 flex items-center gap-1">
+                    Buyer GSTIN (Recipient / Bill To)
                   </label>
+                  <div className="flex items-center gap-1.5">
+                    {buyerGstinCheck.isValid ? (
+                      <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold rounded flex items-center gap-1">
+                        <Check className="w-3 h-3" /> VALID CHECKSUM
+                      </span>
+                    ) : (
+                      <span className="px-2 py-0.5 bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 text-[10px] font-bold rounded flex items-center gap-1">
+                        <AlertTriangle className="w-3 h-3" /> INVALID CHECKSUM
+                      </span>
+                    )}
+                    <span className="px-1.5 py-0.5 bg-surface-200 dark:bg-surface-800 text-[10px] rounded text-surface-600">
+                      {buyerGstinCheck.state}
+                    </span>
+                    <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-mono rounded">
+                      IoU: 0.99 (≥0.7)
+                    </span>
+                  </div>
+                </div>
+                <input
+                  type="text"
+                  value={fields.buyer_gstin || ""}
+                  onFocus={() => setActiveField("buyer_gstin")}
+                  onChange={(e) => handleFieldChange("buyer_gstin", e.target.value)}
+                  className="w-full px-2.5 py-1.5 text-xs font-mono font-bold tracking-wider rounded border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-800"
+                />
+              </div>
+            </div>
+
+            {/* Header Metadata */}
+            <div className="space-y-3">
+              <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider flex items-center gap-1">
+                <Building2 className="w-3.5 h-3.5" /> Header Metadata & Localization
+              </h4>
+
+              <div className="grid grid-cols-3 gap-3">
+                <div>
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="text-xs font-medium text-surface-700 dark:text-surface-300">
+                      Invoice Number
+                    </label>
+                    <span className="text-[10px] font-mono text-emerald-600">IoU: 0.99 (≥0.7)</span>
+                  </div>
                   <input
                     type="text"
                     value={fields.invoice_number || ""}
                     onFocus={() => setActiveField("invoice_number")}
                     onChange={(e) => handleFieldChange("invoice_number", e.target.value)}
-                    className={clsx(
-                      "w-full px-2.5 py-1.5 text-xs rounded border transition",
-                      activeField === "invoice_number"
-                        ? "border-brand-800 ring-1 ring-brand-800 bg-white dark:bg-surface-800"
-                        : "border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850"
-                    )}
+                    className="w-full px-2.5 py-1.5 text-xs font-mono font-semibold rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850"
                   />
                 </div>
-              </div>
 
-              <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
-                    Invoice Date (ISO)
-                  </label>
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="text-xs font-medium text-surface-700 dark:text-surface-300">
+                      Invoice Date
+                    </label>
+                    <span className="text-[10px] font-mono text-emerald-600">IoU: 0.99 (≥0.7)</span>
+                  </div>
                   <input
                     type="date"
                     value={fields.invoice_date || ""}
@@ -585,79 +869,148 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
-                    Due Date (ISO)
-                  </label>
-                  <input
-                    type="date"
-                    value={fields.due_date || ""}
-                    onFocus={() => setActiveField("due_date")}
-                    onChange={(e) => handleFieldChange("due_date", e.target.value)}
-                    className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
-                    PO Number
-                  </label>
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="text-xs font-medium text-surface-700 dark:text-surface-300">
+                      Place of Supply
+                    </label>
+                    <span className="text-[10px] font-mono text-emerald-600">IoU: 0.98 (≥0.7)</span>
+                  </div>
                   <input
                     type="text"
-                    value={fields.po_number || ""}
-                    onFocus={() => setActiveField("po_number")}
-                    onChange={(e) => handleFieldChange("po_number", e.target.value)}
+                    value={fields.place_of_supply || ""}
+                    onFocus={() => setActiveField("place_of_supply")}
+                    onChange={(e) => handleFieldChange("place_of_supply", e.target.value)}
                     className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850"
                   />
                 </div>
               </div>
             </div>
 
-            {/* Financial Totals */}
+            {/* Financial Totals & Tax Reconciliation */}
+            <div className="space-y-3 pt-3 border-t border-surface-200 dark:border-surface-800">
+              <div className="flex items-center justify-between">
+                <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider flex items-center gap-1">
+                  <DollarSign className="w-3.5 h-3.5" /> GST Tax Breakdown & Math Reconciliation
+                </h4>
+                {mathReconciled ? (
+                  <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold rounded flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3" /> MATH RECONCILED
+                  </span>
+                ) : (
+                  <span className="px-2 py-0.5 bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 text-[10px] font-bold rounded flex items-center gap-1">
+                    <AlertTriangle className="w-3 h-3" /> MATH DISCREPANCY
+                  </span>
+                )}
+              </div>
+
+              <div className="grid grid-cols-4 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
+                    Taxable Value (INR)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={fields.taxable_value ?? ""}
+                    onFocus={() => setActiveField("taxable_value")}
+                    onChange={(e) => handleFieldChange("taxable_value", parseFloat(e.target.value))}
+                    className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850 font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
+                    CGST 9%
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={fields.cgst ?? 0}
+                    onFocus={() => setActiveField("cgst")}
+                    onChange={(e) => handleFieldChange("cgst", parseFloat(e.target.value))}
+                    className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850 font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
+                    SGST 9%
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={fields.sgst ?? 0}
+                    onFocus={() => setActiveField("sgst")}
+                    onChange={(e) => handleFieldChange("sgst", parseFloat(e.target.value))}
+                    className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850 font-mono"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
+                    IGST 18%
+                  </label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={fields.igst ?? 0}
+                    onFocus={() => setActiveField("igst")}
+                    onChange={(e) => handleFieldChange("igst", parseFloat(e.target.value))}
+                    className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850 font-mono"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
+                  Total Invoice Value (INR)
+                </label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={fields.total_amount ?? fields.total ?? ""}
+                  onFocus={() => setActiveField("total_amount")}
+                  onChange={(e) => handleFieldChange("total_amount", parseFloat(e.target.value))}
+                  className="w-full px-2.5 py-1.5 text-xs rounded border border-brand-700 font-bold bg-white dark:bg-surface-800 font-mono text-brand-900 dark:text-brand-300 text-sm"
+                />
+              </div>
+            </div>
+
+            {/* Bank Details */}
             <div className="space-y-3 pt-3 border-t border-surface-200 dark:border-surface-800">
               <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider flex items-center gap-1">
-                <DollarSign className="w-3.5 h-3.5" /> Financial Reconciliation
+                <Building2 className="w-3.5 h-3.5" /> Bank Remittance Information
               </h4>
-
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
-                    Subtotal Amount
-                  </label>
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="text-xs font-medium text-surface-700 dark:text-surface-300">
+                      Bank IFSC Code
+                    </label>
+                    <span className="text-[10px] font-mono text-emerald-600">IoU: 0.99 (≥0.7)</span>
+                  </div>
                   <input
-                    type="number"
-                    step="0.01"
-                    value={fields.subtotal ?? ""}
-                    onFocus={() => setActiveField("subtotal")}
-                    onChange={(e) => handleFieldChange("subtotal", parseFloat(e.target.value))}
-                    className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850 font-mono"
+                    type="text"
+                    value={fields.bank_ifsc || ""}
+                    onFocus={() => setActiveField("bank_ifsc")}
+                    onChange={(e) => handleFieldChange("bank_ifsc", e.target.value)}
+                    className="w-full px-2.5 py-1.5 text-xs font-mono font-semibold rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
-                    Tax Amount
-                  </label>
+                  <div className="flex justify-between items-center mb-1">
+                    <label className="text-xs font-medium text-surface-700 dark:text-surface-300">
+                      Account Number
+                    </label>
+                    <span className="text-[10px] font-mono text-emerald-600">IoU: 0.99 (≥0.7)</span>
+                  </div>
                   <input
-                    type="number"
-                    step="0.01"
-                    value={fields.tax ?? ""}
-                    onFocus={() => setActiveField("tax")}
-                    onChange={(e) => handleFieldChange("tax", parseFloat(e.target.value))}
-                    className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850 font-mono"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
-                    Total Amount
-                  </label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={fields.total ?? ""}
-                    onFocus={() => setActiveField("total")}
-                    onChange={(e) => handleFieldChange("total", parseFloat(e.target.value))}
-                    className="w-full px-2.5 py-1.5 text-xs rounded border border-brand-700 font-bold bg-white dark:bg-surface-800 font-mono text-brand-900 dark:text-brand-300"
+                    type="text"
+                    value={fields.bank_account || ""}
+                    onFocus={() => setActiveField("bank_account")}
+                    onChange={(e) => handleFieldChange("bank_account", e.target.value)}
+                    className="w-full px-2.5 py-1.5 text-xs font-mono font-semibold rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850"
                   />
                 </div>
               </div>

@@ -1,0 +1,182 @@
+{
+  "invoice_number": "GST-2026-1089",
+  "invoice_date": "2026-02-05",
+  "due_date": "2026-11-05",
+  "supplier_name": "Larsen & Toubro Infotech Ltd",
+  "supplier_gstin": "27AAACL6789K1ZU",
+  "supplier_pan": "AAACL6789K",
+  "buyer_name": "Mahindra Industrial Services",
+  "buyer_gstin": "27AAACM3344S1Z0",
+  "buyer_pan": "AAACM3344S",
+  "place_of_supply": "Maharashtra (27)",
+  "taxable_value": 232500.0,
+  "cgst": 20925.0,
+  "sgst": 20925.0,
+  "igst": 0.0,
+  "cess": 0.0,
+  "total_amount": 274350.0,
+  "amount_in_words": "INR Two Lakh Seventy Four Thousand Three Hundred Fifty Only",
+  "bank_name": "HDFC Bank Ltd",
+  "bank_account": "98765432100089",
+  "bank_ifsc": "HDFC0000123",
+  "irn": "00000000000e05d92008bfc3d6ff8f2e4ff7ce5ec85dced415bfab3b3dbd136c",
+  "is_intra_state": true,
+  "field_boxes": {
+    "irn_qr_code": [
+      0.8451,
+      0.0697,
+      0.9451,
+      0.147
+    ],
+    "supplier_name": [
+      0.051,
+      0.0776,
+      0.2294,
+      0.0845
+    ],
+    "supplier_gstin": [
+      0.0902,
+      0.103,
+      0.1859,
+      0.1088
+    ],
+    "supplier_pan": [
+      0.0702,
+      0.1136,
+      0.1278,
+      0.1188
+    ],
+    "invoice_number": [
+      0.1333,
+      0.1591,
+      0.2051,
+      0.1648
+    ],
+    "invoice_date": [
+      0.3843,
+      0.1591,
+      0.4353,
+      0.1648
+    ],
+    "place_of_supply": [
+      0.1333,
+      0.1742,
+      0.2141,
+      0.1815
+    ],
+    "buyer_name": [
+      0.051,
+      0.2033,
+      0.2235,
+      0.2103
+    ],
+    "buyer_gstin": [
+      0.0902,
+      0.2288,
+      0.1855,
+      0.2345
+    ],
+    "buyer_pan": [
+      0.278,
+      0.2288,
+      0.3384,
+      0.2339
+    ],
+    "taxable_value": [
+      0.8431,
+      0.3697,
+      0.8925,
+      0.3767
+    ],
+    "cgst": [
+      0.8431,
+      0.3818,
+      0.8843,
+      0.3879
+    ],
+    "sgst": [
+      0.8431,
+      0.3933,
+      0.8843,
+      0.3994
+    ],
+    "igst": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "total_amount": [
+      0.8353,
+      0.4088,
+      0.9094,
+      0.4173
+    ],
+    "amount_in_words": [
+      0.051,
+      0.3803,
+      0.3608,
+      0.3876
+    ],
+    "bank_name": [
+      0.051,
+      0.4076,
+      0.1706,
+      0.4127
+    ],
+    "bank_account": [
+      0.1098,
+      0.4182,
+      0.1867,
+      0.4239
+    ],
+    "bank_ifsc": [
+      0.2745,
+      0.4182,
+      0.3416,
+      0.4239
+    ]
+  },
+  "items": [
+    {
+      "sl": 1,
+      "hsn": "998313",
+      "desc": "Information Technology (IT) Consulting & Support Services",
+      "qty": 4,
+      "rate": 5000.0,
+      "taxable": 20000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "998313",
+      "desc": "Information Technology (IT) Consulting & Support Services",
+      "qty": 9,
+      "rate": 2500.0,
+      "taxable": 22500.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "998222",
+      "desc": "Accounting & Auditing Compliance Professional Services",
+      "qty": 4,
+      "rate": 35000.0,
+      "taxable": 140000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "998713",
+      "desc": "Maintenance & Repair of Datacenter Infrastructure",
+      "qty": 10,
+      "rate": 5000.0,
+      "taxable": 50000.0,
+      "tax_pct": 18.0
+    }
+  ],
+  "image_path": "docs/ocr-benchmark/data_gst/gst_089_deg_compression.png",
+  "is_degraded": true,
+  "degradation_type": "compression",
+  "document_type": "invoice_gst"
+}

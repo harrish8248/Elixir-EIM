@@ -99,7 +99,11 @@ class DocumentClassifier:
                     # High rule confidence override if ML is uncertain
                     if ml_conf < 0.65:
                         return best_rule_type, 0.88
-                
+                elif pred_label == best_rule_type.value and best_rule_score >= 2:
+                    # Agreement between ML and rules boosts confidence
+                    conf = max(ml_conf, min(0.75 + (best_rule_score * 0.06), 0.98))
+                    return DocumentType(pred_label), round(conf, 4)
+
                 try:
                     return DocumentType(pred_label), round(ml_conf, 4)
                 except ValueError:

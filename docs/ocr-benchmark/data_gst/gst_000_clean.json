@@ -1,0 +1,182 @@
+{
+  "invoice_number": "GST-2026-1000",
+  "invoice_date": "2026-04-05",
+  "due_date": "2026-12-04",
+  "supplier_name": "Infosys Technologies Pvt Ltd",
+  "supplier_gstin": "29AABCI1234F1ZX",
+  "supplier_pan": "AABCI1234F",
+  "buyer_name": "AcroCorp India Private Limited",
+  "buyer_gstin": "27AABCA9876M1ZY",
+  "buyer_pan": "AABCA9876M",
+  "place_of_supply": "Maharashtra (27)",
+  "taxable_value": 365000.0,
+  "cgst": 0.0,
+  "sgst": 0.0,
+  "igst": 65700.0,
+  "cess": 0.0,
+  "total_amount": 430700.0,
+  "amount_in_words": "INR Four Lakh Thirty Thousand Seven Hundred Only",
+  "bank_name": "ICICI Bank Limited",
+  "bank_account": "98765432100000",
+  "bank_ifsc": "ICIC0000456",
+  "irn": "000000000013de76e476d4bebc3c62bb0f1f8dd4dfa4d6100fadc1a606cb0fb3",
+  "is_intra_state": false,
+  "field_boxes": {
+    "irn_qr_code": [
+      0.8451,
+      0.0697,
+      0.9451,
+      0.147
+    ],
+    "supplier_name": [
+      0.051,
+      0.0776,
+      0.2282,
+      0.0864
+    ],
+    "supplier_gstin": [
+      0.0902,
+      0.103,
+      0.1808,
+      0.1088
+    ],
+    "supplier_pan": [
+      0.0702,
+      0.1136,
+      0.1251,
+      0.1188
+    ],
+    "invoice_number": [
+      0.1333,
+      0.1591,
+      0.2051,
+      0.1648
+    ],
+    "invoice_date": [
+      0.3843,
+      0.1591,
+      0.4353,
+      0.1648
+    ],
+    "place_of_supply": [
+      0.1333,
+      0.1742,
+      0.2141,
+      0.1815
+    ],
+    "buyer_name": [
+      0.051,
+      0.2033,
+      0.2365,
+      0.2121
+    ],
+    "buyer_gstin": [
+      0.0902,
+      0.2288,
+      0.1878,
+      0.2345
+    ],
+    "buyer_pan": [
+      0.278,
+      0.2288,
+      0.3384,
+      0.2339
+    ],
+    "taxable_value": [
+      0.8431,
+      0.3697,
+      0.8925,
+      0.3767
+    ],
+    "igst": [
+      0.8431,
+      0.3818,
+      0.8843,
+      0.3879
+    ],
+    "cgst": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sgst": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "total_amount": [
+      0.8353,
+      0.3973,
+      0.9094,
+      0.4058
+    ],
+    "amount_in_words": [
+      0.051,
+      0.3803,
+      0.3051,
+      0.3876
+    ],
+    "bank_name": [
+      0.051,
+      0.4076,
+      0.1831,
+      0.4127
+    ],
+    "bank_account": [
+      0.1098,
+      0.4182,
+      0.1867,
+      0.4239
+    ],
+    "bank_ifsc": [
+      0.2745,
+      0.4182,
+      0.3333,
+      0.4239
+    ]
+  },
+  "items": [
+    {
+      "sl": 1,
+      "hsn": "998222",
+      "desc": "Accounting & Auditing Compliance Professional Services",
+      "qty": 9,
+      "rate": 2500.0,
+      "taxable": 22500.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "998713",
+      "desc": "Maintenance & Repair of Datacenter Infrastructure",
+      "qty": 7,
+      "rate": 2500.0,
+      "taxable": 17500.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 3,
+      "hsn": "998313",
+      "desc": "Information Technology (IT) Consulting & Support Services",
+      "qty": 2,
+      "rate": 5000.0,
+      "taxable": 10000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 4,
+      "hsn": "998314",
+      "desc": "Internet Telecommunication & Cloud Hosting Bandwidth",
+      "qty": 9,
+      "rate": 35000.0,
+      "taxable": 315000.0,
+      "tax_pct": 18.0
+    }
+  ],
+  "image_path": "docs/ocr-benchmark/data_gst/gst_000_clean.png",
+  "is_degraded": false,
+  "degradation_type": "clean",
+  "document_type": "invoice_gst"
+}

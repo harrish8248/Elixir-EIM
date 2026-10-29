@@ -1,0 +1,164 @@
+{
+  "invoice_number": "GST-2027-1024",
+  "invoice_date": "2026-01-04",
+  "due_date": "2026-10-16",
+  "supplier_name": "Infosys Technologies Pvt Ltd",
+  "supplier_gstin": "29AABCI1234F1ZX",
+  "supplier_pan": "AABCI1234F",
+  "buyer_name": "Bharat Digital Commerce Ltd",
+  "buyer_gstin": "36AAACB4321Q1ZL",
+  "buyer_pan": "AAACB4321Q",
+  "place_of_supply": "Telangana (36)",
+  "taxable_value": 355000.0,
+  "cgst": 0.0,
+  "sgst": 0.0,
+  "igst": 63900.0,
+  "cess": 0.0,
+  "total_amount": 418900.0,
+  "amount_in_words": "INR Four Lakh Eighteen Thousand Nine Hundred Only",
+  "bank_name": "State Bank of India",
+  "bank_account": "98765432100024",
+  "bank_ifsc": "SBIN0001234",
+  "irn": "00000000000ac3707b41b64c18fe26a22a9282666e1c41ed98202bda44ed80c7",
+  "is_intra_state": false,
+  "field_boxes": {
+    "irn_qr_code": [
+      0.8451,
+      0.0697,
+      0.9451,
+      0.147
+    ],
+    "supplier_name": [
+      0.051,
+      0.0776,
+      0.2282,
+      0.0864
+    ],
+    "supplier_gstin": [
+      0.0902,
+      0.103,
+      0.1808,
+      0.1088
+    ],
+    "supplier_pan": [
+      0.0702,
+      0.1136,
+      0.1251,
+      0.1188
+    ],
+    "invoice_number": [
+      0.1333,
+      0.1591,
+      0.2051,
+      0.1648
+    ],
+    "invoice_date": [
+      0.3843,
+      0.1591,
+      0.4353,
+      0.1648
+    ],
+    "place_of_supply": [
+      0.1333,
+      0.1742,
+      0.2039,
+      0.1815
+    ],
+    "buyer_name": [
+      0.051,
+      0.2033,
+      0.2251,
+      0.2121
+    ],
+    "buyer_gstin": [
+      0.0902,
+      0.2288,
+      0.1863,
+      0.2352
+    ],
+    "buyer_pan": [
+      0.278,
+      0.2288,
+      0.338,
+      0.2342
+    ],
+    "taxable_value": [
+      0.8431,
+      0.3697,
+      0.8925,
+      0.3767
+    ],
+    "igst": [
+      0.8431,
+      0.3818,
+      0.8843,
+      0.3879
+    ],
+    "cgst": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "sgst": [
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ],
+    "total_amount": [
+      0.8353,
+      0.3973,
+      0.9094,
+      0.4058
+    ],
+    "amount_in_words": [
+      0.051,
+      0.3803,
+      0.3122,
+      0.3876
+    ],
+    "bank_name": [
+      0.051,
+      0.4076,
+      0.1843,
+      0.4127
+    ],
+    "bank_account": [
+      0.1098,
+      0.4182,
+      0.1867,
+      0.4239
+    ],
+    "bank_ifsc": [
+      0.2745,
+      0.4182,
+      0.3373,
+      0.4239
+    ]
+  },
+  "items": [
+    {
+      "sl": 1,
+      "hsn": "998222",
+      "desc": "Accounting & Auditing Compliance Professional Services",
+      "qty": 1,
+      "rate": 5000.0,
+      "taxable": 5000.0,
+      "tax_pct": 18.0
+    },
+    {
+      "sl": 2,
+      "hsn": "847130",
+      "desc": "Server Rack Infrastructure Hardware Units",
+      "qty": 10,
+      "rate": 35000.0,
+      "taxable": 350000.0,
+      "tax_pct": 18.0
+    }
+  ],
+  "image_path": "docs/ocr-benchmark/data_gst/gst_024_clean.png",
+  "is_degraded": false,
+  "degradation_type": "clean",
+  "document_type": "invoice_gst"
+}
