@@ -1,0 +1,93 @@
+{
+  "document_type": "invoice",
+  "vendor": "Vertex Global Logistics",
+  "invoice_number": "INV-2026-1135",
+  "invoice_date": "2026-07-20",
+  "due_date": "2026-07-28",
+  "po_number": "PO-99135",
+  "currency": "USD",
+  "subtotal": 5250.0,
+  "tax": 433.12,
+  "total": 5683.12,
+  "line_items": [
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 4,
+      "unit_price": 750.0,
+      "amount": 3000.0
+    },
+    {
+      "description": "Precision Steel Ball Bearing Assembly",
+      "quantity": 2,
+      "unit_price": 165.0,
+      "amount": 330.0
+    },
+    {
+      "description": "Onsite Facility Cleaning & Sanitation",
+      "quantity": 4,
+      "unit_price": 480.0,
+      "amount": 1920.0
+    }
+  ],
+  "full_text": "INVOICE Invoice #: INV-2026-1135\nIssue Date: 2026-07-20 Due Date: 2026-07-28 PO Ref: PO-99135 Currency: USD\nREMIT TO:\nVertex Global Logistics\n88 Port Way, Long Beach, CA 90\ninvoices@vertexlogistics.com\nDescription Qty Unit Price Amount\nHVAC Quarterly Preventative Maintenance 4 $750.00 $3000.00\nPrecision Steel Ball Bearing Assembly 2 $165.00 $330.00\nOnsite Facility Cleaning & Sanitation 4 $480.00 $1920.00\nSubtotal: $5250.00\nTax (8.2%): $433.12\nTotal Amount Due: $5683.12\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Vertex Global Logistics",
+  "field_boxes": {
+    "vendor": [
+      0.0235,
+      0.0882,
+      0.1549,
+      0.0976
+    ],
+    "invoice_number": [
+      0.1647,
+      0.0394,
+      0.4118,
+      0.0512
+    ],
+    "invoice_date": [
+      0.1647,
+      0.063,
+      0.3267,
+      0.0715
+    ],
+    "due_date": [
+      0.3922,
+      0.063,
+      0.5451,
+      0.0715
+    ],
+    "po_number": [
+      0.6275,
+      0.063,
+      0.7565,
+      0.0715
+    ],
+    "currency": [
+      0.8235,
+      0.063,
+      0.9271,
+      0.0739
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
+  "doc_id": "inv_135_deg_low_res",
+  "is_degraded": true,
+  "degradation": "low_res",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_135_deg_low_res.png"
+}

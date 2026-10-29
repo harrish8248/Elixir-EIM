@@ -1,0 +1,57 @@
+{
+  "document_type": "purchase_order",
+  "vendor": "Pinnacle Facility Services",
+  "invoice_number": null,
+  "invoice_date": "2026-10-08",
+  "due_date": null,
+  "po_number": "PO-2026-7035",
+  "currency": "USD",
+  "subtotal": 12000.0,
+  "tax": 0.0,
+  "total": 12000.0,
+  "line_items": [
+    {
+      "description": "Enterprise Software License Allocation Q4",
+      "quantity": 1,
+      "unit_price": 8500.0,
+      "amount": 8500.0
+    },
+    {
+      "description": "Implementation Services & Onboarding",
+      "quantity": 1,
+      "unit_price": 3500.0,
+      "amount": 3500.0
+    }
+  ],
+  "full_text": "COMMERCIAL WORK ORDER & PO W.O. #PO-2026-7035\nContractor / Supplier: Pinnacle Facility Services Project: Cloud Modernization Tier 2\nWork Order Date: 2026-10-08\nItem / Scope of Work Est. Total\nEnterprise Software License Allocation Q4 $8500.00\nImplementation Services & Onboarding $3500.00\nAUTHORIZED TOTAL: $12000.00",
+  "field_boxes": {
+    "po_number": [
+      0.7059,
+      0.0436,
+      0.9106,
+      0.0561
+    ],
+    "vendor": [
+      0.0588,
+      0.0933,
+      0.4102,
+      0.1042
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1115,
+      0.2631,
+      0.12
+    ],
+    "total": [
+      0.6471,
+      0.3118,
+      0.8851,
+      0.3218
+    ]
+  },
+  "doc_id": "po_035_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\po_035_clean.png"
+}

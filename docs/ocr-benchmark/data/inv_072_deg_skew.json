@@ -2,34 +2,84 @@
   "document_type": "invoice",
   "vendor": "CloudScale Networks Inc",
   "invoice_number": "INV-2026-1072",
-  "invoice_date": "2026-08-01",
-  "due_date": "2026-08-28",
+  "invoice_date": "2026-05-01",
+  "due_date": "2026-05-16",
   "po_number": "PO-99072",
   "currency": "USD",
-  "subtotal": 17317.0,
-  "tax": 1731.7,
-  "total": 19048.7,
+  "subtotal": 2815.0,
+  "tax": 140.75,
+  "total": 2955.75,
   "line_items": [
     {
-      "description": "Network Security Threat Detection Scan",
+      "description": "Precision Steel Ball Bearing Assembly",
       "quantity": 3,
-      "unit_price": 350.0,
-      "amount": 1050.0
+      "unit_price": 165.0,
+      "amount": 495.0
     },
     {
-      "description": "SSL/TLS Wildcard Certificate Renewal",
-      "quantity": 3,
-      "unit_price": 89.0,
-      "amount": 267.0
-    },
-    {
-      "description": "Professional Staffing - Senior Engineer",
-      "quantity": 5,
-      "unit_price": 3200.0,
-      "amount": 16000.0
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 4,
+      "unit_price": 580.0,
+      "amount": 2320.0
     }
   ],
-  "full_text": "INVOICE\nCloudScale Networks Inc\n450 Tech Hub Blvd, San Jose, CA 95110\nEmail: billing@cloudscale.net\nInvoice Number: INV-2026-1072\nInvoice Date: 2026-08-01\nDue Date: 2026-08-28\nPO Number: PO-99072\nCurrency: USD\nNetwork Security Threat Detection Scan 3 $350.00 $1050.00\nSSL/TLS Wildcard Certificate Renewal 3 $89.00 $267.00\nProfessional Staffing - Senior Engineer 5 $3200.00 $16000.00\nSubtotal: $17317.00\nTax: $1731.70\nTotal: $19048.70",
+  "full_text": "INVOICE Number: INV-2026-1072\nCloudScale Networks Inc Billed To:\n450 Tech Hub Blvd, San Jose, CA 95110 AcroCorp Global (US-East)\nEmail: billing@cloudscale.net Attn: Accounts Payable / Finance\nInvoice Date: 2026-05-01 Due Date: 2026-05-16 PO Number: PO-99072 Currency: USD\nDescription Qty Unit Price Amount\nPrecision Steel Ball Bearing Assembly 3 $165.00 $495.00\nIndustrial Lubricant Drum 55 Gallon 4 $580.00 $2320.00\nSubtotal: $2815.00\nTax (5.0%): $140.75\nTotal Amount Due: $2955.75\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 CloudScale Networks Inc",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0471,
+      0.1115,
+      0.231,
+      0.12
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "po_number": [
+      0.5294,
+      0.1897,
+      0.6933,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8737,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
   "doc_id": "inv_072_deg_skew",
   "is_degraded": true,
   "degradation": "skew",

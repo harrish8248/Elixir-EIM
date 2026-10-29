@@ -1,27 +1,15 @@
 {
   "document_type": "invoice",
-  "vendor": "Quantum Dynamic Labs GmbH",
+  "vendor": "CloudScale Networks Inc",
   "invoice_number": "INV-2026-1071",
-  "invoice_date": "2026-08-23",
-  "due_date": "2026-08-28",
-  "po_number": null,
+  "invoice_date": "2026-09-13",
+  "due_date": "2026-09-28",
+  "po_number": "PO-99071",
   "currency": "EUR",
-  "subtotal": 18199.0,
-  "tax": 1819.9,
-  "total": 20018.9,
+  "subtotal": 3168.0,
+  "tax": 0.0,
+  "total": 3168.0,
   "line_items": [
-    {
-      "description": "Network Security Threat Detection Scan",
-      "quantity": 5,
-      "unit_price": 350.0,
-      "amount": 1750.0
-    },
-    {
-      "description": "Professional Staffing - Senior Engineer",
-      "quantity": 5,
-      "unit_price": 3200.0,
-      "amount": 16000.0
-    },
     {
       "description": "Dedicated IPv4 Allocation Subnet /28",
       "quantity": 3,
@@ -30,12 +18,80 @@
     },
     {
       "description": "SSL/TLS Wildcard Certificate Renewal",
-      "quantity": 1,
+      "quantity": 2,
       "unit_price": 89.0,
-      "amount": 89.0
+      "amount": 178.0
+    },
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 1,
+      "unit_price": 950.0,
+      "amount": 950.0
+    },
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 4,
+      "unit_price": 420.0,
+      "amount": 1680.0
     }
   ],
-  "full_text": "INVOICE\nQuantum Dynamic Labs GmbH\nTech Park B4, Munich, Germany\nEmail: invoicing@quantumlabs.eu\nInvoice Number: INV-2026-1071\nInvoice Date: 2026-08-23\nDue Date: 2026-08-28\nCurrency: EUR\nNetwork Security Threat Detection Scan 5 EUR 350.00 EUR 1750.00\nProfessional Staffing - Senior Engineer 5 EUR 3200.00 EUR 16000.00\nDedicated IPv4 Allocation Subnet /28 3 EUR 120.00 EUR 360.00\nSSL/TLS Wildcard Certificate Renewal 1 EUR 89.00 EUR 89.00\nSubtotal: EUR 18199.00\nTax: EUR 1819.90\nTotal: EUR 20018.90",
+  "full_text": "INVOICE Invoice #: INV-2026-1071\nIssue Date: 2026-09-13 Due Date: 2026-09-28 PO Ref: PO-99071 Currency: EUR\nREMIT TO:\nCloudScale Networks Inc\n450 Tech Hub Blvd, San Jose, C\nbilling@cloudscale.net\nDescription Qty Unit Price Amount\nDedicated IPv4 Allocation Subnet /28 3 EUR 120.00 EUR 360.00\nSSL/TLS Wildcard Certificate Renewal 2 EUR 89.00 EUR 178.00\nEnterprise Support SLA 24x7 Response 1 EUR 950.00 EUR 950.00\nHeavy Duty Conveyor Belt Roller 24in 4 EUR 420.00 EUR 1680.00\nSubtotal: EUR 3168.00\nTax (0.0%): EUR 0.00\nTotal Amount Due: EUR 3168.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 CloudScale Networks Inc",
+  "field_boxes": {
+    "vendor": [
+      0.0235,
+      0.0882,
+      0.1675,
+      0.0955
+    ],
+    "invoice_number": [
+      0.1647,
+      0.0394,
+      0.4118,
+      0.0512
+    ],
+    "invoice_date": [
+      0.1647,
+      0.063,
+      0.3267,
+      0.0715
+    ],
+    "due_date": [
+      0.3922,
+      0.063,
+      0.5451,
+      0.0715
+    ],
+    "po_number": [
+      0.6275,
+      0.063,
+      0.7565,
+      0.0715
+    ],
+    "currency": [
+      0.8235,
+      0.063,
+      0.9271,
+      0.0739
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9161,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.8902,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9506,
+      0.4952
+    ]
+  },
   "doc_id": "inv_071_clean",
   "is_degraded": false,
   "degradation": "none",

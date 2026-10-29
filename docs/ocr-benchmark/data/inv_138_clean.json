@@ -1,0 +1,81 @@
+{
+  "document_type": "invoice",
+  "vendor": "CloudScale Networks Inc",
+  "invoice_number": "INV-2026-1138",
+  "invoice_date": "2026-07-28",
+  "due_date": "2026-08-28",
+  "po_number": null,
+  "currency": "EUR",
+  "subtotal": 1635.0,
+  "tax": 81.75,
+  "total": 1716.75,
+  "line_items": [
+    {
+      "description": "High-Performance SSD Storage Block 1TB",
+      "quantity": 5,
+      "unit_price": 75.0,
+      "amount": 375.0
+    },
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 3,
+      "unit_price": 420.0,
+      "amount": 1260.0
+    }
+  ],
+  "full_text": "CloudScale Networks Inc\nVendor Email: billing@cloudscale.net | Address: 450 Tech Hub Blvd, San Jose, CA 95110\nINVOICE REFERENCE: INV-2026-1138\nDATE: 2026-07-28 DUE DATE: 2026-08-28 CURRENCY: EUR\nDescription Qty Unit Price Amount\nHigh-Performance SSD Storage Block 1TB 5 EUR 75.00 EUR 375.00\nHeavy Duty Conveyor Belt Roller 24in 3 EUR 420.00 EUR 1260.00\nSubtotal: EUR 1635.00\nTax (5.0%): EUR 81.75\nTotal Amount Due: EUR 1716.75\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 CloudScale Networks Inc",
+  "field_boxes": {
+    "vendor": [
+      0.0647,
+      0.0497,
+      0.4302,
+      0.0673
+    ],
+    "invoice_number": [
+      0.0647,
+      0.1391,
+      0.4447,
+      0.1515
+    ],
+    "invoice_date": [
+      0.0647,
+      0.1661,
+      0.1933,
+      0.1745
+    ],
+    "due_date": [
+      0.3294,
+      0.1661,
+      0.4945,
+      0.1745
+    ],
+    "currency": [
+      0.8039,
+      0.1661,
+      0.931,
+      0.1745
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9161,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.8988,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9506,
+      0.4952
+    ]
+  },
+  "doc_id": "inv_138_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_138_clean.png"
+}

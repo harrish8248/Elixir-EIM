@@ -1,0 +1,63 @@
+{
+  "document_type": "receipt",
+  "vendor": "Express Courier Logistics",
+  "invoice_number": "REC-2026-2037",
+  "invoice_date": "2026-10-10",
+  "due_date": "2026-10-10",
+  "po_number": null,
+  "currency": "USD",
+  "subtotal": 122.5,
+  "tax": 9.8,
+  "total": 132.3,
+  "line_items": [
+    {
+      "description": "Office Supplies & Consumables",
+      "quantity": 1,
+      "unit_price": 122.5,
+      "amount": 122.5
+    }
+  ],
+  "full_text": "Express Courier Logistics\nOrder Ref: REC-2026-2037\nTimestamp: 2026-10-10 14:32:10\nMethod: Apple Pay (MasterCard 9102)\nGeneral Commercial Goods Tier 1 $122.50\nSubtotal Amount: $122.50\nSales Tax (8.0%): $9.80\nAMOUNT CHARGED: $132.30",
+  "field_boxes": {
+    "vendor": [
+      0.1111,
+      0.064,
+      0.6067,
+      0.0867
+    ],
+    "invoice_number": [
+      0.1111,
+      0.1236,
+      0.4726,
+      0.136
+    ],
+    "invoice_date": [
+      0.1111,
+      0.1502,
+      0.543,
+      0.1662
+    ],
+    "subtotal": [
+      0.7333,
+      0.316,
+      0.8393,
+      0.3307
+    ],
+    "tax": [
+      0.7333,
+      0.3427,
+      0.8067,
+      0.3573
+    ],
+    "total": [
+      0.7333,
+      0.3764,
+      0.8778,
+      0.3978
+    ]
+  },
+  "doc_id": "rcpt_037_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\rcpt_037_clean.png"
+}

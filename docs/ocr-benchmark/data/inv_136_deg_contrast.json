@@ -1,0 +1,87 @@
+{
+  "document_type": "invoice",
+  "vendor": "Nexus Enterprise Staffing",
+  "invoice_number": "INV-2026-1136",
+  "invoice_date": "2026-01-06",
+  "due_date": "2026-01-28",
+  "po_number": null,
+  "currency": "EUR",
+  "subtotal": 5070.0,
+  "tax": 418.28,
+  "total": 5488.28,
+  "line_items": [
+    {
+      "description": "Contract Drafting & Vendor Addendum",
+      "quantity": 5,
+      "unit_price": 650.0,
+      "amount": 3250.0
+    },
+    {
+      "description": "Database Replica Failover Node",
+      "quantity": 2,
+      "unit_price": 280.0,
+      "amount": 560.0
+    },
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 3,
+      "unit_price": 420.0,
+      "amount": 1260.0
+    }
+  ],
+  "full_text": "INVOICE Number: INV-2026-1136\nNexus Enterprise Staffing Billed To:\n500 Broad St, Columbus, OH 43215 AcroCorp Global (US-East)\nEmail: billing@nexusstaff.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-01-06 Due Date: 2026-01-28 Currency: EUR\nDescription Qty Unit Price Amount\nContract Drafting & Vendor Addendum 5 EUR 650.00 EUR 3250.00\nDatabase Replica Failover Node 2 EUR 280.00 EUR 560.00\nHeavy Duty Conveyor Belt Roller 24in 3 EUR 420.00 EUR 1260.00\nSubtotal: EUR 5070.00\nTax (8.2%): EUR 418.28\nTotal Amount Due: EUR 5488.28\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Nexus Enterprise Staffing",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0471,
+      0.1115,
+      0.2353,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8737,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9161,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9075,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9506,
+      0.4952
+    ]
+  },
+  "doc_id": "inv_136_deg_contrast",
+  "is_degraded": true,
+  "degradation": "contrast",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_136_deg_contrast.png"
+}

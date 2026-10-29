@@ -1,29 +1,85 @@
 {
   "document_type": "invoice",
-  "vendor": "Titan Global Hardware Corp",
+  "vendor": "CloudScale Networks Inc",
   "invoice_number": "INV-2026-1043",
-  "invoice_date": "2026-01-03",
+  "invoice_date": "2026-01-25",
   "due_date": "2026-01-28",
   "po_number": "PO-99043",
-  "currency": "EUR",
-  "subtotal": 875.0,
-  "tax": 87.5,
-  "total": 962.5,
+  "currency": "USD",
+  "subtotal": 1600.0,
+  "tax": 160.0,
+  "total": 1760.0,
   "line_items": [
     {
-      "description": "Contract Drafting & Vendor Addendum",
-      "quantity": 1,
-      "unit_price": 650.0,
-      "amount": 650.0
+      "description": "Managed Cloud Hosting Standard Tier",
+      "quantity": 2,
+      "unit_price": 450.0,
+      "amount": 900.0
     },
     {
-      "description": "High-Performance SSD Storage Block 1TB",
-      "quantity": 3,
-      "unit_price": 75.0,
-      "amount": 225.0
+      "description": "Network Security Threat Detection Scan",
+      "quantity": 2,
+      "unit_price": 350.0,
+      "amount": 700.0
     }
   ],
-  "full_text": "INVOICE\nTitan Global Hardware Corp\n101 Machine Way, Detroit, MI 48201\nEmail: invoices@titanhardware.com\nInvoice Number: INV-2026-1043\nInvoice Date: 2026-01-03\nDue Date: 2026-01-28\nPO Number: PO-99043\nCurrency: EUR\nContract Drafting & Vendor Addendum 1 EUR 650.00 EUR 650.00\nHigh-Performance SSD Storage Block 1TB 3 EUR 75.00 EUR 225.00\nSubtotal: EUR 875.00\nTax: EUR 87.50\nTotal: EUR 962.50",
+  "full_text": "INVOICE Invoice #: INV-2026-1043\nIssue Date: 2026-01-25 Due Date: 2026-01-28 PO Ref: PO-99043 Currency: USD\nREMIT TO:\nCloudScale Networks Inc\n450 Tech Hub Blvd, San Jose, C\nbilling@cloudscale.net\nDescription Qty Unit Price Amount\nManaged Cloud Hosting Standard Tier 2 $450.00 $900.00\nNetwork Security Threat Detection Scan 2 $350.00 $700.00\nSubtotal: $1600.00\nTax (10.0%): $160.00\nTotal Amount Due: $1760.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 CloudScale Networks Inc",
+  "field_boxes": {
+    "vendor": [
+      0.0235,
+      0.0882,
+      0.1675,
+      0.0955
+    ],
+    "invoice_number": [
+      0.1647,
+      0.0394,
+      0.4118,
+      0.0512
+    ],
+    "invoice_date": [
+      0.1647,
+      0.063,
+      0.3267,
+      0.0715
+    ],
+    "due_date": [
+      0.3922,
+      0.063,
+      0.5451,
+      0.0715
+    ],
+    "po_number": [
+      0.6275,
+      0.063,
+      0.7565,
+      0.0715
+    ],
+    "currency": [
+      0.8235,
+      0.063,
+      0.9271,
+      0.0739
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
   "doc_id": "inv_043_clean",
   "is_degraded": false,
   "degradation": "none",

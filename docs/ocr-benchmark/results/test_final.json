@@ -1,0 +1,172 @@
+{
+  "engine": "test_final_idp",
+  "split": "test",
+  "sample_count": 110,
+  "text_quality": {
+    "overall_cer": 20.07,
+    "overall_wer": 24.82,
+    "clean_cer": 21.16,
+    "clean_wer": 25.97,
+    "degraded_cer": 18.17,
+    "degraded_wer": 22.81
+  },
+  "field_extraction": {
+    "overall_key_field_exact_match": 79.09,
+    "overall_key_field_exact_match_95ci": [
+      76.25,
+      81.68
+    ],
+    "clean_key_field_exact_match": 78.5,
+    "degraded_key_field_exact_match": 79.94,
+    "line_item_accuracy": 0.0,
+    "fields": {
+      "vendor": {
+        "exact_match_pct": 100.0,
+        "clean_exact_match_pct": 100.0,
+        "degraded_exact_match_pct": 100.0,
+        "precision": 100.0,
+        "recall": 100.0,
+        "f1": 100.0,
+        "total_samples": 100
+      },
+      "invoice_number": {
+        "exact_match_pct": 100.0,
+        "clean_exact_match_pct": 100.0,
+        "degraded_exact_match_pct": 100.0,
+        "precision": 90.0,
+        "recall": 100.0,
+        "f1": 94.74,
+        "total_samples": 90
+      },
+      "invoice_date": {
+        "exact_match_pct": 100.0,
+        "clean_exact_match_pct": 100.0,
+        "degraded_exact_match_pct": 100.0,
+        "precision": 100.0,
+        "recall": 100.0,
+        "f1": 100.0,
+        "total_samples": 100
+      },
+      "due_date": {
+        "exact_match_pct": 88.89,
+        "clean_exact_match_pct": 80.0,
+        "degraded_exact_match_pct": 100.0,
+        "precision": 100.0,
+        "recall": 88.89,
+        "f1": 94.12,
+        "total_samples": 90
+      },
+      "po_number": {
+        "exact_match_pct": 65.43,
+        "clean_exact_match_pct": 55.32,
+        "degraded_exact_match_pct": 79.41,
+        "precision": 72.6,
+        "recall": 86.89,
+        "f1": 79.1,
+        "total_samples": 81
+      },
+      "currency": {
+        "exact_match_pct": 100.0,
+        "clean_exact_match_pct": 100.0,
+        "degraded_exact_match_pct": 100.0,
+        "precision": 100.0,
+        "recall": 100.0,
+        "f1": 100.0,
+        "total_samples": 100
+      },
+      "subtotal": {
+        "exact_match_pct": 38.0,
+        "clean_exact_match_pct": 43.33,
+        "degraded_exact_match_pct": 30.0,
+        "precision": 40.86,
+        "recall": 84.44,
+        "f1": 55.07,
+        "total_samples": 100
+      },
+      "tax": {
+        "exact_match_pct": 38.0,
+        "clean_exact_match_pct": 48.33,
+        "degraded_exact_match_pct": 22.5,
+        "precision": 38.38,
+        "recall": 97.44,
+        "f1": 55.07,
+        "total_samples": 100
+      },
+      "total": {
+        "exact_match_pct": 82.0,
+        "clean_exact_match_pct": 78.33,
+        "degraded_exact_match_pct": 87.5,
+        "precision": 82.0,
+        "recall": 100.0,
+        "f1": 90.11,
+        "total_samples": 100
+      }
+    }
+  },
+  "classification": {
+    "accuracy": 100.0,
+    "accuracy_95ci": [
+      96.63,
+      100.0
+    ],
+    "confusion_matrix": {
+      "contract": {
+        "contract": 10
+      },
+      "invoice": {
+        "invoice": 80
+      },
+      "purchase_order": {
+        "purchase_order": 10
+      },
+      "receipt": {
+        "receipt": 10
+      }
+    }
+  },
+  "calibration": {
+    "0-50%": {
+      "accuracy_pct": 0.0,
+      "count": 10,
+      "correct": 0
+    },
+    "50-70%": {
+      "accuracy_pct": 0.0,
+      "count": 0,
+      "correct": 0
+    },
+    "70-90%": {
+      "accuracy_pct": 98.67,
+      "count": 75,
+      "correct": 74
+    },
+    "90-100%": {
+      "accuracy_pct": 78.22,
+      "count": 776,
+      "correct": 607
+    }
+  },
+  "business_metrics": {
+    "stp_rate": 20.0,
+    "stp_rate_95ci": [
+      12.7,
+      30.05
+    ],
+    "stp_auto_approved": 16,
+    "stp_eligible_invoices": 80,
+    "auto_approved_precision": 100.0,
+    "auto_approved_precision_95ci": [
+      80.64,
+      100.0
+    ],
+    "false_approval_rate": 0.0,
+    "false_approval_rate_95ci": [
+      0.0,
+      9.68
+    ]
+  },
+  "latency": {
+    "p50_ms": 1801.4,
+    "p95_ms": 2642.5
+  }
+}

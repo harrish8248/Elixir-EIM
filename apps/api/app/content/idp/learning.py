@@ -9,7 +9,10 @@ Learns from human review corrections:
 import json
 from pathlib import Path
 from typing import Any
+import uuid
 from pydantic import BaseModel
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from apps.api.app.content.idp.models import BoundingBox, OcrPageResult, OcrWord
 from apps.api.app.platform.logging import logger
@@ -28,7 +31,9 @@ class LearnedFieldPrior(BaseModel):
 
 
 class VendorTemplateStore:
-    """Stores and retrieves learned geometric priors for vendor templates."""
+    """Stores and retrieves learned geometric priors for vendor templates.
+    Supports both PostgreSQL (with tenant isolation and RLS) and local cached storage.
+    """
 
     def __init__(self, storage_path: Path = LEARNING_DATA_PATH):
         self.storage_path = storage_path
@@ -48,6 +53,34 @@ class VendorTemplateStore:
             except Exception as e:
                 logger.warning(f"Could not load vendor templates: {e}")
 
+    async def load_from_db(self, db: AsyncSession, tenant_id: uuid.UUID):
+        """Load vendor templates from PostgreSQL table with tenant isolation."""
+        try:
+            res = await db.execute(
+                text("""
+                    SELECT vendor_name, field_name, rel_x, rel_y, rel_w, rel_h, sample_count
+                    FROM vendor_templates
+                    WHERE tenant_id = :tenant_id
+                """),
+                {"tenant_id": tenant_id},
+            )
+            rows = res.fetchall()
+            for r in rows:
+                v_name, f_name, rx, ry, rw, rh, sc = r
+                if v_name not in self.templates:
+                    self.templates[v_name] = {}
+                self.templates[v_name][f_name] = LearnedFieldPrior(
+                    vendor_name=v_name,
+                    field_name=f_name,
+                    rel_x=rx,
+                    rel_y=ry,
+                    rel_w=rw,
+                    rel_h=rh,
+                    sample_count=sc,
+                )
+        except Exception as e:
+            logger.warning(f"Failed to load vendor templates from database: {e}")
+
     def save(self):
         """Persist learned templates to disk."""
         try:
@@ -61,6 +94,40 @@ class VendorTemplateStore:
         except Exception as e:
             logger.warning(f"Could not persist vendor templates: {e}")
 
+    async def save_to_db(self, db: AsyncSession, tenant_id: uuid.UUID, prior: LearnedFieldPrior):
+        """Upsert learned vendor template in PostgreSQL table."""
+        try:
+            await db.execute(
+                text("""
+                    INSERT INTO vendor_templates (
+                        tenant_id, vendor_name, field_name, rel_x, rel_y, rel_w, rel_h, sample_count, updated_at
+                    ) VALUES (
+                        :tenant_id, :vendor_name, :field_name, :rel_x, :rel_y, :rel_w, :rel_h, :sample_count, now()
+                    )
+                    ON CONFLICT (tenant_id, vendor_name, field_name)
+                    DO UPDATE SET
+                        rel_x = EXCLUDED.rel_x,
+                        rel_y = EXCLUDED.rel_y,
+                        rel_w = EXCLUDED.rel_w,
+                        rel_h = EXCLUDED.rel_h,
+                        sample_count = EXCLUDED.sample_count,
+                        updated_at = now()
+                """),
+                {
+                    "tenant_id": tenant_id,
+                    "vendor_name": prior.vendor_name,
+                    "field_name": prior.field_name,
+                    "rel_x": prior.rel_x,
+                    "rel_y": prior.rel_y,
+                    "rel_w": prior.rel_w,
+                    "rel_h": prior.rel_h,
+                    "sample_count": prior.sample_count,
+                },
+            )
+            await db.commit()
+        except Exception as e:
+            logger.warning(f"Failed to upsert vendor template in database: {e}")
+
     def record_correction(
         self,
         vendor_name: str,
@@ -68,10 +135,10 @@ class VendorTemplateStore:
         bbox: BoundingBox,
         page_width: int = 850,
         page_height: int = 1100,
-    ):
+    ) -> LearnedFieldPrior | None:
         """Update learned relative spatial coordinates from a validated field."""
         if not vendor_name or not bbox or page_width <= 0 or page_height <= 0:
-            return
+            return None
 
         v_key = vendor_name.strip()
         if v_key not in self.templates:
@@ -85,14 +152,14 @@ class VendorTemplateStore:
         if field_name in self.templates[v_key]:
             existing = self.templates[v_key][field_name]
             n = existing.sample_count
-            # Incremental moving average
             existing.rel_x = round((existing.rel_x * n + rel_x) / (n + 1), 4)
             existing.rel_y = round((existing.rel_y * n + rel_y) / (n + 1), 4)
             existing.rel_w = round((existing.rel_w * n + rel_w) / (n + 1), 4)
             existing.rel_h = round((existing.rel_h * n + rel_h) / (n + 1), 4)
             existing.sample_count += 1
+            prior = existing
         else:
-            self.templates[v_key][field_name] = LearnedFieldPrior(
+            prior = LearnedFieldPrior(
                 vendor_name=v_key,
                 field_name=field_name,
                 rel_x=round(rel_x, 4),
@@ -101,7 +168,10 @@ class VendorTemplateStore:
                 rel_h=round(rel_h, 4),
                 sample_count=1,
             )
+            self.templates[v_key][field_name] = prior
+
         self.save()
+        return prior
 
     def get_candidate_words(
         self,
@@ -132,3 +202,4 @@ class VendorTemplateStore:
 
         matches.sort(key=lambda w: (w.bbox.y, w.bbox.x))
         return matches
+

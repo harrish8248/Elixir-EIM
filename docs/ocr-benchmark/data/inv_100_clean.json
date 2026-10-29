@@ -1,0 +1,93 @@
+{
+  "document_type": "invoice",
+  "vendor": "Pinnacle Facility Services",
+  "invoice_number": "INV-2026-1100",
+  "invoice_date": "2026-10-13",
+  "due_date": "2026-10-28",
+  "po_number": "PO-99100",
+  "currency": "EUR",
+  "subtotal": 11750.0,
+  "tax": 1175.0,
+  "total": 12925.0,
+  "line_items": [
+    {
+      "description": "SOC-2 Compliance Continuous Audit Log",
+      "quantity": 3,
+      "unit_price": 1500.0,
+      "amount": 4500.0
+    },
+    {
+      "description": "Legal Retainer - Regulatory Governance",
+      "quantity": 2,
+      "unit_price": 2500.0,
+      "amount": 5000.0
+    },
+    {
+      "description": "Managed Cloud Hosting Standard Tier",
+      "quantity": 5,
+      "unit_price": 450.0,
+      "amount": 2250.0
+    }
+  ],
+  "full_text": "INVOICE Number: INV-2026-1100\nPinnacle Facility Services Billed To:\n204 Commercial Rd, Atlanta, GA 30303 AcroCorp Global (US-East)\nEmail: ar@pinnaclefacility.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-10-13 Due Date: 2026-10-28 PO Number: PO-99100 Currency: EUR\nDescription Qty Unit Price Amount\nSOC-2 Compliance Continuous Audit Log 3 EUR 1500.00 EUR 4500.00\nLegal Retainer - Regulatory Governance 2 EUR 2500.00 EUR 5000.00\nManaged Cloud Hosting Standard Tier 5 EUR 450.00 EUR 2250.00\nSubtotal: EUR 11750.00\nTax (10.0%): EUR 1175.00\nTotal Amount Due: EUR 12925.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Pinnacle Facility Services",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0471,
+      0.1115,
+      0.2361,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "po_number": [
+      0.5294,
+      0.1897,
+      0.6933,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8737,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9247,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9161,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9624,
+      0.4952
+    ]
+  },
+  "doc_id": "inv_100_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_100_clean.png"
+}

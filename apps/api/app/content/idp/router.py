@@ -294,7 +294,7 @@ async def get_idp_stats(
     completed = status_counts.get("completed", 0)
     rejected = status_counts.get("rejected", 0)
 
-    stp_rate = round((auto_approved / max(total_jobs, 1)) * 100.0, 1) if total_jobs > 0 else 76.5
+    stp_rate = round((auto_approved / max(total_jobs, 1)) * 100.0, 1) if total_jobs > 0 else 0.0
 
     # 2. Average confidence and processing time
     avg_res = await db.execute(
@@ -323,19 +323,22 @@ async def get_idp_stats(
     correction_accuracy = (
         round(((total_fields - total_corrections) / max(total_fields, 1)) * 100.0, 1)
         if total_fields > 0
-        else 94.2
+        else 0.0
     )
 
+    has_data = total_jobs > 0
+
     return {
+        "has_data": has_data,
         "total_documents": total_jobs,
-        "stp_rate_pct": stp_rate,
-        "average_confidence_pct": round(avg_conf, 1) if avg_conf > 0 else 89.4,
-        "average_processing_time_ms": round(avg_lat, 1) if avg_lat > 0 else 345.0,
+        "stp_rate_pct": stp_rate if has_data else 0.0,
+        "average_confidence_pct": round(avg_conf, 1) if has_data else 0.0,
+        "average_processing_time_ms": round(avg_lat, 1) if has_data else 0.0,
         "review_queue_size": needs_review,
         "auto_approved_count": auto_approved,
         "completed_count": completed,
         "rejected_count": rejected,
-        "correction_accuracy_pct": correction_accuracy,
+        "correction_accuracy_pct": correction_accuracy if total_fields > 0 else 0.0,
         "total_human_corrections": total_corrections,
     }
 

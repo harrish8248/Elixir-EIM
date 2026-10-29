@@ -1,15 +1,21 @@
 {
   "document_type": "invoice",
-  "vendor": "Pinnacle Facility Services",
+  "vendor": "Nexus Enterprise Staffing",
   "invoice_number": "INV-2026-1064",
-  "invoice_date": "2026-02-28",
-  "due_date": "2026-03-28",
+  "invoice_date": "2026-04-09",
+  "due_date": "2026-04-28",
   "po_number": "PO-99064",
   "currency": "USD",
-  "subtotal": 26165.0,
-  "tax": 0.0,
-  "total": 26165.0,
+  "subtotal": 19650.0,
+  "tax": 982.5,
+  "total": 20632.5,
   "line_items": [
+    {
+      "description": "Contract Drafting & Vendor Addendum",
+      "quantity": 1,
+      "unit_price": 650.0,
+      "amount": 650.0
+    },
     {
       "description": "Professional Staffing - Senior Engineer",
       "quantity": 5,
@@ -17,19 +23,69 @@
       "amount": 16000.0
     },
     {
-      "description": "Precision Steel Ball Bearing Assembly",
-      "quantity": 1,
-      "unit_price": 165.0,
-      "amount": 165.0
-    },
-    {
-      "description": "Legal Retainer - Regulatory Governance",
-      "quantity": 4,
-      "unit_price": 2500.0,
-      "amount": 10000.0
+      "description": "SOC-2 Compliance Continuous Audit Log",
+      "quantity": 2,
+      "unit_price": 1500.0,
+      "amount": 3000.0
     }
   ],
-  "full_text": "INVOICE\nPinnacle Facility Services\n204 Commercial Rd, Atlanta, GA 30303\nEmail: ar@pinnaclefacility.com\nInvoice Number: INV-2026-1064\nInvoice Date: 2026-02-28\nDue Date: 2026-03-28\nPO Number: PO-99064\nCurrency: USD\nProfessional Staffing - Senior Engineer 5 $3200.00 $16000.00\nPrecision Steel Ball Bearing Assembly 1 $165.00 $165.00\nLegal Retainer - Regulatory Governance 4 $2500.00 $10000.00\nSubtotal: $26165.00\nTax: $0.00\nTotal: $26165.00",
+  "full_text": "INVOICE Number: INV-2026-1064\nNexus Enterprise Staffing Billed To:\n500 Broad St, Columbus, OH 43215 AcroCorp Global (US-East)\nEmail: billing@nexusstaff.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-04-09 Due Date: 2026-04-28 PO Number: PO-99064 Currency: USD\nDescription Qty Unit Price Amount\nContract Drafting & Vendor Addendum 1 $650.00 $650.00\nProfessional Staffing - Senior Engineer 5 $3200.00 $16000.00\nSOC-2 Compliance Continuous Audit Log 2 $1500.00 $3000.00\nSubtotal: $19650.00\nTax (5.0%): $982.50\nTotal Amount Due: $20632.50\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Nexus Enterprise Staffing",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0471,
+      0.1115,
+      0.2353,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "po_number": [
+      0.5294,
+      0.1897,
+      0.6933,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8737,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8969,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9235,
+      0.4967
+    ]
+  },
   "doc_id": "inv_064_clean",
   "is_degraded": false,
   "degradation": "none",

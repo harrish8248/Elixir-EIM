@@ -2,28 +2,90 @@
   "document_type": "invoice",
   "vendor": "Titan Global Hardware Corp",
   "invoice_number": "INV-2026-1003",
-  "invoice_date": "2026-06-19",
-  "due_date": "2026-06-28",
+  "invoice_date": "2026-02-02",
+  "due_date": "2026-02-28",
   "po_number": "PO-99003",
   "currency": "USD",
-  "subtotal": 1280.0,
-  "tax": 0.0,
-  "total": 1280.0,
+  "subtotal": 9206.0,
+  "tax": 759.5,
+  "total": 9965.5,
   "line_items": [
     {
-      "description": "Enterprise Support SLA 24x7 Response",
-      "quantity": 1,
-      "unit_price": 950.0,
-      "amount": 950.0
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 4,
+      "unit_price": 89.0,
+      "amount": 356.0
     },
     {
-      "description": "Precision Steel Ball Bearing Assembly",
-      "quantity": 2,
-      "unit_price": 165.0,
-      "amount": 330.0
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 3,
+      "unit_price": 950.0,
+      "amount": 2850.0
+    },
+    {
+      "description": "SOC-2 Compliance Continuous Audit Log",
+      "quantity": 4,
+      "unit_price": 1500.0,
+      "amount": 6000.0
     }
   ],
-  "full_text": "INVOICE\nTitan Global Hardware Corp\n101 Machine Way, Detroit, MI 48201\nEmail: invoices@titanhardware.com\nInvoice Number: INV-2026-1003\nInvoice Date: 2026-06-19\nDue Date: 2026-06-28\nPO Number: PO-99003\nCurrency: USD\nEnterprise Support SLA 24x7 Response 1 $950.00 $950.00\nPrecision Steel Ball Bearing Assembly 2 $165.00 $330.00\nSubtotal: $1280.00\nTax: $0.00\nTotal: $1280.00",
+  "full_text": "INVOICE Invoice #: INV-2026-1003\nIssue Date: 2026-02-02 Due Date: 2026-02-28 PO Ref: PO-99003 Currency: USD\nREMIT TO:\nTitan Global Hardware Corp\n101 Machine Way, Detroit, MI 4\ninvoices@titanhardware.com\nDescription Qty Unit Price Amount\nSSL/TLS Wildcard Certificate Renewal 4 $89.00 $356.00\nEnterprise Support SLA 24x7 Response 3 $950.00 $2850.00\nSOC-2 Compliance Continuous Audit Log 4 $1500.00 $6000.00\nSubtotal: $9206.00\nTax (8.2%): $759.50\nTotal Amount Due: $9965.50\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Titan Global Hardware Corp",
+  "field_boxes": {
+    "vendor": [
+      0.0235,
+      0.0882,
+      0.1827,
+      0.0976
+    ],
+    "invoice_number": [
+      0.1647,
+      0.0394,
+      0.4118,
+      0.0512
+    ],
+    "invoice_date": [
+      0.1647,
+      0.063,
+      0.3267,
+      0.0715
+    ],
+    "due_date": [
+      0.3922,
+      0.063,
+      0.5451,
+      0.0715
+    ],
+    "po_number": [
+      0.6275,
+      0.063,
+      0.7565,
+      0.0715
+    ],
+    "currency": [
+      0.8235,
+      0.063,
+      0.9271,
+      0.0739
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
   "doc_id": "inv_003_clean",
   "is_degraded": false,
   "degradation": "none",

@@ -1,0 +1,26 @@
+{
+  "document_type": "contract",
+  "vendor": "Partner Services Group Inc",
+  "invoice_number": "CNT-2026-018",
+  "invoice_date": "2026-10-19",
+  "due_date": null,
+  "po_number": null,
+  "currency": null,
+  "subtotal": 0.0,
+  "tax": 0.0,
+  "total": 0.0,
+  "line_items": [],
+  "full_text": "NON-DISCLOSURE AND MUTUAL CONFIDENTIALITY AGREEMENT\nThis Non-Disclosure Agreement (\"Agreement\") is entered into as of October 19, 2026, by and between\nAcroCorp Global Enterprises LLC, with offices at 100 Enterprise Way (\"Disclosing Party\"), and\nPartner Services Group Inc (\"Receiving Party\").\n\n1. PURPOSE\nThe parties wish to explore a business opportunity concerning enterprise information management,\ncryptographic audit trails, and automated process orchestration.\n\n2. CONFIDENTIAL INFORMATION\n\"Confidential Information\" refers to all non-public technical, commercial, financial, and operational\nrecords disclosed by either party, whether in writing, orally, or in electronic media.\n\n3. OBLIGATIONS\nThe Receiving Party agrees to maintain the secrecy of Confidential Information with at least reasonable care\nand shall not disclose such information to any third party without prior written consent.\n\n4. TERM AND TERMINATION\nThis Agreement shall remain in effect for a period of three (3) years from the Effective Date.\n\nIN WITNESS WHEREOF, the authorized representatives have executed this Agreement:\nAcroCorp Global Enterprises LLC: ______________________      Date: 2026-10-19\nPartner Services Group Inc:      ______________________      Date: 2026-10-19\nVendor Signatory: Partner Services Group Inc",
+  "field_boxes": {
+    "vendor": [
+      0.0702,
+      0.8509,
+      0.4067,
+      0.8618
+    ]
+  },
+  "doc_id": "cnt_018_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\cnt_018_clean.png"
+}

@@ -1,0 +1,81 @@
+{
+  "document_type": "invoice",
+  "vendor": "Horizon Legal Partners LLP",
+  "invoice_number": "INV-2026-1081",
+  "invoice_date": "2026-01-10",
+  "due_date": "2026-01-28",
+  "po_number": null,
+  "currency": "USD",
+  "subtotal": 5200.0,
+  "tax": 429.0,
+  "total": 5629.0,
+  "line_items": [
+    {
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 4,
+      "unit_price": 950.0,
+      "amount": 3800.0
+    },
+    {
+      "description": "Network Security Threat Detection Scan",
+      "quantity": 4,
+      "unit_price": 350.0,
+      "amount": 1400.0
+    }
+  ],
+  "full_text": "HORIZON LEGAL PARTNERS LLP TAX INVOICE\n120 Wall Street, Floor 18, New York, NY 10005\nContact: accounts@horizonlaw.com\nInvoice #: INV-2026-1081 Customer Details:\nDate of Issue: 2026-01-10 AcroCorp Global Operations\nPayment Due Date: 2026-01-28 100 Enterprise Way, Suite 400\nCurrency: USD\nDescription Qty Unit Price Amount\nEnterprise Support SLA 24x7 Response 4 $950.00 $3800.00\nNetwork Security Threat Detection Scan 4 $350.00 $1400.00\nSubtotal: $5200.00\nTax (8.2%): $429.00\nTotal Amount Due: $5629.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Horizon Legal Partners LLP",
+  "field_boxes": {
+    "vendor": [
+      0.0471,
+      0.0391,
+      0.3906,
+      0.0515
+    ],
+    "invoice_number": [
+      0.0471,
+      0.1161,
+      0.2275,
+      0.1245
+    ],
+    "invoice_date": [
+      0.0471,
+      0.1342,
+      0.2263,
+      0.1427
+    ],
+    "due_date": [
+      0.0471,
+      0.1524,
+      0.2651,
+      0.1633
+    ],
+    "currency": [
+      0.6471,
+      0.1706,
+      0.7506,
+      0.1815
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
+  "doc_id": "inv_081_deg_low_res",
+  "is_degraded": true,
+  "degradation": "low_res",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_081_deg_low_res.png"
+}

@@ -62,3 +62,4 @@ python scripts/run_ablation_eval.py
    - A cryptographically chained **audit event** (`IDP_FIELD_CORRECTED`) is recorded in the immutable audit ledger.
    - The **Continuous Learning engine** (`VendorTemplateStore`) records the spatial bounding box to optimize future extractions for this vendor.
 4. Or click **"Accept All"** to complete validation and file the invoice into the repository.
+

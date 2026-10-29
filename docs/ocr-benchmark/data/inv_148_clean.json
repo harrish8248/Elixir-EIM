@@ -1,0 +1,87 @@
+{
+  "document_type": "invoice",
+  "vendor": "Titan Global Hardware Corp",
+  "invoice_number": "INV-2026-1148",
+  "invoice_date": "2026-04-09",
+  "due_date": "2026-04-28",
+  "po_number": "PO-99148",
+  "currency": "USD",
+  "subtotal": 3330.0,
+  "tax": 274.73,
+  "total": 3604.73,
+  "line_items": [
+    {
+      "description": "Precision Steel Ball Bearing Assembly",
+      "quantity": 2,
+      "unit_price": 165.0,
+      "amount": 330.0
+    },
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 4,
+      "unit_price": 750.0,
+      "amount": 3000.0
+    }
+  ],
+  "full_text": "INVOICE Number: INV-2026-1148\nTitan Global Hardware Corp Billed To:\n101 Machine Way, Detroit, MI 48201 AcroCorp Global (US-East)\nEmail: invoices@titanhardware.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-04-09 Due Date: 2026-04-28 PO Number: PO-99148 Currency: USD\nDescription Qty Unit Price Amount\nPrecision Steel Ball Bearing Assembly 2 $165.00 $330.00\nHVAC Quarterly Preventative Maintenance 4 $750.00 $3000.00\nSubtotal: $3330.00\nTax (8.2%): $274.73\nTotal Amount Due: $3604.73\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Titan Global Hardware Corp",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0471,
+      0.1115,
+      0.2502,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "po_number": [
+      0.5294,
+      0.1897,
+      0.6933,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8737,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
+  "doc_id": "inv_148_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_148_clean.png"
+}

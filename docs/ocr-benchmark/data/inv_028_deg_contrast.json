@@ -1,35 +1,79 @@
 {
   "document_type": "invoice",
-  "vendor": "Titan Global Hardware Corp",
+  "vendor": "Vertex Global Logistics",
   "invoice_number": "INV-2026-1028",
-  "invoice_date": "2026-04-28",
-  "due_date": "2026-05-28",
-  "po_number": "PO-99028",
+  "invoice_date": "2026-04-13",
+  "due_date": "2026-04-28",
+  "po_number": null,
   "currency": "USD",
-  "subtotal": 3210.0,
-  "tax": 160.5,
-  "total": 3370.5,
+  "subtotal": 4020.0,
+  "tax": 331.65,
+  "total": 4351.65,
   "line_items": [
     {
-      "description": "Managed Cloud Hosting Standard Tier",
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 5,
+      "unit_price": 340.0,
+      "amount": 1700.0
+    },
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
       "quantity": 4,
-      "unit_price": 450.0,
-      "amount": 1800.0
-    },
-    {
-      "description": "High-Performance SSD Storage Block 1TB",
-      "quantity": 2,
-      "unit_price": 75.0,
-      "amount": 150.0
-    },
-    {
-      "description": "Heavy Duty Conveyor Belt Roller 24in",
-      "quantity": 3,
-      "unit_price": 420.0,
-      "amount": 1260.0
+      "unit_price": 580.0,
+      "amount": 2320.0
     }
   ],
-  "full_text": "INVOICE\nTitan Global Hardware Corp\n101 Machine Way, Detroit, MI 48201\nEmail: invoices@titanhardware.com\nInvoice Number: INV-2026-1028\nInvoice Date: 2026-04-28\nDue Date: 2026-05-28\nPO Number: PO-99028\nCurrency: USD\nManaged Cloud Hosting Standard Tier 4 $450.00 $1800.00\nHigh-Performance SSD Storage Block 1TB 2 $75.00 $150.00\nHeavy Duty Conveyor Belt Roller 24in 3 $420.00 $1260.00\nSubtotal: $3210.00\nTax: $160.50\nTotal: $3370.50",
+  "full_text": "INVOICE Number: INV-2026-1028\nVertex Global Logistics Billed To:\n88 Port Way, Long Beach, CA 90802 AcroCorp Global (US-East)\nEmail: invoices@vertexlogistics.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-04-13 Due Date: 2026-04-28 Currency: USD\nDescription Qty Unit Price Amount\nIndustrial Hydraulic Valve Fitting Kit 5 $340.00 $1700.00\nIndustrial Lubricant Drum 55 Gallon 4 $580.00 $2320.00\nSubtotal: $4020.00\nTax (8.2%): $331.65\nTotal Amount Due: $4351.65\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Vertex Global Logistics",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0467,
+      0.1115,
+      0.2184,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8737,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
   "doc_id": "inv_028_deg_contrast",
   "is_degraded": true,
   "degradation": "contrast",

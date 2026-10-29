@@ -29,6 +29,16 @@ SEEDED_PURCHASE_ORDERS = {
 }
 
 SEEDED_VENDOR_MASTER = {
+    "Acme Industrial Supply LLC": {"tax_id": "US-36-1928471", "status": "approved", "payment_terms": "Net 30"},
+    "CloudScale Networks Inc": {"tax_id": "US-77-4839201", "status": "approved", "payment_terms": "Net 30"},
+    "Horizon Legal Partners LLP": {"tax_id": "US-66-5948372", "status": "approved", "payment_terms": "Net 30"},
+    "Vertex Global Logistics": {"tax_id": "US-95-1827364", "status": "approved", "payment_terms": "Net 30"},
+    "Apex Strategic Marketing Group": {"tax_id": "US-13-9283746", "status": "approved", "payment_terms": "Net 30"},
+    "Pinnacle Facility Services": {"tax_id": "US-58-2938475", "status": "approved", "payment_terms": "Net 30"},
+    "Quantum Dynamic Labs GmbH": {"tax_id": "DE-81-2938471", "status": "approved", "payment_terms": "Net 30"},
+    "Nexus Enterprise Staffing": {"tax_id": "US-31-8472918", "status": "approved", "payment_terms": "Net 30"},
+    "Vanguard Security Systems": {"tax_id": "US-74-1928374", "status": "approved", "payment_terms": "Net 30"},
+    "Titan Global Hardware Corp": {"tax_id": "US-38-9283741", "status": "approved", "payment_terms": "Net 30"},
     "Apex Cloud Infrastructure Inc": {"tax_id": "US-84-1928471", "status": "approved", "payment_terms": "Net 30"},
     "Vertex Data Solutions Ltd": {"tax_id": "GB-992-81726", "status": "approved", "payment_terms": "Net 30"},
     "Nexus AI Research Labs": {"tax_id": "US-47-2819034", "status": "approved", "payment_terms": "Net 45"},
@@ -37,11 +47,15 @@ SEEDED_VENDOR_MASTER = {
     "Stratis IT Consulting Group": {"tax_id": "US-55-1928374", "status": "approved", "payment_terms": "Net 30"},
     "Global Enterprise Hardware Corp": {"tax_id": "US-11-2837465", "status": "approved", "payment_terms": "Net 60"},
     "Quantum Cybersecurity Partners": {"tax_id": "US-99-3847561", "status": "approved", "payment_terms": "Net 30"},
-    "CloudScale Networks Inc": {"tax_id": "US-77-4839201", "status": "approved", "payment_terms": "Net 30"},
-    "Horizon Legal Partners LLP": {"tax_id": "US-66-5948372", "status": "approved", "payment_terms": "Net 30"},
     "Sentinel Security Operations": {"tax_id": "US-33-6849302", "status": "approved", "payment_terms": "Net 30"},
     "AcroCorp Global Operations": {"tax_id": "US-12-3456789", "status": "approved", "payment_terms": "Net 30"},
     "Partner Services Group Inc": {"tax_id": "US-44-8392019", "status": "approved", "payment_terms": "Net 30"},
+    "Metro Office Supplies": {"tax_id": "US-88-1293847", "status": "approved", "payment_terms": "Net 30"},
+    "Express Courier Logistics": {"tax_id": "US-42-9384719", "status": "approved", "payment_terms": "Net 30"},
+    "QuickPrint Center": {"tax_id": "US-19-2837461", "status": "approved", "payment_terms": "Net 30"},
+    "Airport Cafe & Catering": {"tax_id": "US-29-3847192", "status": "approved", "payment_terms": "Net 30"},
+    "Beacon Data Hardware": {"tax_id": "US-59-2837461", "status": "approved", "payment_terms": "Net 30"},
+    "Apex Fuel & Service": {"tax_id": "US-94-1928374", "status": "approved", "payment_terms": "Net 30"},
 }
 
 
@@ -258,3 +272,4 @@ class ValidationEngine:
             rules=rules,
             reasons=reasons,
         )
+

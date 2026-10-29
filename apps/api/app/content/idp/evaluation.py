@@ -13,6 +13,8 @@ Computes real, measured metrics across Train, Dev, and Test splits:
 """
 
 import json
+import math
+import re
 import time
 from collections import defaultdict
 from pathlib import Path
@@ -21,6 +23,13 @@ from typing import Any
 BENCHMARK_DIR = Path("docs/ocr-benchmark")
 DATA_DIR = BENCHMARK_DIR / "data"
 SPLITS_PATH = BENCHMARK_DIR / "splits.json"
+
+
+def normalize_eval_text(text: Any) -> str:
+    """Normalize text for CER/WER evaluation: collapse whitespace runs, lowercase, strip."""
+    if text is None:
+        return ""
+    return re.sub(r"\s+", " ", str(text)).strip().lower()
 
 
 def levenshtein_distance(seq1: list | str, seq2: list | str) -> int:
@@ -46,8 +55,8 @@ def levenshtein_distance(seq1: list | str, seq2: list | str) -> int:
 
 def compute_cer(reference: str, hypothesis: str) -> float:
     """Character Error Rate: edit_dist(chars) / len(ref_chars)."""
-    ref = reference.strip()
-    hyp = hypothesis.strip()
+    ref = normalize_eval_text(reference)
+    hyp = normalize_eval_text(hypothesis)
     if not ref:
         return 0.0 if not hyp else 1.0
     dist = levenshtein_distance(list(ref), list(hyp))
@@ -56,12 +65,37 @@ def compute_cer(reference: str, hypothesis: str) -> float:
 
 def compute_wer(reference: str, hypothesis: str) -> float:
     """Word Error Rate: edit_dist(words) / len(ref_words)."""
-    ref_words = reference.strip().split()
-    hyp_words = hypothesis.strip().split()
+    ref_norm = normalize_eval_text(reference)
+    hyp_norm = normalize_eval_text(hypothesis)
+    ref_words = ref_norm.split()
+    hyp_words = hyp_norm.split()
     if not ref_words:
         return 0.0 if not hyp_words else 1.0
     dist = levenshtein_distance(ref_words, hyp_words)
     return min(dist / max(len(ref_words), 1), 1.0)
+
+
+def wilson_confidence_interval(k: int, n: int, confidence: float = 0.95) -> tuple[float, float]:
+    """Compute Wilson score 95% confidence interval for proportion k / n.
+    Returns (low_pct, high_pct) as percentages in [0, 100].
+    """
+    if n <= 0:
+        return (0.0, 0.0)
+    z = 1.95996  # 95% confidence z-score
+    if k <= 0:
+        high = (z * z / (2 * n)) / (1 + z * z / n)
+        return (0.0, round(high * 100, 2))
+    if k >= n:
+        low = (n + z * z / 2 - z * math.sqrt(z * z / 4)) / (n + z * z)
+        return (round(low * 100, 2), 100.0)
+
+    p = k / n
+    denominator = 1 + z**2 / n
+    center = (p + z**2 / (2 * n)) / denominator
+    spread = (z / denominator) * math.sqrt((p * (1 - p) / n) + (z**2 / (4 * n**2)))
+    low = max(0.0, center - spread)
+    high = min(1.0, center + spread)
+    return (round(low * 100, 2), round(high * 100, 2))
 
 
 def normalize_text_match(text: Any) -> str:
@@ -161,9 +195,11 @@ class EvaluationHarness:
             "90-100%": {"correct": 0, "total": 0},
         }
 
-        # Straight-Through-Processing (STP)
+        # Straight-Through-Processing (STP) & Auto-Approval Safety
         stp_eligible = 0
         stp_auto_approved = 0
+        stp_auto_approved_correct = 0
+        stp_auto_approved_false = 0
         line_item_matches = 0
         line_item_total = 0
 
@@ -209,8 +245,8 @@ class EvaluationHarness:
 
             # 3. Field Extractions (for invoices, receipts, POs)
             pred_fields = pred.get("fields", {})
+            sample_all_key_fields_correct = True
             if doc_type in ("invoice", "receipt", "purchase_order"):
-                is_all_clean_matched = True
                 for field_name in field_names:
                     gt_val = sample.get(field_name)
                     pred_entry = pred_fields.get(field_name, {})
@@ -268,7 +304,9 @@ class EvaluationHarness:
                             else:
                                 field_stats[field_name]["clean_exact_match"] += 1
                         else:
-                            is_all_clean_matched = False
+                            # If a key field (vendor, inv_num, date, total) failed match, mark document as imperfect
+                            if field_name in ("vendor", "invoice_number", "invoice_date", "total"):
+                                sample_all_key_fields_correct = False
                             if pred_val:
                                 field_stats[field_name]["fp"] += 1
                             else:
@@ -295,8 +333,13 @@ class EvaluationHarness:
                     stp_eligible += 1
                     val_res = pred.get("validation", {})
                     # Straight-through if approved with zero review reasons
-                    if val_res.get("outcome") == "AUTO_APPROVED" or val_res.get("is_approved"):
+                    is_auto_approved = val_res.get("outcome") == "AUTO_APPROVED" or val_res.get("is_approved", False)
+                    if is_auto_approved:
                         stp_auto_approved += 1
+                        if sample_all_key_fields_correct:
+                            stp_auto_approved_correct += 1
+                        else:
+                            stp_auto_approved_false += 1
 
         # Calculate final metrics
         mean_cer = round(float(sum(cer_scores) / max(len(cer_scores), 1) * 100), 2)
@@ -371,6 +414,24 @@ class EvaluationHarness:
 
         line_item_acc = round((line_item_matches / max(line_item_total, 1)) * 100, 2)
         stp_rate = round((stp_auto_approved / max(stp_eligible, 1)) * 100, 2)
+        stp_ci = wilson_confidence_interval(stp_auto_approved, stp_eligible)
+
+        auto_appr_precision = (
+            round((stp_auto_approved_correct / max(stp_auto_approved, 1)) * 100, 2)
+            if stp_auto_approved > 0
+            else 100.0
+        )
+        auto_appr_precision_ci = wilson_confidence_interval(stp_auto_approved_correct, stp_auto_approved)
+
+        false_approval_rate = (
+            round((stp_auto_approved_false / max(stp_auto_approved, 1)) * 100, 2)
+            if stp_auto_approved > 0
+            else 0.0
+        )
+        false_approval_ci = wilson_confidence_interval(stp_auto_approved_false, stp_auto_approved)
+
+        class_acc_ci = wilson_confidence_interval(correct_class, len(class_true))
+        key_field_em_ci = wilson_confidence_interval(total_key_exact, total_key_total)
 
         # Calibration summary
         calibration_results = {}
@@ -396,6 +457,7 @@ class EvaluationHarness:
             },
             "field_extraction": {
                 "overall_key_field_exact_match": key_field_em,
+                "overall_key_field_exact_match_95ci": key_field_em_ci,
                 "clean_key_field_exact_match": key_field_clean_em,
                 "degraded_key_field_exact_match": key_field_deg_em,
                 "line_item_accuracy": line_item_acc,
@@ -403,13 +465,19 @@ class EvaluationHarness:
             },
             "classification": {
                 "accuracy": class_acc,
+                "accuracy_95ci": class_acc_ci,
                 "confusion_matrix": {k: dict(v) for k, v in confusion_matrix.items()},
             },
             "calibration": calibration_results,
             "business_metrics": {
                 "stp_rate": stp_rate,
+                "stp_rate_95ci": stp_ci,
                 "stp_auto_approved": stp_auto_approved,
                 "stp_eligible_invoices": stp_eligible,
+                "auto_approved_precision": auto_appr_precision,
+                "auto_approved_precision_95ci": auto_appr_precision_ci,
+                "false_approval_rate": false_approval_rate,
+                "false_approval_rate_95ci": false_approval_ci,
             },
             "latency": {
                 "p50_ms": p50_lat,

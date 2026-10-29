@@ -1,0 +1,93 @@
+{
+  "document_type": "invoice",
+  "vendor": "Pinnacle Facility Services",
+  "invoice_number": "INV-2026-1122",
+  "invoice_date": "2026-06-14",
+  "due_date": "2026-06-28",
+  "po_number": "PO-99122",
+  "currency": "EUR",
+  "subtotal": 17905.0,
+  "tax": 1477.16,
+  "total": 19382.16,
+  "line_items": [
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 4,
+      "unit_price": 420.0,
+      "amount": 1680.0
+    },
+    {
+      "description": "High-Performance SSD Storage Block 1TB",
+      "quantity": 3,
+      "unit_price": 75.0,
+      "amount": 225.0
+    },
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 5,
+      "unit_price": 3200.0,
+      "amount": 16000.0
+    }
+  ],
+  "full_text": "Pinnacle Facility Services\nVendor Email: ar@pinnaclefacility.com | Address: 204 Commercial Rd, Atlanta, GA 30303\nINVOICE REFERENCE: INV-2026-1122\nDATE: 2026-06-14 DUE DATE: 2026-06-28 PURCHASE ORDER: PO-99122 CURRENCY: EUR\nDescription Qty Unit Price Amount\nHeavy Duty Conveyor Belt Roller 24in 4 EUR 420.00 EUR 1680.00\nHigh-Performance SSD Storage Block 1TB 3 EUR 75.00 EUR 225.00\nProfessional Staffing - Senior Engineer 5 EUR 3200.00 EUR 16000.00\nSubtotal: EUR 17905.00\nTax (8.2%): EUR 1477.16\nTotal Amount Due: EUR 19382.16\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Pinnacle Facility Services",
+  "field_boxes": {
+    "vendor": [
+      0.0647,
+      0.0497,
+      0.4384,
+      0.0721
+    ],
+    "invoice_number": [
+      0.0647,
+      0.1391,
+      0.4447,
+      0.1515
+    ],
+    "invoice_date": [
+      0.0647,
+      0.1661,
+      0.1933,
+      0.1745
+    ],
+    "due_date": [
+      0.3294,
+      0.1661,
+      0.4945,
+      0.1745
+    ],
+    "po_number": [
+      0.5882,
+      0.1661,
+      0.811,
+      0.1745
+    ],
+    "currency": [
+      0.8039,
+      0.1661,
+      0.931,
+      0.1745
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9247,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9161,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9624,
+      0.4952
+    ]
+  },
+  "doc_id": "inv_122_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_122_clean.png"
+}

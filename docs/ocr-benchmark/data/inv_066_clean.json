@@ -2,28 +2,84 @@
   "document_type": "invoice",
   "vendor": "Vanguard Security Systems",
   "invoice_number": "INV-2026-1066",
-  "invoice_date": "2026-08-21",
-  "due_date": "2026-08-28",
+  "invoice_date": "2026-07-27",
+  "due_date": "2026-07-28",
   "po_number": "PO-99066",
-  "currency": "USD",
-  "subtotal": 2420.0,
-  "tax": 242.0,
-  "total": 2662.0,
+  "currency": "EUR",
+  "subtotal": 3300.0,
+  "tax": 165.0,
+  "total": 3465.0,
   "line_items": [
     {
-      "description": "Industrial Hydraulic Valve Fitting Kit",
-      "quantity": 3,
-      "unit_price": 340.0,
-      "amount": 1020.0
+      "description": "Contract Drafting & Vendor Addendum",
+      "quantity": 4,
+      "unit_price": 650.0,
+      "amount": 2600.0
     },
     {
       "description": "Network Security Threat Detection Scan",
-      "quantity": 4,
+      "quantity": 2,
       "unit_price": 350.0,
-      "amount": 1400.0
+      "amount": 700.0
     }
   ],
-  "full_text": "INVOICE\nVanguard Security Systems\n310 Cyber Way, Austin, TX 78701\nEmail: accounting@vanguardsec.com\nInvoice Number: INV-2026-1066\nInvoice Date: 2026-08-21\nDue Date: 2026-08-28\nPO Number: PO-99066\nCurrency: USD\nIndustrial Hydraulic Valve Fitting Kit 3 $340.00 $1020.00\nNetwork Security Threat Detection Scan 4 $350.00 $1400.00\nSubtotal: $2420.00\nTax: $242.00\nTotal: $2662.00",
+  "full_text": "Vanguard Security Systems\nVendor Email: accounting@vanguardsec.com | Address: 310 Cyber Way, Austin, TX 78701\nINVOICE REFERENCE: INV-2026-1066\nDATE: 2026-07-27 DUE DATE: 2026-07-28 PURCHASE ORDER: PO-99066 CURRENCY: EUR\nDescription Qty Unit Price Amount\nContract Drafting & Vendor Addendum 4 EUR 650.00 EUR 2600.00\nNetwork Security Threat Detection Scan 2 EUR 350.00 EUR 700.00\nSubtotal: EUR 3300.00\nTax (5.0%): EUR 165.00\nTotal Amount Due: EUR 3465.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Vanguard Security Systems",
+  "field_boxes": {
+    "vendor": [
+      0.0643,
+      0.0497,
+      0.4686,
+      0.0721
+    ],
+    "invoice_number": [
+      0.0647,
+      0.1391,
+      0.4447,
+      0.1515
+    ],
+    "invoice_date": [
+      0.0647,
+      0.1661,
+      0.1933,
+      0.1745
+    ],
+    "due_date": [
+      0.3294,
+      0.1661,
+      0.4945,
+      0.1745
+    ],
+    "po_number": [
+      0.5882,
+      0.1661,
+      0.811,
+      0.1745
+    ],
+    "currency": [
+      0.8039,
+      0.1661,
+      0.931,
+      0.1745
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9161,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9075,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9506,
+      0.4952
+    ]
+  },
   "doc_id": "inv_066_clean",
   "is_degraded": false,
   "degradation": "none",

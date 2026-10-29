@@ -1,0 +1,87 @@
+{
+  "document_type": "invoice",
+  "vendor": "Acme Industrial Supply LLC",
+  "invoice_number": "INV-2026-1095",
+  "invoice_date": "2026-03-19",
+  "due_date": "2026-03-28",
+  "po_number": "PO-99095",
+  "currency": "EUR",
+  "subtotal": 2600.0,
+  "tax": 130.0,
+  "total": 2730.0,
+  "line_items": [
+    {
+      "description": "Network Security Threat Detection Scan",
+      "quantity": 1,
+      "unit_price": 350.0,
+      "amount": 350.0
+    },
+    {
+      "description": "Managed Cloud Hosting Standard Tier",
+      "quantity": 5,
+      "unit_price": 450.0,
+      "amount": 2250.0
+    }
+  ],
+  "full_text": "INVOICE Invoice #: INV-2026-1095\nIssue Date: 2026-03-19 Due Date: 2026-03-28 PO Ref: PO-99095 Currency: EUR\nREMIT TO:\nAcme Industrial Supply LLC\n100 Industrial Parkway, Chicag\nfinance@acmeind.com\nDescription Qty Unit Price Amount\nNetwork Security Threat Detection Scan 1 EUR 350.00 EUR 350.00\nManaged Cloud Hosting Standard Tier 5 EUR 450.00 EUR 2250.00\nSubtotal: EUR 2600.00\nTax (5.0%): EUR 130.00\nTotal Amount Due: EUR 2730.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Acme Industrial Supply LLC",
+  "field_boxes": {
+    "vendor": [
+      0.0231,
+      0.0882,
+      0.1816,
+      0.0976
+    ],
+    "invoice_number": [
+      0.1647,
+      0.0394,
+      0.4118,
+      0.0512
+    ],
+    "invoice_date": [
+      0.1647,
+      0.063,
+      0.3267,
+      0.0715
+    ],
+    "due_date": [
+      0.3922,
+      0.063,
+      0.5451,
+      0.0715
+    ],
+    "po_number": [
+      0.6275,
+      0.063,
+      0.7565,
+      0.0715
+    ],
+    "currency": [
+      0.8235,
+      0.063,
+      0.9271,
+      0.0739
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9161,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9075,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9506,
+      0.4952
+    ]
+  },
+  "doc_id": "inv_095_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_095_clean.png"
+}

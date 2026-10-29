@@ -1,0 +1,87 @@
+{
+  "document_type": "invoice",
+  "vendor": "Apex Strategic Marketing Group",
+  "invoice_number": "INV-2026-1104",
+  "invoice_date": "2026-10-02",
+  "due_date": "2026-10-28",
+  "po_number": "PO-99104",
+  "currency": "GBP",
+  "subtotal": 1310.0,
+  "tax": 0.0,
+  "total": 1310.0,
+  "line_items": [
+    {
+      "description": "Precision Steel Ball Bearing Assembly",
+      "quantity": 4,
+      "unit_price": 165.0,
+      "amount": 660.0
+    },
+    {
+      "description": "Contract Drafting & Vendor Addendum",
+      "quantity": 1,
+      "unit_price": 650.0,
+      "amount": 650.0
+    }
+  ],
+  "full_text": "INVOICE Number: INV-2026-1104\nApex Strategic Marketing Group Billed To:\n77 Madison Ave, Suite 300, New York, NY 10016 AcroCorp Global (US-East)\nEmail: billing@apexmarketing.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-10-02 Due Date: 2026-10-28 PO Number: PO-99104 Currency: GBP\nDescription Qty Unit Price Amount\nPrecision Steel Ball Bearing Assembly 4 GBP 165.00 GBP 660.00\nContract Drafting & Vendor Addendum 1 GBP 650.00 GBP 650.00\nSubtotal: GBP 1310.00\nTax (0.0%): GBP 0.00\nTotal Amount Due: GBP 1310.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Apex Strategic Marketing Group",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0471,
+      0.1115,
+      0.282,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "po_number": [
+      0.5294,
+      0.1897,
+      0.6933,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8745,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9169,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.891,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.4827,
+      0.9518,
+      0.4952
+    ]
+  },
+  "doc_id": "inv_104_deg_noise_jpeg",
+  "is_degraded": true,
+  "degradation": "noise_jpeg",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_104_deg_noise_jpeg.png"
+}

@@ -1,0 +1,93 @@
+{
+  "document_type": "invoice",
+  "vendor": "Titan Global Hardware Corp",
+  "invoice_number": "INV-2026-1108",
+  "invoice_date": "2026-06-03",
+  "due_date": "2026-06-28",
+  "po_number": "PO-99108",
+  "currency": "USD",
+  "subtotal": 4375.0,
+  "tax": 437.5,
+  "total": 4812.5,
+  "line_items": [
+    {
+      "description": "Precision Steel Ball Bearing Assembly",
+      "quantity": 5,
+      "unit_price": 165.0,
+      "amount": 825.0
+    },
+    {
+      "description": "Legal Retainer - Regulatory Governance",
+      "quantity": 1,
+      "unit_price": 2500.0,
+      "amount": 2500.0
+    },
+    {
+      "description": "Network Security Threat Detection Scan",
+      "quantity": 3,
+      "unit_price": 350.0,
+      "amount": 1050.0
+    }
+  ],
+  "full_text": "INVOICE Number: INV-2026-1108\nTitan Global Hardware Corp Billed To:\n101 Machine Way, Detroit, MI 48201 AcroCorp Global (US-East)\nEmail: invoices@titanhardware.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-06-03 Due Date: 2026-06-28 PO Number: PO-99108 Currency: USD\nDescription Qty Unit Price Amount\nPrecision Steel Ball Bearing Assembly 5 $165.00 $825.00\nLegal Retainer - Regulatory Governance 1 $2500.00 $2500.00\nNetwork Security Threat Detection Scan 3 $350.00 $1050.00\nSubtotal: $4375.00\nTax (10.0%): $437.50\nTotal Amount Due: $4812.50\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Titan Global Hardware Corp",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0471,
+      0.1115,
+      0.2502,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "po_number": [
+      0.5294,
+      0.1897,
+      0.6933,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8737,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
+  "doc_id": "inv_108_deg_skew",
+  "is_degraded": true,
+  "degradation": "skew",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_108_deg_skew.png"
+}

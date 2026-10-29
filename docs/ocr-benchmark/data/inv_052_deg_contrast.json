@@ -1,35 +1,91 @@
 {
   "document_type": "invoice",
-  "vendor": "Vanguard Security Systems",
+  "vendor": "Vertex Global Logistics",
   "invoice_number": "INV-2026-1052",
-  "invoice_date": "2026-02-08",
-  "due_date": "2026-02-28",
-  "po_number": "PO-99052",
-  "currency": "EUR",
-  "subtotal": 10000.0,
-  "tax": 0.0,
-  "total": 10000.0,
+  "invoice_date": "2026-04-11",
+  "due_date": "2026-04-26",
+  "po_number": null,
+  "currency": "GBP",
+  "subtotal": 6440.0,
+  "tax": 531.3,
+  "total": 6971.3,
   "line_items": [
     {
-      "description": "HVAC Quarterly Preventative Maintenance",
+      "description": "High-Performance SSD Storage Block 1TB",
       "quantity": 4,
-      "unit_price": 750.0,
-      "amount": 3000.0
+      "unit_price": 75.0,
+      "amount": 300.0
     },
     {
-      "description": "Enterprise Support SLA 24x7 Response",
-      "quantity": 4,
-      "unit_price": 950.0,
-      "amount": 3800.0
+      "description": "Database Replica Failover Node",
+      "quantity": 3,
+      "unit_price": 280.0,
+      "amount": 840.0
     },
     {
-      "description": "Professional Staffing - Senior Engineer",
-      "quantity": 1,
-      "unit_price": 3200.0,
-      "amount": 3200.0
+      "description": "Onsite Facility Cleaning & Sanitation",
+      "quantity": 5,
+      "unit_price": 480.0,
+      "amount": 2400.0
+    },
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 5,
+      "unit_price": 580.0,
+      "amount": 2900.0
     }
   ],
-  "full_text": "INVOICE\nVanguard Security Systems\n310 Cyber Way, Austin, TX 78701\nEmail: accounting@vanguardsec.com\nInvoice Number: INV-2026-1052\nInvoice Date: 2026-02-08\nDue Date: 2026-02-28\nPO Number: PO-99052\nCurrency: EUR\nHVAC Quarterly Preventative Maintenance 4 EUR 750.00 EUR 3000.00\nEnterprise Support SLA 24x7 Response 4 EUR 950.00 EUR 3800.00\nProfessional Staffing - Senior Engineer 1 EUR 3200.00 EUR 3200.00\nSubtotal: EUR 10000.00\nTax: EUR 0.00\nTotal: EUR 10000.00",
+  "full_text": "INVOICE Number: INV-2026-1052\nVertex Global Logistics Billed To:\n88 Port Way, Long Beach, CA 90802 AcroCorp Global (US-East)\nEmail: invoices@vertexlogistics.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-04-11 Due Date: 2026-04-26 Currency: GBP\nDescription Qty Unit Price Amount\nHigh-Performance SSD Storage Block 1TB 4 GBP 75.00 GBP 300.00\nDatabase Replica Failover Node 3 GBP 280.00 GBP 840.00\nOnsite Facility Cleaning & Sanitation 5 GBP 480.00 GBP 2400.00\nIndustrial Lubricant Drum 55 Gallon 5 GBP 580.00 GBP 2900.00\nSubtotal: GBP 6440.00\nTax (8.2%): GBP 531.30\nTotal Amount Due: GBP 6971.30\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Vertex Global Logistics",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0467,
+      0.1115,
+      0.2184,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8745,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9169,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9082,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.4827,
+      0.9518,
+      0.4952
+    ]
+  },
   "doc_id": "inv_052_deg_contrast",
   "is_degraded": true,
   "degradation": "contrast",

@@ -1,0 +1,93 @@
+{
+  "document_type": "invoice",
+  "vendor": "Acme Industrial Supply LLC",
+  "invoice_number": "INV-2026-1157",
+  "invoice_date": "2026-04-15",
+  "due_date": "2026-04-28",
+  "po_number": "PO-99157",
+  "currency": "USD",
+  "subtotal": 1820.0,
+  "tax": 182.0,
+  "total": 2002.0,
+  "line_items": [
+    {
+      "description": "Managed Cloud Hosting Standard Tier",
+      "quantity": 2,
+      "unit_price": 450.0,
+      "amount": 900.0
+    },
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 1,
+      "unit_price": 340.0,
+      "amount": 340.0
+    },
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 1,
+      "unit_price": 580.0,
+      "amount": 580.0
+    }
+  ],
+  "full_text": "ACME INDUSTRIAL SUPPLY LLC TAX INVOICE\n100 Industrial Parkway, Chicago, IL 60601\nContact: finance@acmeind.com\nInvoice #: INV-2026-1157 Customer Details:\nDate of Issue: 2026-04-15 AcroCorp Global Operations\nPayment Due Date: 2026-04-28 100 Enterprise Way, Suite 400\nPurchase Order Ref: PO-99157 Currency: USD\nDescription Qty Unit Price Amount\nManaged Cloud Hosting Standard Tier 2 $450.00 $900.00\nIndustrial Hydraulic Valve Fitting Kit 1 $340.00 $340.00\nIndustrial Lubricant Drum 55 Gallon 1 $580.00 $580.00\nSubtotal: $1820.00\nTax (10.0%): $182.00\nTotal Amount Due: $2002.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Acme Industrial Supply LLC",
+  "field_boxes": {
+    "vendor": [
+      0.0471,
+      0.0391,
+      0.3812,
+      0.0515
+    ],
+    "invoice_number": [
+      0.0471,
+      0.1161,
+      0.2275,
+      0.1245
+    ],
+    "invoice_date": [
+      0.0471,
+      0.1342,
+      0.2263,
+      0.1427
+    ],
+    "due_date": [
+      0.0471,
+      0.1524,
+      0.2651,
+      0.1633
+    ],
+    "po_number": [
+      0.0471,
+      0.1706,
+      0.2631,
+      0.1791
+    ],
+    "currency": [
+      0.6471,
+      0.1706,
+      0.7506,
+      0.1815
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
+  "doc_id": "inv_157_deg_blur",
+  "is_degraded": true,
+  "degradation": "blur",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_157_deg_blur.png"
+}

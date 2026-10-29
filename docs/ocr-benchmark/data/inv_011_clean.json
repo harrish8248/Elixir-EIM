@@ -1,29 +1,85 @@
 {
   "document_type": "invoice",
-  "vendor": "Nexus Enterprise Staffing",
+  "vendor": "Vanguard Security Systems",
   "invoice_number": "INV-2026-1011",
-  "invoice_date": "2026-06-27",
-  "due_date": "2026-06-28",
-  "po_number": null,
-  "currency": "USD",
-  "subtotal": 1306.0,
-  "tax": 0.0,
-  "total": 1306.0,
+  "invoice_date": "2026-09-28",
+  "due_date": "2026-10-28",
+  "po_number": "PO-99011",
+  "currency": "EUR",
+  "subtotal": 3370.0,
+  "tax": 278.03,
+  "total": 3648.03,
   "line_items": [
     {
-      "description": "Enterprise Support SLA 24x7 Response",
-      "quantity": 1,
-      "unit_price": 950.0,
-      "amount": 950.0
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 3,
+      "unit_price": 750.0,
+      "amount": 2250.0
     },
     {
-      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "description": "Database Replica Failover Node",
       "quantity": 4,
-      "unit_price": 89.0,
-      "amount": 356.0
+      "unit_price": 280.0,
+      "amount": 1120.0
     }
   ],
-  "full_text": "INVOICE\nNexus Enterprise Staffing\n500 Broad St, Columbus, OH 43215\nEmail: billing@nexusstaff.com\nInvoice Number: INV-2026-1011\nInvoice Date: 2026-06-27\nDue Date: 2026-06-28\nCurrency: USD\nEnterprise Support SLA 24x7 Response 1 $950.00 $950.00\nSSL/TLS Wildcard Certificate Renewal 4 $89.00 $356.00\nSubtotal: $1306.00\nTax: $0.00\nTotal: $1306.00",
+  "full_text": "INVOICE Invoice #: INV-2026-1011\nIssue Date: 2026-09-28 Due Date: 2026-10-28 PO Ref: PO-99011 Currency: EUR\nREMIT TO:\nVanguard Security Systems\n310 Cyber Way, Austin, TX 7870\naccounting@vanguardsec.com\nDescription Qty Unit Price Amount\nHVAC Quarterly Preventative Maintenance 3 EUR 750.00 EUR 2250.00\nDatabase Replica Failover Node 4 EUR 280.00 EUR 1120.00\nSubtotal: EUR 3370.00\nTax (8.2%): EUR 278.03\nTotal Amount Due: EUR 3648.03\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Vanguard Security Systems",
+  "field_boxes": {
+    "vendor": [
+      0.0235,
+      0.0882,
+      0.1824,
+      0.0976
+    ],
+    "invoice_number": [
+      0.1647,
+      0.0394,
+      0.4118,
+      0.0512
+    ],
+    "invoice_date": [
+      0.1647,
+      0.063,
+      0.3267,
+      0.0715
+    ],
+    "due_date": [
+      0.3922,
+      0.063,
+      0.5451,
+      0.0715
+    ],
+    "po_number": [
+      0.6275,
+      0.063,
+      0.7565,
+      0.0715
+    ],
+    "currency": [
+      0.8235,
+      0.063,
+      0.9271,
+      0.0739
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9161,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9075,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9506,
+      0.4952
+    ]
+  },
   "doc_id": "inv_011_clean",
   "is_degraded": false,
   "degradation": "none",

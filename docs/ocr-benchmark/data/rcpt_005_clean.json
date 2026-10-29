@@ -1,23 +1,61 @@
 {
   "document_type": "receipt",
-  "vendor": "Express Courier Logistics",
+  "vendor": "Apex Fuel & Service",
   "invoice_number": "REC-2026-2005",
-  "invoice_date": "2026-10-28",
-  "due_date": "2026-10-28",
+  "invoice_date": "2026-10-06",
+  "due_date": "2026-10-06",
   "po_number": null,
   "currency": "USD",
-  "subtotal": 126.59,
-  "tax": 10.13,
-  "total": 136.72,
+  "subtotal": 62.5,
+  "tax": 5.0,
+  "total": 67.5,
   "line_items": [
     {
       "description": "Office Supplies & Consumables",
       "quantity": 1,
-      "unit_price": 126.59,
-      "amount": 126.59
+      "unit_price": 62.5,
+      "amount": 62.5
     }
   ],
-  "full_text": "Express Courier Logistics\nCUSTOMER RECEIPT\nReceipt: REC-2026-2005\nDate: 2026-10-28\nPayment: VISA **** 4892\nOffice Supplies & Consumables $126.59\nSUBTOTAL: $126.59\nTAX 8%: $10.13\nTOTAL PAID: $136.72\nTHANK YOU",
+  "full_text": "Apex Fuel & Service Service Station\nVoucher ID: REC-2026-2005\nDate / Time: 2026-10-06 09:15\nPump #04 - Regular Unleaded / Service\nNet Fuel / Goods: $62.50\nState / Local Tax: $5.00\nNET TOTAL DUE: $67.50",
+  "field_boxes": {
+    "vendor": [
+      0.0889,
+      0.0462,
+      1.077,
+      0.0787
+    ],
+    "invoice_number": [
+      0.3333,
+      0.084,
+      0.5741,
+      0.0956
+    ],
+    "invoice_date": [
+      0.0889,
+      0.1093,
+      0.5615,
+      0.1213
+    ],
+    "subtotal": [
+      0.7333,
+      0.216,
+      0.8311,
+      0.228
+    ],
+    "tax": [
+      0.7333,
+      0.2427,
+      0.8148,
+      0.2547
+    ],
+    "total": [
+      0.7333,
+      0.2827,
+      0.823,
+      0.2973
+    ]
+  },
   "doc_id": "rcpt_005_clean",
   "is_degraded": false,
   "degradation": "none",

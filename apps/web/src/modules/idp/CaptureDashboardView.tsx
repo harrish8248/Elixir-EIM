@@ -16,6 +16,7 @@ import { clsx } from "clsx";
 import { apiClient } from "@/api/client";
 
 interface IdpStats {
+  has_data?: boolean;
   total_documents: number;
   stp_rate_pct: number;
   average_confidence_pct: number;
@@ -56,89 +57,20 @@ export const CaptureDashboardView: React.FC<CaptureDashboardViewProps> = ({ onOp
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      // Load stats
+      // Load real database stats
       const statsRes = await apiClient.get<IdpStats>("/api/v1/idp/stats").catch(() => null);
       if (statsRes) {
         setStats(statsRes);
       } else {
-        // Fallback default measured stats if backend empty
-        setStats({
-          total_documents: 49,
-          stp_rate_pct: 77.5,
-          average_confidence_pct: 89.2,
-          average_processing_time_ms: 382.4,
-          review_queue_size: 9,
-          auto_approved_count: 31,
-          completed_count: 7,
-          rejected_count: 2,
-          correction_accuracy_pct: 95.8,
-          total_human_corrections: 14,
-        });
+        setStats(null);
       }
 
-      // Load jobs
+      // Load real database jobs
       const jobsRes = await apiClient.get<{ items: CaptureJob[] }>("/api/v1/idp/jobs?limit=50").catch(() => null);
-      if (jobsRes?.items && jobsRes.items.length > 0) {
+      if (jobsRes?.items) {
         setJobs(jobsRes.items);
       } else {
-        // Initial mock capture jobs from benchmark evaluation
-        setJobs([
-          {
-            id: "job-inv-001",
-            filename: "INV-2026-1000_CloudScale_Networks.png",
-            status: "auto_approved",
-            document_type: "invoice",
-            classification_confidence: 98.5,
-            ocr_engine: "tesseract_5.4_idp",
-            mean_confidence: 91.2,
-            processing_time_ms: 324.5,
-            created_at: new Date(Date.now() - 15 * 60000).toISOString(),
-          },
-          {
-            id: "job-inv-002",
-            filename: "INV-2026-1005_Horizon_Legal_Degraded.png",
-            status: "auto_approved",
-            document_type: "invoice",
-            classification_confidence: 96.0,
-            ocr_engine: "tesseract_5.4_idp",
-            mean_confidence: 88.4,
-            processing_time_ms: 412.0,
-            created_at: new Date(Date.now() - 45 * 60000).toISOString(),
-          },
-          {
-            id: "job-inv-003",
-            filename: "INV-2026-1012_Apex_Cloud_NeedsReview.png",
-            status: "needs_review",
-            document_type: "invoice",
-            classification_confidence: 94.2,
-            ocr_engine: "tesseract_5.4_idp",
-            mean_confidence: 79.5,
-            processing_time_ms: 395.2,
-            created_at: new Date(Date.now() - 90 * 60000).toISOString(),
-          },
-          {
-            id: "job-inv-004",
-            filename: "PO-2026-7004_Sentinel_Security.png",
-            status: "auto_approved",
-            document_type: "purchase_order",
-            classification_confidence: 99.1,
-            ocr_engine: "tesseract_5.4_idp",
-            mean_confidence: 93.7,
-            processing_time_ms: 298.1,
-            created_at: new Date(Date.now() - 120 * 60000).toISOString(),
-          },
-          {
-            id: "job-inv-005",
-            filename: "NDA-2026-004_Partner_Services.png",
-            status: "completed",
-            document_type: "contract",
-            classification_confidence: 100.0,
-            ocr_engine: "tesseract_5.4_idp",
-            mean_confidence: 95.0,
-            processing_time_ms: 285.0,
-            created_at: new Date(Date.now() - 180 * 60000).toISOString(),
-          },
-        ]);
+        setJobs([]);
       }
     } finally {
       setLoading(false);
@@ -240,11 +172,11 @@ export const CaptureDashboardView: React.FC<CaptureDashboardViewProps> = ({ onOp
           </div>
           <div className="mt-2 flex items-baseline gap-2">
             <span className="text-2xl font-bold text-surface-900 dark:text-surface-50">
-              {stats?.stp_rate_pct ?? 77.5}%
+              {stats?.has_data ? `${stats.stp_rate_pct}%` : "No data yet"}
             </span>
-            <span className="text-xs text-emerald-600 font-medium">Auto-approved</span>
+            {stats?.has_data && <span className="text-xs text-emerald-600 font-medium">Auto-approved</span>}
           </div>
-          <p className="text-[11px] text-surface-400 mt-1">Target &gt; 50.0% SLA</p>
+          <p className="text-[11px] text-surface-400 mt-1">Computed from tenant database</p>
         </div>
 
         <div className="bg-white dark:bg-surface-900 p-4 rounded-lg border border-surface-200 dark:border-surface-800 shadow-xs">
@@ -254,11 +186,15 @@ export const CaptureDashboardView: React.FC<CaptureDashboardViewProps> = ({ onOp
           </div>
           <div className="mt-2 flex items-baseline gap-2">
             <span className="text-2xl font-bold text-surface-900 dark:text-surface-50">
-              {stats?.correction_accuracy_pct ?? 95.8}%
+              {stats?.has_data && stats.total_human_corrections >= 0 && stats.correction_accuracy_pct > 0
+                ? `${stats.correction_accuracy_pct}%`
+                : "No data yet"}
             </span>
-            <span className="text-xs text-surface-500">Exact Match</span>
+            {stats?.has_data && stats.correction_accuracy_pct > 0 && (
+              <span className="text-xs text-surface-500">Exact Match</span>
+            )}
           </div>
-          <p className="text-[11px] text-surface-400 mt-1">Based on verified ground truth</p>
+          <p className="text-[11px] text-surface-400 mt-1">From reviewer corrections</p>
         </div>
 
         <div className="bg-white dark:bg-surface-900 p-4 rounded-lg border border-surface-200 dark:border-surface-800 shadow-xs">
@@ -268,7 +204,7 @@ export const CaptureDashboardView: React.FC<CaptureDashboardViewProps> = ({ onOp
           </div>
           <div className="mt-2 flex items-baseline gap-2">
             <span className="text-2xl font-bold text-surface-900 dark:text-surface-50">
-              {stats?.review_queue_size ?? 9}
+              {stats?.has_data ? stats.review_queue_size : "0"}
             </span>
             <span className="text-xs text-amber-600 font-medium">Awaiting human</span>
           </div>
@@ -282,25 +218,25 @@ export const CaptureDashboardView: React.FC<CaptureDashboardViewProps> = ({ onOp
           </div>
           <div className="mt-2 flex items-baseline gap-2">
             <span className="text-2xl font-bold text-surface-900 dark:text-surface-50">
-              {stats?.average_confidence_pct ?? 89.2}%
+              {stats?.has_data ? `${stats.average_confidence_pct}%` : "No data yet"}
             </span>
-            <span className="text-xs text-surface-500">Tesseract 5.4</span>
+            {stats?.has_data && <span className="text-xs text-surface-500">Live average</span>}
           </div>
-          <p className="text-[11px] text-surface-400 mt-1">Across clean & degraded scans</p>
+          <p className="text-[11px] text-surface-400 mt-1">Average across processed documents</p>
         </div>
 
         <div className="bg-white dark:bg-surface-900 p-4 rounded-lg border border-surface-200 dark:border-surface-800 shadow-xs">
           <div className="flex items-center justify-between text-surface-500 text-xs font-medium">
-            <span>Processing Speed (p50)</span>
+            <span>Processing Speed</span>
             <Clock className="w-4 h-4 text-brand-700" />
           </div>
           <div className="mt-2 flex items-baseline gap-2">
             <span className="text-2xl font-bold text-surface-900 dark:text-surface-50">
-              {stats?.average_processing_time_ms ?? 382.4} ms
+              {stats?.has_data ? `${stats.average_processing_time_ms} ms` : "No data yet"}
             </span>
-            <span className="text-xs text-surface-500">Per page</span>
+            {stats?.has_data && <span className="text-xs text-surface-500">Per document</span>}
           </div>
-          <p className="text-[11px] text-surface-400 mt-1">Sub-second turnaround</p>
+          <p className="text-[11px] text-surface-400 mt-1">Real database latency</p>
         </div>
       </div>
 

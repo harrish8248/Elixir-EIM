@@ -1,41 +1,97 @@
 {
   "document_type": "invoice",
-  "vendor": "Vanguard Security Systems",
+  "vendor": "CloudScale Networks Inc",
   "invoice_number": "INV-2026-1010",
-  "invoice_date": "2026-05-27",
-  "due_date": "2026-05-28",
+  "invoice_date": "2026-05-08",
+  "due_date": "2026-05-23",
   "po_number": "PO-99010",
-  "currency": "GBP",
-  "subtotal": 7710.0,
-  "tax": 636.08,
-  "total": 8346.08,
+  "currency": "USD",
+  "subtotal": 13839.0,
+  "tax": 1383.9,
+  "total": 15222.9,
   "line_items": [
     {
-      "description": "Database Replica Failover Node",
-      "quantity": 2,
-      "unit_price": 280.0,
-      "amount": 560.0
-    },
-    {
-      "description": "Network Security Threat Detection Scan",
-      "quantity": 5,
-      "unit_price": 350.0,
-      "amount": 1750.0
-    },
-    {
-      "description": "Industrial Lubricant Drum 55 Gallon",
-      "quantity": 5,
-      "unit_price": 580.0,
-      "amount": 2900.0
-    },
-    {
-      "description": "Legal Retainer - Regulatory Governance",
+      "description": "SSL/TLS Wildcard Certificate Renewal",
       "quantity": 1,
-      "unit_price": 2500.0,
-      "amount": 2500.0
+      "unit_price": 89.0,
+      "amount": 89.0
+    },
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 5,
+      "unit_price": 750.0,
+      "amount": 3750.0
+    },
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 2,
+      "unit_price": 3200.0,
+      "amount": 6400.0
+    },
+    {
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 2,
+      "unit_price": 1800.0,
+      "amount": 3600.0
     }
   ],
-  "full_text": "INVOICE\nVanguard Security Systems\n310 Cyber Way, Austin, TX 78701\nEmail: accounting@vanguardsec.com\nInvoice Number: INV-2026-1010\nInvoice Date: 2026-05-27\nDue Date: 2026-05-28\nPO Number: PO-99010\nCurrency: GBP\nDatabase Replica Failover Node 2 GBP 280.00 GBP 560.00\nNetwork Security Threat Detection Scan 5 GBP 350.00 GBP 1750.00\nIndustrial Lubricant Drum 55 Gallon 5 GBP 580.00 GBP 2900.00\nLegal Retainer - Regulatory Governance 1 GBP 2500.00 GBP 2500.00\nSubtotal: GBP 7710.00\nTax: GBP 636.08\nTotal: GBP 8346.08",
+  "full_text": "CloudScale Networks Inc\nVendor Email: billing@cloudscale.net | Address: 450 Tech Hub Blvd, San Jose, CA 95110\nINVOICE REFERENCE: INV-2026-1010\nDATE: 2026-05-08 DUE DATE: 2026-05-23 PURCHASE ORDER: PO-99010 CURRENCY: USD\nDescription Qty Unit Price Amount\nSSL/TLS Wildcard Certificate Renewal 1 $89.00 $89.00\nHVAC Quarterly Preventative Maintenance 5 $750.00 $3750.00\nProfessional Staffing - Senior Engineer 2 $3200.00 $6400.00\nPatent Portfolio Filing Review & Filing 2 $1800.00 $3600.00\nSubtotal: $13839.00\nTax (10.0%): $1383.90\nTotal Amount Due: $15222.90\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 CloudScale Networks Inc",
+  "field_boxes": {
+    "vendor": [
+      0.0647,
+      0.0497,
+      0.4302,
+      0.0673
+    ],
+    "invoice_number": [
+      0.0647,
+      0.1391,
+      0.4447,
+      0.1515
+    ],
+    "invoice_date": [
+      0.0647,
+      0.1661,
+      0.1933,
+      0.1745
+    ],
+    "due_date": [
+      0.3294,
+      0.1661,
+      0.4945,
+      0.1745
+    ],
+    "po_number": [
+      0.5882,
+      0.1661,
+      0.811,
+      0.1745
+    ],
+    "currency": [
+      0.8039,
+      0.1661,
+      0.931,
+      0.1745
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8969,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8882,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9235,
+      0.4967
+    ]
+  },
   "doc_id": "inv_010_clean",
   "is_degraded": false,
   "degradation": "none",

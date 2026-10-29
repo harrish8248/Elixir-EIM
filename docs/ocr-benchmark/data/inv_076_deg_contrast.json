@@ -1,41 +1,91 @@
 {
   "document_type": "invoice",
-  "vendor": "Nexus Enterprise Staffing",
+  "vendor": "Apex Strategic Marketing Group",
   "invoice_number": "INV-2026-1076",
-  "invoice_date": "2026-01-26",
-  "due_date": "2026-01-28",
-  "po_number": "PO-99076",
-  "currency": "USD",
-  "subtotal": 6692.0,
-  "tax": 552.09,
-  "total": 7244.09,
+  "invoice_date": "2026-07-09",
+  "due_date": "2026-07-24",
+  "po_number": null,
+  "currency": "GBP",
+  "subtotal": 21735.0,
+  "tax": 1086.75,
+  "total": 22821.75,
   "line_items": [
     {
-      "description": "HVAC Quarterly Preventative Maintenance",
-      "quantity": 3,
-      "unit_price": 750.0,
-      "amount": 2250.0
+      "description": "Dedicated IPv4 Allocation Subnet /28",
+      "quantity": 2,
+      "unit_price": 120.0,
+      "amount": 240.0
     },
     {
-      "description": "High-Performance SSD Storage Block 1TB",
+      "description": "Professional Staffing - Senior Engineer",
       "quantity": 5,
-      "unit_price": 75.0,
-      "amount": 375.0
+      "unit_price": 3200.0,
+      "amount": 16000.0
     },
     {
-      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "description": "Precision Steel Ball Bearing Assembly",
       "quantity": 3,
-      "unit_price": 89.0,
-      "amount": 267.0
+      "unit_price": 165.0,
+      "amount": 495.0
     },
     {
-      "description": "Enterprise Support SLA 24x7 Response",
-      "quantity": 4,
-      "unit_price": 950.0,
-      "amount": 3800.0
+      "description": "Legal Retainer - Regulatory Governance",
+      "quantity": 2,
+      "unit_price": 2500.0,
+      "amount": 5000.0
     }
   ],
-  "full_text": "INVOICE\nNexus Enterprise Staffing\n500 Broad St, Columbus, OH 43215\nEmail: billing@nexusstaff.com\nInvoice Number: INV-2026-1076\nInvoice Date: 2026-01-26\nDue Date: 2026-01-28\nPO Number: PO-99076\nCurrency: USD\nHVAC Quarterly Preventative Maintenance 3 $750.00 $2250.00\nHigh-Performance SSD Storage Block 1TB 5 $75.00 $375.00\nSSL/TLS Wildcard Certificate Renewal 3 $89.00 $267.00\nEnterprise Support SLA 24x7 Response 4 $950.00 $3800.00\nSubtotal: $6692.00\nTax: $552.09\nTotal: $7244.09",
+  "full_text": "INVOICE Number: INV-2026-1076\nApex Strategic Marketing Group Billed To:\n77 Madison Ave, Suite 300, New York, NY 10016 AcroCorp Global (US-East)\nEmail: billing@apexmarketing.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-07-09 Due Date: 2026-07-24 Currency: GBP\nDescription Qty Unit Price Amount\nDedicated IPv4 Allocation Subnet /28 2 GBP 120.00 GBP 240.00\nProfessional Staffing - Senior Engineer 5 GBP 3200.00 GBP 16000.00\nPrecision Steel Ball Bearing Assembly 3 GBP 165.00 GBP 495.00\nLegal Retainer - Regulatory Governance 2 GBP 2500.00 GBP 5000.00\nSubtotal: GBP 21735.00\nTax (5.0%): GBP 1086.75\nTotal Amount Due: GBP 22821.75\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Apex Strategic Marketing Group",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0471,
+      0.1115,
+      0.282,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8745,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9255,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9169,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.4827,
+      0.9635,
+      0.4952
+    ]
+  },
   "doc_id": "inv_076_deg_contrast",
   "is_degraded": true,
   "degradation": "contrast",

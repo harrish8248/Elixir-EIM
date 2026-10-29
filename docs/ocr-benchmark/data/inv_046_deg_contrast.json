@@ -1,35 +1,85 @@
 {
   "document_type": "invoice",
-  "vendor": "CloudScale Networks Inc",
+  "vendor": "Titan Global Hardware Corp",
   "invoice_number": "INV-2026-1046",
-  "invoice_date": "2026-04-15",
-  "due_date": "2026-04-28",
+  "invoice_date": "2026-06-18",
+  "due_date": "2026-06-28",
   "po_number": "PO-99046",
   "currency": "USD",
-  "subtotal": 5475.0,
-  "tax": 0.0,
-  "total": 5475.0,
+  "subtotal": 2160.0,
+  "tax": 216.0,
+  "total": 2376.0,
   "line_items": [
     {
-      "description": "High-Performance SSD Storage Block 1TB",
-      "quantity": 3,
-      "unit_price": 75.0,
-      "amount": 225.0
-    },
-    {
-      "description": "SOC-2 Compliance Continuous Audit Log",
+      "description": "Onsite Facility Cleaning & Sanitation",
       "quantity": 1,
-      "unit_price": 1500.0,
-      "amount": 1500.0
+      "unit_price": 480.0,
+      "amount": 480.0
     },
     {
-      "description": "HVAC Quarterly Preventative Maintenance",
-      "quantity": 5,
-      "unit_price": 750.0,
-      "amount": 3750.0
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 4,
+      "unit_price": 420.0,
+      "amount": 1680.0
     }
   ],
-  "full_text": "INVOICE\nCloudScale Networks Inc\n450 Tech Hub Blvd, San Jose, CA 95110\nEmail: billing@cloudscale.net\nInvoice Number: INV-2026-1046\nInvoice Date: 2026-04-15\nDue Date: 2026-04-28\nPO Number: PO-99046\nCurrency: USD\nHigh-Performance SSD Storage Block 1TB 3 $75.00 $225.00\nSOC-2 Compliance Continuous Audit Log 1 $1500.00 $1500.00\nHVAC Quarterly Preventative Maintenance 5 $750.00 $3750.00\nSubtotal: $5475.00\nTax: $0.00\nTotal: $5475.00",
+  "full_text": "Titan Global Hardware Corp\nVendor Email: invoices@titanhardware.com | Address: 101 Machine Way, Detroit, MI 48201\nINVOICE REFERENCE: INV-2026-1046\nDATE: 2026-06-18 DUE DATE: 2026-06-28 PURCHASE ORDER: PO-99046 CURRENCY: USD\nDescription Qty Unit Price Amount\nOnsite Facility Cleaning & Sanitation 1 $480.00 $480.00\nHeavy Duty Conveyor Belt Roller 24in 4 $420.00 $1680.00\nSubtotal: $2160.00\nTax (10.0%): $216.00\nTotal Amount Due: $2376.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Titan Global Hardware Corp",
+  "field_boxes": {
+    "vendor": [
+      0.0647,
+      0.0497,
+      0.4698,
+      0.0718
+    ],
+    "invoice_number": [
+      0.0647,
+      0.1391,
+      0.4447,
+      0.1515
+    ],
+    "invoice_date": [
+      0.0647,
+      0.1661,
+      0.1933,
+      0.1745
+    ],
+    "due_date": [
+      0.3294,
+      0.1661,
+      0.4945,
+      0.1745
+    ],
+    "po_number": [
+      0.5882,
+      0.1661,
+      0.811,
+      0.1745
+    ],
+    "currency": [
+      0.8039,
+      0.1661,
+      0.931,
+      0.1745
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
   "doc_id": "inv_046_deg_contrast",
   "is_degraded": true,
   "degradation": "contrast",

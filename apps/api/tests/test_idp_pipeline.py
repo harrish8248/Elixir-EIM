@@ -195,3 +195,4 @@ def test_idp_accuracy_regression_gate():
     # 4. Latency p95 must be under 4000ms
     p95_ms = metrics["latency"]["p95_ms"]
     assert p95_ms <= 4000.0, f"Processing latency p95 ({p95_ms}ms) exceeded 4000ms"
+

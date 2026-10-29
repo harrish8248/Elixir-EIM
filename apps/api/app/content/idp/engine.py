@@ -56,6 +56,53 @@ class OcrEngine(ABC):
         raise NotImplementedError
 
 
+def estimate_page_complexity(cv_img: np.ndarray) -> dict[str, Any]:
+    """Analyze page complexity metrics: contrast, blur, skew, noise."""
+    gray = cv2.cvtColor(cv_img, cv2.COLOR_BGR2GRAY) if len(cv_img.shape) == 3 else cv_img
+    h, w = gray.shape[:2]
+    small = cv2.resize(gray, (w // 2, h // 2)) if max(h, w) > 1500 else gray
+    sh, sw = small.shape[:2]
+
+    # 1. Contrast: standard deviation of grayscale intensities
+    contrast_std = float(np.std(small))
+
+    # 2. Blur: variance of Laplacian
+    laplacian_var = float(cv2.Laplacian(small, cv2.CV_64F).var())
+
+    # 3. Skew: Hough lines angle estimation
+    skew_angle = 0.0
+    try:
+        edges = cv2.Canny(small, 50, 150, apertureSize=3)
+        lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 40, minLineLength=int(sw * 0.1), maxLineGap=10)
+        if lines is not None:
+            angles = []
+            for line in lines:
+                x1, y1, x2, y2 = line.reshape(4)
+                angle = float(np.degrees(np.arctan2(y2 - y1, x2 - x1)))
+                if abs(angle) < 15:
+                    angles.append(angle)
+            if angles:
+                skew_angle = float(np.median(angles))
+    except Exception:
+        skew_angle = 0.0
+
+    # 4. Noise estimation via difference with median filter
+    blurred = cv2.medianBlur(small, 3)
+    noise_diff = cv2.absdiff(small, blurred)
+    noise_std = float(np.std(noise_diff))
+
+    return {
+        "contrast_std": round(contrast_std, 2),
+        "laplacian_var": round(laplacian_var, 2),
+        "skew_angle": round(skew_angle, 2),
+        "noise_std": round(noise_std, 2),
+        "is_low_contrast": contrast_std < 50.0,
+        "is_skewed": abs(skew_angle) > 0.4,
+        "is_noisy": noise_std > 12.0,
+        "is_blurry": laplacian_var < 100.0,
+    }
+
+
 class TesseractEngine(OcrEngine):
     """
     Industrial-grade Tesseract OCR engine with an OpenCV preprocessing pipeline:
@@ -76,6 +123,7 @@ class TesseractEngine(OcrEngine):
         enable_denoise: bool = True,
         enable_adaptive_thresh: bool = False,
         enable_multipass: bool = True,
+        enable_adaptive: bool = True,
         name: str = "tesseract_5.4",
     ):
         self.enable_osd = enable_osd
@@ -84,6 +132,7 @@ class TesseractEngine(OcrEngine):
         self.enable_denoise = enable_denoise
         self.enable_adaptive_thresh = enable_adaptive_thresh
         self.enable_multipass = enable_multipass
+        self.enable_adaptive = enable_adaptive
         self.name = name
 
     def _preprocess(self, cv_img: np.ndarray) -> tuple[np.ndarray, list[str]]:
@@ -94,7 +143,10 @@ class TesseractEngine(OcrEngine):
         # 1. Orientation Detection (OSD)
         if self.enable_osd:
             try:
-                osd = pytesseract.image_to_osd(img, output_type=pytesseract.Output.DICT)
+                # Downsample 3x for 10x faster OSD detection
+                h_orig, w_orig = img.shape[:2]
+                osd_input = cv2.resize(img, (w_orig // 3, h_orig // 3)) if max(h_orig, w_orig) > 1200 else img
+                osd = pytesseract.image_to_osd(osd_input, output_type=pytesseract.Output.DICT)
                 rot = osd.get("rotate", 0)
                 if rot == 90:
                     img = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
@@ -108,40 +160,35 @@ class TesseractEngine(OcrEngine):
             except Exception:
                 pass
 
+        # Complexity Analysis
+        complexity = estimate_page_complexity(img)
+
         # 2. Deskew via Hough Lines
-        if self.enable_deskew:
+        should_deskew = (complexity["is_skewed"] if self.enable_adaptive else True) and self.enable_deskew
+        if should_deskew:
             try:
-                gray_tmp = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) if len(img.shape) == 3 else img
-                edges = cv2.Canny(gray_tmp, 50, 150, apertureSize=3)
-                lines = cv2.HoughLinesP(edges, 1, np.pi / 180, 50, minLineLength=50, maxLineGap=5)
-                if lines is not None:
-                    angles = []
-                    for line in lines:
-                        x1, y1, x2, y2 = line.reshape(4)
-                        angle = float(np.degrees(np.arctan2(y2 - y1, x2 - x1)))
-                        if abs(angle) < 15:
-                            angles.append(angle)
-                    if angles:
-                        skew = float(np.median(angles))
-                        if abs(skew) > 0.3:
-                            h, w = img.shape[:2]
-                            M = cv2.getRotationMatrix2D((w // 2, h // 2), skew, 1.0)
-                            img = cv2.warpAffine(img, M, (w, h), borderMode=cv2.BORDER_CONSTANT, borderValue=(255, 255, 255))
-                            steps.append(f"deskew_{skew:.1f}deg")
+                skew = complexity["skew_angle"]
+                if abs(skew) > 0.3:
+                    h, w = img.shape[:2]
+                    M = cv2.getRotationMatrix2D((w // 2, h // 2), skew, 1.0)
+                    img = cv2.warpAffine(img, M, (w, h), borderMode=cv2.BORDER_CONSTANT, borderValue=(255, 255, 255))
+                    steps.append(f"deskew_{skew:.1f}deg")
             except Exception:
                 pass
 
         # 3. Grayscale
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) if len(img.shape) == 3 else img
 
-        # 4. Contrast enhancement (CLAHE)
-        if self.enable_clahe:
+        # 4. Contrast enhancement (CLAHE) - apply adaptively only if low contrast
+        should_clahe = (complexity["is_low_contrast"] if self.enable_adaptive else True) and self.enable_clahe
+        if should_clahe:
             clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
             gray = clahe.apply(gray)
             steps.append("clahe_contrast")
 
-        # 5. Denoise (Bilateral filter)
-        if self.enable_denoise:
+        # 5. Denoise (Bilateral filter) - apply adaptively only if noisy
+        should_denoise = (complexity["is_noisy"] if self.enable_adaptive else True) and self.enable_denoise
+        if should_denoise:
             gray = cv2.bilateralFilter(gray, 7, 50, 50)
             steps.append("bilateral_denoise")
 
@@ -387,3 +434,4 @@ class DoctrEngine(OcrEngine):
 
     def process_document(self, content: bytes, filename: str, mime_type: str) -> OcrResult:
         return self.fallback.process_document(content, filename, mime_type)
+

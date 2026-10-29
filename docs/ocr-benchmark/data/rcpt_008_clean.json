@@ -1,23 +1,61 @@
 {
   "document_type": "receipt",
-  "vendor": "Metro Office Supplies",
+  "vendor": "QuickPrint Center",
   "invoice_number": "REC-2026-2008",
   "invoice_date": "2026-10-09",
   "due_date": "2026-10-09",
   "po_number": null,
   "currency": "USD",
-  "subtotal": 103.53,
-  "tax": 8.28,
-  "total": 111.81,
+  "subtotal": 85.0,
+  "tax": 6.8,
+  "total": 91.8,
   "line_items": [
     {
       "description": "Office Supplies & Consumables",
       "quantity": 1,
-      "unit_price": 103.53,
-      "amount": 103.53
+      "unit_price": 85.0,
+      "amount": 85.0
     }
   ],
-  "full_text": "Metro Office Supplies\nCUSTOMER RECEIPT\nReceipt: REC-2026-2008\nDate: 2026-10-09\nPayment: VISA **** 4892\nOffice Supplies & Consumables $103.53\nSUBTOTAL: $103.53\nTAX 8%: $8.28\nTOTAL PAID: $111.81\nTHANK YOU",
+  "full_text": "QuickPrint Center Service Station\nVoucher ID: REC-2026-2008\nDate / Time: 2026-10-09 09:15\nPump #04 - Regular Unleaded / Service\nNet Fuel / Goods: $85.00\nState / Local Tax: $6.80\nNET TOTAL DUE: $91.80",
+  "field_boxes": {
+    "vendor": [
+      0.0889,
+      0.0462,
+      1.0133,
+      0.0742
+    ],
+    "invoice_number": [
+      0.3333,
+      0.084,
+      0.5741,
+      0.0956
+    ],
+    "invoice_date": [
+      0.0889,
+      0.1093,
+      0.5615,
+      0.1213
+    ],
+    "subtotal": [
+      0.7333,
+      0.216,
+      0.8311,
+      0.228
+    ],
+    "tax": [
+      0.7333,
+      0.2427,
+      0.8148,
+      0.2547
+    ],
+    "total": [
+      0.7333,
+      0.2827,
+      0.823,
+      0.2973
+    ]
+  },
   "doc_id": "rcpt_008_clean",
   "is_degraded": false,
   "degradation": "none",

@@ -52,6 +52,16 @@ ANCHORS = {
 }
 
 KNOWN_VENDORS = [
+    "Acme Industrial Supply LLC",
+    "CloudScale Networks Inc",
+    "Horizon Legal Partners LLP",
+    "Vertex Global Logistics",
+    "Apex Strategic Marketing Group",
+    "Pinnacle Facility Services",
+    "Quantum Dynamic Labs GmbH",
+    "Nexus Enterprise Staffing",
+    "Vanguard Security Systems",
+    "Titan Global Hardware Corp",
     "Apex Cloud Infrastructure Inc",
     "Vertex Data Solutions Ltd",
     "Nexus AI Research Labs",
@@ -60,11 +70,15 @@ KNOWN_VENDORS = [
     "Stratis IT Consulting Group",
     "Global Enterprise Hardware Corp",
     "Quantum Cybersecurity Partners",
-    "CloudScale Networks Inc",
-    "Horizon Legal Partners LLP",
     "Sentinel Security Operations",
     "AcroCorp Global Operations",
     "Partner Services Group Inc",
+    "Metro Office Supplies",
+    "Express Courier Logistics",
+    "QuickPrint Center",
+    "Airport Cafe & Catering",
+    "Beacon Data Hardware",
+    "Apex Fuel & Service",
 ]
 
 

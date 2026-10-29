@@ -1,41 +1,85 @@
 {
   "document_type": "invoice",
-  "vendor": "CloudScale Networks Inc",
+  "vendor": "Vanguard Security Systems",
   "invoice_number": "INV-2026-1008",
-  "invoice_date": "2026-03-26",
-  "due_date": "2026-03-28",
+  "invoice_date": "2026-06-04",
+  "due_date": "2026-06-28",
   "po_number": "PO-99008",
   "currency": "EUR",
-  "subtotal": 15121.0,
-  "tax": 0.0,
-  "total": 15121.0,
+  "subtotal": 4200.0,
+  "tax": 210.0,
+  "total": 4410.0,
   "line_items": [
     {
-      "description": "SSL/TLS Wildcard Certificate Renewal",
-      "quantity": 4,
-      "unit_price": 89.0,
-      "amount": 356.0
-    },
-    {
-      "description": "Legal Retainer - Regulatory Governance",
-      "quantity": 5,
-      "unit_price": 2500.0,
-      "amount": 12500.0
-    },
-    {
-      "description": "Onsite Facility Cleaning & Sanitation",
+      "description": "Contract Drafting & Vendor Addendum",
       "quantity": 3,
-      "unit_price": 480.0,
-      "amount": 1440.0
+      "unit_price": 650.0,
+      "amount": 1950.0
     },
     {
-      "description": "Precision Steel Ball Bearing Assembly",
+      "description": "Managed Cloud Hosting Standard Tier",
       "quantity": 5,
-      "unit_price": 165.0,
-      "amount": 825.0
+      "unit_price": 450.0,
+      "amount": 2250.0
     }
   ],
-  "full_text": "INVOICE\nCloudScale Networks Inc\n450 Tech Hub Blvd, San Jose, CA 95110\nEmail: billing@cloudscale.net\nInvoice Number: INV-2026-1008\nInvoice Date: 2026-03-26\nDue Date: 2026-03-28\nPO Number: PO-99008\nCurrency: EUR\nSSL/TLS Wildcard Certificate Renewal 4 EUR 89.00 EUR 356.00\nLegal Retainer - Regulatory Governance 5 EUR 2500.00 EUR 12500.00\nOnsite Facility Cleaning & Sanitation 3 EUR 480.00 EUR 1440.00\nPrecision Steel Ball Bearing Assembly 5 EUR 165.00 EUR 825.00\nSubtotal: EUR 15121.00\nTax: EUR 0.00\nTotal: EUR 15121.00",
+  "full_text": "INVOICE Number: INV-2026-1008\nVanguard Security Systems Billed To:\n310 Cyber Way, Austin, TX 78701 AcroCorp Global (US-East)\nEmail: accounting@vanguardsec.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-06-04 Due Date: 2026-06-28 PO Number: PO-99008 Currency: EUR\nDescription Qty Unit Price Amount\nContract Drafting & Vendor Addendum 3 EUR 650.00 EUR 1950.00\nManaged Cloud Hosting Standard Tier 5 EUR 450.00 EUR 2250.00\nSubtotal: EUR 4200.00\nTax (5.0%): EUR 210.00\nTotal Amount Due: EUR 4410.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Vanguard Security Systems",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0467,
+      0.1115,
+      0.251,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "po_number": [
+      0.5294,
+      0.1897,
+      0.6933,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8737,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9161,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9075,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9506,
+      0.4952
+    ]
+  },
   "doc_id": "inv_008_deg_noise_jpeg",
   "is_degraded": true,
   "degradation": "noise_jpeg",

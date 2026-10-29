@@ -1,0 +1,37 @@
+[
+  {
+    "threshold": 0.8,
+    "stp_rate": 96.67,
+    "stp_auto_approved": 29,
+    "auto_approved_precision": 79.31,
+    "false_approval_rate": 20.69
+  },
+  {
+    "threshold": 0.85,
+    "stp_rate": 96.67,
+    "stp_auto_approved": 29,
+    "auto_approved_precision": 79.31,
+    "false_approval_rate": 20.69
+  },
+  {
+    "threshold": 0.88,
+    "stp_rate": 96.67,
+    "stp_auto_approved": 29,
+    "auto_approved_precision": 79.31,
+    "false_approval_rate": 20.69
+  },
+  {
+    "threshold": 0.9,
+    "stp_rate": 96.67,
+    "stp_auto_approved": 29,
+    "auto_approved_precision": 79.31,
+    "false_approval_rate": 20.69
+  },
+  {
+    "threshold": 0.92,
+    "stp_rate": 20.0,
+    "stp_auto_approved": 6,
+    "auto_approved_precision": 100.0,
+    "false_approval_rate": 0.0
+  }
+]

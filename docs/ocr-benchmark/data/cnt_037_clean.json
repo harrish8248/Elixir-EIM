@@ -1,0 +1,26 @@
+{
+  "document_type": "contract",
+  "vendor": "Horizon Legal Partners LLP",
+  "invoice_number": "CNT-2026-037",
+  "invoice_date": "2026-10-10",
+  "due_date": null,
+  "po_number": null,
+  "currency": null,
+  "subtotal": 0.0,
+  "tax": 0.0,
+  "total": 0.0,
+  "line_items": [],
+  "full_text": "MASTER PROFESSIONAL SERVICES AGREEMENT\nThis Master Services Agreement (\"MSA\") is entered into as of October 10, 2026, between\nAcroCorp Global Operations (\"Client\") and Horizon Legal Partners LLP (\"Service Provider\").\n\n1. SCOPE OF SERVICES\nService Provider shall deliver the specialized professional consulting, architecture, and regulatory compliance\nservices described in Statements of Work (\"SOW\") executed hereunder.\n\n2. COMPENSATION AND BILLING\nClient agrees to compensate Service Provider in accordance with fee schedules set forth in applicable SOWs.\nInvoices shall be rendered monthly and are payable Net 30 days from invoice date.\n\n3. INTELLECTUAL PROPERTY RIGHTS\nAll work product, deliverables, and associated patents and copyrights created specifically for Client shall\nvest exclusively in Client upon receipt of full payment.\n\n4. INDEMNIFICATION AND LIABILITY\nNeither party shall be liable for indirect, incidental, or consequential damages arising from performance.\n\nACCEPTED AND AGREED:\nClient: AcroCorp Global Operations           Provider: Horizon Legal Partners LLP\nDate: 2026-10-10                             Date: 2026-10-10\nVendor Signatory: Horizon Legal Partners LLP",
+  "field_boxes": {
+    "vendor": [
+      0.0702,
+      0.8509,
+      0.4102,
+      0.8618
+    ]
+  },
+  "doc_id": "cnt_037_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\cnt_037_clean.png"
+}

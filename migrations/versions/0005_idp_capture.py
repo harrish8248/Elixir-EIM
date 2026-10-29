@@ -196,3 +196,4 @@ def downgrade() -> None:
         op.execute(f"DROP POLICY IF EXISTS {tbl}_tenant_isolation ON {tbl};")
         op.execute(f"ALTER TABLE {tbl} DISABLE ROW LEVEL SECURITY;")
         op.execute(f"DROP TABLE IF EXISTS {tbl} CASCADE;")
+

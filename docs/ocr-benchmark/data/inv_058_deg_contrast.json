@@ -1,35 +1,91 @@
 {
   "document_type": "invoice",
-  "vendor": "Vanguard Security Systems",
+  "vendor": "Nexus Enterprise Staffing",
   "invoice_number": "INV-2026-1058",
   "invoice_date": "2026-08-10",
-  "due_date": "2026-08-28",
+  "due_date": "2026-08-25",
   "po_number": "PO-99058",
-  "currency": "EUR",
-  "subtotal": 5020.0,
-  "tax": 251.0,
-  "total": 5271.0,
+  "currency": "USD",
+  "subtotal": 2725.0,
+  "tax": 136.25,
+  "total": 2861.25,
   "line_items": [
     {
-      "description": "Dedicated IPv4 Allocation Subnet /28",
+      "description": "Precision Steel Ball Bearing Assembly",
       "quantity": 2,
-      "unit_price": 120.0,
-      "amount": 240.0
+      "unit_price": 165.0,
+      "amount": 330.0
     },
     {
-      "description": "SOC-2 Compliance Continuous Audit Log",
+      "description": "Contract Drafting & Vendor Addendum",
       "quantity": 3,
-      "unit_price": 1500.0,
-      "amount": 4500.0
+      "unit_price": 650.0,
+      "amount": 1950.0
     },
     {
-      "description": "Database Replica Failover Node",
-      "quantity": 1,
-      "unit_price": 280.0,
-      "amount": 280.0
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 5,
+      "unit_price": 89.0,
+      "amount": 445.0
     }
   ],
-  "full_text": "INVOICE\nVanguard Security Systems\n310 Cyber Way, Austin, TX 78701\nEmail: accounting@vanguardsec.com\nInvoice Number: INV-2026-1058\nInvoice Date: 2026-08-10\nDue Date: 2026-08-28\nPO Number: PO-99058\nCurrency: EUR\nDedicated IPv4 Allocation Subnet /28 2 EUR 120.00 EUR 240.00\nSOC-2 Compliance Continuous Audit Log 3 EUR 1500.00 EUR 4500.00\nDatabase Replica Failover Node 1 EUR 280.00 EUR 280.00\nSubtotal: EUR 5020.00\nTax: EUR 251.00\nTotal: EUR 5271.00",
+  "full_text": "Nexus Enterprise Staffing\nVendor Email: billing@nexusstaff.com | Address: 500 Broad St, Columbus, OH 43215\nINVOICE REFERENCE: INV-2026-1058\nDATE: 2026-08-10 DUE DATE: 2026-08-25 PURCHASE ORDER: PO-99058 CURRENCY: USD\nDescription Qty Unit Price Amount\nPrecision Steel Ball Bearing Assembly 2 $165.00 $330.00\nContract Drafting & Vendor Addendum 3 $650.00 $1950.00\nSSL/TLS Wildcard Certificate Renewal 5 $89.00 $445.00\nSubtotal: $2725.00\nTax (5.0%): $136.25\nTotal Amount Due: $2861.25\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Nexus Enterprise Staffing",
+  "field_boxes": {
+    "vendor": [
+      0.0647,
+      0.0497,
+      0.4384,
+      0.0721
+    ],
+    "invoice_number": [
+      0.0647,
+      0.1391,
+      0.4447,
+      0.1515
+    ],
+    "invoice_date": [
+      0.0647,
+      0.1661,
+      0.1933,
+      0.1745
+    ],
+    "due_date": [
+      0.3294,
+      0.1661,
+      0.4945,
+      0.1745
+    ],
+    "po_number": [
+      0.5882,
+      0.1661,
+      0.811,
+      0.1745
+    ],
+    "currency": [
+      0.8039,
+      0.1661,
+      0.931,
+      0.1745
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
   "doc_id": "inv_058_deg_contrast",
   "is_degraded": true,
   "degradation": "contrast",

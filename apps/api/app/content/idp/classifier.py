@@ -113,3 +113,4 @@ class DocumentClassifier:
             return best_rule_type, round(conf, 2)
 
         return DocumentType.OTHER, 0.50
+

@@ -1,29 +1,91 @@
 {
   "document_type": "invoice",
-  "vendor": "Apex Strategic Marketing Group",
+  "vendor": "CloudScale Networks Inc",
   "invoice_number": "INV-2026-1047",
-  "invoice_date": "2026-07-13",
-  "due_date": "2026-07-28",
+  "invoice_date": "2026-06-21",
+  "due_date": "2026-06-28",
   "po_number": "PO-99047",
   "currency": "USD",
-  "subtotal": 10350.0,
-  "tax": 0.0,
-  "total": 10350.0,
+  "subtotal": 4135.0,
+  "tax": 413.5,
+  "total": 4548.5,
   "line_items": [
     {
-      "description": "Enterprise Support SLA 24x7 Response",
-      "quantity": 3,
-      "unit_price": 950.0,
-      "amount": 2850.0
+      "description": "High-Performance SSD Storage Block 1TB",
+      "quantity": 5,
+      "unit_price": 75.0,
+      "amount": 375.0
     },
     {
-      "description": "SOC-2 Compliance Continuous Audit Log",
+      "description": "Onsite Facility Cleaning & Sanitation",
       "quantity": 5,
-      "unit_price": 1500.0,
-      "amount": 7500.0
+      "unit_price": 480.0,
+      "amount": 2400.0
+    },
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 4,
+      "unit_price": 340.0,
+      "amount": 1360.0
     }
   ],
-  "full_text": "INVOICE\nApex Strategic Marketing Group\n77 Madison Ave, Suite 300, New York, NY 10016\nEmail: billing@apexmarketing.com\nInvoice Number: INV-2026-1047\nInvoice Date: 2026-07-13\nDue Date: 2026-07-28\nPO Number: PO-99047\nCurrency: USD\nEnterprise Support SLA 24x7 Response 3 $950.00 $2850.00\nSOC-2 Compliance Continuous Audit Log 5 $1500.00 $7500.00\nSubtotal: $10350.00\nTax: $0.00\nTotal: $10350.00",
+  "full_text": "INVOICE Invoice #: INV-2026-1047\nIssue Date: 2026-06-21 Due Date: 2026-06-28 PO Ref: PO-99047 Currency: USD\nREMIT TO:\nCloudScale Networks Inc\n450 Tech Hub Blvd, San Jose, C\nbilling@cloudscale.net\nDescription Qty Unit Price Amount\nHigh-Performance SSD Storage Block 1TB 5 $75.00 $375.00\nOnsite Facility Cleaning & Sanitation 5 $480.00 $2400.00\nIndustrial Hydraulic Valve Fitting Kit 4 $340.00 $1360.00\nSubtotal: $4135.00\nTax (10.0%): $413.50\nTotal Amount Due: $4548.50\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 CloudScale Networks Inc",
+  "field_boxes": {
+    "vendor": [
+      0.0235,
+      0.0882,
+      0.1675,
+      0.0955
+    ],
+    "invoice_number": [
+      0.1647,
+      0.0394,
+      0.4118,
+      0.0512
+    ],
+    "invoice_date": [
+      0.1647,
+      0.063,
+      0.3267,
+      0.0715
+    ],
+    "due_date": [
+      0.3922,
+      0.063,
+      0.5451,
+      0.0715
+    ],
+    "po_number": [
+      0.6275,
+      0.063,
+      0.7565,
+      0.0715
+    ],
+    "currency": [
+      0.8235,
+      0.063,
+      0.9271,
+      0.0739
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
   "doc_id": "inv_047_clean",
   "is_degraded": false,
   "degradation": "none",

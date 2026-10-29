@@ -1,7 +1,7 @@
 {
   "document_type": "contract",
-  "vendor": "Partner Services Group Inc",
-  "invoice_number": "NDA-2026-001",
+  "vendor": "Horizon Legal Partners LLP",
+  "invoice_number": "CNT-2026-001",
   "invoice_date": "2026-10-02",
   "due_date": null,
   "po_number": null,
@@ -10,7 +10,15 @@
   "tax": 0.0,
   "total": 0.0,
   "line_items": [],
-  "full_text": "This Non-Disclosure Agreement (\"Agreement\") is entered into as of October 2, 2026, by and between\nAcroCorp Global Enterprises LLC, with offices at 100 Enterprise Way (\"Disclosing Party\"), and\nPartner Services Group Inc (\"Receiving Party\").\n\n1. PURPOSE\nThe parties wish to explore a business opportunity concerning enterprise information management,\ncryptographic audit trails, and automated process orchestration.\n\n2. CONFIDENTIAL INFORMATION\n\"Confidential Information\" refers to all non-public technical, commercial, financial, and operational\nrecords disclosed by either party, whether in writing, orally, or in electronic media.\n\n3. OBLIGATIONS\nThe Receiving Party agrees to maintain the secrecy of Confidential Information with at least reasonable care\nand shall not disclose such information to any third party without prior written consent.\n\n4. TERM AND TERMINATION\nThis Agreement shall remain in effect for a period of three (3) years from the Effective Date.\n\nIN WITNESS WHEREOF, the authorized representatives have executed this Agreement:\nAcroCorp Global Enterprises LLC: ______________________      Date: 2026-10-02\nPartner Services Group Inc:      ______________________      Date: 2026-10-02",
+  "full_text": "MASTER PROFESSIONAL SERVICES AGREEMENT\nThis Master Services Agreement (\"MSA\") is entered into as of October 2, 2026, between\nAcroCorp Global Operations (\"Client\") and Horizon Legal Partners LLP (\"Service Provider\").\n\n1. SCOPE OF SERVICES\nService Provider shall deliver the specialized professional consulting, architecture, and regulatory compliance\nservices described in Statements of Work (\"SOW\") executed hereunder.\n\n2. COMPENSATION AND BILLING\nClient agrees to compensate Service Provider in accordance with fee schedules set forth in applicable SOWs.\nInvoices shall be rendered monthly and are payable Net 30 days from invoice date.\n\n3. INTELLECTUAL PROPERTY RIGHTS\nAll work product, deliverables, and associated patents and copyrights created specifically for Client shall\nvest exclusively in Client upon receipt of full payment.\n\n4. INDEMNIFICATION AND LIABILITY\nNeither party shall be liable for indirect, incidental, or consequential damages arising from performance.\n\nACCEPTED AND AGREED:\nClient: AcroCorp Global Operations           Provider: Horizon Legal Partners LLP\nDate: 2026-10-02                             Date: 2026-10-02\nVendor Signatory: Horizon Legal Partners LLP",
+  "field_boxes": {
+    "vendor": [
+      0.0702,
+      0.8509,
+      0.4102,
+      0.8618
+    ]
+  },
   "doc_id": "cnt_001_clean",
   "is_degraded": false,
   "degradation": "none",

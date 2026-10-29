@@ -1,35 +1,91 @@
 {
   "document_type": "invoice",
-  "vendor": "Horizon Legal Partners LLP",
+  "vendor": "Nexus Enterprise Staffing",
   "invoice_number": "INV-2026-1068",
-  "invoice_date": "2026-05-17",
-  "due_date": "2026-05-28",
+  "invoice_date": "2026-06-11",
+  "due_date": "2026-06-28",
   "po_number": "PO-99068",
-  "currency": "USD",
-  "subtotal": 18450.0,
-  "tax": 1845.0,
-  "total": 20295.0,
+  "currency": "GBP",
+  "subtotal": 4520.0,
+  "tax": 226.0,
+  "total": 4746.0,
   "line_items": [
     {
-      "description": "Professional Staffing - Senior Engineer",
-      "quantity": 4,
-      "unit_price": 3200.0,
-      "amount": 12800.0
-    },
-    {
-      "description": "HVAC Quarterly Preventative Maintenance",
-      "quantity": 5,
-      "unit_price": 750.0,
-      "amount": 3750.0
-    },
-    {
-      "description": "Enterprise Support SLA 24x7 Response",
+      "description": "Contract Drafting & Vendor Addendum",
       "quantity": 2,
-      "unit_price": 950.0,
-      "amount": 1900.0
+      "unit_price": 650.0,
+      "amount": 1300.0
+    },
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 5,
+      "unit_price": 420.0,
+      "amount": 2100.0
+    },
+    {
+      "description": "Database Replica Failover Node",
+      "quantity": 4,
+      "unit_price": 280.0,
+      "amount": 1120.0
     }
   ],
-  "full_text": "INVOICE\nHorizon Legal Partners LLP\n120 Wall Street, Floor 18, New York, NY 10005\nEmail: accounts@horizonlaw.com\nInvoice Number: INV-2026-1068\nInvoice Date: 2026-05-17\nDue Date: 2026-05-28\nPO Number: PO-99068\nCurrency: USD\nProfessional Staffing - Senior Engineer 4 $3200.00 $12800.00\nHVAC Quarterly Preventative Maintenance 5 $750.00 $3750.00\nEnterprise Support SLA 24x7 Response 2 $950.00 $1900.00\nSubtotal: $18450.00\nTax: $1845.00\nTotal: $20295.00",
+  "full_text": "INVOICE Number: INV-2026-1068\nNexus Enterprise Staffing Billed To:\n500 Broad St, Columbus, OH 43215 AcroCorp Global (US-East)\nEmail: billing@nexusstaff.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-06-11 Due Date: 2026-06-28 PO Number: PO-99068 Currency: GBP\nDescription Qty Unit Price Amount\nContract Drafting & Vendor Addendum 2 GBP 650.00 GBP 1300.00\nHeavy Duty Conveyor Belt Roller 24in 5 GBP 420.00 GBP 2100.00\nDatabase Replica Failover Node 4 GBP 280.00 GBP 1120.00\nSubtotal: GBP 4520.00\nTax (5.0%): GBP 226.00\nTotal Amount Due: GBP 4746.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Nexus Enterprise Staffing",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0471,
+      0.1115,
+      0.2353,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "po_number": [
+      0.5294,
+      0.1897,
+      0.6933,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8745,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9169,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9082,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.4827,
+      0.9518,
+      0.4952
+    ]
+  },
   "doc_id": "inv_068_clean",
   "is_degraded": false,
   "degradation": "none",

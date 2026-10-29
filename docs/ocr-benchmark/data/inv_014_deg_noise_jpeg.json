@@ -1,29 +1,97 @@
 {
   "document_type": "invoice",
-  "vendor": "Titan Global Hardware Corp",
+  "vendor": "Vertex Global Logistics",
   "invoice_number": "INV-2026-1014",
-  "invoice_date": "2026-02-23",
-  "due_date": "2026-02-28",
+  "invoice_date": "2026-07-07",
+  "due_date": "2026-07-22",
   "po_number": "PO-99014",
   "currency": "USD",
-  "subtotal": 387.0,
-  "tax": 19.35,
-  "total": 406.35,
+  "subtotal": 8810.0,
+  "tax": 881.0,
+  "total": 9691.0,
   "line_items": [
     {
-      "description": "SSL/TLS Wildcard Certificate Renewal",
-      "quantity": 3,
-      "unit_price": 89.0,
-      "amount": 267.0
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 4,
+      "unit_price": 1800.0,
+      "amount": 7200.0
     },
     {
-      "description": "Dedicated IPv4 Allocation Subnet /28",
+      "description": "Industrial Lubricant Drum 55 Gallon",
       "quantity": 1,
-      "unit_price": 120.0,
-      "amount": 120.0
+      "unit_price": 580.0,
+      "amount": 580.0
+    },
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 1,
+      "unit_price": 750.0,
+      "amount": 750.0
+    },
+    {
+      "description": "Database Replica Failover Node",
+      "quantity": 1,
+      "unit_price": 280.0,
+      "amount": 280.0
     }
   ],
-  "full_text": "INVOICE\nTitan Global Hardware Corp\n101 Machine Way, Detroit, MI 48201\nEmail: invoices@titanhardware.com\nInvoice Number: INV-2026-1014\nInvoice Date: 2026-02-23\nDue Date: 2026-02-28\nPO Number: PO-99014\nCurrency: USD\nSSL/TLS Wildcard Certificate Renewal 3 $89.00 $267.00\nDedicated IPv4 Allocation Subnet /28 1 $120.00 $120.00\nSubtotal: $387.00\nTax: $19.35\nTotal: $406.35",
+  "full_text": "Vertex Global Logistics\nVendor Email: invoices@vertexlogistics.com | Address: 88 Port Way, Long Beach, CA 90802\nINVOICE REFERENCE: INV-2026-1014\nDATE: 2026-07-07 DUE DATE: 2026-07-22 PURCHASE ORDER: PO-99014 CURRENCY: USD\nDescription Qty Unit Price Amount\nPatent Portfolio Filing Review & Filing 4 $1800.00 $7200.00\nIndustrial Lubricant Drum 55 Gallon 1 $580.00 $580.00\nHVAC Quarterly Preventative Maintenance 1 $750.00 $750.00\nDatabase Replica Failover Node 1 $280.00 $280.00\nSubtotal: $8810.00\nTax (10.0%): $881.00\nTotal Amount Due: $9691.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Vertex Global Logistics",
+  "field_boxes": {
+    "vendor": [
+      0.0643,
+      0.0497,
+      0.4051,
+      0.0721
+    ],
+    "invoice_number": [
+      0.0647,
+      0.1391,
+      0.4447,
+      0.1515
+    ],
+    "invoice_date": [
+      0.0647,
+      0.1661,
+      0.1933,
+      0.1745
+    ],
+    "due_date": [
+      0.3294,
+      0.1661,
+      0.4945,
+      0.1745
+    ],
+    "po_number": [
+      0.5882,
+      0.1661,
+      0.811,
+      0.1745
+    ],
+    "currency": [
+      0.8039,
+      0.1661,
+      0.931,
+      0.1745
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
   "doc_id": "inv_014_deg_noise_jpeg",
   "is_degraded": true,
   "degradation": "noise_jpeg",

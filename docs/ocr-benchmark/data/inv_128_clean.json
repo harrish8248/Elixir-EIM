@@ -1,0 +1,81 @@
+{
+  "document_type": "invoice",
+  "vendor": "Vertex Global Logistics",
+  "invoice_number": "INV-2026-1128",
+  "invoice_date": "2026-02-15",
+  "due_date": "2026-02-28",
+  "po_number": null,
+  "currency": "EUR",
+  "subtotal": 3320.0,
+  "tax": 273.9,
+  "total": 3593.9,
+  "line_items": [
+    {
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
+      "quantity": 1,
+      "unit_price": 420.0,
+      "amount": 420.0
+    },
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 5,
+      "unit_price": 580.0,
+      "amount": 2900.0
+    }
+  ],
+  "full_text": "INVOICE Number: INV-2026-1128\nVertex Global Logistics Billed To:\n88 Port Way, Long Beach, CA 90802 AcroCorp Global (US-East)\nEmail: invoices@vertexlogistics.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-02-15 Due Date: 2026-02-28 Currency: EUR\nDescription Qty Unit Price Amount\nHeavy Duty Conveyor Belt Roller 24in 1 EUR 420.00 EUR 420.00\nIndustrial Lubricant Drum 55 Gallon 5 EUR 580.00 EUR 2900.00\nSubtotal: EUR 3320.00\nTax (8.2%): EUR 273.90\nTotal Amount Due: EUR 3593.90\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Vertex Global Logistics",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0467,
+      0.1115,
+      0.2184,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8737,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9161,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9075,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9506,
+      0.4952
+    ]
+  },
+  "doc_id": "inv_128_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_128_clean.png"
+}

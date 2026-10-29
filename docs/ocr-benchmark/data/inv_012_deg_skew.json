@@ -1,29 +1,85 @@
 {
   "document_type": "invoice",
-  "vendor": "Vanguard Security Systems",
+  "vendor": "Nexus Enterprise Staffing",
   "invoice_number": "INV-2026-1012",
-  "invoice_date": "2026-03-22",
-  "due_date": "2026-03-28",
+  "invoice_date": "2026-08-04",
+  "due_date": "2026-08-19",
   "po_number": "PO-99012",
-  "currency": "GBP",
-  "subtotal": 3620.0,
-  "tax": 181.0,
-  "total": 3801.0,
+  "currency": "USD",
+  "subtotal": 4350.0,
+  "tax": 217.5,
+  "total": 4567.5,
   "line_items": [
     {
-      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "description": "Heavy Duty Conveyor Belt Roller 24in",
       "quantity": 5,
-      "unit_price": 340.0,
-      "amount": 1700.0
+      "unit_price": 420.0,
+      "amount": 2100.0
     },
     {
-      "description": "Onsite Facility Cleaning & Sanitation",
-      "quantity": 4,
-      "unit_price": 480.0,
-      "amount": 1920.0
+      "description": "Managed Cloud Hosting Standard Tier",
+      "quantity": 5,
+      "unit_price": 450.0,
+      "amount": 2250.0
     }
   ],
-  "full_text": "INVOICE\nVanguard Security Systems\n310 Cyber Way, Austin, TX 78701\nEmail: accounting@vanguardsec.com\nInvoice Number: INV-2026-1012\nInvoice Date: 2026-03-22\nDue Date: 2026-03-28\nPO Number: PO-99012\nCurrency: GBP\nIndustrial Hydraulic Valve Fitting Kit 5 GBP 340.00 GBP 1700.00\nOnsite Facility Cleaning & Sanitation 4 GBP 480.00 GBP 1920.00\nSubtotal: GBP 3620.00\nTax: GBP 181.00\nTotal: GBP 3801.00",
+  "full_text": "INVOICE Number: INV-2026-1012\nNexus Enterprise Staffing Billed To:\n500 Broad St, Columbus, OH 43215 AcroCorp Global (US-East)\nEmail: billing@nexusstaff.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-08-04 Due Date: 2026-08-19 PO Number: PO-99012 Currency: USD\nDescription Qty Unit Price Amount\nHeavy Duty Conveyor Belt Roller 24in 5 $420.00 $2100.00\nManaged Cloud Hosting Standard Tier 5 $450.00 $2250.00\nSubtotal: $4350.00\nTax (5.0%): $217.50\nTotal Amount Due: $4567.50\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Nexus Enterprise Staffing",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0471,
+      0.1115,
+      0.2353,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "po_number": [
+      0.5294,
+      0.1897,
+      0.6933,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8737,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
   "doc_id": "inv_012_deg_skew",
   "is_degraded": true,
   "degradation": "skew",

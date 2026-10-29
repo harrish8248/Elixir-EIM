@@ -1,29 +1,85 @@
 {
   "document_type": "invoice",
-  "vendor": "Titan Global Hardware Corp",
+  "vendor": "Vertex Global Logistics",
   "invoice_number": "INV-2026-1038",
-  "invoice_date": "2026-09-14",
-  "due_date": "2026-09-28",
-  "po_number": "PO-99038",
+  "invoice_date": "2026-07-11",
+  "due_date": "2026-07-28",
+  "po_number": null,
   "currency": "EUR",
-  "subtotal": 10900.0,
-  "tax": 899.25,
-  "total": 11799.25,
+  "subtotal": 3680.0,
+  "tax": 368.0,
+  "total": 4048.0,
   "line_items": [
     {
-      "description": "Professional Staffing - Senior Engineer",
-      "quantity": 3,
-      "unit_price": 3200.0,
-      "amount": 9600.0
+      "description": "Dedicated IPv4 Allocation Subnet /28",
+      "quantity": 4,
+      "unit_price": 120.0,
+      "amount": 480.0
     },
     {
-      "description": "Contract Drafting & Vendor Addendum",
-      "quantity": 2,
-      "unit_price": 650.0,
-      "amount": 1300.0
+      "description": "Database Replica Failover Node",
+      "quantity": 5,
+      "unit_price": 280.0,
+      "amount": 1400.0
+    },
+    {
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 1,
+      "unit_price": 1800.0,
+      "amount": 1800.0
     }
   ],
-  "full_text": "INVOICE\nTitan Global Hardware Corp\n101 Machine Way, Detroit, MI 48201\nEmail: invoices@titanhardware.com\nInvoice Number: INV-2026-1038\nInvoice Date: 2026-09-14\nDue Date: 2026-09-28\nPO Number: PO-99038\nCurrency: EUR\nProfessional Staffing - Senior Engineer 3 EUR 3200.00 EUR 9600.00\nContract Drafting & Vendor Addendum 2 EUR 650.00 EUR 1300.00\nSubtotal: EUR 10900.00\nTax: EUR 899.25\nTotal: EUR 11799.25",
+  "full_text": "Vertex Global Logistics\nVendor Email: invoices@vertexlogistics.com | Address: 88 Port Way, Long Beach, CA 90802\nINVOICE REFERENCE: INV-2026-1038\nDATE: 2026-07-11 DUE DATE: 2026-07-28 CURRENCY: EUR\nDescription Qty Unit Price Amount\nDedicated IPv4 Allocation Subnet /28 4 EUR 120.00 EUR 480.00\nDatabase Replica Failover Node 5 EUR 280.00 EUR 1400.00\nPatent Portfolio Filing Review & Filing 1 EUR 1800.00 EUR 1800.00\nSubtotal: EUR 3680.00\nTax (10.0%): EUR 368.00\nTotal Amount Due: EUR 4048.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Vertex Global Logistics",
+  "field_boxes": {
+    "vendor": [
+      0.0643,
+      0.0497,
+      0.4051,
+      0.0721
+    ],
+    "invoice_number": [
+      0.0647,
+      0.1391,
+      0.4447,
+      0.1515
+    ],
+    "invoice_date": [
+      0.0647,
+      0.1661,
+      0.1933,
+      0.1745
+    ],
+    "due_date": [
+      0.3294,
+      0.1661,
+      0.4945,
+      0.1745
+    ],
+    "currency": [
+      0.8039,
+      0.1661,
+      0.931,
+      0.1745
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9161,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9075,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9506,
+      0.4952
+    ]
+  },
   "doc_id": "inv_038_clean",
   "is_degraded": false,
   "degradation": "none",

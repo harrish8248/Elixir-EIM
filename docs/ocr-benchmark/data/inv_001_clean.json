@@ -23,7 +23,63 @@
       "amount": 840.0
     }
   ],
-  "full_text": "INVOICE\nVanguard Security Systems\n310 Cyber Way, Austin, TX 78701\nEmail: accounting@vanguardsec.com\nInvoice Number: INV-2026-1001\nInvoice Date: 2026-08-19\nDue Date: 2026-08-28\nPO Number: PO-99001\nCurrency: USD\nPatent Portfolio Filing Review & Filing 3 $1800.00 $5400.00\nHeavy Duty Conveyor Belt Roller 24in 2 $420.00 $840.00\nSubtotal: $6240.00\nTax: $312.00\nTotal: $6552.00",
+  "full_text": "VANGUARD SECURITY SYSTEMS TAX INVOICE\n310 Cyber Way, Austin, TX 78701\nContact: accounting@vanguardsec.com\nInvoice #: INV-2026-1001 Customer Details:\nDate of Issue: 2026-08-19 AcroCorp Global Operations\nPayment Due Date: 2026-08-28 100 Enterprise Way, Suite 400\nPurchase Order Ref: PO-99001 Currency: USD\nDescription Qty Unit Price Amount\nPatent Portfolio Filing Review & Filing 3 $1800.00 $5400.00\nHeavy Duty Conveyor Belt Roller 24in 2 $420.00 $840.00\nSubtotal: $6240.00\nTax (5.0%): $312.00\nTotal Amount Due: $6552.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Vanguard Security Systems",
+  "field_boxes": {
+    "vendor": [
+      0.0467,
+      0.0391,
+      0.3894,
+      0.0515
+    ],
+    "invoice_number": [
+      0.0471,
+      0.1161,
+      0.2275,
+      0.1245
+    ],
+    "invoice_date": [
+      0.0471,
+      0.1342,
+      0.2263,
+      0.1427
+    ],
+    "due_date": [
+      0.0471,
+      0.1524,
+      0.2651,
+      0.1633
+    ],
+    "po_number": [
+      0.0471,
+      0.1706,
+      0.2631,
+      0.1791
+    ],
+    "currency": [
+      0.6471,
+      0.1706,
+      0.7506,
+      0.1815
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
   "doc_id": "inv_001_clean",
   "is_degraded": false,
   "degradation": "none",

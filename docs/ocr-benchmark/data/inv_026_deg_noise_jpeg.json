@@ -1,41 +1,97 @@
 {
   "document_type": "invoice",
-  "vendor": "Pinnacle Facility Services",
+  "vendor": "Vertex Global Logistics",
   "invoice_number": "INV-2026-1026",
-  "invoice_date": "2026-05-06",
-  "due_date": "2026-05-28",
+  "invoice_date": "2026-06-25",
+  "due_date": "2026-06-28",
   "po_number": "PO-99026",
   "currency": "EUR",
-  "subtotal": 7710.0,
-  "tax": 385.5,
-  "total": 8095.5,
+  "subtotal": 9575.0,
+  "tax": 789.94,
+  "total": 10364.94,
   "line_items": [
     {
-      "description": "Patent Portfolio Filing Review & Filing",
+      "description": "Network Security Threat Detection Scan",
       "quantity": 2,
-      "unit_price": 1800.0,
-      "amount": 3600.0
+      "unit_price": 350.0,
+      "amount": 700.0
     },
     {
-      "description": "Managed Cloud Hosting Standard Tier",
-      "quantity": 5,
-      "unit_price": 450.0,
-      "amount": 2250.0
+      "description": "Enterprise Support SLA 24x7 Response",
+      "quantity": 4,
+      "unit_price": 950.0,
+      "amount": 3800.0
     },
     {
-      "description": "SOC-2 Compliance Continuous Audit Log",
+      "description": "High-Performance SSD Storage Block 1TB",
       "quantity": 1,
-      "unit_price": 1500.0,
-      "amount": 1500.0
+      "unit_price": 75.0,
+      "amount": 75.0
     },
     {
-      "description": "Dedicated IPv4 Allocation Subnet /28",
-      "quantity": 3,
-      "unit_price": 120.0,
-      "amount": 360.0
+      "description": "Legal Retainer - Regulatory Governance",
+      "quantity": 2,
+      "unit_price": 2500.0,
+      "amount": 5000.0
     }
   ],
-  "full_text": "INVOICE\nPinnacle Facility Services\n204 Commercial Rd, Atlanta, GA 30303\nEmail: ar@pinnaclefacility.com\nInvoice Number: INV-2026-1026\nInvoice Date: 2026-05-06\nDue Date: 2026-05-28\nPO Number: PO-99026\nCurrency: EUR\nPatent Portfolio Filing Review & Filing 2 EUR 1800.00 EUR 3600.00\nManaged Cloud Hosting Standard Tier 5 EUR 450.00 EUR 2250.00\nSOC-2 Compliance Continuous Audit Log 1 EUR 1500.00 EUR 1500.00\nDedicated IPv4 Allocation Subnet /28 3 EUR 120.00 EUR 360.00\nSubtotal: EUR 7710.00\nTax: EUR 385.50\nTotal: EUR 8095.50",
+  "full_text": "Vertex Global Logistics\nVendor Email: invoices@vertexlogistics.com | Address: 88 Port Way, Long Beach, CA 90802\nINVOICE REFERENCE: INV-2026-1026\nDATE: 2026-06-25 DUE DATE: 2026-06-28 PURCHASE ORDER: PO-99026 CURRENCY: EUR\nDescription Qty Unit Price Amount\nNetwork Security Threat Detection Scan 2 EUR 350.00 EUR 700.00\nEnterprise Support SLA 24x7 Response 4 EUR 950.00 EUR 3800.00\nHigh-Performance SSD Storage Block 1TB 1 EUR 75.00 EUR 75.00\nLegal Retainer - Regulatory Governance 2 EUR 2500.00 EUR 5000.00\nSubtotal: EUR 9575.00\nTax (8.2%): EUR 789.94\nTotal Amount Due: EUR 10364.94\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Vertex Global Logistics",
+  "field_boxes": {
+    "vendor": [
+      0.0643,
+      0.0497,
+      0.4051,
+      0.0721
+    ],
+    "invoice_number": [
+      0.0647,
+      0.1391,
+      0.4447,
+      0.1515
+    ],
+    "invoice_date": [
+      0.0647,
+      0.1661,
+      0.1933,
+      0.1745
+    ],
+    "due_date": [
+      0.3294,
+      0.1661,
+      0.4945,
+      0.1745
+    ],
+    "po_number": [
+      0.5882,
+      0.1661,
+      0.811,
+      0.1745
+    ],
+    "currency": [
+      0.8039,
+      0.1661,
+      0.931,
+      0.1745
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9161,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9075,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9624,
+      0.4952
+    ]
+  },
   "doc_id": "inv_026_deg_noise_jpeg",
   "is_degraded": true,
   "degradation": "noise_jpeg",

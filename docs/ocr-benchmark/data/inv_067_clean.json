@@ -1,35 +1,85 @@
 {
   "document_type": "invoice",
-  "vendor": "Acme Industrial Supply LLC",
+  "vendor": "Apex Strategic Marketing Group",
   "invoice_number": "INV-2026-1067",
-  "invoice_date": "2026-10-26",
-  "due_date": "2026-10-28",
+  "invoice_date": "2026-07-11",
+  "due_date": "2026-07-28",
   "po_number": "PO-99067",
   "currency": "USD",
-  "subtotal": 3450.0,
-  "tax": 345.0,
-  "total": 3795.0,
+  "subtotal": 4575.0,
+  "tax": 457.5,
+  "total": 5032.5,
   "line_items": [
     {
+      "description": "Precision Steel Ball Bearing Assembly",
+      "quantity": 5,
+      "unit_price": 165.0,
+      "amount": 825.0
+    },
+    {
       "description": "HVAC Quarterly Preventative Maintenance",
-      "quantity": 1,
+      "quantity": 5,
       "unit_price": 750.0,
-      "amount": 750.0
-    },
-    {
-      "description": "Managed Cloud Hosting Standard Tier",
-      "quantity": 2,
-      "unit_price": 450.0,
-      "amount": 900.0
-    },
-    {
-      "description": "Patent Portfolio Filing Review & Filing",
-      "quantity": 1,
-      "unit_price": 1800.0,
-      "amount": 1800.0
+      "amount": 3750.0
     }
   ],
-  "full_text": "INVOICE\nAcme Industrial Supply LLC\n100 Industrial Parkway, Chicago, IL 60601\nEmail: finance@acmeind.com\nInvoice Number: INV-2026-1067\nInvoice Date: 2026-10-26\nDue Date: 2026-10-28\nPO Number: PO-99067\nCurrency: USD\nHVAC Quarterly Preventative Maintenance 1 $750.00 $750.00\nManaged Cloud Hosting Standard Tier 2 $450.00 $900.00\nPatent Portfolio Filing Review & Filing 1 $1800.00 $1800.00\nSubtotal: $3450.00\nTax: $345.00\nTotal: $3795.00",
+  "full_text": "INVOICE Invoice #: INV-2026-1067\nIssue Date: 2026-07-11 Due Date: 2026-07-28 PO Ref: PO-99067 Currency: USD\nREMIT TO:\nApex Strategic Marketing Group\n77 Madison Ave, Suite 300, New\nbilling@apexmarketing.com\nDescription Qty Unit Price Amount\nPrecision Steel Ball Bearing Assembly 5 $165.00 $825.00\nHVAC Quarterly Preventative Maintenance 5 $750.00 $3750.00\nSubtotal: $4575.00\nTax (10.0%): $457.50\nTotal Amount Due: $5032.50\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Apex Strategic Marketing Group",
+  "field_boxes": {
+    "vendor": [
+      0.0231,
+      0.0882,
+      0.2059,
+      0.0976
+    ],
+    "invoice_number": [
+      0.1647,
+      0.0394,
+      0.4118,
+      0.0512
+    ],
+    "invoice_date": [
+      0.1647,
+      0.063,
+      0.3267,
+      0.0715
+    ],
+    "due_date": [
+      0.3922,
+      0.063,
+      0.5451,
+      0.0715
+    ],
+    "po_number": [
+      0.6275,
+      0.063,
+      0.7565,
+      0.0715
+    ],
+    "currency": [
+      0.8235,
+      0.063,
+      0.9271,
+      0.0739
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
   "doc_id": "inv_067_clean",
   "is_degraded": false,
   "degradation": "none",

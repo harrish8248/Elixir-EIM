@@ -1,35 +1,85 @@
 {
   "document_type": "invoice",
-  "vendor": "Acme Industrial Supply LLC",
+  "vendor": "Nexus Enterprise Staffing",
   "invoice_number": "INV-2026-1036",
-  "invoice_date": "2026-08-20",
-  "due_date": "2026-08-28",
+  "invoice_date": "2026-09-14",
+  "due_date": "2026-09-28",
   "po_number": "PO-99036",
   "currency": "EUR",
-  "subtotal": 12520.0,
-  "tax": 0.0,
-  "total": 12520.0,
+  "subtotal": 10900.0,
+  "tax": 899.25,
+  "total": 11799.25,
   "line_items": [
     {
-      "description": "Database Replica Failover Node",
-      "quantity": 4,
-      "unit_price": 280.0,
-      "amount": 1120.0
-    },
-    {
-      "description": "Legal Retainer - Regulatory Governance",
-      "quantity": 2,
-      "unit_price": 2500.0,
-      "amount": 5000.0
-    },
-    {
       "description": "Professional Staffing - Senior Engineer",
-      "quantity": 2,
+      "quantity": 3,
       "unit_price": 3200.0,
-      "amount": 6400.0
+      "amount": 9600.0
+    },
+    {
+      "description": "Contract Drafting & Vendor Addendum",
+      "quantity": 2,
+      "unit_price": 650.0,
+      "amount": 1300.0
     }
   ],
-  "full_text": "INVOICE\nAcme Industrial Supply LLC\n100 Industrial Parkway, Chicago, IL 60601\nEmail: finance@acmeind.com\nInvoice Number: INV-2026-1036\nInvoice Date: 2026-08-20\nDue Date: 2026-08-28\nPO Number: PO-99036\nCurrency: EUR\nDatabase Replica Failover Node 4 EUR 280.00 EUR 1120.00\nLegal Retainer - Regulatory Governance 2 EUR 2500.00 EUR 5000.00\nProfessional Staffing - Senior Engineer 2 EUR 3200.00 EUR 6400.00\nSubtotal: EUR 12520.00\nTax: EUR 0.00\nTotal: EUR 12520.00",
+  "full_text": "INVOICE Number: INV-2026-1036\nNexus Enterprise Staffing Billed To:\n500 Broad St, Columbus, OH 43215 AcroCorp Global (US-East)\nEmail: billing@nexusstaff.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-09-14 Due Date: 2026-09-28 PO Number: PO-99036 Currency: EUR\nDescription Qty Unit Price Amount\nProfessional Staffing - Senior Engineer 3 EUR 3200.00 EUR 9600.00\nContract Drafting & Vendor Addendum 2 EUR 650.00 EUR 1300.00\nSubtotal: EUR 10900.00\nTax (8.2%): EUR 899.25\nTotal Amount Due: EUR 11799.25\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Nexus Enterprise Staffing",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0471,
+      0.1115,
+      0.2353,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "po_number": [
+      0.5294,
+      0.1897,
+      0.6933,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8737,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9247,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9075,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9624,
+      0.4952
+    ]
+  },
   "doc_id": "inv_036_deg_skew",
   "is_degraded": true,
   "degradation": "skew",

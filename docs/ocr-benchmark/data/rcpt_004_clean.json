@@ -1,23 +1,61 @@
 {
   "document_type": "receipt",
-  "vendor": "Metro Office Supplies",
+  "vendor": "Beacon Data Hardware",
   "invoice_number": "REC-2026-2004",
   "invoice_date": "2026-10-05",
   "due_date": "2026-10-05",
   "po_number": null,
   "currency": "USD",
-  "subtotal": 139.43,
-  "tax": 11.15,
-  "total": 150.58,
+  "subtotal": 55.0,
+  "tax": 4.4,
+  "total": 59.4,
   "line_items": [
     {
       "description": "Office Supplies & Consumables",
       "quantity": 1,
-      "unit_price": 139.43,
-      "amount": 139.43
+      "unit_price": 55.0,
+      "amount": 55.0
     }
   ],
-  "full_text": "Metro Office Supplies\nCUSTOMER RECEIPT\nReceipt: REC-2026-2004\nDate: 2026-10-05\nPayment: VISA **** 4892\nOffice Supplies & Consumables $139.43\nSUBTOTAL: $139.43\nTAX 8%: $11.15\nTOTAL PAID: $150.58\nTHANK YOU",
+  "full_text": "Beacon Data Hardware\nOrder Ref: REC-2026-2004\nTimestamp: 2026-10-05 14:32:10\nMethod: Apple Pay (MasterCard 9102)\nGeneral Commercial Goods Tier 1 $55.00\nSubtotal Amount: $55.00\nSales Tax (8.0%): $4.40\nAMOUNT CHARGED: $59.40",
+  "field_boxes": {
+    "vendor": [
+      0.1111,
+      0.0644,
+      0.5467,
+      0.0818
+    ],
+    "invoice_number": [
+      0.1111,
+      0.1236,
+      0.4726,
+      0.136
+    ],
+    "invoice_date": [
+      0.1111,
+      0.1502,
+      0.543,
+      0.1662
+    ],
+    "subtotal": [
+      0.7333,
+      0.316,
+      0.823,
+      0.3307
+    ],
+    "tax": [
+      0.7333,
+      0.3427,
+      0.8067,
+      0.3573
+    ],
+    "total": [
+      0.7333,
+      0.3764,
+      0.8556,
+      0.3978
+    ]
+  },
   "doc_id": "rcpt_004_clean",
   "is_degraded": false,
   "degradation": "none",

@@ -1,0 +1,99 @@
+{
+  "document_type": "invoice",
+  "vendor": "Vertex Global Logistics",
+  "invoice_number": "INV-2026-1155",
+  "invoice_date": "2026-06-06",
+  "due_date": "2026-06-28",
+  "po_number": "PO-99155",
+  "currency": "EUR",
+  "subtotal": 4655.0,
+  "tax": 232.75,
+  "total": 4887.75,
+  "line_items": [
+    {
+      "description": "Industrial Hydraulic Valve Fitting Kit",
+      "quantity": 3,
+      "unit_price": 340.0,
+      "amount": 1020.0
+    },
+    {
+      "description": "High-Performance SSD Storage Block 1TB",
+      "quantity": 3,
+      "unit_price": 75.0,
+      "amount": 225.0
+    },
+    {
+      "description": "Managed Cloud Hosting Standard Tier",
+      "quantity": 5,
+      "unit_price": 450.0,
+      "amount": 2250.0
+    },
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 2,
+      "unit_price": 580.0,
+      "amount": 1160.0
+    }
+  ],
+  "full_text": "INVOICE Invoice #: INV-2026-1155\nIssue Date: 2026-06-06 Due Date: 2026-06-28 PO Ref: PO-99155 Currency: EUR\nREMIT TO:\nVertex Global Logistics\n88 Port Way, Long Beach, CA 90\ninvoices@vertexlogistics.com\nDescription Qty Unit Price Amount\nIndustrial Hydraulic Valve Fitting Kit 3 EUR 340.00 EUR 1020.00\nHigh-Performance SSD Storage Block 1TB 3 EUR 75.00 EUR 225.00\nManaged Cloud Hosting Standard Tier 5 EUR 450.00 EUR 2250.00\nIndustrial Lubricant Drum 55 Gallon 2 EUR 580.00 EUR 1160.00\nSubtotal: EUR 4655.00\nTax (5.0%): EUR 232.75\nTotal Amount Due: EUR 4887.75\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Vertex Global Logistics",
+  "field_boxes": {
+    "vendor": [
+      0.0235,
+      0.0882,
+      0.1549,
+      0.0976
+    ],
+    "invoice_number": [
+      0.1647,
+      0.0394,
+      0.4118,
+      0.0512
+    ],
+    "invoice_date": [
+      0.1647,
+      0.063,
+      0.3267,
+      0.0715
+    ],
+    "due_date": [
+      0.3922,
+      0.063,
+      0.5451,
+      0.0715
+    ],
+    "po_number": [
+      0.6275,
+      0.063,
+      0.7565,
+      0.0715
+    ],
+    "currency": [
+      0.8235,
+      0.063,
+      0.9271,
+      0.0739
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9161,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9075,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9506,
+      0.4952
+    ]
+  },
+  "doc_id": "inv_155_deg_rotated_90",
+  "is_degraded": true,
+  "degradation": "rotated_90",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_155_deg_rotated_90.png"
+}

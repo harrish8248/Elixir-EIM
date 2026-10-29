@@ -1,41 +1,85 @@
 {
   "document_type": "invoice",
-  "vendor": "Pinnacle Facility Services",
+  "vendor": "Acme Industrial Supply LLC",
   "invoice_number": "INV-2026-1016",
-  "invoice_date": "2026-08-28",
+  "invoice_date": "2026-09-27",
   "due_date": "2026-09-28",
   "po_number": "PO-99016",
   "currency": "USD",
-  "subtotal": 10780.0,
-  "tax": 539.0,
-  "total": 11319.0,
+  "subtotal": 7500.0,
+  "tax": 375.0,
+  "total": 7875.0,
   "line_items": [
     {
-      "description": "SOC-2 Compliance Continuous Audit Log",
-      "quantity": 3,
-      "unit_price": 1500.0,
-      "amount": 4500.0
+      "description": "High-Performance SSD Storage Block 1TB",
+      "quantity": 4,
+      "unit_price": 75.0,
+      "amount": 300.0
     },
     {
-      "description": "Dedicated IPv4 Allocation Subnet /28",
-      "quantity": 1,
-      "unit_price": 120.0,
-      "amount": 120.0
-    },
-    {
-      "description": "Legal Retainer - Regulatory Governance",
-      "quantity": 2,
-      "unit_price": 2500.0,
-      "amount": 5000.0
-    },
-    {
-      "description": "Industrial Lubricant Drum 55 Gallon",
-      "quantity": 2,
-      "unit_price": 580.0,
-      "amount": 1160.0
+      "description": "Patent Portfolio Filing Review & Filing",
+      "quantity": 4,
+      "unit_price": 1800.0,
+      "amount": 7200.0
     }
   ],
-  "full_text": "INVOICE\nPinnacle Facility Services\n204 Commercial Rd, Atlanta, GA 30303\nEmail: ar@pinnaclefacility.com\nInvoice Number: INV-2026-1016\nInvoice Date: 2026-08-28\nDue Date: 2026-09-28\nPO Number: PO-99016\nCurrency: USD\nSOC-2 Compliance Continuous Audit Log 3 $1500.00 $4500.00\nDedicated IPv4 Allocation Subnet /28 1 $120.00 $120.00\nLegal Retainer - Regulatory Governance 2 $2500.00 $5000.00\nIndustrial Lubricant Drum 55 Gallon 2 $580.00 $1160.00\nSubtotal: $10780.00\nTax: $539.00\nTotal: $11319.00",
+  "full_text": "INVOICE Number: INV-2026-1016\nAcme Industrial Supply LLC Billed To:\n100 Industrial Parkway, Chicago, IL 60601 AcroCorp Global (US-East)\nEmail: finance@acmeind.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-09-27 Due Date: 2026-09-28 PO Number: PO-99016 Currency: USD\nDescription Qty Unit Price Amount\nHigh-Performance SSD Storage Block 1TB 4 $75.00 $300.00\nPatent Portfolio Filing Review & Filing 4 $1800.00 $7200.00\nSubtotal: $7500.00\nTax (5.0%): $375.00\nTotal Amount Due: $7875.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Acme Industrial Supply LLC",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0471,
+      0.1115,
+      0.2525,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "po_number": [
+      0.5294,
+      0.1897,
+      0.6933,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8737,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8882,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8796,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9118,
+      0.4967
+    ]
+  },
   "doc_id": "inv_016_deg_contrast",
   "is_degraded": true,
   "degradation": "contrast",

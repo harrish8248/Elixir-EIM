@@ -1,0 +1,99 @@
+{
+  "document_type": "invoice",
+  "vendor": "Horizon Legal Partners LLP",
+  "invoice_number": "INV-2026-1113",
+  "invoice_date": "2026-10-05",
+  "due_date": "2026-10-28",
+  "po_number": "PO-99113",
+  "currency": "USD",
+  "subtotal": 21560.0,
+  "tax": 1078.0,
+  "total": 22638.0,
+  "line_items": [
+    {
+      "description": "Professional Staffing - Senior Engineer",
+      "quantity": 5,
+      "unit_price": 3200.0,
+      "amount": 16000.0
+    },
+    {
+      "description": "Industrial Lubricant Drum 55 Gallon",
+      "quantity": 1,
+      "unit_price": 580.0,
+      "amount": 580.0
+    },
+    {
+      "description": "SOC-2 Compliance Continuous Audit Log",
+      "quantity": 3,
+      "unit_price": 1500.0,
+      "amount": 4500.0
+    },
+    {
+      "description": "Onsite Facility Cleaning & Sanitation",
+      "quantity": 1,
+      "unit_price": 480.0,
+      "amount": 480.0
+    }
+  ],
+  "full_text": "HORIZON LEGAL PARTNERS LLP TAX INVOICE\n120 Wall Street, Floor 18, New York, NY 10005\nContact: accounts@horizonlaw.com\nInvoice #: INV-2026-1113 Customer Details:\nDate of Issue: 2026-10-05 AcroCorp Global Operations\nPayment Due Date: 2026-10-28 100 Enterprise Way, Suite 400\nPurchase Order Ref: PO-99113 Currency: USD\nDescription Qty Unit Price Amount\nProfessional Staffing - Senior Engineer 5 $3200.00 $16000.00\nIndustrial Lubricant Drum 55 Gallon 1 $580.00 $580.00\nSOC-2 Compliance Continuous Audit Log 3 $1500.00 $4500.00\nOnsite Facility Cleaning & Sanitation 1 $480.00 $480.00\nSubtotal: $21560.00\nTax (5.0%): $1078.00\nTotal Amount Due: $22638.00\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Horizon Legal Partners LLP",
+  "field_boxes": {
+    "vendor": [
+      0.0471,
+      0.0391,
+      0.3906,
+      0.0515
+    ],
+    "invoice_number": [
+      0.0471,
+      0.1161,
+      0.2275,
+      0.1245
+    ],
+    "invoice_date": [
+      0.0471,
+      0.1342,
+      0.2263,
+      0.1427
+    ],
+    "due_date": [
+      0.0471,
+      0.1524,
+      0.2651,
+      0.1633
+    ],
+    "po_number": [
+      0.0471,
+      0.1706,
+      0.2631,
+      0.1791
+    ],
+    "currency": [
+      0.6471,
+      0.1706,
+      0.7506,
+      0.1815
+    ],
+    "subtotal": [
+      0.8235,
+      0.4291,
+      0.8969,
+      0.4391
+    ],
+    "tax": [
+      0.8235,
+      0.4509,
+      0.8882,
+      0.4609
+    ],
+    "total": [
+      0.8235,
+      0.4821,
+      0.9235,
+      0.4967
+    ]
+  },
+  "doc_id": "inv_113_clean",
+  "is_degraded": false,
+  "degradation": "none",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_113_clean.png"
+}

@@ -1,0 +1,93 @@
+{
+  "document_type": "invoice",
+  "vendor": "Apex Strategic Marketing Group",
+  "invoice_number": "INV-2026-1116",
+  "invoice_date": "2026-08-23",
+  "due_date": "2026-08-28",
+  "po_number": "PO-99116",
+  "currency": "EUR",
+  "subtotal": 3028.0,
+  "tax": 302.8,
+  "total": 3330.8,
+  "line_items": [
+    {
+      "description": "Managed Cloud Hosting Standard Tier",
+      "quantity": 3,
+      "unit_price": 450.0,
+      "amount": 1350.0
+    },
+    {
+      "description": "SSL/TLS Wildcard Certificate Renewal",
+      "quantity": 2,
+      "unit_price": 89.0,
+      "amount": 178.0
+    },
+    {
+      "description": "HVAC Quarterly Preventative Maintenance",
+      "quantity": 2,
+      "unit_price": 750.0,
+      "amount": 1500.0
+    }
+  ],
+  "full_text": "INVOICE Number: INV-2026-1116\nApex Strategic Marketing Group Billed To:\n77 Madison Ave, Suite 300, New York, NY 10016 AcroCorp Global (US-East)\nEmail: billing@apexmarketing.com Attn: Accounts Payable / Finance\nInvoice Date: 2026-08-23 Due Date: 2026-08-28 PO Number: PO-99116 Currency: EUR\nDescription Qty Unit Price Amount\nManaged Cloud Hosting Standard Tier 3 EUR 450.00 EUR 1350.00\nSSL/TLS Wildcard Certificate Renewal 2 EUR 89.00 EUR 178.00\nHVAC Quarterly Preventative Maintenance 2 EUR 750.00 EUR 1500.00\nSubtotal: EUR 3028.00\nTax (10.0%): EUR 302.80\nTotal Amount Due: EUR 3330.80\nPayment Terms: Net 30. Remit payments via ACH/Wire.\nThank you for your business \u2014 Apex Strategic Marketing Group",
+  "field_boxes": {
+    "invoice_number": [
+      0.6706,
+      0.0303,
+      0.9071,
+      0.0421
+    ],
+    "vendor": [
+      0.0471,
+      0.1115,
+      0.282,
+      0.1224
+    ],
+    "invoice_date": [
+      0.0588,
+      0.1897,
+      0.2384,
+      0.1982
+    ],
+    "due_date": [
+      0.2941,
+      0.1897,
+      0.4494,
+      0.1982
+    ],
+    "po_number": [
+      0.5294,
+      0.1897,
+      0.6933,
+      0.1982
+    ],
+    "currency": [
+      0.7647,
+      0.1897,
+      0.8737,
+      0.2006
+    ],
+    "subtotal": [
+      0.8235,
+      0.4297,
+      0.9161,
+      0.4382
+    ],
+    "tax": [
+      0.8235,
+      0.4515,
+      0.9075,
+      0.46
+    ],
+    "total": [
+      0.8235,
+      0.483,
+      0.9506,
+      0.4952
+    ]
+  },
+  "doc_id": "inv_116_deg_noise_jpeg",
+  "is_degraded": true,
+  "degradation": "noise_jpeg",
+  "image_path": "docs\\ocr-benchmark\\data\\inv_116_deg_noise_jpeg.png"
+}
