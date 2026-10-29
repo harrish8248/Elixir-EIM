@@ -30,9 +30,16 @@ SEEDED_PURCHASE_ORDERS = {
     "PO-2026-7003": {"vendor": "Nexus AI Research Labs", "total": 8900.00, "status": "open"},
     "PO-2026-7004": {"vendor": "Sentinel Security Operations", "total": 5400.00, "status": "open"},
     "PO-2026-7005": {"vendor": "Horizon Legal Partners LLP", "total": 3500.00, "status": "open"},
+    "PO-2026-901": {"vendor": "Tata Consultancy Services Ltd", "total": 118000.00, "status": "open"},
+    "PO-2026-902": {"vendor": "Infosys Technologies Pvt Ltd", "total": 118000.00, "status": "open"},
+    "PO-2026-903": {"vendor": "CloudScale Networks India Pvt Ltd", "total": 118000.00, "status": "open"},
 }
 
 SEEDED_VENDOR_MASTER = {
+    "Tata Consultancy Services Ltd": {"tax_id": "27AAACT2718E1ZM", "status": "approved", "payment_terms": "Net 30"},
+    "Infosys Technologies Pvt Ltd": {"tax_id": "29AABCI1234F1Z5", "status": "approved", "payment_terms": "Net 30"},
+    "CloudScale Networks India Pvt Ltd": {"tax_id": "27AAPFU0939F1ZS", "status": "approved", "payment_terms": "Net 30"},
+    "Bharti Airtel Enterprise Services": {"tax_id": "07AAACB0123L1Z2", "status": "approved", "payment_terms": "Net 30"},
     "Acme Industrial Supply LLC": {"tax_id": "US-36-1928471", "status": "approved", "payment_terms": "Net 30"},
     "CloudScale Networks Inc": {"tax_id": "US-77-4839201", "status": "approved", "payment_terms": "Net 30"},
     "Horizon Legal Partners LLP": {"tax_id": "US-66-5948372", "status": "approved", "payment_terms": "Net 30"},

@@ -4,13 +4,18 @@ Coordinates OCR preprocessing, document classification, field extraction,
 continuous learning templates, and business validation rules.
 """
 
+import io
+import re
 import time
 from pathlib import Path
 from typing import Any
 
+from PIL import Image
+
 from apps.api.app.content.idp.classifier import DocumentClassifier
 from apps.api.app.content.idp.engine import OcrEngine, TesseractEngine
 from apps.api.app.content.idp.extractor import InvoiceExtractor
+from apps.api.app.content.idp.gst_extractor import GstInvoiceExtractor
 from apps.api.app.content.idp.learning import VendorTemplateStore
 from apps.api.app.content.idp.models import BoundingBox, DocumentType, OcrResult
 from apps.api.app.content.idp.validation import ValidationEngine
@@ -49,44 +54,57 @@ class IdpService:
 
         # 3. Field & Line-Item Extraction (Invoice focus)
         if doc_type in [DocumentType.INVOICE, DocumentType.PURCHASE_ORDER, DocumentType.RECEIPT]:
-            extraction_res = self.extractor.extract_document(ocr_result)
-            fields = extraction_res["fields"]
-            line_items = extraction_res["line_items"]
+            is_gst = bool(re.search(r"\b(GST|GSTIN|CGST|SGST|IGST|HSN|SAC)\b", ocr_result.full_text, re.I))
+            if is_gst:
+                gst_ext = GstInvoiceExtractor()
+                pil_img = None
+                try:
+                    if content and mime_type.startswith("image/"):
+                        pil_img = Image.open(io.BytesIO(content))
+                except Exception:
+                    pass
+                gst_res = gst_ext.extract_document(ocr_result, image=pil_img)
+                fields = gst_res.fields
+                line_items = gst_res.line_items
+            else:
+                extraction_res = self.extractor.extract_document(ocr_result)
+                fields = extraction_res["fields"]
+                line_items = extraction_res["line_items"]
 
-            # Continuous Learning adjustment: if vendor is recognized, check for learned template priors
-            vendor_name = str(fields.get("vendor").field_value if fields.get("vendor") else "").strip()
-            if vendor_name and ocr_result.pages:
-                page0 = ocr_result.pages[0]
-                for fname in ["invoice_number", "invoice_date", "due_date", "total"]:
-                    f_cur = fields.get(fname)
-                    # If field is missing or low confidence, search learned candidate words
-                    if not f_cur or f_cur.confidence < 0.80 or f_cur.field_value is None:
-                        cand_words = self.learning.get_candidate_words(vendor_name, fname, page0)
-                        if cand_words:
-                            cand_text = " ".join(w.text for w in cand_words).strip()
-                            if fname == "invoice_number":
-                                from apps.api.app.content.idp.normalizers import (
-                                    normalize_invoice_number,
-                                )
-                                nv = normalize_invoice_number(cand_text)
-                                if nv:
-                                    fields[fname].field_value = nv
-                                    fields[fname].confidence = 0.94
-                                    fields[fname].extraction_method = "learned_template_prior"
-                            elif fname in ["invoice_date", "due_date"]:
-                                from apps.api.app.content.idp.normalizers import normalize_date
-                                nv = normalize_date(cand_text)
-                                if nv:
-                                    fields[fname].field_value = nv
-                                    fields[fname].confidence = 0.94
-                                    fields[fname].extraction_method = "learned_template_prior"
-                            elif fname == "total":
-                                from apps.api.app.content.idp.normalizers import normalize_amount
-                                nv = normalize_amount(cand_text)
-                                if nv is not None:
-                                    fields[fname].field_value = nv
-                                    fields[fname].confidence = 0.94
-                                    fields[fname].extraction_method = "learned_template_prior"
+                # Continuous Learning adjustment: if vendor is recognized, check for learned template priors
+                vendor_name = str(fields.get("vendor").field_value if fields.get("vendor") else "").strip()
+                if vendor_name and ocr_result.pages:
+                    page0 = ocr_result.pages[0]
+                    for fname in ["invoice_number", "invoice_date", "due_date", "total"]:
+                        f_cur = fields.get(fname)
+                        # If field is missing or low confidence, search learned candidate words
+                        if not f_cur or f_cur.confidence < 0.80 or f_cur.field_value is None:
+                            cand_words = self.learning.get_candidate_words(vendor_name, fname, page0)
+                            if cand_words:
+                                cand_text = " ".join(w.text for w in cand_words).strip()
+                                if fname == "invoice_number":
+                                    from apps.api.app.content.idp.normalizers import (
+                                        normalize_invoice_number,
+                                    )
+                                    nv = normalize_invoice_number(cand_text)
+                                    if nv:
+                                        fields[fname].field_value = nv
+                                        fields[fname].confidence = 0.94
+                                        fields[fname].extraction_method = "learned_template_prior"
+                                elif fname in ["invoice_date", "due_date"]:
+                                    from apps.api.app.content.idp.normalizers import normalize_date
+                                    nv = normalize_date(cand_text)
+                                    if nv:
+                                        fields[fname].field_value = nv
+                                        fields[fname].confidence = 0.94
+                                        fields[fname].extraction_method = "learned_template_prior"
+                                elif fname == "total":
+                                    from apps.api.app.content.idp.normalizers import normalize_amount
+                                    nv = normalize_amount(cand_text)
+                                    if nv is not None:
+                                        fields[fname].field_value = nv
+                                        fields[fname].confidence = 0.94
+                                        fields[fname].extraction_method = "learned_template_prior"
         else:
             fields = {}
             line_items = []

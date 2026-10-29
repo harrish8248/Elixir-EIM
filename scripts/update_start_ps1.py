@@ -30,3 +30,4 @@ c = c.replace(old_launch, new_launch)
 with open('start.ps1', 'w', encoding='utf-8', newline='\n') as f:
     f.write(c)
 print('Updated start.ps1 successfully')
+
