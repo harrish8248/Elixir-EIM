@@ -360,9 +360,11 @@ def seed_idp_demo_cmd(
                 job_id = data.get("job_id", "—")
                 st = data.get("status", "completed")
                 dtype = data.get("document_type", "invoice")
-                fields = data.get("extracted_fields", {})
-                gstin = fields.get("supplier_gstin", {}).get("value", "—") if isinstance(fields.get("supplier_gstin"), dict) else "—"
-                is_valid_cs = "VALID" if "27AAPFU0939F1ZX" not in gstin else "[bold red]FAIL (Corrupt)[/bold red]"
+                fields = data.get("fields", {})
+                gstin = str(fields.get("supplier_gstin", {}).get("normalized_value", "—") if isinstance(fields.get("supplier_gstin"), dict) else "—")
+                from apps.api.app.content.idp.gstin import validate_gstin
+                is_valid, err = validate_gstin(gstin)
+                is_valid_cs = "[bold green]VALID[/bold green]" if is_valid else f"[bold red]INVALID ({err})[/bold red]"
                 table.add_row(fname, job_id, st, dtype, gstin, is_valid_cs, f"{dur:.2f}s")
             else:
                 table.add_row(fname, "—", f"[red]HTTP {res.status_code}[/red]", "—", "—", "—", f"{dur:.2f}s")

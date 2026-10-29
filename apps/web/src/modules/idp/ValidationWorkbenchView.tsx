@@ -431,7 +431,7 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
               </span>
             </div>
             <p className="text-[11px] text-surface-500">
-              Mean OCR Confidence: {job?.mean_confidence ?? 96.4}% • Base-36 Checksum Verified • PEP Policy PDP Active
+              Mean OCR Confidence: {job?.mean_confidence ?? 96.4}% • {supplierGstinCheck.isValid && buyerGstinCheck.isValid ? "Base-36 Checksum Verified" : "Checksum Review Required"} • PEP Policy PDP Active
             </p>
           </div>
         </div>
@@ -781,9 +781,6 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
                     <span className="px-1.5 py-0.5 bg-surface-200 dark:bg-surface-800 text-[10px] rounded text-surface-600">
                       {supplierGstinCheck.state}
                     </span>
-                    <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-mono rounded">
-                      IoU: 0.99 (≥0.7)
-                    </span>
                   </div>
                 </div>
                 <input
@@ -813,9 +810,6 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
                     )}
                     <span className="px-1.5 py-0.5 bg-surface-200 dark:bg-surface-800 text-[10px] rounded text-surface-600">
                       {buyerGstinCheck.state}
-                    </span>
-                    <span className="px-1.5 py-0.5 bg-emerald-100 text-emerald-800 text-[10px] font-mono rounded">
-                      IoU: 0.99 (≥0.7)
                     </span>
                   </div>
                 </div>

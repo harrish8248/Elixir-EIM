@@ -129,9 +129,8 @@ def render_invoice_image(
         ).decode("utf-8").rstrip("=") + ".offline_signature"
 
         qr = qrcode.QRCode(
-            version=5,
             error_correction=qrcode.constants.ERROR_CORRECT_M,
-            box_size=3,
+            box_size=4,
             border=4,
         )
         qr.add_data(encoded_jwt)

@@ -525,7 +525,8 @@ class PyMuPdfEngine(OcrEngine):
 class IndraEngine(OcrEngine):
     """
     Indra OCR Engine (Open-Source Neural Layout Parser & Transformer).
-    Superior for multilingual, Indic/Devanagari script, and complex table layouts.
+    Fast ONNX transformer OCR supporting Latin, Cyrillic, Greek, Devanagari, Bengali, and Chinese for clean print.
+    Note: Does NOT support Tamil, Telugu, Kannada, or Malayalam.
     Gracefully falls back to Tesseract on error or timeout.
     """
 

@@ -59,6 +59,22 @@ playwright/.cache/
 *.key
 *.cert
 
+# Caches & Build Artifacts
+dist/
+.mypy_cache/
+.ruff_cache/
+.cache/
+
+# Model Weights & Offline Engine Caches
+models/weights/
+*.onnx
+*.pth
+*.pt
+*.bin
+tessdata/*.traineddata
+!tessdata/eng.traineddata
+!tessdata/osd.traineddata
+
 # Databases & Local Storage
 *.sqlite
 *.sqlite3

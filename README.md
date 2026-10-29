@@ -70,7 +70,7 @@ flowchart TD
 
 ### 1. 📑 Capture & Intelligent Document Processing (IDP)
 *An OpenText VIM-style document capture and mathematical reconciliation engine.*
-- **Adaptive Multi-Engine OCR**: Orchestrates **Tesseract 5.4**, **Indra OCR** (optimized for Indian vernacular scripts: Hindi, Tamil, Telugu, Kannada, Malayalam, Bengali, Marathi, Gujarati, Punjabi), and PyMuPDF.
+- **Adaptive Multi-Engine OCR**: Orchestrates **Tesseract 5.4** (with multi-language packs), **Indra OCR** (fast on clean print; supports Latin, Cyrillic, Greek, Devanagari, Bengali and Chinese; does not support Tamil, Telugu, Kannada, or Malayalam), and **PyMuPDF**.
 - **Indian GST Invoice Extraction**: Automated extraction of Supplier/Buyer GSTINs, Taxable Value, CGST, SGST, IGST, HSN line items, and bank details.
 - **Mod-36 Checksum Repair**: Position-aware OCR error correction that repairs confused characters (`O` vs `0`, `I` vs `1`, `S` vs `5`, `B` vs `8`, `Z` vs `2`) to match official GSTIN checksum algorithms.
 - **Rule 46 e-Invoice QR Validation**: Offline decoding and cross-validation of signed e-invoice JWT QR codes using `zxingcpp`.
@@ -231,3 +231,4 @@ Elixir-EIM/
 ## 📄 License & Compliance
 
 Distributed under the Apache 2.0 License. Designed to satisfy compliance criteria for **SOC 2 Type II**, **ISO 27001**, **HIPAA**, and **GDPR** records disposition requirements.
+
