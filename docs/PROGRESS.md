@@ -179,3 +179,60 @@ docker ps --format "table {{.Names}}\t{{.Status}}"
    - Safe EICAR malware test string confirmed blocked with HTTP 400.
    - Cleaned fake badges from UI; updated `start.ps1` with `-Demo` and `-ResetDemo` flags.
    - All tests passing (10/10 OPA, 9/9 pytest, 2/2 import-linter, frontend TypeScript build clean).
+
+---
+
+## Step 1: Correctness Checks & Repo Hygiene (COMPLETED)
+
+**Date:** October 29, 2026
+
+1. **GSTIN Checksum Reconciliation:**
+   - Ran app validator and independent Base-36 checksum script. Identified that historical seed strings (`27AAACT2718E1ZQ`, etc.) failed check-character validation.
+   - Updated generator and regenerated demo invoices `demo_gst_01_clean.png` through `demo_gst_06_no_qr.png` with 100% valid checksums.
+   - Preserved `demo_gst_07_invalid_gstin.png` (`27AAPFU0939F1ZX`) as a deliberate checksum failure.
+   - UI badges dynamically bound to live `supplierGstinCheck` / `buyerGstinCheck`.
+2. **Secrets & Repo Hygiene:**
+   - Audited GitHub repo `https://github.com/harrish8248/Elixir-EIM` (Public).
+   - Scanned all git commits with `scan_git_secrets.py`: 0 sensitive keys/tokens found.
+   - Updated `.gitignore` to strictly exclude `.env`, `.venv`, `.cache`, `storybook-static`, `dist`, ONNX/PyTorch model weights, and non-essential tessdata files.
+3. **Indra OCR Script Scope Correction:**
+   - Updated all documentation (`README.md`, `docs/THIRD_PARTY_LICENSES.md`, `docs/DECISIONS.md`, `docs/OCR_DEMO.md`, `engine.py`) to accurately report Latin, Cyrillic, Greek, Devanagari, Bengali, and Chinese support on clean print, clearly noting no support for Tamil, Telugu, Kannada, or Malayalam.
+
+---
+
+## Step 2: Disk Footprint Audit & Safe Optimization (COMPLETED)
+
+**Date:** October 29, 2026
+
+1. **Disk Footprint Reduction:**
+   - Measured project folder, virtualenv, and docker footprint; wrote `docs/DISK_FOOTPRINT.md`.
+   - Safely reclaimed **>9.5 GB** (pip cache purge: 2.24 GB, Docker dangling images & build cache prune: 4.81 GB, Gotenberg container stopped: 2.47 GB, temporary test/build caches: ~52 MB).
+2. **Deployment & Runtime Optimization:**
+   - Configured Gotenberg under `preview` profile in `deployment/docker-compose.yml`.
+   - Added `-Lite` flag to `start.ps1` to run only the 6 core services (PostgreSQL, Redis, MinIO, Keycloak, OPA, ClamAV).
+   - Made benchmark data directory configurable via `ELIXIR_DATA_DIR`.
+   - Created `docs/MOVE_TO_D_DRIVE.md` runbook for WSL VHDX compaction and NTFS junction setup.
+
+---
+
+## Step 3: Hardware-Adaptive Resource Profiling & Adaptive OCR (COMPLETED)
+
+**Date:** October 29, 2026
+
+1. **Hardware Profiler & Adaptive Tiering:**
+   - Implemented `apps/api/app/content/idp/hardware.py`:
+     - Tiers: `LOW` (<=4 cores or <=6 GB RAM), `MEDIUM` (6-8 cores, 8-16 GB RAM), `HIGH` (>=12 cores, >=32 GB RAM, >=8 GB VRAM GPU).
+     - Power Modes: `AUTO` (battery sensing), `ECO` (forced LOW), `BALANCED`, `PERFORMANCE`, `FORCE_CPU`.
+     - Derived thread pools (2, 4, 8 OMP threads), worker pools (1, 2, 4), and rendering resolutions (200 DPI vs 300 DPI).
+2. **Memory Guard & Safety Margins:**
+   - Enforced pre-load RAM checks with a 500 MB safety margin across all 7 engines. Heavy neural models fall back to Tesseract/PyMuPDF if memory is constrained.
+   - Enforced CPU-only execution for Indra OCR (`CPUExecutionProvider`).
+3. **CLI & API & UI:**
+   - CLI commands `elixir-admin hardware detect` and `elixir-admin hardware calibrate` implemented.
+   - API endpoints `GET /api/v1/idp/hardware` and `GET /api/v1/idp/engines/status` extended with `resource_profile` and live host hardware telemetry.
+   - Frontend `OcrEnginesControlCenterView.tsx` updated with real-time "System Resources" card (CPU load, RAM utilization, GPU/VRAM, Tier, Power mode) and per-engine resource footprint boxes.
+4. **Verification & Tests:**
+   - Created `apps/api/tests/test_hardware_adaptive.py`: all 8 test scenarios passed (100%).
+   - Dev-split emulation results documented in `docs/HARDWARE_ADAPTATION.md`:
+     - Eco: p50 2334.4 ms, p95 2467.0 ms, GSTIN Accuracy 100.0%.
+     - Performance: p50 2355.7 ms, p95 2422.1 ms, GSTIN Accuracy 100.0%.

@@ -12,6 +12,7 @@ Enforces PEP/PDP on every route and tenant RLS.
 import json
 import time
 import uuid
+from dataclasses import asdict
 from pathlib import Path
 from typing import Any
 
@@ -30,6 +31,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from apps.api.app.audit.service import record_audit_event
 from apps.api.app.content.idp.engine import (
     get_ocr_engine,
+)
+from apps.api.app.content.idp.hardware import (
+    ENGINE_RESOURCE_PROFILES,
+    HardwareProfiler,
 )
 from apps.api.app.content.idp.evaluation import EvaluationHarness
 from apps.api.app.content.idp.models import ValidateJobRequest
@@ -785,16 +790,29 @@ async def get_engines_status(
             "scanned_weight": scan_wt,
             "custom_settings": ucfg.get("custom_settings", {}),
             "benchmark": bench,
+            "resource_profile": asdict(ENGINE_RESOURCE_PROFILES[engine_id]) if engine_id in ENGINE_RESOURCE_PROFILES else None,
         })
 
     engines_list.sort(key=lambda x: x["priority"])
+    hw_profile = asdict(HardwareProfiler().probe())
     return {
         "tenant_id": str(session.tenant_id),
         "total_engines": len(engines_list),
         "installed_count": sum(1 for e in engines_list if e["is_installed"]),
         "active_count": sum(1 for e in engines_list if e["is_enabled"]),
         "engines": engines_list,
+        "hardware": hw_profile,
     }
+
+
+@idp_router.get("/hardware", summary="Probe host hardware and adaptive resource policy")
+async def get_hardware_status(
+    session: SessionData = Depends(get_current_session),
+    _authz=Depends(require_permission("content:read", "document")),
+) -> dict[str, Any]:
+    """Probe CPU, RAM, GPU, battery, and adaptive workers/threads/DPI tier."""
+    profiler = HardwareProfiler()
+    return asdict(profiler.probe())
 
 
 @idp_router.post("/engines/{engine_id}/toggle", summary="Toggle OCR engine on/off")

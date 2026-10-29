@@ -29,6 +29,17 @@ interface BenchmarkStats {
   run_date?: string | null;
 }
 
+interface EngineResourceProfileData {
+  engine_id: string;
+  device_support: string;
+  min_ram_mb: number;
+  typical_ram_mb: number;
+  min_vram_mb: number;
+  disk_size_mb: number;
+  model_load_time_sec?: number;
+  default_threads?: number;
+}
+
 interface OcrEngineCardData {
   id: string;
   name: string;
@@ -46,6 +57,7 @@ interface OcrEngineCardData {
   scanned_weight: number;
   custom_settings: Record<string, any>;
   benchmark: BenchmarkStats | null;
+  resource_profile?: EngineResourceProfileData | null;
 }
 
 interface RoutingPolicy {
@@ -63,6 +75,7 @@ export const OcrEnginesControlCenterView: React.FC = () => {
   ) ?? true;
 
   const [engines, setEngines] = useState<OcrEngineCardData[]>([]);
+  const [hardware, setHardware] = useState<any | null>(null);
   const [policy, setPolicy] = useState<RoutingPolicy | null>(null);
   const [policyHistory, setPolicyHistory] = useState<any[]>([]);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -93,6 +106,9 @@ export const OcrEnginesControlCenterView: React.FC = () => {
       const res = await apiClient.get<any>("/api/v1/idp/engines/status");
       if (res && res.engines) {
         setEngines(res.engines);
+      }
+      if (res && res.hardware) {
+        setHardware(res.hardware);
       }
       const polRes = await apiClient.get<any>("/api/v1/idp/engines/routing-policy");
       if (polRes) {
@@ -345,6 +361,126 @@ export const OcrEnginesControlCenterView: React.FC = () => {
         </div>
       )}
 
+      {/* System Resources & Adaptive Hardware Profiler Card */}
+      {hardware && (
+        <div className="bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-xl p-5 shadow-sm space-y-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-3 pb-3 border-b border-surface-100 dark:border-surface-800">
+            <div className="flex items-center gap-3">
+              <div className="p-2 bg-indigo-50 dark:bg-indigo-950/40 border border-indigo-200 dark:border-indigo-800 rounded-lg text-indigo-600">
+                <Cpu className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-sm font-bold text-surface-900 dark:text-surface-100">
+                    Host Hardware & Adaptive Resource Profile
+                  </h2>
+                  <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-brand-100 dark:bg-brand-900/40 text-brand-700 dark:text-brand-300">
+                    Tier: {hardware.tier}
+                  </span>
+                  <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300">
+                    Mode: {hardware.effective_mode}
+                  </span>
+                  {hardware.on_battery && (
+                    <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300">
+                      On Battery (Eco)
+                    </span>
+                  )}
+                </div>
+                <p className="text-xs text-surface-500 dark:text-surface-400">
+                  {hardware.os_name} • {hardware.cpu_model} ({hardware.physical_cores}C / {hardware.logical_cores}T)
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-4 text-xs font-mono">
+              <div className="text-right">
+                <span className="text-[10px] text-surface-400 block uppercase">Allocated Workers / Threads</span>
+                <span className="font-semibold text-surface-800 dark:text-surface-200">
+                  {hardware.chosen_workers}w / {hardware.chosen_threads} OMP
+                </span>
+              </div>
+              <div className="text-right">
+                <span className="text-[10px] text-surface-400 block uppercase">Adaptive Render DPI</span>
+                <span className="font-semibold text-surface-800 dark:text-surface-200">
+                  {hardware.render_dpi} DPI
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+            {/* CPU & Load */}
+            <div className="p-3 bg-surface-50 dark:bg-surface-800/50 rounded-lg space-y-1.5">
+              <div className="flex justify-between items-center text-surface-600 dark:text-surface-400">
+                <span className="font-medium">CPU Utilization</span>
+                <span className="font-bold font-mono">{hardware.cpu_load_percent}%</span>
+              </div>
+              <div className="w-full bg-surface-200 dark:bg-surface-700 h-2 rounded-full overflow-hidden">
+                <div
+                  className="bg-brand-500 h-2 rounded-full transition-all"
+                  style={{ width: `${Math.min(100, hardware.cpu_load_percent || 0)}%` }}
+                />
+              </div>
+              <p className="text-[11px] text-surface-400">
+                {hardware.logical_cores} Cores Available
+              </p>
+            </div>
+
+            {/* RAM Utilization */}
+            <div className="p-3 bg-surface-50 dark:bg-surface-800/50 rounded-lg space-y-1.5">
+              <div className="flex justify-between items-center text-surface-600 dark:text-surface-400">
+                <span className="font-medium">System RAM</span>
+                <span className="font-bold font-mono">
+                  {(hardware.total_ram_gb - hardware.available_ram_gb).toFixed(1)} / {hardware.total_ram_gb} GB
+                </span>
+              </div>
+              <div className="w-full bg-surface-200 dark:bg-surface-700 h-2 rounded-full overflow-hidden">
+                <div
+                  className="bg-indigo-500 h-2 rounded-full transition-all"
+                  style={{
+                    width: `${Math.min(
+                      100,
+                      Math.round(((hardware.total_ram_gb - hardware.available_ram_gb) / (hardware.total_ram_gb || 1)) * 100)
+                    )}%`,
+                  }}
+                />
+              </div>
+              <p className="text-[11px] text-surface-400">
+                {hardware.available_ram_gb} GB Free for OCR models
+              </p>
+            </div>
+
+            {/* GPU / VRAM */}
+            <div className="p-3 bg-surface-50 dark:bg-surface-800/50 rounded-lg space-y-1.5">
+              <div className="flex justify-between items-center text-surface-600 dark:text-surface-400">
+                <span className="font-medium">GPU Acceleration</span>
+                <span className="font-bold font-mono">
+                  {hardware.has_gpu ? `${hardware.vram_free_gb} GB free VRAM` : "CPU Only"}
+                </span>
+              </div>
+              <div className="w-full bg-surface-200 dark:bg-surface-700 h-2 rounded-full overflow-hidden">
+                <div
+                  className={clsx(
+                    "h-2 rounded-full transition-all",
+                    hardware.has_gpu ? "bg-emerald-500" : "bg-surface-400"
+                  )}
+                  style={{
+                    width: hardware.has_gpu && hardware.vram_total_gb > 0
+                      ? `${Math.min(
+                          100,
+                          Math.round(((hardware.vram_total_gb - hardware.vram_free_gb) / hardware.vram_total_gb) * 100)
+                        )}%`
+                      : "0%",
+                  }}
+                />
+              </div>
+              <p className="text-[11px] text-surface-400 truncate">
+                {hardware.gpu_name || "Integrated Graphics / CPU fallback"}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Engine Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
         {engines.map((eng) => {
@@ -420,7 +556,7 @@ export const OcrEnginesControlCenterView: React.FC = () => {
                 </p>
 
                 {/* Capability Badges */}
-                <div className="flex flex-wrap gap-1 mb-4">
+                <div className="flex flex-wrap gap-1 mb-3">
                   {eng.capabilities.map((cap, i) => (
                     <span
                       key={i}
@@ -430,6 +566,32 @@ export const OcrEnginesControlCenterView: React.FC = () => {
                     </span>
                   ))}
                 </div>
+
+                {/* Engine Resource Profile Needs */}
+                {eng.resource_profile && (
+                  <div className="mb-3 p-2 bg-surface-50 dark:bg-surface-800/40 rounded border border-surface-200/60 dark:border-surface-800/60 text-[10px] space-y-1">
+                    <div className="flex items-center justify-between text-surface-500">
+                      <span>Device Support:</span>
+                      <span className="font-mono font-medium text-surface-800 dark:text-surface-200">
+                        {eng.resource_profile.device_support}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between text-surface-500">
+                      <span>RAM Footprint:</span>
+                      <span className="font-mono font-medium text-surface-800 dark:text-surface-200">
+                        ~{eng.resource_profile.typical_ram_mb} MB (Min: {eng.resource_profile.min_ram_mb} MB)
+                      </span>
+                    </div>
+                    {eng.resource_profile.min_vram_mb > 0 && (
+                      <div className="flex items-center justify-between text-surface-500">
+                        <span>Min VRAM:</span>
+                        <span className="font-mono font-medium text-purple-600 dark:text-purple-400">
+                          {eng.resource_profile.min_vram_mb} MB
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )}
 
                 {/* Weights Sliders */}
                 <div className="space-y-2 p-2.5 bg-surface-50 dark:bg-surface-800/40 rounded-lg border border-surface-100 dark:border-surface-800 mb-4">

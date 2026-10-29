@@ -540,7 +540,11 @@ class IndraEngine(OcrEngine):
         if self._converter is None and self._init_error is None:
             try:
                 import indra_ocr
-                self._converter = indra_ocr.load()
+                # Strictly CPU-only by architectural contract: never load on GPU
+                try:
+                    self._converter = indra_ocr.load(providers=["CPUExecutionProvider"])
+                except TypeError:
+                    self._converter = indra_ocr.load()
             except Exception as e:
                 self._init_error = str(e)
                 logger.warning(f"Indra OCR unavailable ({e}), using Tesseract fallback")
