@@ -10,11 +10,10 @@ Tests:
 
 import json
 from pathlib import Path
-import pytest
 
 from apps.api.app.content.idp.classifier import DocumentClassifier
-from apps.api.app.content.idp.learning import LearnedFieldPrior, VendorTemplateStore
-from apps.api.app.content.idp.models import BoundingBox, DocumentType, ExtractedField, LineItem
+from apps.api.app.content.idp.learning import VendorTemplateStore
+from apps.api.app.content.idp.models import BoundingBox, DocumentType, ExtractedField
 from apps.api.app.content.idp.normalizers import (
     normalize_amount,
     normalize_currency,

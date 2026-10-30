@@ -15,7 +15,10 @@
 
 | Module | What It Does | Key Highlights |
 |---|---|---|
-| **Content Repository** | Secure multi-tenant document explorer | Workspaces, folders, metadata tagging, ClamAV antivirus stream inspection |
+| **Content Repository** | Secure multi-tenant document explorer | Workspaces, folders, metadata tagging, universal file intake, and quarantine management |
+| **Universal File Intake** | Safe ingestion across 10+ formats | Binary magic bytes detection, archive bomb inspection, sandboxed extraction (PDF, DOCX, XLSX, ODT, HTML, RTF, EML) |
+| **Upload Guardrails** | Enforced security & anti-malware pipeline | Fail-closed ClamAV streaming, DB-persisted tenant policies, zero-uninspected paths, hash-chained audit logging |
+| **Sensitivity Classification** | Local explainable data governance | Algorithmic PII/Secrets/Indian ID detection (Verhoeff Aadhaar, Luhn card, Mod-36 GSTIN), auto clearance mapping |
 | **Capture & IDP** | Intelligent Document Processing & VIM | Local multi-engine OCR (Tesseract, Indra, PyMuPDF), Base-36 GSTIN checksum validation, math reconciliation |
 | **Human Workbench** | Side-by-side verification & correction | Bounding box highlighting, field corrections, auto-approval vs human-in-the-loop review |
 | **OCR Engines Hub** | Adaptive multi-engine orchestration | Hardware-adaptive resource allocation (CPU/RAM/GPU), live accuracy metrics, automated failover |

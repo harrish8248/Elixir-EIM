@@ -42,8 +42,8 @@ from apps.api.app.content.idp.service import IdpService
 from apps.api.app.identity.router import get_current_session
 from apps.api.app.identity.session import SessionData, session_manager
 from apps.api.app.pep.policy import require_permission
+from apps.api.app.platform.demo_store import DEMO_CAPTURE_JOBS, DEMO_IDP_STATS, DEMO_JOB_DETAILS
 from apps.api.app.platform.logging import logger
-from apps.api.app.platform.demo_store import DEMO_CAPTURE_JOBS, DEMO_JOB_DETAILS, DEMO_IDP_STATS
 from apps.api.app.tenancy.database import get_db_session
 
 idp_router = APIRouter(prefix="/api/v1/idp", tags=["Capture & IDP"])
@@ -1087,7 +1087,7 @@ async def test_policy_decision(
             estimated_cost = "$0.00"
             estimated_p50 = "0.3 s"
             confidence_est = 99.5
-        elif sender.endswith("@ups.com") or sender.endswith("@fedex.com"):
+        elif sender.endswith(("@ups.com", "@fedex.com")):
             selected = "pymupdf"
             matched_reason = f"Pin matched: sender '{sender}' -> Native digital text stream pinned for logistics invoice"
             fallback_eng = "tesseract"

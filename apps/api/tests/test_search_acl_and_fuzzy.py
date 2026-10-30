@@ -1,6 +1,7 @@
 """Unit and Integration Tests for PostgreSQL FTS, pg_trgm fuzzy matching, and Department ACL Trimming."""
 
 import uuid
+
 import pytest
 from sqlalchemy import text
 

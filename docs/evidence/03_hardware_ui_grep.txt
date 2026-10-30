@@ -1,0 +1,130 @@
+apps/web/src\App.tsx:9 [Load] const { isAuthenticated, isLoading } = useAuth();
+apps/web/src\App.tsx:11 [Load] if (isLoading) {
+apps/web/src\api\client.ts:160 [Ready] status: "uploaded" | "scanning" | "processing" | "ready" | "blocked" | "failed" | string;
+apps/web/src\components\auth\LoginView.tsx:9 [Load] const { login, isLoading } = useAuth();
+apps/web/src\components\auth\LoginView.tsx:84 [Load] isLoading={isLoading}
+apps/web/src\components\auth\SessionExpiredModal.tsx:11 [Load] const [isLoading, setIsLoading] = useState(false);
+apps/web/src\components\auth\SessionExpiredModal.tsx:18 [Load] setIsLoading(true);
+apps/web/src\components\auth\SessionExpiredModal.tsx:28 [Load] setIsLoading(false);
+apps/web/src\components\auth\SessionExpiredModal.tsx:68 [Load] isLoading={isLoading}
+apps/web/src\components\auth\StepUpModal.tsx:24 [Load] const [isLoading, setIsLoading] = useState(false);
+apps/web/src\components\auth\StepUpModal.tsx:29 [Load] setIsLoading(true);
+apps/web/src\components\auth\StepUpModal.tsx:37 [Load] setIsLoading(false);
+apps/web/src\components\auth\StepUpModal.tsx:83 [Load] isLoading={isLoading}
+apps/web/src\components\shell\PageHeader.tsx:12 [badge] badges?: React.ReactNode;
+apps/web/src\components\shell\PageHeader.tsx:19 [badge] badges,
+apps/web/src\components\shell\PageHeader.tsx:47 [badge] {badges && <div className="flex items-center gap-2">{badges}</div>}
+apps/web/src\components\shell\Sidebar.tsx:22 [badge] badge?: string | number;
+apps/web/src\components\shell\Sidebar.tsx:23 [badge] badgeVariant?: "neutral" | "danger" | "brand";
+apps/web/src\components\shell\Sidebar.tsx:129 [badge] {item.badge && (
+apps/web/src\components\shell\Sidebar.tsx:133 [badge] item.badgeVariant === "danger"
+apps/web/src\components\shell\Sidebar.tsx:135 [badge] : item.badgeVariant === "brand"
+apps/web/src\components\shell\Sidebar.tsx:140 [badge] {item.badge}
+apps/web/src\components\shell\TopBar.tsx:95 [badge] {/* User Badge & Logout */}
+apps/web/src\config\AuthContext.tsx:6 [Load] isLoading: boolean;
+apps/web/src\config\AuthContext.tsx:21 [Load] const [isLoading, setIsLoading] = useState(true);
+apps/web/src\config\AuthContext.tsx:33 [Load] setIsLoading(false);
+apps/web/src\config\AuthContext.tsx:59 [Load] setIsLoading(true);
+apps/web/src\config\AuthContext.tsx:66 [Load] setIsLoading(false);
+apps/web/src\config\AuthContext.tsx:71 [Load] setIsLoading(true);
+apps/web/src\config\AuthContext.tsx:76 [Load] setIsLoading(false);
+apps/web/src\config\AuthContext.tsx:91 [Load] isLoading,
+apps/web/src\design-system\components\Button.stories.tsx:13 [Load] export const Loading = () => <Button isLoading>Saving Changes...</Button>;
+apps/web/src\design-system\components\Button.test.tsx:14 [Load] render(<Button isLoading>Processing</Button>);
+apps/web/src\design-system\components\Button.tsx:9 [Load] isLoading?: boolean;
+apps/web/src\design-system\components\Button.tsx:13 [Load] ({ className, variant = "primary", size = "md", icon, isLoading, children, disabled, ...props }, ref) => {
+apps/web/src\design-system\components\Button.tsx:34 [Load] disabled={disabled || isLoading}
+apps/web/src\design-system\components\Button.tsx:38 [Load] {isLoading ? (
+apps/web/src\design-system\components\ConfirmDialog.tsx:14 [Load] isLoading?: boolean;
+apps/web/src\design-system\components\ConfirmDialog.tsx:27 [Load] isLoading = false,
+apps/web/src\design-system\components\ConfirmDialog.tsx:44 [Load] <Button variant="secondary" onClick={handleCancel} disabled={isLoading}>
+apps/web/src\design-system\components\ConfirmDialog.tsx:50 [Load] isLoading={isLoading}
+apps/web/src\design-system\components\DataTable.tsx:20 [Load] isLoading?: boolean;
+apps/web/src\design-system\components\DataTable.tsx:31 [Load] isLoading,
+apps/web/src\design-system\components\DataTable.tsx:58 [Load] {isLoading ? (
+apps/web/src\design-system\components\ErrorState.tsx:18 [Load] message = "Failed to load enterprise data from the API service.",
+apps/web/src\design-system\components\Tabs.stories.tsx:26 [badge] badge: "Active",
+apps/web/src\design-system\components\Tabs.tsx:11 [badge] badge?: string | number;
+apps/web/src\design-system\components\Tabs.tsx:51 [badge] {tab.badge !== undefined && (
+apps/web/src\design-system\components\Tabs.tsx:53 [badge] {tab.badge}
+apps/web/src\modules\admin\AdminView.tsx:31 [Load] const [isLoading, setIsLoading] = useState(false);
+apps/web/src\modules\admin\AdminView.tsx:41 [Load] setIsLoading(true);
+apps/web/src\modules\admin\AdminView.tsx:51 [Load] const msg = err instanceof Error ? err.message : "Failed to load admin telemetry";
+apps/web/src\modules\admin\AdminView.tsx:54 [Load] setIsLoading(false);
+apps/web/src\modules\admin\AdminView.tsx:182 [badge] badges={<StatusPill label="RBAC & SCIM 2.0 ENFORCED" variant="info" />}
+apps/web/src\modules\admin\AdminView.tsx:187 [Load] icon={<RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />}
+apps/web/src\modules\admin\AdminView.tsx:298 [Load] isLoading={isLoading}
+apps/web/src\modules\content\ContentExplorerView.tsx:47 [Load] const [isLoading, setIsLoading] = useState(false);
+apps/web/src\modules\content\ContentExplorerView.tsx:68 [Load] // 1. Load Workspaces on mount
+apps/web/src\modules\content\ContentExplorerView.tsx:71 [Load] setIsLoading(true);
+apps/web/src\modules\content\ContentExplorerView.tsx:78 [Load] const msg = err instanceof Error ? err.message : "Failed to load workspaces";
+apps/web/src\modules\content\ContentExplorerView.tsx:81 [Load] setIsLoading(false);
+apps/web/src\modules\content\ContentExplorerView.tsx:89 [Load] // 2. Load Folders & Documents when Workspace/Folder changes
+apps/web/src\modules\content\ContentExplorerView.tsx:93 [Load] setIsLoading(true);
+apps/web/src\modules\content\ContentExplorerView.tsx:105 [Load] const msg = err instanceof Error ? err.message : "Failed to load content";
+apps/web/src\modules\content\ContentExplorerView.tsx:108 [Load] setIsLoading(false);
+apps/web/src\modules\content\ContentExplorerView.tsx:116 [Load] // 3. Load Document Details (versions & comments) when selectedDoc changes
+apps/web/src\modules\content\ContentExplorerView.tsx:202 [Load] setIsLoading(true);
+apps/web/src\modules\content\ContentExplorerView.tsx:225 [Load] setIsLoading(false);
+apps/web/src\modules\content\ContentExplorerView.tsx:293 [GB] const sizes = ["B", "KB", "MB", "GB"];
+apps/web/src\modules\content\ContentExplorerView.tsx:488 [badge] badges={
+apps/web/src\modules\content\ContentExplorerView.tsx:507 [Load] icon={<RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />}
+apps/web/src\modules\content\ContentExplorerView.tsx:548 [Load] isLoading={isLoading && documents.length === 0}
+apps/web/src\modules\content\ContentExplorerView.tsx:670 [Ready] ocrData.status === "ready"
+apps/web/src\modules\content\ContentExplorerView.tsx:926 [Load] <Button type="submit" variant="primary" size="sm" disabled={!uploadFile || isLoading}>
+apps/web/src\modules\content\ContentExplorerView.tsx:927 [Load] {isLoading ? "Scanning & Uploading..." : "Upload Document"}
+apps/web/src\modules\governance\TrustDashboardView.tsx:29 [Load] const [isLoading, setIsLoading] = useState(false);
+apps/web/src\modules\governance\TrustDashboardView.tsx:61 [Load] setIsLoading(true);
+apps/web/src\modules\governance\TrustDashboardView.tsx:66 [Load] console.error("Failed to load audit events:", err);
+apps/web/src\modules\governance\TrustDashboardView.tsx:68 [Load] setIsLoading(false);
+apps/web/src\modules\governance\TrustDashboardView.tsx:150 [badge] badges={<StatusPill label="POLICY ENGINE & AUDIT CHAIN LIVE" variant="success" />}
+apps/web/src\modules\governance\TrustDashboardView.tsx:156 [Load] icon={<RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />}
+apps/web/src\modules\governance\TrustDashboardView.tsx:269 [Ready] <StatusPill label={clamavEnforce ? "CLAMAV READY" : "CLAMAV OFF"} variant={clamavEnforce ? "success" : "warning"} />
+apps/web/src\modules\governance\TrustDashboardView.tsx:439 [Load] isLoading={isLoading}
+apps/web/src\modules\idp\CaptureDashboardView.tsx:51 [Load] const [loading, setLoading] = useState(true);
+apps/web/src\modules\idp\CaptureDashboardView.tsx:59 [Load] setLoading(true);
+apps/web/src\modules\idp\CaptureDashboardView.tsx:60 [Load] // Load real database stats
+apps/web/src\modules\idp\CaptureDashboardView.tsx:68 [Load] // Load real database jobs
+apps/web/src\modules\idp\CaptureDashboardView.tsx:76 [Load] setLoading(false);
+apps/web/src\modules\idp\CaptureDashboardView.tsx:170 [STP] <span>Straight-Through (STP)</span>
+apps/web/src\modules\idp\OcrEnginesControlCenterView.tsx:313 [Load] setErrorMessage(err.message || "Failed to load OCR engine configurations");
+apps/web/src\modules\idp\OcrEnginesControlCenterView.tsx:553 [Load] <span className="text-[10px] text-indigo-300 block mb-0.5">CPU CORES / LOAD</span>
+apps/web/src\modules\idp\OcrEnginesControlCenterView.tsx:558 [Load] {hardware.cpu_load_percent}% Active Load
+apps/web/src\modules\idp\OcrEnginesControlCenterView.tsx:563 [Available] <span className="text-[10px] text-indigo-300 block mb-0.5">AVAILABLE RAM</span>
+apps/web/src\modules\idp\OcrEnginesControlCenterView.tsx:565 [GB] {hardware.available_ram_gb} GB
+apps/web/src\modules\idp\OcrEnginesControlCenterView.tsx:568 [GB] of {hardware.total_ram_gb} GB Total
+apps/web/src\modules\idp\OcrEnginesControlCenterView.tsx:575 [RTX] {hardware.has_gpu ? "RTX 3050 GPU" : "CPU ONNX"}
+apps/web/src\modules\idp\OcrEnginesControlCenterView.tsx:578 [GB] {hardware.vram_free_gb ? `${hardware.vram_free_gb} GB VRAM free` : "ONNX DirectML"}
+apps/web/src\modules\idp\OcrEnginesControlCenterView.tsx:654 [GB] Measured on this machine ({hardware?.physical_cores || 8}-core host, {hardware?.available_ram_gb || 2.7} GB free RAM, {hardware?.on_battery ? "Battery Saver" : "AC Full Speed"}). Toggle any engine on or off instantly.
+apps/web/src\modules\idp\OcrEnginesControlCenterView.tsx:726 [badge] {/* Execution Device Badge */}
+apps/web/src\modules\idp\ValidationWorkbenchView.tsx:462 [badge] badgeText: string = "Valid"
+apps/web/src\modules\idp\ValidationWorkbenchView.tsx:489 [badge] {isValid ? badgeText : "Review"}
+apps/web/src\modules\records\RecordsPlanView.tsx:34 [Load] const [isLoading, setIsLoading] = useState(false);
+apps/web/src\modules\records\RecordsPlanView.tsx:64 [Load] setIsLoading(true);
+apps/web/src\modules\records\RecordsPlanView.tsx:76 [Load] const msg = err instanceof Error ? err.message : "Failed to load records data";
+apps/web/src\modules\records\RecordsPlanView.tsx:79 [Load] setIsLoading(false);
+apps/web/src\modules\records\RecordsPlanView.tsx:289 [badge] badge: safeHolds.filter((h) => h.status === "ACTIVE").length,
+apps/web/src\modules\records\RecordsPlanView.tsx:312 [Load] isLoading={isLoading}
+apps/web/src\modules\records\RecordsPlanView.tsx:322 [badge] badge: safeSchedules.length,
+apps/web/src\modules\records\RecordsPlanView.tsx:344 [Load] isLoading={isLoading}
+apps/web/src\modules\records\RecordsPlanView.tsx:354 [badge] badge: safeDisposition.length,
+apps/web/src\modules\records\RecordsPlanView.tsx:405 [badge] badges={<StatusPill label="DoD 5015.02 / ISO 15489 COMPLIANT" variant="record" />}
+apps/web/src\modules\records\RecordsPlanView.tsx:410 [Load] icon={<RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />}
+apps/web/src\modules\search\SearchView.tsx:36 [Load] const [isLoading, setIsLoading] = useState(false);
+apps/web/src\modules\search\SearchView.tsx:62 [Load] setIsLoading(true);
+apps/web/src\modules\search\SearchView.tsx:76 [Load] setIsLoading(false);
+apps/web/src\modules\search\SearchView.tsx:82 [Load] // Initial browse load and popular queries from database
+apps/web/src\modules\search\SearchView.tsx:109 [GB] const sizes = ["B", "KB", "MB", "GB"];
+apps/web/src\modules\search\SearchView.tsx:123 [badge] badges={<StatusPill label="POSTGRES FTS + ACL TRIMMING ACTIVE" variant="success" />}
+apps/web/src\modules\search\SearchView.tsx:165 [Load] <Button type="submit" variant="primary" size="md" disabled={isLoading}>
+apps/web/src\modules\search\SearchView.tsx:166 [Load] {isLoading ? "Searching..." : "Search"}
+apps/web/src\modules\search\SearchView.tsx:335 [Ready] <h3 className="text-sm font-bold text-surface-900">Unified PostgreSQL FTS Search Ready</h3>
+apps/web/src\modules\search\SearchView.tsx:343 [Load] {hasSearched && results.length === 0 && !isLoading && (
+apps/web/src\modules\search\SearchView.tsx:389 [Available] {selectedDoc.snippet || selectedDoc.description || "No preview snippet available."}
+apps/web/src\modules\workflow\WorkflowView.tsx:25 [Load] const [isLoading, setIsLoading] = useState(false);
+apps/web/src\modules\workflow\WorkflowView.tsx:50 [Load] setIsLoading(true);
+apps/web/src\modules\workflow\WorkflowView.tsx:63 [Load] const msg = err instanceof Error ? err.message : "Failed to load workflow tasks";
+apps/web/src\modules\workflow\WorkflowView.tsx:66 [Load] setIsLoading(false);
+apps/web/src\modules\workflow\WorkflowView.tsx:233 [badge] badges={<StatusPill label="ENGINE: BPMN & SEC AUDIT ACTIVE" variant="success" />}
+apps/web/src\modules\workflow\WorkflowView.tsx:239 [Load] icon={<RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin" : ""}`} />}
+apps/web/src\modules\workflow\WorkflowView.tsx:279 [Load] isLoading={isLoading}

@@ -6,7 +6,7 @@ and asserts that it exists in the backend FastAPI OpenAPI schema.
 
 import re
 from pathlib import Path
-import pytest
+
 from apps.api.app.main import create_app
 
 

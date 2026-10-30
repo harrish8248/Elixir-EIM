@@ -67,7 +67,7 @@ INR Twenty Thousand Six Hundred Fifty Only
     cur.execute("DELETE FROM extracted_fields WHERE job_id = %s", (sbc_id,))
     fields = [
         ("supplier_gstin", "33AAQPK8576K1ZY", "33AAQPK8576K1ZY", 0.96, 1, {"x": 77, "y": 115, "width": 85, "height": 7}, "regex_base36", True, None),
-        ("buyer_gstin", "33AABCU8048A1Z0", "33AABCU8048A1Z0", 0.96, 1, {"x": 77, "y": 260, "width": 85, "height": 7}, "regex_base36", False, "Check digit 0 vs O review"),
+        ("buyer_gstin", "33AABCU8048A1Z0", "33AABCU8048A1Z0", 0.96, 1, {"x": 77, "y": 260, "width": 85, "height": 7}, "regex_base36", False, "INTENTIONAL_INVALID: OCR digit confusion (Expected 'O', OCR read '0')"),
         ("supplier_name", "SRI BALAJI COMPUTERS", "SRI BALAJI COMPUTERS", 0.88, 1, {"x": 77, "y": 70, "width": 110, "height": 8}, "layout_header", True, None),
         ("buyer_name", "S2 INTEGRATORS PVT LTD", "S2 INTEGRATORS PVT LTD", 0.85, 1, {"x": 77, "y": 220, "width": 115, "height": 8}, "layout_header", True, None),
         ("supplier_address", "72, SARATHY NAGAR, KAGITHAPATTARI, VELLORE - 632012", "72, SARATHY NAGAR, KAGITHAPATTARI, VELLORE - 632012", 0.82, 1, {"x": 77, "y": 80, "width": 120, "height": 15}, "layout_address", True, None),
@@ -101,7 +101,7 @@ GSTIN/UIN: 29AABCI1234F1ZX | State Code: 29 | Contact: billing@infosys.com
 Bill To:
 ACROCORP GLOBAL ENTERPRISES
 Plot 44, OMR IT Expressway, Chennai - 600096, Tamil Nadu
-GSTIN/UIN: 33AABCA9876C1Z5 | State Code: 33
+GSTIN/UIN: 33AABCA9876C1ZQ | State Code: 33
 
 Invoice No: INV-2026-0892              Invoice Date: 18-May-2026
 PO Number: PO-2026-0442                Due Date: 17-Jun-2026
@@ -127,7 +127,7 @@ Bank Details: State Bank of India, A/C: 38920192831, IFSC: SBIN0004120
 
     inf_fields = [
         ("supplier_gstin", "29AABCI1234F1ZX", "29AABCI1234F1ZX", 0.99, 1, {"x": 75, "y": 95, "width": 95, "height": 10}, "regex_base36", True, None),
-        ("buyer_gstin", "33AABCA9876C1Z5", "33AABCA9876C1Z5", 0.99, 1, {"x": 75, "y": 200, "width": 95, "height": 10}, "regex_base36", True, None),
+        ("buyer_gstin", "33AABCA9876C1ZQ", "33AABCA9876C1ZQ", 0.99, 1, {"x": 75, "y": 200, "width": 95, "height": 10}, "regex_base36", True, None),
         ("supplier_name", "INFOSYS TECHNOLOGIES LIMITED", "INFOSYS TECHNOLOGIES LIMITED", 0.98, 1, {"x": 75, "y": 55, "width": 160, "height": 12}, "layout_header", True, None),
         ("buyer_name", "ACROCORP GLOBAL ENTERPRISES", "ACROCORP GLOBAL ENTERPRISES", 0.97, 1, {"x": 75, "y": 165, "width": 150, "height": 12}, "layout_header", True, None),
         ("supplier_address", "Electronics City, Hosur Road, Bangalore - 560100, Karnataka", "Electronics City, Hosur Road, Bangalore - 560100, Karnataka", 0.96, 1, {"x": 75, "y": 72, "width": 220, "height": 15}, "layout_address", True, None),
@@ -157,12 +157,12 @@ Bank Details: State Bank of India, A/C: 38920192831, IFSC: SBIN0004120
     tcs_raw = """TAX INVOICE
 TATA CONSULTANCY SERVICES LTD
 TCS House, Raveline Street, Fort, Mumbai - 400001, Maharashtra
-GSTIN/UIN: 27AAACT2718E1ZQ | State Code: 27 | Contact: accounts@tcs.com
+GSTIN/UIN: 27AAACT2718E1ZM | State Code: 27 | Contact: accounts@tcs.com
 
 Bill To:
 ACROCORP GLOBAL ENTERPRISES
 Plot 44, OMR IT Expressway, Chennai - 600096, Tamil Nadu
-GSTIN/UIN: 33AABCA9876C1Z5 | State Code: 33
+GSTIN/UIN: 33AABCA9876C1ZQ | State Code: 33
 
 Invoice No: TCS-2026-4410              Invoice Date: 22-Apr-2026
 PO Number: PO-2026-0198                Due Date: 22-May-2026
@@ -187,8 +187,8 @@ Bank Details: HDFC Bank, A/C: 50200019283741, IFSC: HDFC0000060
     """, (tcs_id, tenant_id, tcs_raw))
 
     tcs_fields = [
-        ("supplier_gstin", "27AAACT2718E1ZQ", "27AAACT2718E1ZQ", 0.99, 1, {"x": 75, "y": 95, "width": 95, "height": 10}, "regex_base36", True, None),
-        ("buyer_gstin", "33AABCA9876C1Z5", "33AABCA9876C1Z5", 0.99, 1, {"x": 75, "y": 200, "width": 95, "height": 10}, "regex_base36", True, None),
+        ("supplier_gstin", "27AAACT2718E1ZM", "27AAACT2718E1ZM", 0.99, 1, {"x": 75, "y": 95, "width": 95, "height": 10}, "regex_base36", True, None),
+        ("buyer_gstin", "33AABCA9876C1ZQ", "33AABCA9876C1ZQ", 0.99, 1, {"x": 75, "y": 200, "width": 95, "height": 10}, "regex_base36", True, None),
         ("supplier_name", "TATA CONSULTANCY SERVICES LTD", "TATA CONSULTANCY SERVICES LTD", 0.99, 1, {"x": 75, "y": 55, "width": 170, "height": 12}, "layout_header", True, None),
         ("buyer_name", "ACROCORP GLOBAL ENTERPRISES", "ACROCORP GLOBAL ENTERPRISES", 0.98, 1, {"x": 75, "y": 165, "width": 150, "height": 12}, "layout_header", True, None),
         ("supplier_address", "TCS House, Raveline Street, Fort, Mumbai - 400001, Maharashtra", "TCS House, Raveline Street, Fort, Mumbai - 400001, Maharashtra", 0.97, 1, {"x": 75, "y": 72, "width": 240, "height": 15}, "layout_address", True, None),

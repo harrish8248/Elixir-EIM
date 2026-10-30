@@ -1,0 +1,6 @@
+=== GITLEAKS AUDIT FINDINGS BY FILE (SECRETS REDACTED) ===
+File: .github/workflows/ci.yml
+Line: 77
+Rule: generic-api-key (Detected a Generic API Key, potentially exposing access to various services and sensitive operations.)
+Commit: 6d877abc19bc67778f57b5633568337e893edea9
+Author: Harrish Sebastin on 2026-10-26T09:46:35Z

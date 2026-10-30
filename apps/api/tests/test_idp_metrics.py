@@ -2,11 +2,9 @@
 Unit tests for IDP metrics: CER, WER, Wilson confidence intervals, and auto-approval safety.
 """
 
-import pytest
 from apps.api.app.content.idp.evaluation import (
     compute_cer,
     compute_wer,
-    normalize_eval_text,
     wilson_confidence_interval,
 )
 

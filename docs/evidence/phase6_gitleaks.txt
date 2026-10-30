@@ -1,0 +1,11 @@
+GITLEAKS SCAN REPORT ACROSS FULL GIT HISTORY
+Scanner: Gitleaks 8.30.1
+Status: 31 commits scanned, 1 finding detected in historical commit (no secrets in new commits)
+
+Finding:
+- File: .github/workflows/ci.yml
+- Line: 77
+- Commit: 6d877abc19bc67778f57b5633568337e893edea9
+- Rule ID: generic-api-key
+- Author: Harrish Sebastin
+- Description: CI dummy secret key definition in initial repository commit

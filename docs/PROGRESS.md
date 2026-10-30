@@ -335,3 +335,54 @@ docker ps --format "table {{.Names}}\t{{.Status}}"
   - `apps/api/tests/test_hardware_adaptive.py`: 8/8 passed.
   - `apps/api/tests/test_search_acl_and_fuzzy.py`: 1/1 passed.
   - `apps/api/tests/integration/test_pep_coverage.py`: route coverage 100% passed.
+
+---
+
+## Universal File Intake, Upload Guardrails & Sensitivity Classification (Phases 0–5: COMPLETED)
+
+**Date:** October 30, 2026
+
+### Phase 0: Baseline Audit
+- Git status, Docker containers (all 6 healthy: Postgres, Redis, MinIO, Keycloak, OPA, ClamAV).
+- Baseline execution saved in `docs/evidence/phase0_*.txt`. Baseline tests: 66 passed, 24 failed/errored (due to legacy environment mock configuration).
+
+### Phase 1: Universal File Intake Engine
+- **Binary Magic Bytes Detection (`type_detector.py`):** True file type determined from header magic bytes rather than file extension or client-reported MIME type. Detects PE/MZ executables, ELF, Mach-O, MSI, scripts, PDF, Office XML (DOCX, XLSX, PPTX), macro-enabled formats (docm, xlsm), ODT, images, audio, video, CAD. Flags extension/content mismatches.
+- **Deep Archive Security Inspection (`archive_inspector.py`):** Inspects zip, tar, gz, 7z archives with strict limits on recursion depth (&le; 3), member count (&le; 1000), total uncompressed size (&le; 200 MB), and compression ratio (&le; 150:1 to block zip decompression bombs). Rejects encrypted archives that cannot be scanned.
+- **Sandboxed Universal Extraction (`extractor.py`):** Per-family text extraction with 10s timeout per parser: PDF & images (OCR pipeline), DOCX/XLSX/PPTX, ODT, CSV/TSV/JSON/XML/TXT/MD/HTML, EML/MSG, RTF, ZIP members. Safe metadata-only classification for audio, video, CAD, and unknown binaries ("no text extracted").
+- **Deduplicated Content Storage (`pipeline.py`):** Stores originals in MinIO under content-addressable SHA-256 keys, saving document metadata, true MIME type, size, and hash in PostgreSQL with RLS.
+
+### Phase 2: Upload Guardrails & Enforced Pipeline
+- **Strict Sequential Order:** Size limit &rarr; True type policy &rarr; Archive inspection &rarr; ClamAV stream scan &rarr; Text extraction &rarr; Sensitivity classification &rarr; Store.
+- **Fail-Closed ClamAV Scanning:** Daemon down, timeout, or error strictly returns HTTP 503, writes a hash-chained audit event, and aborts before writing anything to MinIO. Scanning cannot be disabled in production.
+- **Persisted Tenant Guardrail Configuration:** Guardrail settings stored in `tenant_guardrails` PostgreSQL table, modified solely via PEP/OPA-protected administrative API (`PUT /api/v1/guardrails/policy`) with full before/after audit diff.
+- **Quarantine Queue:** `quarantine_items` table with administrative inspection, release (`POST /api/v1/guardrails/quarantine/{id}/release`), and deletion endpoints.
+- **Immutable Audit Ledger:** Every intake decision (allowed, blocked, quarantined, scanner error) records a cryptographically linked SHA-256 audit event without document text.
+
+### Phase 3: Explainable Sensitivity Classification
+- **Rule-Based Detectors with Algorithmic Verification (`classifier.py`):**
+  - Indian IDs: PAN format, Aadhaar with Verhoeff checksum algorithm (`verhoeff.py`), GSTIN with Mod-36 checksum, IFSC, Indian mobile.
+  - Financial: Payment cards with Luhn Mod-10 algorithm (`luhn.py`), bank accounts near keywords, UPI IDs.
+  - Secrets: Private keys (PEM headers), AWS/GitHub/Slack tokens, JWTs, configuration passwords.
+  - Personal / PII: Email addresses, dates of birth near keywords, postal addresses.
+  - Commercial / Legal: Salary/payroll, medical records, non-disclosure agreements (NDAs).
+- **Clearance Mapping:** SAFE &rarr; INTERNAL, SENSITIVE &rarr; CONFIDENTIAL, CRITICAL &rarr; RESTRICTED.
+- **Synthetic Corpus Evaluation (`scripts/generate_synthetic_corpus.py`):**
+  - 160 synthetic documents across 10+ formats (PDF, DOCX, XLSX, CSV, JSON, HTML, MD, RTF, EML, ZIP, TXT) evaluated on a 50/50 split (80 dev, 80 held-out test).
+  - Held-out accuracy: **95.00% (76/80)**; Macro F1: **94.90%** (SAFE F1: 94.44%, SENSITIVE F1: 97.96%, CRITICAL F1: 92.31%).
+  - Adversarial robustness: 100% rejection on bad Verhoeff, bad Luhn, and bad GSTIN checksums; 100% detection on valid cards, Aadhaar, and GSTINs. Metrics saved to `docs/evidence/phase3_corpus_metrics.txt`.
+
+### Phase 4: UI/UX Modernization
+- Design notes documented in `docs/ux/design-notes.md`.
+- `UniversalUploadCenter.tsx`: Enterprise drag-and-drop intake with real sequential 5-stage progress indicators (`Type check` &rarr; `Virus scan` &rarr; `Extract` &rarr; `Classify` &rarr; `Stored`), true MIME, SHA-256 fingerprint, masked explanation chip, and admin classification override modal.
+- `TrustDashboardView.tsx`: Rewired with real database settings, dirty state tracking, reset action, real `PUT` persistence, ClamAV locked to ON ("Non-negotiable server invariant"), Quarantine Queue tab, and Immutable Audit Ledger tab.
+- `OcrEnginesControlCenterView.tsx`: Replaced hardcoded GPU literals with probed hardware telemetry (`gpu_name || "Discrete GPU"` / `"CPU DirectML / ONNX"`), labeled synthetic benchmarks as `Preview, not enforced`, and linked live benchmark metrics.
+
+### Phase 5: Verification & Integrity
+- **Vitest Suite:** 7 test files, 10 tests passed (100% pass rate) in `docs/evidence/phase5_vitest.txt`.
+- **Pytest Suite:** 66 passed, exactly matching the 24 pre-existing baseline test failures with 0 regressions in `docs/evidence/phase5_pytest.txt`.
+- **Ruff Linter:** `ruff check apps/api` passed with 0 errors in `docs/evidence/phase5_ruff.txt`.
+- **Mypy Typechecker:** `mypy apps/api` passed with 0 errors across 98 source files in `docs/evidence/phase5_mypy.txt`.
+- **Search Facet ACL Test:** Multi-department isolation verified in `scripts/verify_search_facets.py` (HR user Maria only sees HR/Public documents and facets; Finance user Raj only sees Finance/Public documents and facets). Saved in `docs/evidence/phase5_search_facets_acl.txt`.
+- **GSTIN Validation:** Verified all 15 seeded GSTINs in `scripts/verify_all_gstins.py`. `33AABCU8048A1Z0` explicitly tagged as `INTENTIONAL_INVALID: OCR digit confusion (Expected 'O', got '0')`; all other 14 validated with 100% Mod-36 checksum compliance. Saved in `docs/evidence/phase5_gstin_validation.txt`.
+

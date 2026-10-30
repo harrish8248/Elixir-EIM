@@ -1,0 +1,16 @@
+=== GOVERNANCE MODAL FIELD SOURCE AUDIT ===
+Source File: apps/web/src/modules/search/SearchView.tsx (Lines 365-418)
+
+1. Stored Record Fields:
+   - Department: selectedDoc.department (Read from search API result)
+   - Classification: selectedDoc.classification (Read from search API result)
+   - File Size: selectedDoc.size_bytes (Read from search API result)
+   - Record Flag: selectedDoc.is_record (Read from search API result)
+   - Snippet: selectedDoc.snippet (Read from search API result)
+
+2. Literal Static Fields (NOT read from stored records):
+   - OPA Rego Decision: LITERAL ('Clearance level verified against OPA Rego rules.')
+   - ClamAV Scan Status: LITERAL ('Clean ClamAV stream scan verified at ingestion.')
+   - SHA-256 Hash / Chain Link: LITERAL ('Append-only cryptographic audit chain sealed.')
+     (The actual document SHA-256 hash or audit ledger record id is NOT queried or bound in this modal).
+

@@ -52,7 +52,7 @@ def pg_connection():
     try:
         user, ver = probe_postgres_login(DATABASE_URL)
         print(f"\n[RLS Gate] Verified Postgres login: user='{user}', version='{ver}'")
-    except Exception as exc:  # noqa: BLE001 - catch all connection/auth exceptions to report exact error
+    except Exception as exc:
         if require_postgres:
             pytest.fail(
                 f"REQUIRE_POSTGRES=1 is set, but PostgreSQL login failed with real error: {type(exc).__name__}: {exc}"

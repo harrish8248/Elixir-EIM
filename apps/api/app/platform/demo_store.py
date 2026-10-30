@@ -4,9 +4,6 @@ Provides high-fidelity, pre-seeded enterprise datasets for immediate UI renderin
 when database queries are deferred or when database connectivity drops.
 """
 
-import time
-import uuid
-from typing import Any
 
 # AcroCorp Global Tenant ID
 DEMO_TENANT_ID = "11111111-1111-1111-1111-111111111111"
@@ -318,7 +315,7 @@ DEMO_JOB_DETAILS = {
         "updated_at": "2026-10-29T12:20:03Z",
         "fields": [
             {"field_name": "supplier_gstin", "field_value": "33AAQPK8576K1ZY", "normalized_value": "33AAQPK8576K1ZY", "confidence": 0.96, "page": 1, "bbox": [70, 115, 180, 20], "extraction_method": "regex_base36", "is_valid": True, "error_message": None},
-            {"field_name": "buyer_gstin", "field_value": "33AABCU8048A1Z0", "normalized_value": "33AABCU8048A1Z0", "confidence": 0.96, "page": 1, "bbox": [70, 260, 180, 20], "extraction_method": "regex_base36", "is_valid": False, "error_message": "GSTIN Check Character Mismatch: OCR read '0', expected 'O'. Please confirm with original document."},
+            {"field_name": "buyer_gstin", "field_value": "33AABCU8048A1Z0", "normalized_value": "33AABCU8048A1Z0", "confidence": 0.96, "page": 1, "bbox": [70, 260, 180, 20], "extraction_method": "regex_base36", "is_valid": False, "error_message": "INTENTIONAL_INVALID: OCR digit confusion: Expected 'O', OCR extracted '0'. Awaiting human sign-off."},
             {"field_name": "supplier_name", "field_value": "SRI BALAJI COMPUTERS", "normalized_value": "SRI BALAJI COMPUTERS", "confidence": 0.88, "page": 1, "bbox": [70, 70, 220, 22], "extraction_method": "layout_header", "is_valid": True, "error_message": None},
             {"field_name": "buyer_name", "field_value": "S2 INTEGRATORS PVT LTD", "normalized_value": "S2 INTEGRATORS PVT LTD", "confidence": 0.85, "page": 1, "bbox": [70, 220, 220, 20], "extraction_method": "layout_header", "is_valid": True, "error_message": None},
             {"field_name": "supplier_address", "field_value": "72, SARATHY NAGAR, KAGITHAPATTARI, VELLORE - 632012", "normalized_value": "72, SARATHY NAGAR, VELLORE - 632012", "confidence": 0.82, "page": 1, "bbox": [70, 92, 280, 18], "extraction_method": "address_ner", "is_valid": True, "error_message": None},
@@ -384,12 +381,12 @@ DEMO_JOB_DETAILS = {
         "ocr_engine": "PyMuPDF (Vector Text Layer)",
         "mean_confidence": 0.99,
         "processing_time_ms": 420.0,
-        "raw_text": "TAX INVOICE\nSupplier: Tata Consultancy Services\nGSTIN: 27AAPFU0939F1ZX (Maharashtra)\nBuyer: Delhi Telecom Limited\nGSTIN: 07AAACH2345J1ZW (Delhi)\nInvoice No: TCS-2026-4410\nDate: 2026-05-18\nTotal Amount: 1250000.00",
+        "raw_text": "TAX INVOICE\nSupplier: Tata Consultancy Services\nGSTIN: 27AAPFU0939F1ZV (Maharashtra)\nBuyer: Delhi Telecom Limited\nGSTIN: 07AAACH2345J1ZQ (Delhi)\nInvoice No: TCS-2026-4410\nDate: 2026-05-18\nTotal Amount: 1250000.00",
         "created_at": "2026-10-29T09:05:00Z",
         "updated_at": "2026-10-29T09:15:00Z",
         "fields": [
-            {"field_name": "supplier_gstin", "field_value": "27AAPFU0939F1ZX", "normalized_value": "27AAPFU0939F1ZX", "confidence": 0.99, "page": 1, "bbox": [100, 100, 150, 15], "extraction_method": "vector_pdf", "is_valid": True, "error_message": None},
-            {"field_name": "buyer_gstin", "field_value": "07AAACH2345J1ZW", "normalized_value": "07AAACH2345J1ZW", "confidence": 0.99, "page": 1, "bbox": [100, 200, 150, 15], "extraction_method": "vector_pdf", "is_valid": True, "error_message": None},
+            {"field_name": "supplier_gstin", "field_value": "27AAPFU0939F1ZV", "normalized_value": "27AAPFU0939F1ZV", "confidence": 0.99, "page": 1, "bbox": [100, 100, 150, 15], "extraction_method": "vector_pdf", "is_valid": True, "error_message": None},
+            {"field_name": "buyer_gstin", "field_value": "07AAACH2345J1ZQ", "normalized_value": "07AAACH2345J1ZQ", "confidence": 0.99, "page": 1, "bbox": [100, 200, 150, 15], "extraction_method": "vector_pdf", "is_valid": True, "error_message": None},
             {"field_name": "supplier_name", "field_value": "TATA CONSULTANCY SERVICES", "normalized_value": "TATA CONSULTANCY SERVICES", "confidence": 1.0, "page": 1, "bbox": [100, 80, 200, 15], "extraction_method": "vector_pdf", "is_valid": True, "error_message": None},
             {"field_name": "buyer_name", "field_value": "DELHI TELECOM LIMITED", "normalized_value": "DELHI TELECOM LIMITED", "confidence": 1.0, "page": 1, "bbox": [100, 180, 200, 15], "extraction_method": "vector_pdf", "is_valid": True, "error_message": None},
             {"field_name": "invoice_number", "field_value": "TCS-2026-4410", "normalized_value": "TCS-2026-4410", "confidence": 1.0, "page": 1, "bbox": [300, 120, 100, 15], "extraction_method": "vector_pdf", "is_valid": True, "error_message": None},

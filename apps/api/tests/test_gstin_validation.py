@@ -2,7 +2,6 @@
 
 import base64
 import json
-import pytest
 
 from apps.api.app.content.idp.gstin import (
     STATE_CODES,

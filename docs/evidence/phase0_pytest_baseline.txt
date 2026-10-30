@@ -1,0 +1,76 @@
+=== PHASE 0: 24 PRE-EXISTING TEST FAILURES/ERRORS BEFORE CHANGES ===
+
+TEST: test_audit_concurrency_safe_parallel_writes
+ERROR: E           RuntimeError: Event loop is closed
+
+TEST: test_audit_chain_tamper_detection_on_altered_row
+ERROR: E   asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+TEST: test_audit_events_api_query_and_pagination
+ERROR: E   asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+TEST: test_audit_verify_api_endpoint
+ERROR: E   asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+TEST: test_real_keycloak_direct_token_and_jwks_validation
+ERROR: E           assert 2 >= 3
+
+TEST: test_jit_user_provisioning_persists_in_postgres
+ERROR: E   asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+TEST: test_session_lifecycle_and_csrf_protection
+ERROR: E           assert 200 == 401
+
+TEST: test_logout_csrf_and_revocation
+ERROR: E           assert 200 == 401
+
+TEST: test_auth_callback_flow_and_jit_provisioning
+ERROR: E   asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+TEST: test_direct_login_keycloak_error_paths
+ERROR: E           assert 200 == 503
+
+TEST: test_pdp_fail_closed_on_unreachable_opa
+ERROR: E       AssertionError: assert False is True
+
+TEST: test_pdp_fail_closed_on_timeout
+ERROR: E       AssertionError: assert False is True
+
+TEST: test_pep_runtime_allow_and_audit_trail
+ERROR: E   asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+TEST: test_pep_runtime_deny_on_clearance_and_audit_trail
+ERROR: E   asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+TEST: test_pep_runtime_step_up_dual_control
+ERROR: E   asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+TEST: test_fastapi_app_real_engine_connects_as_non_superuser
+ERROR: E   asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+TEST: test_scim_unauthenticated_request_rejected
+ERROR: E   asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+TEST: test_benchmark_frozen_manifest_integrity
+ERROR: E       AssertionError: Missing 1121 benchmark files: ['docs\\ocr-benchmark\\data\\cnt_000_clean.json', 'docs\\ocr-benchmark\\data\\cnt_000_clean.png', 'docs\\ocr-benchmark\\data\\cnt_001_clean.json', 'docs\\ocr-benchmark\\data\\cnt_001_clean.png', 'docs\\ocr-benchmark\\data\\cnt_002_clean.json']
+
+TEST: test_search_department_acl_and_fuzzy
+ERROR: E   asyncpg.exceptions._base.InterfaceError: cannot perform operation: another operation is in progress
+
+TEST: test_scim_users_crud_lifecycle
+ERROR: Traceback details not found
+
+TEST: test_scim_groups_crud_with_members
+ERROR: Traceback details not found
+
+TEST: test_scim_cross_tenant_isolation
+ERROR: Traceback details not found
+
+TEST: test_scim_error_handling_and_group_listing
+ERROR: Traceback details not found
+
+TEST: test_scim_pagination_and_invalid_auth
+ERROR: Traceback details not found
+
+
+SUMMARY: ============ 19 failed, 66 passed, 13 warnings, 5 errors in 51.62s ============

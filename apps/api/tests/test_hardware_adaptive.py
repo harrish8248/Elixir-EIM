@@ -11,7 +11,6 @@ Verifies:
 (h) probe failure falls back safely
 """
 
-import pytest
 from apps.api.app.content.idp.hardware import (
     ENGINE_RESOURCE_PROFILES,
     HardwareProfiler,
