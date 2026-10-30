@@ -1178,14 +1178,6 @@ async def get_routing_policy(
         },
         "history": history,
     }
-            "version": active_p[1],
-            "default_engine": active_p[3],
-            "fallback_engine": active_p[4],
-            "rules": active_p[5],
-            "created_at": active_p[6].isoformat(),
-        },
-        "history": history,
-    }
 
 
 @idp_router.post("/engines/routing-policy", summary="Update active routing policy")

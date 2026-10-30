@@ -146,8 +146,11 @@ class EvaluationHarness:
 
     def __init__(self, splits_file: Path = SPLITS_PATH, data_dir: Path = DATA_DIR):
         self.data_dir = data_dir
-        with open(splits_file, encoding="utf-8") as f:
-            self.splits = json.load(f)
+        if splits_file.exists():
+            with open(splits_file, encoding="utf-8") as f:
+                self.splits = json.load(f)
+        else:
+            self.splits = {"train": [], "dev": [], "test": []}
 
     def load_split_samples(self, split_name: str) -> list[dict[str, Any]]:
         """Load ground truth metadata for a specific split."""
