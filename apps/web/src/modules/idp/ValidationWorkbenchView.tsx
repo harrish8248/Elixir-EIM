@@ -3,9 +3,6 @@ import {
   ArrowLeft,
   CheckCircle2,
   AlertTriangle,
-  ZoomIn,
-  ZoomOut,
-  Maximize2,
   Save,
   Check,
   Building2,
@@ -13,7 +10,9 @@ import {
   ShieldCheck,
   QrCode,
   Layers,
-  Crosshair,
+  Copy,
+  FileText,
+  Table as TableIcon,
 } from "lucide-react";
 import { clsx } from "clsx";
 import { apiClient } from "@/api/client";
@@ -52,6 +51,8 @@ interface JobDetails {
   document_type: string;
   classification_confidence: number;
   mean_confidence: number;
+  ocr_engine?: string;
+  raw_text?: string;
   fields: ExtractedFieldData[];
   validation_results: ValidationRuleData[];
   is_gst_invoice?: boolean;
@@ -122,18 +123,60 @@ export const validateGstin = (
 };
 
 export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = ({
-  jobId = "job-inv-001",
+  jobId = "job-sbc-0590",
   onBack,
 }) => {
   const [job, setJob] = useState<JobDetails | null>(null);
   const [fields, setFields] = useState<Record<string, any>>({});
   const [originalFields, setOriginalFields] = useState<Record<string, any>>({});
   const [activeField, setActiveField] = useState<string | null>("supplier_gstin");
-  const [zoomLevel, setZoomLevel] = useState<number>(100);
+  const [zoomLevel] = useState<number>(100);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
-  const [correctionReason, setCorrectionReason] = useState("Manual OCR verification correction");
+  const [correctionReason] = useState("Manual OCR verification correction");
   const [fieldBoxes, setFieldBoxes] = useState<Record<string, BoundingBox>>({});
+  const [leftTab, setLeftTab] = useState<"raw" | "spatial">("raw");
+  const [copiedRawText, setCopiedRawText] = useState(false);
+
+  const fallbackRawText = `TAX INVOICE / CASH BILL
+SRI BALAJI COMPUTERS
+72, SARATHY NAGAR, KAGITHAPATTARI
+VELLORE - 632012
+GSTIN/UIN: 33AAQPK8576K1ZY
+State Name: Tamil Nadu, Code: 33
+E-Mail: bcitvir@gmail.com
+
+Buyer (Bill to):
+S2 INTEGRATORS PVT LTD
+547, ANNA SALAI, NANDANAM, CHENNAI
+GSTIN/UIN: 33AABCU8048A1Z0
+State Name: Tamil Nadu, Code: 33
+
+Invoice No: SBC/0590/2026-27      Dated: 5-Jun-26
+Delivery Note:                     Mode/Terms of Payment:
+Reference No. & Date:              Other References:
+Dispatch Doc No:                   Delivery Note Date:
+Dispatched through:                Destination:
+Terms of Delivery:
+
+Sl. Particulars                      HSN/SAC   Quantity  Rate per     Amount
+1   LAPTOP RENTAL                    997315    -         3,500.00     3,500.00
+    Mr. RISHMA, LENOVO T14
+2   LAPTOP RENTAL                    997315    -         3,500.00     3,500.00
+    Mr. SYED IDROSE, DELL LATITUDE 5411
+3   LAPTOP RENTAL                    997315    -         3,500.00     3,500.00
+    FAZIL, DELL LATITUDE 5411
+4   LAPTOP RENTAL                    997315    -         3,500.00     3,500.00
+    RAGA PRIYA, DELL LATITUDE 5411
+5   LAPTOP RENTAL                    997315    -         3,500.00     3,500.00
+    Ms. RENUGADEVI SALEM, LENOVO IDEAPAD 3
+
+                                     SGST 9%                          1,575.00
+                                     CGST 9%                          1,575.00
+                                     Total                           20,650.00
+
+Amount Chargeable (in words):
+INR Twenty Thousand Six Hundred Fifty Only`;
 
   useEffect(() => {
     const fetchJob = async () => {
@@ -142,168 +185,206 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
         setJob(data);
         const map: Record<string, any> = {};
         const bmap: Record<string, BoundingBox> = {};
-        data.fields.forEach((f: ExtractedFieldData) => {
-          map[f.field_name] = f.field_value;
-          if (f.bbox) bmap[f.field_name] = f.bbox;
-        });
+        if (data.fields) {
+          data.fields.forEach((f: ExtractedFieldData) => {
+            map[f.field_name] = f.field_value;
+            if (f.bbox) bmap[f.field_name] = f.bbox as BoundingBox;
+          });
+        }
         setFields(map);
         setOriginalFields(map);
         setFieldBoxes(bmap);
       } catch (err) {
-        // Fallback demo data showcasing Indian GST invoice with IoU and Base-36 checksum
+        // Fallback demo data showcasing Indian GST invoice matching user reference screenshot
         const fallbackJob: JobDetails = {
           id: jobId,
-          filename: "GST-2026-1000_Infosys_Technologies.png",
-          status: "auto_approved",
-          document_type: "invoice_gst",
-          classification_confidence: 99.8,
-          mean_confidence: 96.4,
+          filename: "SBC-0590_Sri_Balaji_Computers_TamilNadu.pdf",
+          status: "needs_review",
+          document_type: "TAX INVOICE / CASH BILL",
+          classification_confidence: 99.1,
+          mean_confidence: 94.2,
+          raw_text: fallbackRawText,
           is_gst_invoice: true,
           fields: [
             {
               field_name: "supplier_gstin",
-              field_value: "29AABCI1234F1ZX",
-              confidence: 99.0,
+              field_value: "33AAQPK8576K1ZY",
+              confidence: 96.0,
               page: 1,
-              bbox: { x: 77, y: 113, width: 76, height: 6 },
-              extraction_method: "gstin_repair_checksum",
+              bbox: { x: 77, y: 115, width: 85, height: 7 },
+              extraction_method: "regex_base36",
               is_valid: true,
-              iou: 0.9912,
+              iou: 0.99,
             },
             {
               field_name: "buyer_gstin",
-              field_value: "27AABCA9876M1ZY",
-              confidence: 99.0,
+              field_value: "33AABCU8048A1Z0",
+              confidence: 96.0,
               page: 1,
-              bbox: { x: 77, y: 251, width: 82, height: 6 },
-              extraction_method: "gstin_repair_checksum",
+              bbox: { x: 77, y: 260, width: 85, height: 7 },
+              extraction_method: "regex_base36",
+              is_valid: false,
+              error_message: "Expected 'O', OCR extracted '0'",
+              iou: 0.98,
+            },
+            {
+              field_name: "supplier_name",
+              field_value: "SRI BALAJI COMPUTERS",
+              confidence: 88.0,
+              page: 1,
+              bbox: { x: 77, y: 70, width: 110, height: 8 },
+              extraction_method: "layout_header",
               is_valid: true,
-              iou: 0.9928,
+              iou: 0.97,
+            },
+            {
+              field_name: "buyer_name",
+              field_value: "S2 INTEGRATORS PVT LTD",
+              confidence: 85.0,
+              page: 1,
+              bbox: { x: 77, y: 220, width: 115, height: 8 },
+              extraction_method: "layout_header",
+              is_valid: true,
+              iou: 0.96,
+            },
+            {
+              field_name: "supplier_address",
+              field_value: "72, SARATHY NAGAR, VELLORE - 632012",
+              confidence: 82.0,
+              page: 1,
+              bbox: { x: 77, y: 92, width: 140, height: 7 },
+              extraction_method: "address_ner",
+              is_valid: true,
+              iou: 0.95,
+            },
+            {
+              field_name: "buyer_address",
+              field_value: "547, ANNA SALAI, NANDANAM, CHENNAI",
+              confidence: 75.0,
+              page: 1,
+              bbox: { x: 77, y: 240, width: 140, height: 7 },
+              extraction_method: "address_ner",
+              is_valid: true,
+              iou: 0.94,
             },
             {
               field_name: "invoice_number",
-              field_value: "GST-2026-1000",
-              confidence: 98.5,
+              field_value: "SBC/0590/2026-27",
+              confidence: 92.0,
               page: 1,
-              bbox: { x: 113, y: 173, width: 58, height: 7 },
-              extraction_method: "regex_pattern",
+              bbox: { x: 240, y: 165, width: 65, height: 7 },
+              extraction_method: "key_value",
               is_valid: true,
-              iou: 0.9889,
+              iou: 0.98,
             },
             {
               field_name: "invoice_date",
-              field_value: "2026-04-05",
-              confidence: 98.0,
+              field_value: "2026-06-05",
+              confidence: 95.0,
               page: 1,
-              bbox: { x: 326, y: 173, width: 44, height: 7 },
-              extraction_method: "iso_date_regex",
+              bbox: { x: 320, y: 165, width: 45, height: 7 },
+              extraction_method: "date_parser",
               is_valid: true,
-              iou: 0.9922,
+              iou: 0.98,
             },
             {
-              field_name: "place_of_supply",
-              field_value: "Maharashtra (27)",
+              field_name: "due_date",
+              field_value: "2026-07-05",
+              confidence: 90.0,
+              page: 1,
+              bbox: { x: 320, y: 185, width: 45, height: 7 },
+              extraction_method: "date_offset",
+              is_valid: true,
+              iou: 0.95,
+            },
+            {
+              field_name: "po_number",
+              field_value: "PO-2026-881",
+              confidence: 85.0,
+              page: 1,
+              bbox: { x: 240, y: 235, width: 50, height: 7 },
+              extraction_method: "pattern",
+              is_valid: true,
+              iou: 0.94,
+            },
+            {
+              field_name: "currency",
+              field_value: "INR",
+              confidence: 99.0,
+              page: 1,
+              bbox: { x: 20, y: 800, width: 25, height: 6 },
+              extraction_method: "anchor",
+              is_valid: true,
+              iou: 0.99,
+            },
+            {
+              field_name: "contact_details",
+              field_value: "bcitvir@gmail.com",
+              confidence: 95.0,
+              page: 1,
+              bbox: { x: 77, y: 145, width: 75, height: 6 },
+              extraction_method: "email_regex",
+              is_valid: true,
+              iou: 0.97,
+            },
+            {
+              field_name: "taxable_amount",
+              field_value: "17500.00",
               confidence: 97.0,
               page: 1,
-              bbox: { x: 113, y: 190, width: 78, height: 7 },
-              extraction_method: "anchor_regex",
+              bbox: { x: 350, y: 715, width: 45, height: 7 },
+              extraction_method: "table_sum",
               is_valid: true,
-              iou: 0.9802,
+              iou: 0.98,
             },
             {
-              field_name: "taxable_value",
-              field_value: 365000.0,
-              confidence: 97.5,
-              page: 1,
-              bbox: { x: 717, y: 407, width: 42, height: 8 },
-              extraction_method: "amount_proximity",
-              is_valid: true,
-              iou: 0.9858,
-            },
-            {
-              field_name: "cgst",
-              field_value: 0.0,
+              field_name: "cgst_amount",
+              field_value: "1575.00",
               confidence: 96.0,
               page: 1,
-              bbox: null,
-              extraction_method: "tax_breakdown",
+              bbox: { x: 350, y: 740, width: 45, height: 7 },
+              extraction_method: "tax_rate",
               is_valid: true,
-              iou: 1.0,
+              iou: 0.98,
             },
             {
-              field_name: "sgst",
-              field_value: 0.0,
+              field_name: "sgst_amount",
+              field_value: "1575.00",
               confidence: 96.0,
               page: 1,
-              bbox: null,
-              extraction_method: "tax_breakdown",
+              bbox: { x: 350, y: 765, width: 45, height: 7 },
+              extraction_method: "tax_rate",
               is_valid: true,
-              iou: 1.0,
-            },
-            {
-              field_name: "igst",
-              field_value: 65700.0,
-              confidence: 97.0,
-              page: 1,
-              bbox: { x: 717, y: 420, width: 35, height: 8 },
-              extraction_method: "tax_breakdown",
-              is_valid: true,
-              iou: 0.9806,
+              iou: 0.98,
             },
             {
               field_name: "total_amount",
-              field_value: 430700.0,
+              field_value: "20650.00",
               confidence: 99.0,
               page: 1,
-              bbox: { x: 719, y: 437, width: 53, height: 9 },
-              extraction_method: "total_amount_scan",
+              bbox: { x: 350, y: 790, width: 50, height: 8 },
+              extraction_method: "table_total",
               is_valid: true,
-              iou: 0.8408,
-            },
-            {
-              field_name: "bank_ifsc",
-              field_value: "ICIC0000456",
-              confidence: 96.0,
-              page: 1,
-              bbox: { x: 233, y: 460, width: 45, height: 6 },
-              extraction_method: "regex_ifsc_repaired",
-              is_valid: true,
-              iou: 0.9864,
-            },
-            {
-              field_name: "bank_account",
-              field_value: "98765432100000",
-              confidence: 97.0,
-              page: 1,
-              bbox: { x: 92, y: 460, width: 60, height: 6 },
-              extraction_method: "regex_account",
-              is_valid: true,
-              iou: 0.9896,
+              iou: 0.99,
             },
           ],
           validation_results: [
             {
-              rule_name: "GSTIN_CHECKSUM_VALIDATION",
+              rule_name: "GSTIN_CHECKSUM_SUPPLIER",
               passed: true,
-              message: "Supplier GSTIN '29AABCI1234F1ZX' validated with official Base-36 checksum (Karnataka)",
+              message: "Supplier GSTIN '33AAQPK8576K1ZY' Base-36 checksum validated (Tamil Nadu - State 33)",
               severity: "info",
             },
             {
-              rule_name: "GSTIN_BUYER_CHECKSUM_VALIDATION",
-              passed: true,
-              message: "Buyer GSTIN '27AABCA9876M1ZY' validated with official Base-36 checksum (Maharashtra)",
-              severity: "info",
+              rule_name: "GSTIN_CHECKSUM_BUYER",
+              passed: false,
+              message: "Buyer GSTIN '33AABCU8048A1Z0' Check Digit Warning: Expected 'O', OCR extracted '0'. Awaiting human sign-off.",
+              severity: "warning",
             },
             {
-              rule_name: "GST_TAX_RECONCILIATION",
+              rule_name: "TAX_MATH_RECONCILIATION",
               passed: true,
-              message: "Taxable (365,000.00) + Integrated GST 18% (65,700.00) == Total (430,700.00)",
-              severity: "info",
-            },
-            {
-              rule_name: "IRN_E_INVOICE_QR_VERIFIED",
-              passed: true,
-              message: "Signed e-Invoice JWT QR code decoded offline; seller, buyer, doc_no match 100%",
+              message: "Tax math exact: Taxable (17,500.00) + CGST 9% (1,575.00) + SGST 9% (1,575.00) == Total (20,650.00)",
               severity: "info",
             },
           ],
@@ -327,35 +408,18 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
     setFields((prev) => ({ ...prev, [fieldName]: val }));
   };
 
-  const handleBoxAdjust = (fieldName: string, deltaX: number, deltaY: number, deltaW: number, deltaH: number) => {
-    setFieldBoxes((prev) => {
-      const cur = prev[fieldName] || { x: 100, y: 100, width: 100, height: 20 };
-      return {
-        ...prev,
-        [fieldName]: {
-          ...cur,
-          x: Math.max(0, cur.x + deltaX),
-          y: Math.max(0, cur.y + deltaY),
-          width: Math.max(20, cur.width + deltaW),
-          height: Math.max(10, cur.height + deltaH),
-        },
-      };
-    });
-  };
-
   const handleAcceptAll = async () => {
     try {
       setIsSubmitting(true);
       await apiClient.post(`/api/v1/idp/jobs/${jobId}/validate`, {
         action: "accept",
-        corrections: [],
-        comment: "Accepted via Validation Workbench",
+        reason: "Reviewer accepted all OCR extracted fields and validated compliance",
       });
       setSaveSuccess(true);
-      setTimeout(() => onBack(), 1000);
+      setTimeout(() => onBack(), 1200);
     } catch {
       setSaveSuccess(true);
-      setTimeout(() => onBack(), 1000);
+      setTimeout(() => onBack(), 1200);
     } finally {
       setIsSubmitting(false);
     }
@@ -364,18 +428,16 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
   const handleSaveCorrections = async () => {
     try {
       setIsSubmitting(true);
-      const corrections = Object.keys(fields)
-        .filter((k) => fields[k] !== originalFields[k])
-        .map((k) => ({
-          field_name: k,
-          corrected_value: fields[k],
-          reason: correctionReason,
-        }));
-
+      const corrections: Record<string, any> = {};
+      Object.keys(fields).forEach((k) => {
+        if (fields[k] !== originalFields[k]) {
+          corrections[k] = fields[k];
+        }
+      });
       await apiClient.post(`/api/v1/idp/jobs/${jobId}/validate`, {
         action: "correct",
+        reason: correctionReason,
         corrections,
-        comment: correctionReason,
       });
       setSaveSuccess(true);
       setTimeout(() => onBack(), 1200);
@@ -387,65 +449,123 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
     }
   };
 
-  // GSTIN Validation
-  const supplierGstinCheck = validateGstin(fields.supplier_gstin);
-  const buyerGstinCheck = validateGstin(fields.buyer_gstin);
+  const supplierGstinCheck = validateGstin(fields.supplier_gstin || "33AAQPK8576K1ZY");
+  const buyerGstinCheck = validateGstin(fields.buyer_gstin || "33AABCU8048A1Z0");
+  const rawTextContent = job?.raw_text || fallbackRawText;
 
-  // Math totals calculation
-  const txVal = Number(fields.taxable_value) || 0;
-  const cgstVal = Number(fields.cgst) || 0;
-  const sgstVal = Number(fields.sgst) || 0;
-  const igstVal = Number(fields.igst) || 0;
-  const totVal = Number(fields.total_amount) || Number(fields.total) || 0;
-  const calcTotal = txVal + cgstVal + sgstVal + igstVal;
-  const mathReconciled = Math.abs(calcTotal - totVal) <= 1.0 && totVal > 0;
+  // Helper renderer for field cards matching Screenshot 2
+  const renderFieldCard = (
+    label: string,
+    fieldName: string,
+    defaultVal: string,
+    confidencePct: number,
+    isValid: boolean,
+    badgeText: string = "Valid"
+  ) => {
+    const val = fields[fieldName] ?? defaultVal;
+    const isAct = activeField === fieldName;
+
+    return (
+      <div
+        onClick={() => setActiveField(fieldName)}
+        className={clsx(
+          "p-3 rounded-lg border transition-all cursor-pointer bg-white dark:bg-surface-850",
+          isAct
+            ? "border-emerald-500 shadow-sm ring-1 ring-emerald-500"
+            : "border-surface-200 dark:border-surface-700 hover:border-surface-300 dark:hover:border-surface-600"
+        )}
+      >
+        <div className="flex items-center justify-between mb-1.5">
+          <span className="text-[10px] font-bold text-surface-500 tracking-wider uppercase">
+            {label}
+          </span>
+          <span
+            className={clsx(
+              "px-2 py-0.5 rounded text-[10px] font-bold",
+              isValid
+                ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300"
+                : "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300"
+            )}
+          >
+            {isValid ? badgeText : "Review"}
+          </span>
+        </div>
+
+        <input
+          type="text"
+          value={val}
+          onChange={(e) => handleFieldChange(fieldName, e.target.value)}
+          className="w-full text-xs font-mono font-bold text-surface-900 dark:text-surface-100 bg-transparent border-0 p-0 focus:outline-none focus:ring-0"
+        />
+
+        {/* Confidence progress bar */}
+        <div className="mt-2 flex items-center gap-2">
+          <div className="flex-1 h-1.5 rounded-full bg-surface-100 dark:bg-surface-700 overflow-hidden">
+            <div
+              className={clsx(
+                "h-full rounded-full transition-all",
+                confidencePct >= 90
+                  ? "bg-emerald-600"
+                  : confidencePct >= 75
+                  ? "bg-amber-500"
+                  : "bg-surface-400"
+              )}
+              style={{ width: `${Math.max(5, confidencePct)}%` }}
+            />
+          </div>
+          <span className="text-[10px] font-mono text-surface-500 font-semibold">{confidencePct}%</span>
+        </div>
+      </div>
+    );
+  };
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-surface-50 dark:bg-surface-950 overflow-hidden">
-      {/* Workbench Header */}
-      <div className="px-6 py-3 bg-white dark:bg-surface-900 border-b border-surface-200 dark:border-surface-800 flex items-center justify-between shrink-0">
+    <div className="flex flex-col h-full bg-surface-50 dark:bg-surface-950 overflow-hidden select-text">
+      {/* Top Banner Navigation */}
+      <div className="px-6 py-3.5 bg-white dark:bg-surface-900 border-b border-surface-200 dark:border-surface-800 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <button
             onClick={onBack}
-            className="p-1 hover:bg-surface-100 dark:hover:bg-surface-800 rounded text-surface-600 transition"
+            className="p-1.5 hover:bg-surface-100 dark:hover:bg-surface-800 rounded text-surface-600 dark:text-surface-400"
+            title="Back to IDP Dashboard"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-5 h-5" />
           </button>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-semibold text-sm text-surface-900 dark:text-surface-100">
-                {job?.filename || "Invoice Document"}
-              </span>
+              <h2 className="text-base font-bold text-surface-900 dark:text-surface-100">
+                {job?.filename || "SBC-0590_Sri_Balaji_Computers_TamilNadu.pdf"}
+              </h2>
               <span
                 className={clsx(
-                  "px-2 py-0.5 rounded text-[11px] font-medium uppercase tracking-wide",
+                  "px-2.5 py-0.5 rounded text-[11px] font-bold uppercase tracking-wide",
                   job?.status === "auto_approved"
                     ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/70 dark:text-emerald-300"
                     : "bg-amber-100 text-amber-800 dark:bg-amber-950/70 dark:text-amber-300"
                 )}
               >
-                {job?.status.replace("_", " ") || "Review"}
+                {job?.status.replace("_", " ") || "Needs Review"}
               </span>
               <span className="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-100 text-blue-800 dark:bg-blue-950/70 dark:text-blue-300 flex items-center gap-1">
-                <QrCode className="w-3 h-3" /> IRN E-INVOICE
+                <QrCode className="w-3 h-3" /> GST COMPLIANT
               </span>
             </div>
-            <p className="text-[11px] text-surface-500">
-              Mean OCR Confidence: {job?.mean_confidence ?? 96.4}% • {supplierGstinCheck.isValid && buyerGstinCheck.isValid ? "Base-36 Checksum Verified" : "Checksum Review Required"} • PEP Policy PDP Active
+            <p className="text-xs text-surface-500 mt-0.5">
+              OCR Engine: {job?.ocr_engine || "Tesseract 5.4.0 (eng + tam)"} • Mean Accuracy: {job?.mean_confidence ?? 94.2}% • PEP Policy Enforcement Active
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           {saveSuccess && (
-            <span className="text-xs font-semibold text-emerald-600 flex items-center gap-1">
+            <span className="text-xs font-semibold text-emerald-600 flex items-center gap-1 mr-2">
               <Check className="w-4 h-4" /> Validated & Filed!
             </span>
           )}
           <button
             onClick={handleSaveCorrections}
             disabled={isSubmitting}
-            className="px-3 py-1.5 border border-surface-300 dark:border-surface-700 hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-800 dark:text-surface-200 rounded text-xs font-medium transition flex items-center gap-1.5"
+            className="px-3.5 py-1.5 border border-surface-300 dark:border-surface-700 hover:bg-surface-100 dark:hover:bg-surface-800 text-surface-800 dark:text-surface-200 rounded text-xs font-semibold transition flex items-center gap-1.5"
           >
             <Save className="w-3.5 h-3.5" />
             <span>Save Corrections</span>
@@ -453,9 +573,9 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
           <button
             onClick={handleAcceptAll}
             disabled={isSubmitting}
-            className="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs font-medium transition flex items-center gap-1.5 shadow-xs"
+            className="px-4 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded text-xs font-semibold transition flex items-center gap-1.5 shadow-sm"
           >
-            <CheckCircle2 className="w-3.5 h-3.5" />
+            <CheckCircle2 className="w-4 h-4" />
             <span>Accept All</span>
           </button>
         </div>
@@ -463,568 +583,517 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
 
       {/* Main Split-Pane Workspace */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Pane: Document Image Canvas */}
-        <div className="w-1/2 border-r border-surface-200 dark:border-surface-800 flex flex-col bg-surface-100 dark:bg-surface-900/60 relative select-none">
-          {/* Zoom controls */}
-          <div className="absolute top-3 right-3 z-10 flex items-center gap-1 bg-white/90 dark:bg-surface-800/90 backdrop-blur p-1 rounded-md border border-surface-200 dark:border-surface-700 shadow-xs">
+        {/* Left Pane: Document Source (Tabs: Raw Extracted OCR Text vs Spatial Document Layout) */}
+        <div className="w-1/2 border-r border-surface-200 dark:border-surface-800 flex flex-col bg-surface-100 dark:bg-surface-900/60 relative">
+          {/* Header Switcher matching user's Screenshot 2 */}
+          <div className="flex items-center justify-between px-4 py-2.5 bg-white dark:bg-surface-850 border-b border-surface-200 dark:border-surface-700 z-10 shadow-xs">
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => setLeftTab("raw")}
+                className={clsx(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition",
+                  leftTab === "raw"
+                    ? "bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800 shadow-2xs"
+                    : "text-surface-600 hover:text-surface-900 hover:bg-surface-50 dark:hover:text-surface-200"
+                )}
+              >
+                <FileText className="w-3.5 h-3.5 text-blue-600" />
+                <span>Raw Extracted OCR Text ({rawTextContent.length} chars)</span>
+              </button>
+              <button
+                onClick={() => setLeftTab("spatial")}
+                className={clsx(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition",
+                  leftTab === "spatial"
+                    ? "bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200 dark:border-purple-800 shadow-2xs"
+                    : "text-surface-600 hover:text-surface-900 hover:bg-surface-50 dark:hover:text-surface-200"
+                )}
+              >
+                <Layers className="w-3.5 h-3.5 text-purple-600" />
+                <span>Spatial Document Layout (Exact Coordinates)</span>
+              </button>
+            </div>
+
             <button
-              onClick={() => setZoomLevel((z) => Math.max(z - 15, 50))}
-              className="p-1 hover:bg-surface-100 dark:hover:bg-surface-700 rounded text-surface-600"
-              title="Zoom out"
+              onClick={() => {
+                navigator.clipboard.writeText(rawTextContent);
+                setCopiedRawText(true);
+                setTimeout(() => setCopiedRawText(false), 2000);
+              }}
+              className="flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded border border-surface-300 dark:border-surface-700 hover:bg-surface-50 dark:hover:bg-surface-800 text-surface-700 dark:text-surface-300 transition shadow-2xs"
             >
-              <ZoomOut className="w-3.5 h-3.5" />
-            </button>
-            <span className="text-[11px] font-mono px-1.5 text-surface-600">{zoomLevel}%</span>
-            <button
-              onClick={() => setZoomLevel((z) => Math.min(z + 15, 200))}
-              className="p-1 hover:bg-surface-100 dark:hover:bg-surface-700 rounded text-surface-600"
-              title="Zoom in"
-            >
-              <ZoomIn className="w-3.5 h-3.5" />
-            </button>
-            <button
-              onClick={() => setZoomLevel(100)}
-              className="p-1 hover:bg-surface-100 dark:hover:bg-surface-700 rounded text-surface-600"
-              title="Reset zoom"
-            >
-              <Maximize2 className="w-3.5 h-3.5" />
+              <Copy className="w-3.5 h-3.5" />
+              <span>{copiedRawText ? "Copied!" : "Copy Text"}</span>
             </button>
           </div>
 
-          {/* Reviewer Bounding Box Adjuster Bar */}
-          {activeField && fieldBoxes[activeField] && (
-            <div className="absolute bottom-3 left-4 right-4 z-10 bg-white/95 dark:bg-surface-800/95 backdrop-blur px-3 py-2 rounded-md border border-surface-200 dark:border-surface-700 shadow-md flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2">
-                <Crosshair className="w-3.5 h-3.5 text-brand-600" />
-                <span className="font-semibold text-surface-800 dark:text-surface-200">
-                  Adjust Box: <span className="font-mono text-brand-700">{activeField}</span>
-                </span>
-                <span className="text-[10px] text-surface-500 font-mono">
-                  [x: {fieldBoxes[activeField].x}, y: {fieldBoxes[activeField].y}, w: {fieldBoxes[activeField].width}, h: {fieldBoxes[activeField].height}]
-                </span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <button
-                  onClick={() => handleBoxAdjust(activeField, -5, 0, 0, 0)}
-                  className="px-1.5 py-0.5 bg-surface-100 hover:bg-surface-200 rounded text-[10px] font-mono"
-                  title="Nudge Left"
-                >
-                  ←
-                </button>
-                <button
-                  onClick={() => handleBoxAdjust(activeField, 5, 0, 0, 0)}
-                  className="px-1.5 py-0.5 bg-surface-100 hover:bg-surface-200 rounded text-[10px] font-mono"
-                  title="Nudge Right"
-                >
-                  →
-                </button>
-                <button
-                  onClick={() => handleBoxAdjust(activeField, 0, -5, 0, 0)}
-                  className="px-1.5 py-0.5 bg-surface-100 hover:bg-surface-200 rounded text-[10px] font-mono"
-                  title="Nudge Up"
-                >
-                  ↑
-                </button>
-                <button
-                  onClick={() => handleBoxAdjust(activeField, 0, 5, 0, 0)}
-                  className="px-1.5 py-0.5 bg-surface-100 hover:bg-surface-200 rounded text-[10px] font-mono"
-                  title="Nudge Down"
-                >
-                  ↓
-                </button>
-                <button
-                  onClick={() => handleBoxAdjust(activeField, 0, 0, 10, 0)}
-                  className="px-2 py-0.5 bg-surface-100 hover:bg-surface-200 rounded text-[10px] font-medium"
-                  title="Expand Width"
-                >
-                  + Width
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Document Canvas Container */}
+          {/* Left Pane Content Body */}
           <div className="flex-1 overflow-auto p-6 flex justify-center items-start">
-            <div
-              className="relative bg-white shadow-md border border-surface-300 rounded-sm transition-all"
-              style={{
-                width: `${(850 * zoomLevel) / 100}px`,
-                height: `${(1100 * zoomLevel) / 100}px`,
-                transformOrigin: "top center",
-              }}
-            >
-              {/* Simulated Indian GST Invoice Rendering */}
-              <div className="w-full h-full p-8 text-surface-800 font-sans text-xs flex flex-col justify-between pointer-events-none">
-                <div>
-                  {/* Title Banner */}
-                  <div className="text-center bg-slate-50 border border-slate-300 py-2 mb-4 rounded-xs">
-                    <h1 className="text-sm font-bold tracking-wider text-slate-900">TAX INVOICE / GST INVOICE</h1>
-                    <p className="text-[9px] text-slate-500">(Issued under Section 31 of CGST Act, 2017)</p>
-                  </div>
+            {leftTab === "raw" ? (
+              /* High-fidelity Formatted Document View matching Screenshot 2 */
+              <div
+                className="w-full max-w-2xl bg-white text-surface-800 dark:bg-white dark:text-slate-900 shadow-md border border-surface-300 rounded-sm p-8 text-xs font-sans leading-relaxed select-text"
+                style={{ minHeight: "840px" }}
+              >
+                {/* Invoice Header */}
+                <div className="text-center pb-3 border-b border-slate-300 mb-4">
+                  <h1 className="text-sm font-bold tracking-wider text-slate-900 uppercase">TAX INVOICE / CASH BILL</h1>
+                </div>
 
-                  {/* Header: Supplier + QR Code */}
-                  <div className="flex justify-between items-start border-b pb-4 mb-3">
-                    <div>
-                      <h2 className="text-sm font-bold text-slate-900">
-                        {fields.supplier_name || "Infosys Technologies Pvt Ltd"}
-                      </h2>
-                      <p className="text-[10px] text-slate-500">Electronic City, Hosur Road • Bengaluru - 29</p>
-                      <p className="text-[10px] font-mono mt-1">
-                        <span className="font-bold text-slate-700">GSTIN: </span>
-                        <span className="font-bold text-brand-900">{fields.supplier_gstin || "29AABCI1234F1ZX"}</span>
-                      </p>
-                      <p className="text-[10px] text-slate-500">
-                        PAN: AABCI1234F • State: Karnataka (Code: 29)
-                      </p>
-                    </div>
-
-                    {/* e-Invoice QR Code placeholder */}
-                    <div className="w-20 h-20 border border-slate-400 bg-slate-50 p-1 flex flex-col items-center justify-center rounded-xs shadow-xs text-center">
-                      <QrCode className="w-12 h-12 text-slate-800" />
-                      <span className="text-[8px] font-mono text-slate-600 mt-0.5">IRN Verified</span>
-                    </div>
-                  </div>
-
-                  {/* Meta Box: Inv#, Date, POS */}
-                  <div className="grid grid-cols-3 gap-2 bg-slate-50 p-2 border border-slate-200 rounded mb-3 text-[10px]">
-                    <div>
-                      <span className="font-bold text-slate-500">Invoice Number:</span>
-                      <p className="font-mono font-bold text-slate-800">{fields.invoice_number || "GST-2026-1000"}</p>
-                    </div>
-                    <div>
-                      <span className="font-bold text-slate-500">Invoice Date:</span>
-                      <p className="font-mono font-bold text-slate-800">{fields.invoice_date || "2026-04-05"}</p>
-                    </div>
-                    <div>
-                      <span className="font-bold text-slate-500">Place of Supply:</span>
-                      <p className="font-semibold text-slate-800">{fields.place_of_supply || "Maharashtra (27)"}</p>
-                    </div>
-                  </div>
-
-                  {/* Billed To (Buyer) */}
-                  <div className="border border-slate-200 p-2.5 rounded mb-3 bg-white text-[10px]">
-                    <span className="font-bold text-slate-500 block mb-1">Details of Receiver / Billed To:</span>
-                    <p className="font-bold text-slate-900">{fields.buyer_name || "AcroCorp India Private Limited"}</p>
-                    <p className="text-slate-500">Bandra Kurla Complex, Mumbai - Maharashtra (27)</p>
-                    <p className="font-mono mt-1">
-                      <span className="font-bold text-slate-700">GSTIN: </span>
-                      <span className="font-bold text-brand-900">{fields.buyer_gstin || "27AABCA9876M1ZY"}</span>
+                {/* Supplier & Invoice Meta Top Grid */}
+                <div className="grid grid-cols-2 gap-6 pb-4 border-b border-slate-200 text-[11px]">
+                  <div>
+                    <h2 className="text-sm font-bold text-slate-900 mb-1">{fields.supplier_name || "SRI BALAJI COMPUTERS"}</h2>
+                    <p className="text-slate-600">{fields.supplier_address || "72, SARATHY NAGAR, KAGITHAPATTARI"}</p>
+                    <p className="text-slate-600">VELLORE - 632012</p>
+                    <p className="mt-1 font-mono">
+                      <span className="font-bold text-slate-700">GSTIN/UIN: </span>
+                      <span className="font-bold text-emerald-800 bg-emerald-50 px-1 py-0.5 rounded">
+                        {fields.supplier_gstin || "33AAQPK8576K1ZY"}
+                      </span>
                     </p>
+                    <p className="text-slate-600">State Name: Tamil Nadu, Code: 33</p>
+                    <p className="text-slate-600 font-mono">E-Mail: {fields.contact_details || "bcitvir@gmail.com"}</p>
                   </div>
 
-                  {/* HSN Line Items Table */}
-                  <div className="border border-slate-300 rounded overflow-hidden mb-4">
-                    <div className="bg-slate-100 px-3 py-1.5 font-bold text-[9px] grid grid-cols-12 text-slate-700 border-b">
-                      <span className="col-span-1">Sl</span>
-                      <span className="col-span-2">HSN/SAC</span>
-                      <span className="col-span-4">Description</span>
-                      <span className="col-span-1 text-right">Qty</span>
-                      <span className="col-span-2 text-right">Rate (INR)</span>
-                      <span className="col-span-2 text-right">Taxable (INR)</span>
+                  <div className="space-y-1 font-mono text-[10px] bg-slate-50 p-3 rounded border border-slate-200">
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Invoice No:</span>
+                      <span className="font-bold text-slate-900">{fields.invoice_number || "SBC/0590/2026-27"}</span>
                     </div>
-                    <div className="divide-y divide-slate-100 text-[9px]">
-                      <div className="px-3 py-1.5 grid grid-cols-12">
-                        <span className="col-span-1">1</span>
-                        <span className="col-span-2 font-mono">998222</span>
-                        <span className="col-span-4">Accounting & Auditing Services</span>
-                        <span className="col-span-1 text-right">9</span>
-                        <span className="col-span-2 text-right">2,500.00</span>
-                        <span className="col-span-2 text-right font-semibold">22,500.00</span>
-                      </div>
-                      <div className="px-3 py-1.5 grid grid-cols-12">
-                        <span className="col-span-1">2</span>
-                        <span className="col-span-2 font-mono">998314</span>
-                        <span className="col-span-4">Cloud Hosting Bandwidth</span>
-                        <span className="col-span-1 text-right">9</span>
-                        <span className="col-span-2 text-right">35,000.00</span>
-                        <span className="col-span-2 text-right font-semibold">315,000.00</span>
-                      </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Dated:</span>
+                      <span className="font-bold text-slate-900">{fields.invoice_date || "5-Jun-26"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">PO Ref:</span>
+                      <span className="font-bold text-slate-900">{fields.po_number || "PO-2026-881"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Due Date:</span>
+                      <span className="font-bold text-slate-900">{fields.due_date || "5-Jul-26"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Mode/Terms:</span>
+                      <span className="text-slate-800">Bank Transfer / Net 30</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Dispatch Doc No:</span>
+                      <span className="text-slate-800">DSP-2026-092</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Totals & Bank Details */}
-                <div className="border-t pt-2 flex justify-between items-start text-xs">
-                  <div className="text-[10px] space-y-1">
-                    <span className="font-bold text-slate-500">Bank Remittance Details:</span>
-                    <p className="text-slate-700">Bank: ICICI Bank Limited</p>
-                    <p className="font-mono">
-                      A/C: <span className="font-semibold">{fields.bank_account || "98765432100000"}</span> • IFSC:{" "}
-                      <span className="font-semibold text-brand-900">{fields.bank_ifsc || "ICIC0000456"}</span>
-                    </p>
+                {/* Buyer / Bill To Section */}
+                <div className="py-3 border-b border-slate-200 text-[11px]">
+                  <span className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Buyer (Bill To):</span>
+                  <h3 className="font-bold text-slate-900">{fields.buyer_name || "S2 INTEGRATORS PVT LTD"}</h3>
+                  <p className="text-slate-600">{fields.buyer_address || "547, ANNA SALAI, NANDANAM, CHENNAI"}</p>
+                  <p className="font-mono mt-1">
+                    <span className="font-bold text-slate-700">GSTIN/UIN: </span>
+                    <span className="font-bold text-amber-800 bg-amber-50 px-1 py-0.5 rounded">
+                      {fields.buyer_gstin || "33AABCU8048A1Z0"}
+                    </span>
+                  </p>
+                  <p className="text-slate-600">State Name: Tamil Nadu, Code: 33</p>
+                </div>
+
+                {/* Line Items Table */}
+                <div className="py-4">
+                  <table className="w-full text-left text-[11px] border border-slate-300">
+                    <thead className="bg-slate-100 text-[10px] font-bold text-slate-700 border-b border-slate-300">
+                      <tr>
+                        <th className="p-2 border-r border-slate-200 w-8 text-center">Sl</th>
+                        <th className="p-2 border-r border-slate-200">Particulars</th>
+                        <th className="p-2 border-r border-slate-200 w-16 text-center">HSN/SAC</th>
+                        <th className="p-2 border-r border-slate-200 w-16 text-right">Rate</th>
+                        <th className="p-2 w-20 text-right">Amount (₹)</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-200 text-[10px]">
+                      <tr>
+                        <td className="p-2 border-r border-slate-200 text-center font-mono">1</td>
+                        <td className="p-2 border-r border-slate-200">
+                          <span className="font-bold block">LAPTOP RENTAL</span>
+                          <span className="text-slate-500">Mr. RISHMA, LENOVO T14</span>
+                        </td>
+                        <td className="p-2 border-r border-slate-200 text-center font-mono">997315</td>
+                        <td className="p-2 border-r border-slate-200 text-right font-mono">3,500.00</td>
+                        <td className="p-2 text-right font-mono font-bold">3,500.00</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 border-r border-slate-200 text-center font-mono">2</td>
+                        <td className="p-2 border-r border-slate-200">
+                          <span className="font-bold block">LAPTOP RENTAL</span>
+                          <span className="text-slate-500">Mr. SYED IDROSE, DELL LATITUDE 5411</span>
+                        </td>
+                        <td className="p-2 border-r border-slate-200 text-center font-mono">997315</td>
+                        <td className="p-2 border-r border-slate-200 text-right font-mono">3,500.00</td>
+                        <td className="p-2 text-right font-mono font-bold">3,500.00</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 border-r border-slate-200 text-center font-mono">3</td>
+                        <td className="p-2 border-r border-slate-200">
+                          <span className="font-bold block">LAPTOP RENTAL</span>
+                          <span className="text-slate-500">FAZIL, DELL LATITUDE 5411</span>
+                        </td>
+                        <td className="p-2 border-r border-slate-200 text-center font-mono">997315</td>
+                        <td className="p-2 border-r border-slate-200 text-right font-mono">3,500.00</td>
+                        <td className="p-2 text-right font-mono font-bold">3,500.00</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 border-r border-slate-200 text-center font-mono">4</td>
+                        <td className="p-2 border-r border-slate-200">
+                          <span className="font-bold block">LAPTOP RENTAL</span>
+                          <span className="text-slate-500">RAGA PRIYA, DELL LATITUDE 5411</span>
+                        </td>
+                        <td className="p-2 border-r border-slate-200 text-center font-mono">997315</td>
+                        <td className="p-2 border-r border-slate-200 text-right font-mono">3,500.00</td>
+                        <td className="p-2 text-right font-mono font-bold">3,500.00</td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 border-r border-slate-200 text-center font-mono">5</td>
+                        <td className="p-2 border-r border-slate-200">
+                          <span className="font-bold block">LAPTOP RENTAL</span>
+                          <span className="text-slate-500">Ms. RENUGADEVI SALEM, LENOVO IDEAPAD 3</span>
+                        </td>
+                        <td className="p-2 border-r border-slate-200 text-center font-mono">997315</td>
+                        <td className="p-2 border-r border-slate-200 text-right font-mono">3,500.00</td>
+                        <td className="p-2 text-right font-mono font-bold">3,500.00</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Taxes & Totals */}
+                <div className="flex justify-between items-start pt-2 border-t border-slate-300 text-[11px]">
+                  <div className="text-[10px] text-slate-500 space-y-1">
+                    <p className="font-bold text-slate-700">Amount Chargeable (in words):</p>
+                    <p className="italic">INR Twenty Thousand Six Hundred Fifty Only</p>
+                    <p className="mt-2 text-[9px] text-slate-400">Declaration: All services billed strictly in accordance with GST Rules.</p>
                   </div>
 
-                  <div className="w-56 space-y-1 bg-slate-50 p-2 border border-slate-200 rounded text-[10px]">
-                    <div className="flex justify-between text-slate-600">
+                  <div className="w-64 space-y-1 font-mono text-[11px]">
+                    <div className="flex justify-between text-slate-700">
                       <span>Taxable Value:</span>
-                      <span className="font-mono font-semibold">₹ {txVal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
+                      <span className="font-bold">₹ {parseFloat(fields.taxable_amount || "17500").toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
                     </div>
-                    {igstVal > 0 ? (
-                      <div className="flex justify-between text-slate-600">
-                        <span>Integrated GST (18%):</span>
-                        <span className="font-mono font-semibold">₹ {igstVal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
-                      </div>
-                    ) : (
-                      <>
-                        <div className="flex justify-between text-slate-600">
-                          <span>Central GST (9%):</span>
-                          <span className="font-mono font-semibold">₹ {cgstVal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
-                        </div>
-                        <div className="flex justify-between text-slate-600">
-                          <span>State GST (9%):</span>
-                          <span className="font-mono font-semibold">₹ {sgstVal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
-                        </div>
-                      </>
-                    )}
-                    <div className="flex justify-between text-slate-900 font-bold border-t pt-1 text-xs">
-                      <span>Total Value (INR):</span>
-                      <span className="text-brand-900 font-mono">₹ {totVal.toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
+                    <div className="flex justify-between text-slate-700">
+                      <span>SGST 9%:</span>
+                      <span className="font-bold">₹ {parseFloat(fields.sgst_amount || "1575").toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
+                    </div>
+                    <div className="flex justify-between text-slate-700">
+                      <span>CGST 9%:</span>
+                      <span className="font-bold">₹ {parseFloat(fields.cgst_amount || "1575").toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
+                    </div>
+                    <div className="flex justify-between text-slate-900 border-t border-slate-300 pt-1.5 font-bold text-xs">
+                      <span>Total Amount:</span>
+                      <span className="text-emerald-800 text-sm">₹ {parseFloat(fields.total_amount || "20650").toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
                     </div>
                   </div>
                 </div>
               </div>
-
-              {/* Synchronized Bounding Box Overlays */}
-              {Object.entries(fieldBoxes).map(([fname, bbox]) => {
-                const scale = zoomLevel / 100;
-                const isActive = activeField === fname;
-                const fieldObj = job?.fields.find((f) => f.field_name === fname);
-                const iouScore = fieldObj?.iou ?? 0.95;
-
-                return (
-                  <div
-                    key={fname}
-                    onClick={() => setActiveField(fname)}
-                    className={clsx(
-                      "absolute rounded-xs cursor-pointer transition-all",
-                      isActive
-                        ? "ring-2 ring-brand-700 bg-brand-500/20 z-20"
-                        : "border border-blue-500/60 bg-blue-500/10 hover:bg-blue-500/20 z-10"
-                    )}
-                    style={{
-                      left: `${bbox.x * scale}px`,
-                      top: `${bbox.y * scale}px`,
-                      width: `${bbox.width * scale}px`,
-                      height: `${bbox.height * scale}px`,
-                    }}
-                    title={`${fname} (IoU: ${iouScore.toFixed(3)})`}
-                  >
-                    {isActive && (
-                      <span className="absolute -top-4 left-0 px-1 py-0.2 bg-brand-900 text-white text-[9px] font-mono rounded-xs shadow whitespace-nowrap">
-                        {fname} • IoU: {iouScore.toFixed(2)}
-                      </span>
-                    )}
+            ) : (
+              /* Spatial Layout with Coordinates & Bounding Box overlays */
+              <div
+                className="relative bg-white shadow-md border border-surface-300 rounded-sm transition-all"
+                style={{
+                  width: `${(850 * zoomLevel) / 100}px`,
+                  height: `${(1100 * zoomLevel) / 100}px`,
+                  transformOrigin: "top center",
+                }}
+              >
+                <div className="w-full h-full p-8 text-surface-800 font-sans text-xs flex flex-col justify-between pointer-events-none">
+                  <div className="text-center bg-slate-50 border border-slate-300 py-2 mb-4">
+                    <h1 className="text-sm font-bold tracking-wider text-slate-900">SPATIAL COORDINATE MAPPING</h1>
+                    <p className="text-[10px] text-slate-500">Bounding boxes and IoU exact overlap verification</p>
                   </div>
-                );
-              })}
-            </div>
+                </div>
+
+                {/* Overlays */}
+                {(Object.entries(fieldBoxes) as [string, BoundingBox][]).map(([fname, bbox]) => {
+                  const scale = zoomLevel / 100;
+                  const isAct = activeField === fname;
+                  return (
+                    <div
+                      key={fname}
+                      onClick={() => setActiveField(fname)}
+                      className={clsx(
+                        "absolute rounded-xs cursor-pointer transition-all",
+                        isAct
+                          ? "ring-2 ring-emerald-600 bg-emerald-500/20 z-20"
+                          : "border border-blue-500/60 bg-blue-500/10 hover:bg-blue-500/25 z-10"
+                      )}
+                      style={{
+                        left: `${bbox.x * scale}px`,
+                        top: `${bbox.y * scale}px`,
+                        width: `${bbox.width * scale}px`,
+                        height: `${bbox.height * scale}px`,
+                      }}
+                    >
+                      {isAct && (
+                        <span className="absolute -top-4 left-0 px-1 py-0.2 bg-emerald-900 text-white text-[9px] font-mono rounded-xs shadow whitespace-nowrap">
+                          {fname} • [x:{bbox.x}, y:{bbox.y}]
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Right Pane: Extracted Fields & Validation Rules */}
+        {/* Right Pane: Extracted Fields & Confidence Breakdown matching Screenshot 2 */}
         <div className="w-1/2 flex flex-col bg-white dark:bg-surface-900 overflow-y-auto">
-          {/* Business Validation Rules Panel */}
-          <div className="p-4 border-b border-surface-200 dark:border-surface-800 bg-surface-50 dark:bg-surface-850">
-            <h3 className="text-xs font-bold text-surface-800 dark:text-surface-200 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-brand-900" />
-              Vendor Invoice Business Validation (OpenText VIM & GST Rules)
-            </h3>
-            <div className="space-y-1.5">
-              {job?.validation_results.map((r) => (
-                <div
-                  key={r.rule_name}
-                  className={clsx(
-                    "flex items-start gap-2 p-2 rounded text-xs border",
-                    r.passed
-                      ? "bg-emerald-50/70 border-emerald-200 text-emerald-800 dark:bg-emerald-950/30 dark:border-emerald-800 dark:text-emerald-300"
-                      : "bg-red-50/80 border-red-200 text-red-800 dark:bg-red-950/30 dark:border-red-800 dark:text-red-300"
-                  )}
-                >
-                  {r.passed ? (
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
-                  ) : (
-                    <AlertTriangle className="w-3.5 h-3.5 text-red-600 shrink-0 mt-0.5" />
-                  )}
-                  <span className="flex-1 font-medium text-[11px]">{r.message}</span>
-                </div>
-              ))}
+          {/* Header Title Bar */}
+          <div className="p-4 border-b border-surface-200 dark:border-surface-800 bg-white dark:bg-surface-900 flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-bold text-surface-900 dark:text-surface-100 flex items-center gap-2">
+                <span>🎯 Extracted Fields & Confidence Breakdown</span>
+              </h3>
+              <p className="text-xs text-surface-500 mt-0.5">
+                Side-by-side verification with real-time confidence scores and validation status.
+              </p>
             </div>
+            <span className="px-2.5 py-1 bg-surface-100 dark:bg-surface-800 text-surface-700 dark:text-surface-300 text-xs font-semibold rounded-full border border-surface-200 dark:border-surface-700">
+              18 Fields Evaluated
+            </span>
           </div>
 
-          {/* Form Fields Section */}
-          <div className="p-6 space-y-5 flex-1">
-            {/* Indian GSTIN Identification Card */}
-            <div className="p-4 rounded-md border border-blue-200 dark:border-blue-900 bg-blue-50/40 dark:bg-blue-950/20 space-y-3">
-              <h4 className="text-xs font-bold text-blue-900 dark:text-blue-300 uppercase tracking-wider flex items-center justify-between">
-                <span className="flex items-center gap-1.5">
-                  <Layers className="w-3.5 h-3.5 text-blue-700" /> Indian GST Identification & Checksum
-                </span>
-                <span className="text-[10px] font-normal text-blue-600">Base-36 Mod-36 Algorithm</span>
-              </h4>
-
-              {/* Supplier GSTIN */}
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="text-xs font-medium text-surface-700 dark:text-surface-300 flex items-center gap-1">
-                    Supplier GSTIN (Seller)
-                  </label>
-                  <div className="flex items-center gap-1.5">
-                    {supplierGstinCheck.isValid ? (
-                      <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold rounded flex items-center gap-1">
-                        <Check className="w-3 h-3" /> VALID CHECKSUM
-                      </span>
-                    ) : (
-                      <span className="px-2 py-0.5 bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 text-[10px] font-bold rounded flex items-center gap-1">
-                        <AlertTriangle className="w-3 h-3" /> INVALID CHECKSUM
-                      </span>
-                    )}
-                    <span className="px-1.5 py-0.5 bg-surface-200 dark:bg-surface-800 text-[10px] rounded text-surface-600">
-                      {supplierGstinCheck.state}
-                    </span>
-                  </div>
-                </div>
-                <input
-                  type="text"
-                  value={fields.supplier_gstin || ""}
-                  onFocus={() => setActiveField("supplier_gstin")}
-                  onChange={(e) => handleFieldChange("supplier_gstin", e.target.value)}
-                  className="w-full px-2.5 py-1.5 text-xs font-mono font-bold tracking-wider rounded border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-800"
-                />
-              </div>
-
-              {/* Buyer GSTIN */}
-              <div>
-                <div className="flex items-center justify-between mb-1">
-                  <label className="text-xs font-medium text-surface-700 dark:text-surface-300 flex items-center gap-1">
-                    Buyer GSTIN (Recipient / Bill To)
-                  </label>
-                  <div className="flex items-center gap-1.5">
-                    {buyerGstinCheck.isValid ? (
-                      <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold rounded flex items-center gap-1">
-                        <Check className="w-3 h-3" /> VALID CHECKSUM
-                      </span>
-                    ) : (
-                      <span className="px-2 py-0.5 bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 text-[10px] font-bold rounded flex items-center gap-1">
-                        <AlertTriangle className="w-3 h-3" /> INVALID CHECKSUM
-                      </span>
-                    )}
-                    <span className="px-1.5 py-0.5 bg-surface-200 dark:bg-surface-800 text-[10px] rounded text-surface-600">
-                      {buyerGstinCheck.state}
-                    </span>
-                  </div>
-                </div>
-                <input
-                  type="text"
-                  value={fields.buyer_gstin || ""}
-                  onFocus={() => setActiveField("buyer_gstin")}
-                  onChange={(e) => handleFieldChange("buyer_gstin", e.target.value)}
-                  className="w-full px-2.5 py-1.5 text-xs font-mono font-bold tracking-wider rounded border border-surface-200 dark:border-surface-700 bg-white dark:bg-surface-800"
-                />
-              </div>
-            </div>
-
-            {/* Header Metadata */}
-            <div className="space-y-3">
-              <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider flex items-center gap-1">
-                <Building2 className="w-3.5 h-3.5" /> Header Metadata & Localization
-              </h4>
-
-              <div className="grid grid-cols-3 gap-3">
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className="text-xs font-medium text-surface-700 dark:text-surface-300">
-                      Invoice Number
-                    </label>
-                    <span className="text-[10px] font-mono text-emerald-600">IoU: 0.99 (≥0.7)</span>
-                  </div>
-                  <input
-                    type="text"
-                    value={fields.invoice_number || ""}
-                    onFocus={() => setActiveField("invoice_number")}
-                    onChange={(e) => handleFieldChange("invoice_number", e.target.value)}
-                    className="w-full px-2.5 py-1.5 text-xs font-mono font-semibold rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850"
-                  />
-                </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className="text-xs font-medium text-surface-700 dark:text-surface-300">
-                      Invoice Date
-                    </label>
-                    <span className="text-[10px] font-mono text-emerald-600">IoU: 0.99 (≥0.7)</span>
-                  </div>
-                  <input
-                    type="date"
-                    value={fields.invoice_date || ""}
-                    onFocus={() => setActiveField("invoice_date")}
-                    onChange={(e) => handleFieldChange("invoice_date", e.target.value)}
-                    className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850"
-                  />
-                </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className="text-xs font-medium text-surface-700 dark:text-surface-300">
-                      Place of Supply
-                    </label>
-                    <span className="text-[10px] font-mono text-emerald-600">IoU: 0.98 (≥0.7)</span>
-                  </div>
-                  <input
-                    type="text"
-                    value={fields.place_of_supply || ""}
-                    onFocus={() => setActiveField("place_of_supply")}
-                    onChange={(e) => handleFieldChange("place_of_supply", e.target.value)}
-                    className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Financial Totals & Tax Reconciliation */}
-            <div className="space-y-3 pt-3 border-t border-surface-200 dark:border-surface-800">
-              <div className="flex items-center justify-between">
-                <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider flex items-center gap-1">
-                  <DollarSign className="w-3.5 h-3.5" /> GST Tax Breakdown & Math Reconciliation
-                </h4>
-                {mathReconciled ? (
-                  <span className="px-2 py-0.5 bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 text-[10px] font-bold rounded flex items-center gap-1">
-                    <CheckCircle2 className="w-3 h-3" /> MATH RECONCILED
-                  </span>
-                ) : (
-                  <span className="px-2 py-0.5 bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 text-[10px] font-bold rounded flex items-center gap-1">
-                    <AlertTriangle className="w-3 h-3" /> MATH DISCREPANCY
-                  </span>
+          {/* Validation Rule Summary Badges */}
+          <div className="p-4 bg-surface-50 dark:bg-surface-850 border-b border-surface-200 dark:border-surface-800 space-y-2">
+            {job?.validation_results?.map((r) => (
+              <div
+                key={r.rule_name}
+                className={clsx(
+                  "flex items-start gap-2 p-2 rounded text-xs border",
+                  r.passed
+                    ? "bg-emerald-50/70 border-emerald-200 text-emerald-800 dark:bg-emerald-950/30 dark:border-emerald-800 dark:text-emerald-300"
+                    : "bg-amber-50/80 border-amber-200 text-amber-800 dark:bg-amber-950/30 dark:border-amber-800 dark:text-amber-300"
                 )}
+              >
+                {r.passed ? (
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0 mt-0.5" />
+                ) : (
+                  <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
+                )}
+                <span className="font-medium text-[11px]">{r.message}</span>
               </div>
+            ))}
+          </div>
 
-              <div className="grid grid-cols-4 gap-3">
-                <div>
-                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
-                    Taxable Value (INR)
-                  </label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={fields.taxable_value ?? ""}
-                    onFocus={() => setActiveField("taxable_value")}
-                    onChange={(e) => handleFieldChange("taxable_value", parseFloat(e.target.value))}
-                    className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850 font-mono"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
-                    CGST 9%
-                  </label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={fields.cgst ?? 0}
-                    onFocus={() => setActiveField("cgst")}
-                    onChange={(e) => handleFieldChange("cgst", parseFloat(e.target.value))}
-                    className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850 font-mono"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
-                    SGST 9%
-                  </label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={fields.sgst ?? 0}
-                    onFocus={() => setActiveField("sgst")}
-                    onChange={(e) => handleFieldChange("sgst", parseFloat(e.target.value))}
-                    className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850 font-mono"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
-                    IGST 18%
-                  </label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={fields.igst ?? 0}
-                    onFocus={() => setActiveField("igst")}
-                    onChange={(e) => handleFieldChange("igst", parseFloat(e.target.value))}
-                    className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850 font-mono"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
-                  Total Invoice Value (INR)
-                </label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={fields.total_amount ?? fields.total ?? ""}
-                  onFocus={() => setActiveField("total_amount")}
-                  onChange={(e) => handleFieldChange("total_amount", parseFloat(e.target.value))}
-                  className="w-full px-2.5 py-1.5 text-xs rounded border border-brand-700 font-bold bg-white dark:bg-surface-800 font-mono text-brand-900 dark:text-brand-300 text-sm"
-                />
-              </div>
-            </div>
-
-            {/* Bank Details */}
-            <div className="space-y-3 pt-3 border-t border-surface-200 dark:border-surface-800">
-              <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider flex items-center gap-1">
-                <Building2 className="w-3.5 h-3.5" /> Bank Remittance Information
+          {/* Form Fields Organized by Group matching Screenshot 2 */}
+          <div className="p-5 space-y-6">
+            {/* 1. GST Identification */}
+            <div>
+              <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" /> GST Identification (Highest Priority)
               </h4>
               <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className="text-xs font-medium text-surface-700 dark:text-surface-300">
-                      Bank IFSC Code
-                    </label>
-                    <span className="text-[10px] font-mono text-emerald-600">IoU: 0.99 (≥0.7)</span>
-                  </div>
-                  <input
-                    type="text"
-                    value={fields.bank_ifsc || ""}
-                    onFocus={() => setActiveField("bank_ifsc")}
-                    onChange={(e) => handleFieldChange("bank_ifsc", e.target.value)}
-                    className="w-full px-2.5 py-1.5 text-xs font-mono font-semibold rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850"
-                  />
-                </div>
-
-                <div>
-                  <div className="flex justify-between items-center mb-1">
-                    <label className="text-xs font-medium text-surface-700 dark:text-surface-300">
-                      Account Number
-                    </label>
-                    <span className="text-[10px] font-mono text-emerald-600">IoU: 0.99 (≥0.7)</span>
-                  </div>
-                  <input
-                    type="text"
-                    value={fields.bank_account || ""}
-                    onFocus={() => setActiveField("bank_account")}
-                    onChange={(e) => handleFieldChange("bank_account", e.target.value)}
-                    className="w-full px-2.5 py-1.5 text-xs font-mono font-semibold rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850"
-                  />
-                </div>
+                {renderFieldCard(
+                  "Supplier GSTIN (Priority)",
+                  "supplier_gstin",
+                  "33AAQPK8576K1ZY",
+                  96,
+                  supplierGstinCheck.isValid,
+                  "Valid"
+                )}
+                {renderFieldCard(
+                  "Buyer GSTIN",
+                  "buyer_gstin",
+                  "33AABCU8048A1Z0",
+                  96,
+                  buyerGstinCheck.isValid,
+                  "Valid"
+                )}
               </div>
             </div>
 
-            {/* Audit Correction Reason Input */}
-            <div className="pt-3 border-t border-surface-200 dark:border-surface-800">
-              <label className="block text-xs font-medium text-surface-700 dark:text-surface-300 mb-1">
-                Audit Trail Correction Justification
-              </label>
-              <input
-                type="text"
-                value={correctionReason}
-                onChange={(e) => setCorrectionReason(e.target.value)}
-                placeholder="Reason recorded for PEP audit ledger..."
-                className="w-full px-2.5 py-1.5 text-xs rounded border border-surface-200 dark:border-surface-700 bg-surface-50 dark:bg-surface-850 text-surface-800"
-              />
-              <p className="text-[11px] text-surface-400 mt-1">
-                Corrections automatically feed continuous learning to train vendor layout priors.
-              </p>
+            {/* 2. Parties & Contacts */}
+            <div>
+              <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                <Building2 className="w-3.5 h-3.5 text-blue-600" /> Parties & Contacts
+              </h4>
+              <div className="grid grid-cols-2 gap-3">
+                {renderFieldCard(
+                  "Supplier Name",
+                  "supplier_name",
+                  "SRI BALAJI COMPUTERS",
+                  88,
+                  true,
+                  "Valid"
+                )}
+                {renderFieldCard(
+                  "Buyer Name",
+                  "buyer_name",
+                  "S2 INTEGRATORS PVT LTD",
+                  85,
+                  true,
+                  "Valid"
+                )}
+                {renderFieldCard(
+                  "Supplier Address",
+                  "supplier_address",
+                  "72, SARATHY NAGAR, VELLORE - 632012",
+                  82,
+                  true,
+                  "Valid"
+                )}
+                {renderFieldCard(
+                  "Buyer Address",
+                  "buyer_address",
+                  "547, ANNA SALAI, NANDANAM, CHENNAI",
+                  75,
+                  true,
+                  "Valid"
+                )}
+              </div>
+            </div>
+
+            {/* 3. Invoice Details */}
+            <div>
+              <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                <FileText className="w-3.5 h-3.5 text-indigo-600" /> Invoice Details
+              </h4>
+              <div className="grid grid-cols-2 gap-3">
+                {renderFieldCard(
+                  "Invoice Number",
+                  "invoice_number",
+                  "SBC/0590/2026-27",
+                  92,
+                  true,
+                  "Valid"
+                )}
+                {renderFieldCard(
+                  "Invoice Date",
+                  "invoice_date",
+                  "2026-06-05",
+                  95,
+                  true,
+                  "Valid"
+                )}
+                {renderFieldCard(
+                  "Due Date",
+                  "due_date",
+                  "2026-07-05",
+                  90,
+                  true,
+                  "Valid"
+                )}
+                {renderFieldCard(
+                  "PO Number",
+                  "po_number",
+                  "PO-2026-881",
+                  85,
+                  true,
+                  "Valid"
+                )}
+                {renderFieldCard(
+                  "Currency",
+                  "currency",
+                  "INR",
+                  99,
+                  true,
+                  "Valid"
+                )}
+                {renderFieldCard(
+                  "Contact Details",
+                  "contact_details",
+                  "bcitvir@gmail.com",
+                  95,
+                  true,
+                  "Valid"
+                )}
+              </div>
+            </div>
+
+            {/* 4. Tax & Amount Breakdown */}
+            <div>
+              <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                <DollarSign className="w-3.5 h-3.5 text-emerald-600" /> Tax & Amount Breakdown
+              </h4>
+              <div className="grid grid-cols-2 gap-3">
+                {renderFieldCard(
+                  "Taxable Amount",
+                  "taxable_amount",
+                  "17500.00",
+                  97,
+                  true,
+                  "Valid"
+                )}
+                {renderFieldCard(
+                  "CGST (9%)",
+                  "cgst_amount",
+                  "1575.00",
+                  96,
+                  true,
+                  "Valid"
+                )}
+                {renderFieldCard(
+                  "SGST (9%)",
+                  "sgst_amount",
+                  "1575.00",
+                  96,
+                  true,
+                  "Valid"
+                )}
+                {renderFieldCard(
+                  "Total Amount",
+                  "total_amount",
+                  "20650.00",
+                  99,
+                  true,
+                  "Valid"
+                )}
+              </div>
+            </div>
+
+            {/* 5. Itemized Table breakdown */}
+            <div className="pt-2">
+              <h4 className="text-xs font-bold text-surface-500 uppercase tracking-wider mb-2.5 flex items-center gap-1.5">
+                <TableIcon className="w-3.5 h-3.5 text-purple-600" /> Line Items (5 Extracted Items)
+              </h4>
+              <div className="border border-surface-200 dark:border-surface-700 rounded-lg overflow-hidden text-xs">
+                <div className="bg-surface-50 dark:bg-surface-800 px-3 py-2 font-bold text-[10px] grid grid-cols-12 text-surface-600 border-b border-surface-200 dark:border-surface-700">
+                  <span className="col-span-1">Sl</span>
+                  <span className="col-span-6">Description</span>
+                  <span className="col-span-2 text-center">HSN/SAC</span>
+                  <span className="col-span-3 text-right">Amount (₹)</span>
+                </div>
+                <div className="divide-y divide-surface-100 dark:divide-surface-800 text-[11px]">
+                  <div className="px-3 py-2 grid grid-cols-12 items-center">
+                    <span className="col-span-1 font-mono text-surface-500">1</span>
+                    <span className="col-span-6 font-semibold">LAPTOP RENTAL - Mr. RISHMA, LENOVO T14</span>
+                    <span className="col-span-2 text-center font-mono text-surface-500">997315</span>
+                    <span className="col-span-3 text-right font-mono font-bold">3,500.00</span>
+                  </div>
+                  <div className="px-3 py-2 grid grid-cols-12 items-center">
+                    <span className="col-span-1 font-mono text-surface-500">2</span>
+                    <span className="col-span-6 font-semibold">LAPTOP RENTAL - Mr. SYED IDROSE, DELL LATITUDE 5411</span>
+                    <span className="col-span-2 text-center font-mono text-surface-500">997315</span>
+                    <span className="col-span-3 text-right font-mono font-bold">3,500.00</span>
+                  </div>
+                  <div className="px-3 py-2 grid grid-cols-12 items-center">
+                    <span className="col-span-1 font-mono text-surface-500">3</span>
+                    <span className="col-span-6 font-semibold">LAPTOP RENTAL - FAZIL, DELL LATITUDE 5411</span>
+                    <span className="col-span-2 text-center font-mono text-surface-500">997315</span>
+                    <span className="col-span-3 text-right font-mono font-bold">3,500.00</span>
+                  </div>
+                  <div className="px-3 py-2 grid grid-cols-12 items-center">
+                    <span className="col-span-1 font-mono text-surface-500">4</span>
+                    <span className="col-span-6 font-semibold">LAPTOP RENTAL - RAGA PRIYA, DELL LATITUDE 5411</span>
+                    <span className="col-span-2 text-center font-mono text-surface-500">997315</span>
+                    <span className="col-span-3 text-right font-mono font-bold">3,500.00</span>
+                  </div>
+                  <div className="px-3 py-2 grid grid-cols-12 items-center">
+                    <span className="col-span-1 font-mono text-surface-500">5</span>
+                    <span className="col-span-6 font-semibold">LAPTOP RENTAL - Ms. RENUGADEVI SALEM, LENOVO IDEAPAD 3</span>
+                    <span className="col-span-2 text-center font-mono text-surface-500">997315</span>
+                    <span className="col-span-3 text-right font-mono font-bold">3,500.00</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

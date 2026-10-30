@@ -197,123 +197,215 @@ DEMO_DOCUMENTS = [
 ]
 
 # ---------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # Capture & IDP Jobs
 # ---------------------------------------------------------------------------
 DEMO_CAPTURE_JOBS = [
     {
-        "id": "job-inv-001",
+        "id": "job-sbc-0590",
         "tenant_id": DEMO_TENANT_ID,
-        "document_id": "50000000-0000-0000-0000-000000000003",
-        "filename": "gst_invoice_001_acrocorp.pdf",
-        "status": "auto_approved",
-        "document_type": "tax_invoice",
-        "classification_confidence": 0.99,
-        "ocr_engine": "indra",
-        "mean_confidence": 0.97,
-        "processing_time_ms": 1420.5,
-        "created_at": "2026-10-29T10:14:00Z",
-        "updated_at": "2026-10-29T10:14:02Z",
-    },
-    {
-        "id": "job-inv-002",
-        "tenant_id": DEMO_TENANT_ID,
-        "document_id": "50000000-0000-0000-0000-000000000002",
-        "filename": "gst_invoice_002_karnataka.pdf",
-        "status": "auto_approved",
+        "document_id": "50000000-0000-0000-0000-000000000001",
+        "filename": "SBC-0590_Sri_Balaji_Computers_TamilNadu.pdf",
+        "status": "needs_review",
         "document_type": "tax_invoice",
         "classification_confidence": 0.98,
         "ocr_engine": "tesseract",
         "mean_confidence": 0.94,
-        "processing_time_ms": 1850.0,
-        "created_at": "2026-10-29T11:05:00Z",
-        "updated_at": "2026-10-29T11:05:03Z",
-    },
-    {
-        "id": "job-inv-003",
-        "tenant_id": DEMO_TENANT_ID,
-        "document_id": "50000000-0000-0000-0000-000000000001",
-        "filename": "gst_invoice_003_checksum_mismatch.pdf",
-        "status": "needs_review",
-        "document_type": "tax_invoice",
-        "classification_confidence": 0.96,
-        "ocr_engine": "tesseract",
-        "mean_confidence": 0.88,
-        "processing_time_ms": 2100.2,
+        "processing_time_ms": 1640.0,
         "created_at": "2026-10-29T12:20:00Z",
         "updated_at": "2026-10-29T12:20:03Z",
     },
-]
-
-DEMO_IDP_STATS = {
-    "total_jobs": 3,
-    "status_counts": {
-        "auto_approved": 2,
-        "needs_review": 1,
-        "completed": 0,
-        "rejected": 0,
-    },
-    "stp_rate": 66.7,
-    "avg_confidence": 93.0,
-    "avg_latency_ms": 1790.2,
-    "field_accuracy": 96.4,
-}
-
-DEMO_JOB_DETAILS = {
-    "job-inv-001": {
-        "id": "job-inv-001",
+    {
+        "id": "job-inv-0892",
         "tenant_id": DEMO_TENANT_ID,
         "document_id": "50000000-0000-0000-0000-000000000003",
-        "filename": "gst_invoice_001_acrocorp.pdf",
+        "filename": "INV-2026-0892_Infosys_Technologies.pdf",
         "status": "auto_approved",
         "document_type": "tax_invoice",
         "classification_confidence": 0.99,
         "ocr_engine": "indra",
-        "mean_confidence": 0.97,
-        "processing_time_ms": 1420.5,
-        "raw_text": "TAX INVOICE\nSupplier GSTIN: 27AAPFU0939F1ZV\nBuyer GSTIN: 29AABCI1234F1ZN\nInvoice No: INV-2026-0892\nTaxable: 12076.27\nCGST (9%): 1086.86\nSGST (9%): 1086.86\nTotal: 14250.00",
+        "mean_confidence": 0.98,
+        "processing_time_ms": 1220.5,
         "created_at": "2026-10-29T10:14:00Z",
         "updated_at": "2026-10-29T10:14:02Z",
-        "fields": [
-            {"field_name": "supplier_gstin", "field_value": "27AAPFU0939F1ZV", "normalized_value": "27AAPFU0939F1ZV", "confidence": 0.99, "page": 1, "bbox": [100, 200, 350, 230], "extraction_method": "regex", "is_valid": True, "error_message": None},
-            {"field_name": "buyer_gstin", "field_value": "29AABCI1234F1ZN", "normalized_value": "29AABCI1234F1ZN", "confidence": 0.99, "page": 1, "bbox": [100, 240, 350, 270], "extraction_method": "regex", "is_valid": True, "error_message": None},
-            {"field_name": "invoice_number", "field_value": "INV-2026-0892", "normalized_value": "INV-2026-0892", "confidence": 0.98, "page": 1, "bbox": [400, 200, 580, 230], "extraction_method": "key_value", "is_valid": True, "error_message": None},
-            {"field_name": "invoice_date", "field_value": "2026-10-15", "normalized_value": "2026-10-15", "confidence": 0.98, "page": 1, "bbox": [400, 240, 580, 270], "extraction_method": "ner", "is_valid": True, "error_message": None},
-            {"field_name": "taxable_amount", "field_value": "12076.27", "normalized_value": "12076.27", "confidence": 0.96, "page": 1, "bbox": [450, 600, 580, 625], "extraction_method": "table", "is_valid": True, "error_message": None},
-            {"field_name": "cgst_amount", "field_value": "1086.86", "normalized_value": "1086.86", "confidence": 0.96, "page": 1, "bbox": [450, 630, 580, 655], "extraction_method": "table", "is_valid": True, "error_message": None},
-            {"field_name": "sgst_amount", "field_value": "1086.86", "normalized_value": "1086.86", "confidence": 0.96, "page": 1, "bbox": [450, 660, 580, 685], "extraction_method": "table", "is_valid": True, "error_message": None},
-            {"field_name": "total_amount", "field_value": "14250.00", "normalized_value": "14250.00", "confidence": 0.99, "page": 1, "bbox": [450, 700, 580, 730], "extraction_method": "table", "is_valid": True, "error_message": None},
-        ],
-        "validation_results": [
-            {"rule_name": "gstin_checksum", "passed": True, "severity": "INFO", "message": "Supplier GSTIN 27AAPFU0939F1ZV passed Base-36 checksum (Maharashtra)"},
-            {"rule_name": "tax_math", "passed": True, "severity": "INFO", "message": "Tax math verified: Taxable (12076.27) + CGST (1086.86) + SGST (1086.86) = Total (14250.00)"},
-            {"rule_name": "po_matching", "passed": True, "severity": "INFO", "message": "Line items match purchase order PO-2026-9901 within 0.00 variance"},
-        ],
     },
-    "job-inv-003": {
-        "id": "job-inv-003",
+    {
+        "id": "job-tcs-4410",
+        "tenant_id": DEMO_TENANT_ID,
+        "document_id": "50000000-0000-0000-0000-000000000002",
+        "filename": "TCS-2026-4410_Tata_Consultancy_Services.pdf",
+        "status": "completed",
+        "document_type": "tax_invoice",
+        "classification_confidence": 1.0,
+        "ocr_engine": "pymupdf",
+        "mean_confidence": 0.99,
+        "processing_time_ms": 420.0,
+        "created_at": "2026-10-29T09:05:00Z",
+        "updated_at": "2026-10-29T09:15:00Z",
+    },
+]
+
+DEMO_IDP_STATS = {
+    "has_data": True,
+    "total_documents": 3,
+    "stp_rate_pct": 66.7,
+    "average_confidence_pct": 97.0,
+    "average_processing_time_ms": 1093.5,
+    "review_queue_size": 1,
+    "auto_approved_count": 1,
+    "completed_count": 1,
+    "rejected_count": 0,
+    "correction_accuracy_pct": 98.2,
+    "total_human_corrections": 1,
+    "total_extracted_fields": 54,
+}
+
+RAW_TEXT_SBC = """TAX INVOICE / CASH BILL
+SRI BALAJI COMPUTERS
+72, SARATHY NAGAR, KAGITHAPATTARI
+VELLORE - 632012
+GSTIN/UIN: 33AAQPK8576K1ZY
+State Name: Tamil Nadu, Code: 33
+E-Mail: bcitvir@gmail.com
+
+Buyer (Bill to):
+S2 INTEGRATORS PVT LTD
+547, ANNA SALAI, NANDANAM, CHENNAI
+GSTIN/UIN: 33AABCU8048A1Z0
+State Name: Tamil Nadu, Code: 33
+
+Invoice No: SBC/0590/2026-27      Dated: 5-Jun-26
+Delivery Note:                     Mode/Terms of Payment:
+Reference No. & Date:              Other References:
+Dispatch Doc No:                   Delivery Note Date:
+Dispatched through:                Destination:
+Terms of Delivery:
+
+Sl. Particulars                      HSN/SAC   Quantity  Rate per     Amount
+1   LAPTOP RENTAL                    997315    -         3,500.00     3,500.00
+    Mr. RISHMA, LENOVO T14
+2   LAPTOP RENTAL                    997315    -         3,500.00     3,500.00
+    Mr. SYED IDROSE, DELL LATITUDE 5411
+3   LAPTOP RENTAL                    997315    -         3,500.00     3,500.00
+    FAZIL, DELL LATITUDE 5411
+4   LAPTOP RENTAL                    997315    -         3,500.00     3,500.00
+    RAGA PRIYA, DELL LATITUDE 5411
+5   LAPTOP RENTAL                    997315    -         3,500.00     3,500.00
+    Ms. RENUGADEVI SALEM, LENOVO IDEAPAD 3
+
+                                     SGST 9%                          1,575.00
+                                     CGST 9%                          1,575.00
+                                     Total                           20,650.00
+
+Amount Chargeable (in words):
+INR Twenty Thousand Six Hundred Fifty Only
+"""
+
+DEMO_JOB_DETAILS = {
+    "job-sbc-0590": {
+        "id": "job-sbc-0590",
         "tenant_id": DEMO_TENANT_ID,
         "document_id": "50000000-0000-0000-0000-000000000001",
-        "filename": "gst_invoice_003_checksum_mismatch.pdf",
+        "filename": "SBC-0590_Sri_Balaji_Computers_TamilNadu.pdf",
         "status": "needs_review",
-        "document_type": "tax_invoice",
-        "classification_confidence": 0.96,
-        "ocr_engine": "tesseract",
-        "mean_confidence": 0.88,
-        "processing_time_ms": 2100.2,
-        "raw_text": "TAX INVOICE\nSupplier GSTIN: 27AAPFU0939F1ZX\nBuyer GSTIN: 29AABCI1234F1ZN\nInvoice No: INV-2026-0899\nTotal: 25000.00",
+        "document_type": "TAX INVOICE / CASH BILL",
+        "classification_confidence": 0.98,
+        "ocr_engine": "Tesseract 5.4.0 (eng + tam)",
+        "mean_confidence": 0.94,
+        "processing_time_ms": 1640.0,
+        "raw_text": RAW_TEXT_SBC,
         "created_at": "2026-10-29T12:20:00Z",
         "updated_at": "2026-10-29T12:20:03Z",
         "fields": [
-            {"field_name": "supplier_gstin", "field_value": "27AAPFU0939F1ZX", "normalized_value": "27AAPFU0939F1ZX", "confidence": 0.98, "page": 1, "bbox": [100, 200, 350, 230], "extraction_method": "regex", "is_valid": False, "error_message": "GSTIN Checksum Mismatch: Calculated 'V', found 'X'"},
-            {"field_name": "buyer_gstin", "field_value": "29AABCI1234F1ZN", "normalized_value": "29AABCI1234F1ZN", "confidence": 0.98, "page": 1, "bbox": [100, 240, 350, 270], "extraction_method": "regex", "is_valid": True, "error_message": None},
-            {"field_name": "total_amount", "field_value": "25000.00", "normalized_value": "25000.00", "confidence": 0.95, "page": 1, "bbox": [450, 700, 580, 730], "extraction_method": "table", "is_valid": True, "error_message": None},
+            {"field_name": "supplier_gstin", "field_value": "33AAQPK8576K1ZY", "normalized_value": "33AAQPK8576K1ZY", "confidence": 0.96, "page": 1, "bbox": [70, 115, 180, 20], "extraction_method": "regex_base36", "is_valid": True, "error_message": None},
+            {"field_name": "buyer_gstin", "field_value": "33AABCU8048A1Z0", "normalized_value": "33AABCU8048A1Z0", "confidence": 0.96, "page": 1, "bbox": [70, 260, 180, 20], "extraction_method": "regex_base36", "is_valid": False, "error_message": "GSTIN Check Character Mismatch: OCR read '0', expected 'O'. Please confirm with original document."},
+            {"field_name": "supplier_name", "field_value": "SRI BALAJI COMPUTERS", "normalized_value": "SRI BALAJI COMPUTERS", "confidence": 0.88, "page": 1, "bbox": [70, 70, 220, 22], "extraction_method": "layout_header", "is_valid": True, "error_message": None},
+            {"field_name": "buyer_name", "field_value": "S2 INTEGRATORS PVT LTD", "normalized_value": "S2 INTEGRATORS PVT LTD", "confidence": 0.85, "page": 1, "bbox": [70, 220, 220, 20], "extraction_method": "layout_header", "is_valid": True, "error_message": None},
+            {"field_name": "supplier_address", "field_value": "72, SARATHY NAGAR, KAGITHAPATTARI, VELLORE - 632012", "normalized_value": "72, SARATHY NAGAR, VELLORE - 632012", "confidence": 0.82, "page": 1, "bbox": [70, 92, 280, 18], "extraction_method": "address_ner", "is_valid": True, "error_message": None},
+            {"field_name": "buyer_address", "field_value": "547, ANNA SALAI, NANDANAM, CHENNAI", "normalized_value": "547, ANNA SALAI, CHENNAI", "confidence": 0.75, "page": 1, "bbox": [70, 240, 260, 18], "extraction_method": "address_ner", "is_valid": True, "error_message": None},
+            {"field_name": "invoice_number", "field_value": "SBC/0590/2026-27", "normalized_value": "SBC/0590/2026-27", "confidence": 0.92, "page": 1, "bbox": [240, 165, 140, 20], "extraction_method": "key_value", "is_valid": True, "error_message": None},
+            {"field_name": "invoice_date", "field_value": "2026-06-05", "normalized_value": "2026-06-05", "confidence": 0.95, "page": 1, "bbox": [320, 165, 90, 20], "extraction_method": "date_parser", "is_valid": True, "error_message": None},
+            {"field_name": "due_date", "field_value": "2026-07-05", "normalized_value": "2026-07-05", "confidence": 0.90, "page": 1, "bbox": [320, 185, 90, 20], "extraction_method": "date_offset", "is_valid": True, "error_message": None},
+            {"field_name": "po_number", "field_value": "PO-2026-881", "normalized_value": "PO-2026-881", "confidence": 0.85, "page": 1, "bbox": [240, 235, 120, 18], "extraction_method": "pattern", "is_valid": True, "error_message": None},
+            {"field_name": "currency", "field_value": "INR", "normalized_value": "INR", "confidence": 0.99, "page": 1, "bbox": [20, 800, 40, 15], "extraction_method": "anchor", "is_valid": True, "error_message": None},
+            {"field_name": "contact_details", "field_value": "bcitvir@gmail.com", "normalized_value": "bcitvir@gmail.com", "confidence": 0.95, "page": 1, "bbox": [70, 145, 160, 16], "extraction_method": "email_regex", "is_valid": True, "error_message": None},
+            {"field_name": "taxable_amount", "field_value": "17500.00", "normalized_value": "17500.00", "confidence": 0.97, "page": 1, "bbox": [350, 715, 80, 20], "extraction_method": "table_sum", "is_valid": True, "error_message": None},
+            {"field_name": "cgst_amount", "field_value": "1575.00", "normalized_value": "1575.00", "confidence": 0.96, "page": 1, "bbox": [350, 740, 80, 20], "extraction_method": "tax_rate", "is_valid": True, "error_message": None},
+            {"field_name": "sgst_amount", "field_value": "1575.00", "normalized_value": "1575.00", "confidence": 0.96, "page": 1, "bbox": [350, 765, 80, 20], "extraction_method": "tax_rate", "is_valid": True, "error_message": None},
+            {"field_name": "total_amount", "field_value": "20650.00", "normalized_value": "20650.00", "confidence": 0.99, "page": 1, "bbox": [350, 790, 80, 22], "extraction_method": "table_total", "is_valid": True, "error_message": None},
         ],
         "validation_results": [
-            {"rule_name": "gstin_checksum", "passed": False, "severity": "ERROR", "message": "GSTIN Checksum Mismatch: Calculated check digit 'V', found 'X' in document text"},
-            {"rule_name": "human_review_required", "passed": False, "severity": "WARNING", "message": "Routed to Human Review Queue due to checksum failure"},
+            {"rule_name": "GSTIN_CHECKSUM_SUPPLIER", "passed": True, "severity": "INFO", "message": "Supplier GSTIN '33AAQPK8576K1ZY' Base-36 checksum validated (Tamil Nadu - State 33)"},
+            {"rule_name": "GSTIN_CHECKSUM_BUYER", "passed": False, "severity": "WARNING", "message": "Buyer GSTIN '33AABCU8048A1Z0' Check Digit Warning: Expected 'O', OCR extracted '0'. Awaiting human sign-off."},
+            {"rule_name": "TAX_MATH_RECONCILIATION", "passed": True, "severity": "INFO", "message": "Tax math exact: Taxable (17,500.00) + CGST 9% (1,575.00) + SGST 9% (1,575.00) == Total (20,650.00)"},
+        ],
+    },
+    "job-inv-0892": {
+        "id": "job-inv-0892",
+        "tenant_id": DEMO_TENANT_ID,
+        "document_id": "50000000-0000-0000-0000-000000000003",
+        "filename": "INV-2026-0892_Infosys_Technologies.pdf",
+        "status": "auto_approved",
+        "document_type": "B2B GST Tax Invoice",
+        "classification_confidence": 0.99,
+        "ocr_engine": "Indra OCR v1.0.0 (fast CPU)",
+        "mean_confidence": 0.98,
+        "processing_time_ms": 1220.5,
+        "raw_text": "TAX INVOICE / GST INVOICE\nSupplier: Infosys Technologies Pvt Ltd\nGSTIN: 29AABCI1234F1ZX (Karnataka)\nBuyer: AcroCorp India Private Limited\nGSTIN: 27AABCA9876M1ZY (Maharashtra)\nInvoice No: INV-2026-0892\nDate: 2026-04-05\nTaxable Value: 365000.00\nIGST (18%): 65700.00\nTotal Amount: 430700.00",
+        "created_at": "2026-10-29T10:14:00Z",
+        "updated_at": "2026-10-29T10:14:02Z",
+        "fields": [
+            {"field_name": "supplier_gstin", "field_value": "29AABCI1234F1ZX", "normalized_value": "29AABCI1234F1ZX", "confidence": 0.99, "page": 1, "bbox": [77, 113, 76, 6], "extraction_method": "gstin_repair_checksum", "is_valid": True, "error_message": None},
+            {"field_name": "buyer_gstin", "field_value": "27AABCA9876M1ZY", "normalized_value": "27AABCA9876M1ZY", "confidence": 0.99, "page": 1, "bbox": [77, 251, 82, 6], "extraction_method": "gstin_repair_checksum", "is_valid": True, "error_message": None},
+            {"field_name": "supplier_name", "field_value": "INFOSYS TECHNOLOGIES PVT LTD", "normalized_value": "INFOSYS TECHNOLOGIES PVT LTD", "confidence": 0.98, "page": 1, "bbox": [77, 90, 180, 8], "extraction_method": "header_ner", "is_valid": True, "error_message": None},
+            {"field_name": "buyer_name", "field_value": "ACROCORP INDIA PRIVATE LIMITED", "normalized_value": "ACROCORP INDIA PRIVATE LIMITED", "confidence": 0.98, "page": 1, "bbox": [77, 230, 180, 8], "extraction_method": "header_ner", "is_valid": True, "error_message": None},
+            {"field_name": "invoice_number", "field_value": "INV-2026-0892", "normalized_value": "INV-2026-0892", "confidence": 0.99, "page": 1, "bbox": [113, 173, 58, 7], "extraction_method": "regex_pattern", "is_valid": True, "error_message": None},
+            {"field_name": "invoice_date", "field_value": "2026-04-05", "normalized_value": "2026-04-05", "confidence": 0.98, "page": 1, "bbox": [326, 173, 44, 7], "extraction_method": "iso_date_regex", "is_valid": True, "error_message": None},
+            {"field_name": "taxable_amount", "field_value": "365000.00", "normalized_value": "365000.00", "confidence": 0.98, "page": 1, "bbox": [717, 407, 42, 8], "extraction_method": "amount_proximity", "is_valid": True, "error_message": None},
+            {"field_name": "igst_amount", "field_value": "65700.00", "normalized_value": "65700.00", "confidence": 0.97, "page": 1, "bbox": [717, 420, 35, 8], "extraction_method": "tax_breakdown", "is_valid": True, "error_message": None},
+            {"field_name": "total_amount", "field_value": "430700.00", "normalized_value": "430700.00", "confidence": 0.99, "page": 1, "bbox": [719, 437, 53, 9], "extraction_method": "total_amount_scan", "is_valid": True, "error_message": None},
+            {"field_name": "currency", "field_value": "INR", "normalized_value": "INR", "confidence": 0.99, "page": 1, "bbox": [710, 437, 8, 9], "extraction_method": "anchor", "is_valid": True, "error_message": None},
+        ],
+        "validation_results": [
+            {"rule_name": "GSTIN_CHECKSUM_VALIDATION", "passed": True, "severity": "INFO", "message": "Supplier GSTIN '29AABCI1234F1ZX' validated with official Base-36 checksum (Karnataka)"},
+            {"rule_name": "GSTIN_BUYER_CHECKSUM_VALIDATION", "passed": True, "severity": "INFO", "message": "Buyer GSTIN '27AABCA9876M1ZY' validated with official Base-36 checksum (Maharashtra)"},
+            {"rule_name": "GST_TAX_RECONCILIATION", "passed": True, "severity": "INFO", "message": "Taxable (365,000.00) + Integrated GST 18% (65,700.00) == Total (430,700.00)"},
+            {"rule_name": "IRN_E_INVOICE_QR_VERIFIED", "passed": True, "severity": "INFO", "message": "Signed e-Invoice JWT QR code decoded offline; seller, buyer, doc_no match 100%"},
+        ],
+    },
+    "job-tcs-4410": {
+        "id": "job-tcs-4410",
+        "tenant_id": DEMO_TENANT_ID,
+        "document_id": "50000000-0000-0000-0000-000000000002",
+        "filename": "TCS-2026-4410_Tata_Consultancy_Services.pdf",
+        "status": "completed",
+        "document_type": "Corporate Tax Invoice",
+        "classification_confidence": 1.0,
+        "ocr_engine": "PyMuPDF (Vector Text Layer)",
+        "mean_confidence": 0.99,
+        "processing_time_ms": 420.0,
+        "raw_text": "TAX INVOICE\nSupplier: Tata Consultancy Services\nGSTIN: 27AAPFU0939F1ZX (Maharashtra)\nBuyer: Delhi Telecom Limited\nGSTIN: 07AAACH2345J1ZW (Delhi)\nInvoice No: TCS-2026-4410\nDate: 2026-05-18\nTotal Amount: 1250000.00",
+        "created_at": "2026-10-29T09:05:00Z",
+        "updated_at": "2026-10-29T09:15:00Z",
+        "fields": [
+            {"field_name": "supplier_gstin", "field_value": "27AAPFU0939F1ZX", "normalized_value": "27AAPFU0939F1ZX", "confidence": 0.99, "page": 1, "bbox": [100, 100, 150, 15], "extraction_method": "vector_pdf", "is_valid": True, "error_message": None},
+            {"field_name": "buyer_gstin", "field_value": "07AAACH2345J1ZW", "normalized_value": "07AAACH2345J1ZW", "confidence": 0.99, "page": 1, "bbox": [100, 200, 150, 15], "extraction_method": "vector_pdf", "is_valid": True, "error_message": None},
+            {"field_name": "supplier_name", "field_value": "TATA CONSULTANCY SERVICES", "normalized_value": "TATA CONSULTANCY SERVICES", "confidence": 1.0, "page": 1, "bbox": [100, 80, 200, 15], "extraction_method": "vector_pdf", "is_valid": True, "error_message": None},
+            {"field_name": "buyer_name", "field_value": "DELHI TELECOM LIMITED", "normalized_value": "DELHI TELECOM LIMITED", "confidence": 1.0, "page": 1, "bbox": [100, 180, 200, 15], "extraction_method": "vector_pdf", "is_valid": True, "error_message": None},
+            {"field_name": "invoice_number", "field_value": "TCS-2026-4410", "normalized_value": "TCS-2026-4410", "confidence": 1.0, "page": 1, "bbox": [300, 120, 100, 15], "extraction_method": "vector_pdf", "is_valid": True, "error_message": None},
+            {"field_name": "total_amount", "field_value": "1250000.00", "normalized_value": "1250000.00", "confidence": 1.0, "page": 1, "bbox": [400, 500, 100, 18], "extraction_method": "vector_pdf", "is_valid": True, "error_message": None},
+        ],
+        "validation_results": [
+            {"rule_name": "VECTOR_TEXT_VALIDATION", "passed": True, "severity": "INFO", "message": "High fidelity native vector PDF text layer decoded; 100% character integrity"},
+            {"rule_name": "HUMAN_SIGN_OFF", "passed": True, "severity": "INFO", "message": "Review completed and approved by Finance Lead on 2026-10-29"},
         ],
     },
 }
+
+# Aliases for legacy IDs
+DEMO_JOB_DETAILS["job-inv-001"] = DEMO_JOB_DETAILS["job-inv-0892"]
+DEMO_JOB_DETAILS["job-inv-002"] = DEMO_JOB_DETAILS["job-tcs-4410"]
+DEMO_JOB_DETAILS["job-inv-003"] = DEMO_JOB_DETAILS["job-sbc-0590"]
 
 # ---------------------------------------------------------------------------
 # Legal Holds & Retention Schedules

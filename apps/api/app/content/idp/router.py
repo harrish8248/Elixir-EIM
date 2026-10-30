@@ -145,28 +145,36 @@ async def list_capture_jobs(
 
 @idp_router.get("/jobs/{job_id}", summary="Get capture job details")
 async def get_capture_job(
-    job_id: uuid.UUID,
+    job_id: str,
     session: SessionData = Depends(get_current_session),
     db: AsyncSession = Depends(get_idp_db),
     _authz=Depends(require_permission("content:read", "document")),
 ) -> dict[str, Any]:
     """Retrieve full details for a capture job including extracted fields and validation checks."""
-    job = None
+    is_valid_uuid = False
     try:
-        job_res = await db.execute(
-            text("""
-                SELECT id, tenant_id, document_id, filename, status, document_type,
-                       classification_confidence, ocr_engine, mean_confidence,
-                       processing_time_ms, raw_text, created_at, updated_at
-                FROM capture_jobs
-                WHERE id = :job_id AND tenant_id = :tenant_id
-            """),
-            {"job_id": job_id, "tenant_id": session.tenant_id},
-        )
-        job = job_res.fetchone()
-    except Exception as exc:
-        logger.warning(f"Failed to fetch capture job from DB ({exc}), checking demo store.")
-        job = None
+        parsed_uuid = uuid.UUID(job_id)
+        is_valid_uuid = True
+    except (ValueError, AttributeError):
+        parsed_uuid = None
+
+    job = None
+    if is_valid_uuid:
+        try:
+            job_res = await db.execute(
+                text("""
+                    SELECT id, tenant_id, document_id, filename, status, document_type,
+                           classification_confidence, ocr_engine, mean_confidence,
+                           processing_time_ms, raw_text, created_at, updated_at
+                    FROM capture_jobs
+                    WHERE id = :job_id AND tenant_id = :tenant_id
+                """),
+                {"job_id": parsed_uuid, "tenant_id": session.tenant_id},
+            )
+            job = job_res.fetchone()
+        except Exception as exc:
+            logger.warning(f"Failed to fetch capture job from DB ({exc}), checking demo store.")
+            job = None
 
     if not job:
         job_id_str = str(job_id)
@@ -243,19 +251,57 @@ async def get_capture_job(
 
 @idp_router.post("/jobs/{job_id}/validate", summary="Submit human validation or correction")
 async def validate_capture_job(
-    job_id: uuid.UUID,
+    job_id: str,
     payload: ValidateJobRequest,
     session: SessionData = Depends(get_current_session),
     db: AsyncSession = Depends(get_idp_db),
     _authz=Depends(require_permission("content:write", "document")),
 ) -> dict[str, Any]:
     """Human validation workbench action: Accept all, Reject document, or Apply field corrections."""
-    job_res = await db.execute(
-        text("SELECT id, status, filename FROM capture_jobs WHERE id = :job_id AND tenant_id = :tenant_id"),
-        {"job_id": job_id, "tenant_id": session.tenant_id},
-    )
-    job = job_res.fetchone()
+    is_valid_uuid = False
+    try:
+        parsed_uuid = uuid.UUID(job_id)
+        is_valid_uuid = True
+    except (ValueError, AttributeError):
+        parsed_uuid = None
+
+    job = None
+    if is_valid_uuid:
+        try:
+            job_res = await db.execute(
+                text("SELECT id, status, filename FROM capture_jobs WHERE id = :job_id AND tenant_id = :tenant_id"),
+                {"job_id": parsed_uuid, "tenant_id": session.tenant_id},
+            )
+            job = job_res.fetchone()
+        except Exception as exc:
+            logger.warning(f"DB lookup for job validation deferred: {exc}")
+            job = None
+
     if not job:
+        job_id_str = str(job_id)
+        if job_id_str in DEMO_JOB_DETAILS:
+            demo_job = DEMO_JOB_DETAILS[job_id_str]
+            new_status = "completed"
+            if payload.action == "reject":
+                new_status = "rejected"
+            elif payload.action in ["accept", "correct"]:
+                new_status = "completed"
+            demo_job["status"] = new_status
+            for corr in payload.corrections:
+                for f in demo_job.get("fields", []):
+                    if f.get("field_name") == corr.field_name:
+                        f["field_value"] = str(corr.corrected_value)
+                        f["is_valid"] = True
+                        f["confidence"] = 1.0
+            for dj in DEMO_CAPTURE_JOBS:
+                if dj.get("id") == job_id_str:
+                    dj["status"] = new_status
+            return {
+                "message": f"Job {payload.action}ed successfully (demo session)",
+                "job_id": job_id,
+                "status": new_status,
+                "corrections_applied": len(payload.corrections),
+            }
         raise HTTPException(status_code=404, detail="Capture job not found")
 
     new_status = "completed"

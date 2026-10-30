@@ -27,3 +27,4 @@ def ensure_dataset(dataset_name: str) -> Path:
         tar.extractall(path=BENCHMARK_DIR, members=members)
 
     return target_dir
+

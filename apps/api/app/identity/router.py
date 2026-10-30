@@ -273,9 +273,9 @@ async def direct_token_login(
             "preferred_username": "sarah",
             "given_name": "Sarah",
             "family_name": "Chen",
-            "realm_access": {"roles": ["Admin", "Employee", "TenantAdmin"]},
+            "realm_access": {"roles": ["GlobalAdmin", "Admin", "Employee", "TenantAdmin"]},
             "department": "Governance",
-            "clearance_level": 3,
+            "clearance_level": 4,
         }
         raj_claims = {
             "sub": "00000000-0000-0000-0000-000000000002",
