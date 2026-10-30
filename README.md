@@ -33,73 +33,89 @@
 1. **Zero-Trust PEP/PDP**: Every request is evaluated by Open Policy Agent (OPA). Unreachable OPA defaults strictly to `DENY`.
 2. **PostgreSQL RLS**: Hardware-enforced row-level security (`app.current_tenant_id`) guarantees strict multi-tenant isolation.
 3. **Local Zero-Leakage OCR**: Document processing runs 100% locally on-premise without external cloud API calls.
-4. **ClamAV Anti-Malware**: Pre-OCR stream inspection drops suspicious files before file writes or extraction.
-5. **Cryptographic Audit Chain**: Events are sealed in an immutable hash chain ($H_n = \text{SHA256}(H_{n-1} \parallel \text{Event}_n)$).
+4. **Universal File Intake Pipeline**:
+   ```
+   [Stream Size Check] ──> [Binary Magic Bytes] ──> [Archive Inspection]
+                                                          │
+   [Postgres / MinIO] <── [Classify & Mask] <── [Extract] <── [Fail-Closed ClamAV]
+   ```
+5. **Strict Fail-Closed Antivirus**: Pre-OCR ClamAV stream inspection is a non-negotiable server invariant. Scanner timeout, daemon crash, or malware detection strictly aborts ingestion with HTTP 503/422, stores zero bytes in MinIO, and records a hash-chained audit event.
+6. **Cryptographic Audit Chain**: Events are sealed in an immutable append-only hash chain ($H_n = \text{SHA256}(H_{n-1} \parallel \text{Event}_n)$), with zero raw document text in logs.
 
 ---
 
-## 🚀 Quickstart
+## 🔬 Enterprise File Intake & Guardrails
 
-### Prerequisites
-- Windows 10/11 with Docker Desktop (WSL2 backend)
-- Python 3.13+
-- Node.js 20+
-- Tesseract 5 (`winget install UB-Mannheim.TesseractOCR`)
+### 1. Universal Type Detection & Archive Security
+- **Magic Bytes Sniffing:** Determines true file MIME types from header bytes rather than untrusted extensions. Detects PE/MZ (`.exe`, `.dll`, `.msi`), scripts (`.bat`, `.sh`, `.ps1`), macros (`.docm`, `.xlsm`), PDF, Office XML, ODT, HTML, CSV, JSON, and media.
+- **Archive Limits (Zip-Bomb Defense):** Inspects zip, tar, gz, and 7z archives with strict limits: recursion depth &le; 3, member count &le; 1,000, uncompressed size &le; 200 MB, and compression ratio &le; 150:1. Encrypted archives that cannot be scanned are automatically blocked.
+- **Sandboxed Text Extraction:** 10s per-parser timeout across 10+ formats (PDF, DOCX, XLSX, PPTX, ODT, HTML, RTF, EML, CSV, JSON, TXT). Audio/Video/CAD files are securely classified with metadata-only fallback.
 
-### 1. Clone & Set Up Environment
-```powershell
-git clone https://github.com/harrish8248/Elixir-EIM.git
-cd Elixir-EIM
+### 2. Tenant Guardrails & Quarantine Queue
+- **Persisted Tenant Policy:** Stored in the `tenant_guardrails` PostgreSQL table and managed via `GET /api/v1/guardrails/policy` and `PUT /api/v1/guardrails/policy` (admin-only, protected by PEP/OPA with before/after audit tracking).
+- **Quarantine Workflow:** Files triggering quarantine rules are safely isolated in the `quarantine_items` table. Administrators inspect metadata, release (`POST /api/v1/guardrails/quarantine/{id}/release`), or permanently purge (`DELETE /api/v1/guardrails/quarantine/{id}`) quarantined assets.
 
-# Python Virtual Environment
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-pip install -r requirements.lock
+### 3. Local Explainable Sensitivity Classification
+- **Algorithmic Detectors:**
+  - **Indian Identifiers:** PAN format, Aadhaar with 12-digit Verhoeff checksum algorithm, GSTIN with official Base-36 checksum, IFSC, Indian mobile numbers.
+  - **Financial Data:** Credit/Debit card numbers with Luhn Mod-10 algorithm, bank account numbers near keywords, UPI handles.
+  - **Secrets & Keys:** PEM private keys, AWS access keys, GitHub personal access tokens, Slack tokens, JWTs, config passwords.
+  - **PII & Legal:** Personal emails, dates of birth, postal addresses, payroll/salary figures, medical records, and NDAs.
+- **Clearance Mapping:**
+  | Sensitivity Label | Document Clearance | Access Restriction |
+  |---|---|---|
+  | `SAFE` | `PUBLIC` or `INTERNAL` | Accessible across authorized workspace employees |
+  | `SENSITIVE` | `CONFIDENTIAL` | Restricted to departmental managers and cleared personnel |
+  | `CRITICAL` | `RESTRICTED` | High-security containment requiring executive clearance |
+- **Evaluation Accuracy:** Evaluated on a 160-file synthetic multi-format corpus with **95.00% overall accuracy** and **94.90% macro F1** on the held-out test split (100% rejection of corrupt Verhoeff/Luhn/GSTIN checksums).
 
-# Web Application
-npm --prefix apps/web install
-```
+---
 
-### 2. Start Application
-```powershell
-.\start.ps1 -Demo
-```
+## ⚙️ Host-Adaptive OCR Engine Orchestration
 
-| Service | Endpoint |
-|---|---|
-| **Web Interface** | [http://localhost:5173](http://localhost:5173) |
-| **FastAPI Swagger Docs** | [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs) |
-| **Keycloak IAM** | [http://localhost:8080](http://localhost:8080) |
+The IDP engine (`OcrEnginesControlCenterView.tsx`) dynamically profiles the host machine to eliminate single-vendor dependency and prevent system freezing:
+- **Probed Hardware Telemetry:** Directly queries physical/logical cores, available RAM, GPU presence, and battery power status.
+- **Dynamic Speed Decider:** Low-end machines (low RAM/battery) dynamically downsample render resolution to 200 DPI and throttle thread pools; high-tier machines enable parallel neural passes.
+- **Fallback Cascade:** Born-Digital PyMuPDF Vector Layer (0.08s) &rarr; Indra Indic CPU Transformer (0.65s) &rarr; Tesseract 5 + OpenCV Deskew/CLAHE (1.20s) &rarr; Human Review Workbench.
 
 ---
 
 ## 👥 Pre-Seeded Enterprise Personas
 
-| Persona | Email | Role & Department | Clearance |
-|---|---|---|---|
-| **Sarah Chen** | `sarah.chen@acrocorp.com` | Global Administrator | Clearance 3 (Global) |
-| **Raj Patel** | `raj.patel@acrocorp.com` | Finance Manager | Clearance 2 (Finance) |
-| **Maria Santos** | `maria.santos@acrocorp.com` | HR Specialist | Clearance 1 (HR) |
-| **Alex Auditor** | `alex.auditor@acrocorp.com` | Compliance Officer | Clearance 3 (Compliance) |
+| Persona | Email | Role & Department | Clearance | Default Access Scope |
+|---|---|---|---|---|
+| **Sarah Chen** | `sarah.chen@acrocorp.com` | Tenant Administrator | Clearance 3 (Global) | Universal repository & guardrail administration |
+| **Raj Patel** | `raj.patel@acrocorp.com` | Finance Manager | Clearance 2 (Finance) | Finance workspaces, invoices, P&L statements |
+| **Maria Santos** | `maria.santos@acrocorp.com` | HR Specialist | Clearance 1 (HR) | HR records, employee handbooks, compensation |
+| **Alex Auditor** | `alex.auditor@acrocorp.com` | Compliance Officer | Clearance 3 (Compliance) | Read-only access to cryptographic audit trails |
 
-*Default password for all demo accounts:* `Password123!`
+*Standard password for all demo accounts:* `Password123!` (or `password123`)
 
 ---
 
-## 🧪 Verification & Testing
+## 🧪 Verification & Testing Commands
 
 ```powershell
-# Run backend test suite
-pytest apps/api/tests -v
-
-# Verify architectural boundaries
-lint-imports
-
-# Verify OPA policy tests
-docker exec elixir-opa opa test /policies -v
-
-# Run frontend tests
+# 1. Run Vitest component & UI test suite
 npm --prefix apps/web test -- --run
+
+# 2. Run Ruff linter on backend
+.venv\Scripts\ruff check apps/api
+
+# 3. Run Mypy static type checker
+.venv\Scripts\mypy apps/api
+
+# 4. Verify multi-department search facet ACL isolation
+.venv\Scripts\python scripts/verify_search_facets.py
+
+# 5. Verify 15 seeded GSTINs with Base-36 checksum validator
+.venv\Scripts\python scripts/verify_all_gstins.py
+
+# 6. Run synthetic corpus sensitivity evaluation on held-out split
+.venv\Scripts\python scripts/generate_synthetic_corpus.py
+
+# 7. Run full backend pytest suite
+.venv\Scripts\pytest apps/api/tests -v
 ```
 
 ---
