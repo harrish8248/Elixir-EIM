@@ -637,6 +637,7 @@ class RoutingPolicyRequest(BaseModel):
     default_engine: str = "tesseract"
     fallback_engine: str = "tesseract"
     rules: list[dict[str, Any]] = []
+    yaml_content: str | None = None
 
 
 class PolicyTestRequest(BaseModel):
@@ -645,6 +646,8 @@ class PolicyTestRequest(BaseModel):
     language: str = "eng"
     is_scanned: bool = True
     text_density: float = 0.5
+    profile_json: str | None = None
+    profile_name: str | None = None
 
 
 class PolicyRollbackRequest(BaseModel):
@@ -906,6 +909,323 @@ async def get_hardware_status(
     return asdict(profiler.probe())
 
 
+@idp_router.get("/engines/routing-policy", summary="Get active routing policy and versions")
+async def get_routing_policy(
+    session: SessionData = Depends(get_current_session),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:read", "document")),
+) -> dict[str, Any]:
+    """Retrieve active OCR routing policy and historical versions for rollback."""
+    rows = []
+    default_rules = [
+        {"condition": "is_pdf_with_text", "engine": "pymupdf", "description": "Good digital text layer -> Native vector PDF text layer"},
+        {"condition": "clean_latin_indic_print", "engine": "indra", "description": "Clean print (Latin, Devanagari, Bengali, Cyrillic, Greek, Chinese)"},
+        {"condition": "noisy_or_table_heavy", "engine": "tesseract", "description": "Noisy, skewed, or table-heavy documents (OpenCV preprocessing)"},
+        {"condition": "southern_indic_scripts", "engine": "tesseract", "description": "Tamil, Telugu, Kannada, Malayalam (Tesseract langpacks)"},
+        {"condition": "low_confidence_fallback", "engine": "needs_review", "description": "Confidence below threshold -> Human Validation Workbench"},
+    ]
+    try:
+        res = await db.execute(
+            text("""
+                SELECT id, version, is_active, default_engine, fallback_engine, rules, created_at
+                FROM ocr_routing_policies
+                WHERE tenant_id = :tenant_id
+                ORDER BY version DESC
+            """),
+            {"tenant_id": session.tenant_id},
+        )
+        rows = res.fetchall()
+    except Exception as exc:
+        logger.warning(f"Could not load routing policy from DB ({exc}), serving default active policy.")
+
+    if not rows:
+        return {
+            "active_policy": {
+                "version": 1,
+                "default_engine": "indra",
+                "fallback_engine": "tesseract",
+                "rules": default_rules,
+                "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            },
+            "history": [],
+        }
+
+    active_p = next((r for r in rows if r[2]), rows[0])
+    history = [
+        {
+            "version": r[1],
+            "is_active": r[2],
+            "default_engine": r[3],
+            "fallback_engine": r[4],
+            "rules": r[5],
+            "created_at": r[6].isoformat(),
+        }
+        for r in rows
+    ]
+
+    return {
+        "active_policy": {
+            "version": active_p[1],
+            "default_engine": active_p[3],
+            "fallback_engine": active_p[4],
+            "rules": active_p[5],
+            "created_at": active_p[6].isoformat(),
+        },
+        "history": history,
+    }
+
+
+@idp_router.post("/engines/routing-policy", summary="Update active routing policy")
+async def update_routing_policy(
+    req: RoutingPolicyRequest,
+    session: SessionData = Depends(get_current_session),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:write", "document")),
+) -> dict[str, Any]:
+    """Create a new version of the OCR routing policy and activate it."""
+    vres = await db.execute(
+        text("SELECT COALESCE(MAX(version), 0) FROM ocr_routing_policies WHERE tenant_id = :tenant_id"),
+        {"tenant_id": session.tenant_id},
+    )
+    next_ver = int(vres.scalar() or 0) + 1
+
+    await db.execute(
+        text("UPDATE ocr_routing_policies SET is_active = false WHERE tenant_id = :tenant_id"),
+        {"tenant_id": session.tenant_id},
+    )
+
+    await db.execute(
+        text("""
+            INSERT INTO ocr_routing_policies (
+                id, tenant_id, version, is_active, default_engine, fallback_engine, rules, created_at, updated_at
+            )
+            VALUES (
+                gen_random_uuid(), :tenant_id, :ver, true, :default_eng, :fallback_eng, :rules::jsonb, now(), now()
+            )
+        """),
+        {
+            "tenant_id": session.tenant_id,
+            "ver": next_ver,
+            "default_eng": req.default_engine,
+            "fallback_eng": req.fallback_engine,
+            "rules": json.dumps(req.rules),
+        },
+    )
+    await db.commit()
+
+    try:
+        redis = await session_manager.get_redis()
+        await redis.delete(f"ocr_policy:{session.tenant_id}")
+    except Exception as e:
+        logger.warning(f"Redis cache invalidation warning: {e}")
+
+    await record_audit_event(
+        db,
+        tenant_id=session.tenant_id,
+        actor_id=str(session.user_id),
+        actor_email=session.email,
+        action="idp.policy.update",
+        resource_type="ocr_routing_policy",
+        resource_id=str(next_ver),
+        outcome="SUCCESS",
+        reason=f"Published OCR routing policy v{next_ver}",
+        ip_address="127.0.0.1",
+        payload={"version": next_ver, "default_engine": req.default_engine, "fallback_engine": req.fallback_engine},
+    )
+
+    return {"version": next_ver, "status": "activated"}
+
+
+@idp_router.post("/engines/routing-policy/test", summary="Test routing policy decisions")
+async def test_policy_decision(
+    req: PolicyTestRequest,
+    session: SessionData = Depends(get_current_session),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:read", "document")),
+) -> dict[str, Any]:
+    """Simulate document routing logic against active policy rules or profile JSON."""
+    pres = await db.execute(
+        text("SELECT default_engine, fallback_engine, rules FROM ocr_routing_policies WHERE tenant_id = :tenant_id AND is_active = true LIMIT 1"),
+        {"tenant_id": session.tenant_id},
+    )
+    row = pres.fetchone()
+    default_eng = row[0] if row else "tesseract"
+    fallback_eng = row[1] if row else "tesseract"
+    rules = row[2] if row else []
+
+    selected = default_eng
+    matched_reason = "Default Tenant Fallback Policy"
+    estimated_cost = "$0.002"
+    estimated_p50 = "1.2 s"
+    confidence_est = 94.5
+
+    # Check if a rich profile was sent via 'Ask the router'
+    if req.profile_json:
+        try:
+            prof = json.loads(req.profile_json)
+        except Exception:
+            prof = {}
+
+        is_photo = prof.get("photo", False)
+        dpi = prof.get("dpi", 300)
+        skew = prof.get("skewDeg", 0)
+        lang = prof.get("language", "en")
+        ftype = prof.get("file_type", "")
+        sender = prof.get("sender", "")
+
+        if ftype in ["xlsx", "xls", "csv"]:
+            selected = "pymupdf"
+            matched_reason = "Rule matched: file.type in [xlsx, csv] -> Native Structured Table Extractor (Cost: $0.00)"
+            fallback_eng = "tesseract"
+            estimated_cost = "$0.00"
+            estimated_p50 = "0.2 s"
+            confidence_est = 99.8
+        elif prof.get("pdf_text_coverage", 0) >= 0.85 or (req.is_pdf and req.has_text_layer):
+            selected = "pymupdf"
+            matched_reason = "Rule matched: pdf.text_coverage >= 0.85 -> Native PDF text layer (instant, zero optical distortion, $0.00/page)"
+            fallback_eng = "tesseract"
+            estimated_cost = "$0.00"
+            estimated_p50 = "0.3 s"
+            confidence_est = 99.5
+        elif sender.endswith("@ups.com") or sender.endswith("@fedex.com"):
+            selected = "pymupdf"
+            matched_reason = f"Pin matched: sender '{sender}' -> Native digital text stream pinned for logistics invoice"
+            fallback_eng = "tesseract"
+            estimated_cost = "$0.00"
+            estimated_p50 = "0.3 s"
+            confidence_est = 99.2
+        elif prof.get("must_use_llm") or prof.get("complexity_score", 0) > 75:
+            selected = "ollama"
+            matched_reason = "Rule matched: complexity_score > 75 -> Local Multimodal Vision LLM for zero-shot reasoning"
+            fallback_eng = "tesseract"
+            estimated_cost = "$0.00 (Self-Hosted)"
+            estimated_p50 = "4.2 s"
+            confidence_est = 96.0
+        elif lang in ("hin", "dev", "bn", "ru", "el") or "indic" in lang.lower():
+            selected = "indra"
+            matched_reason = f"Rule matched: language '{lang}' -> Indra OCR Transformer (CPU-only ONNX, clean print)"
+            fallback_eng = "tesseract"
+            estimated_cost = "$0.00"
+            estimated_p50 = "0.8 s"
+            confidence_est = 97.2
+        elif is_photo or skew >= 2 or dpi < 200:
+            selected = "tesseract"
+            matched_reason = f"Rule matched: photo={is_photo}, skewDeg={skew}° -> Tesseract 5 with Adaptive OpenCV deskew & CLAHE filter"
+            fallback_eng = "indra"
+            estimated_cost = "~$0.002"
+            estimated_p50 = "1.8 s"
+            confidence_est = 93.8
+        else:
+            selected = "tesseract"
+            matched_reason = "Rule matched: standard scanned document -> Tesseract workhorse pipeline"
+            fallback_eng = "indra"
+            estimated_cost = "~$0.002"
+            estimated_p50 = "1.4 s"
+            confidence_est = 94.0
+
+    elif req.is_pdf and req.has_text_layer:
+        selected = "pymupdf"
+        matched_reason = "Digital PDF with native vector text layer detected (instant speed, 0% error)"
+        estimated_cost = "$0.00"
+        estimated_p50 = "0.3 s"
+        confidence_est = 99.5
+    elif req.language in ("hin", "dev", "indic") or "indic" in req.language.lower():
+        selected = "indra"
+        matched_reason = "Indic / Devanagari script detected -> routed to Indra Transformer OCR"
+        estimated_cost = "$0.00"
+        estimated_p50 = "0.8 s"
+        confidence_est = 97.0
+    else:
+        for rule in rules:
+            cond = rule.get("condition")
+            target = rule.get("engine")
+            if cond == "is_pdf_with_text" and req.is_pdf and req.has_text_layer:
+                selected = target
+                matched_reason = "Matched rule: is_pdf_with_text"
+                break
+            elif cond == "has_indic_script" and ("hin" in req.language.lower() or "indic" in req.language.lower()):
+                selected = target
+                matched_reason = "Matched rule: has_indic_script"
+                break
+            elif cond == "is_scanned_document" and req.is_scanned:
+                selected = target
+                matched_reason = "Matched rule: is_scanned_document"
+                break
+
+    fallback_chain = [selected]
+    if fallback_eng != selected:
+        fallback_chain.append(fallback_eng)
+    fallback_chain.append("human_review")
+
+    return {
+        "selected_engine": selected,
+        "engine_name": ENGINE_CATALOG.get(selected, {}).get("name", selected),
+        "decision_reason": matched_reason,
+        "fallback_engine": fallback_eng,
+        "fallback_chain": fallback_chain,
+        "estimated_p50": estimated_p50,
+        "estimated_cost": estimated_cost,
+        "confidence_estimate": confidence_est,
+    }
+
+
+@idp_router.post("/engines/routing-policy/rollback", summary="Rollback routing policy to previous version")
+async def rollback_routing_policy(
+    req: PolicyRollbackRequest,
+    session: SessionData = Depends(get_current_session),
+    db: AsyncSession = Depends(get_idp_db),
+    _authz=Depends(require_permission("content:write", "document")),
+) -> dict[str, Any]:
+    """Rollback active policy to previous version with Redis cache invalidation."""
+    if req.target_version is not None:
+        target_v = req.target_version
+    else:
+        vres = await db.execute(
+            text("""
+                SELECT version FROM ocr_routing_policies
+                WHERE tenant_id = :tenant_id AND is_active = false
+                ORDER BY version DESC LIMIT 1
+            """),
+            {"tenant_id": session.tenant_id},
+        )
+        row = vres.fetchone()
+        if not row:
+            raise HTTPException(status_code=400, detail="No previous policy version exists to rollback to.")
+        target_v = int(row[0])
+
+    await db.execute(
+        text("UPDATE ocr_routing_policies SET is_active = false WHERE tenant_id = :tenant_id"),
+        {"tenant_id": session.tenant_id},
+    )
+    await db.execute(
+        text("UPDATE ocr_routing_policies SET is_active = true WHERE tenant_id = :tenant_id AND version = :ver"),
+        {"tenant_id": session.tenant_id, "ver": target_v},
+    )
+    await db.commit()
+
+    try:
+        redis = await session_manager.get_redis()
+        await redis.delete(f"ocr_policy:{session.tenant_id}")
+    except Exception as e:
+        logger.warning(f"Redis cache invalidation warning: {e}")
+
+    await record_audit_event(
+        db,
+        tenant_id=session.tenant_id,
+        actor_id=str(session.user_id),
+        actor_email=session.email,
+        action="idp.policy.rollback",
+        resource_type="ocr_routing_policy",
+        resource_id=str(target_v),
+        outcome="SUCCESS",
+        reason=f"Rolled back OCR routing policy to v{target_v}",
+        ip_address="127.0.0.1",
+        payload={"rolled_back_to_version": target_v},
+    )
+
+    return {"version": target_v, "status": "rolled_back"}
+
+
 @idp_router.post("/engines/{engine_id}/toggle", summary="Toggle OCR engine on/off")
 async def toggle_engine(
     engine_id: str,
@@ -1159,237 +1479,3 @@ async def benchmark_engine(
         "run_date": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
 
-
-@idp_router.get("/engines/routing-policy", summary="Get active routing policy and versions")
-async def get_routing_policy(
-    session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_idp_db),
-    _authz=Depends(require_permission("content:read", "document")),
-) -> dict[str, Any]:
-    """Retrieve active OCR routing policy and historical versions for rollback."""
-    rows = []
-    default_rules = [
-        {"condition": "is_pdf_with_text", "engine": "pymupdf", "description": "Good digital text layer -> Native vector PDF text layer"},
-        {"condition": "clean_latin_indic_print", "engine": "indra", "description": "Clean print (Latin, Devanagari, Bengali, Cyrillic, Greek, Chinese)"},
-        {"condition": "noisy_or_table_heavy", "engine": "tesseract", "description": "Noisy, skewed, or table-heavy documents (OpenCV preprocessing)"},
-        {"condition": "southern_indic_scripts", "engine": "tesseract", "description": "Tamil, Telugu, Kannada, Malayalam (Tesseract langpacks)"},
-        {"condition": "low_confidence_fallback", "engine": "needs_review", "description": "Confidence below threshold -> Human Validation Workbench"},
-    ]
-    try:
-        res = await db.execute(
-            text("""
-                SELECT id, version, is_active, default_engine, fallback_engine, rules, created_at
-                FROM ocr_routing_policies
-                WHERE tenant_id = :tenant_id
-                ORDER BY version DESC
-            """),
-            {"tenant_id": session.tenant_id},
-        )
-        rows = res.fetchall()
-    except Exception as exc:
-        logger.warning(f"Could not load routing policy from DB ({exc}), serving default active policy.")
-
-    if not rows:
-        return {
-            "active_policy": {
-                "version": 1,
-                "default_engine": "indra",
-                "fallback_engine": "tesseract",
-                "rules": default_rules,
-                "created_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-            },
-            "history": [],
-        }
-
-    active_p = next((r for r in rows if r[2]), rows[0])
-    history = [
-        {
-            "version": r[1],
-            "is_active": r[2],
-            "default_engine": r[3],
-            "fallback_engine": r[4],
-            "rules": r[5],
-            "created_at": r[6].isoformat(),
-        }
-        for r in rows
-    ]
-
-    return {
-        "active_policy": {
-            "version": active_p[1],
-            "default_engine": active_p[3],
-            "fallback_engine": active_p[4],
-            "rules": active_p[5],
-            "created_at": active_p[6].isoformat(),
-        },
-        "history": history,
-    }
-
-
-@idp_router.post("/engines/routing-policy", summary="Update active routing policy")
-async def update_routing_policy(
-    req: RoutingPolicyRequest,
-    session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_idp_db),
-    _authz=Depends(require_permission("content:write", "document")),
-) -> dict[str, Any]:
-    """Create a new version of the OCR routing policy and activate it."""
-    vres = await db.execute(
-        text("SELECT COALESCE(MAX(version), 0) FROM ocr_routing_policies WHERE tenant_id = :tenant_id"),
-        {"tenant_id": session.tenant_id},
-    )
-    next_ver = int(vres.scalar() or 0) + 1
-
-    await db.execute(
-        text("UPDATE ocr_routing_policies SET is_active = false WHERE tenant_id = :tenant_id"),
-        {"tenant_id": session.tenant_id},
-    )
-
-    await db.execute(
-        text("""
-            INSERT INTO ocr_routing_policies (
-                id, tenant_id, version, is_active, default_engine, fallback_engine, rules, created_at, updated_at
-            )
-            VALUES (
-                gen_random_uuid(), :tenant_id, :ver, true, :default_eng, :fallback_eng, :rules::jsonb, now(), now()
-            )
-        """),
-        {
-            "tenant_id": session.tenant_id,
-            "ver": next_ver,
-            "default_eng": req.default_engine,
-            "fallback_eng": req.fallback_engine,
-            "rules": json.dumps(req.rules),
-        },
-    )
-    await db.commit()
-
-    try:
-        redis = await session_manager.get_redis()
-        await redis.delete(f"ocr_policy:{session.tenant_id}")
-    except Exception as e:
-        logger.warning(f"Redis cache invalidation warning: {e}")
-
-    await record_audit_event(
-        db,
-        tenant_id=session.tenant_id,
-        actor_id=str(session.user_id),
-        actor_email=session.email,
-        action="idp.policy.update",
-        resource_type="ocr_routing_policy",
-        resource_id=str(next_ver),
-        outcome="SUCCESS",
-        reason=f"Published OCR routing policy v{next_ver}",
-        ip_address="127.0.0.1",
-        payload={"version": next_ver, "default_engine": req.default_engine, "fallback_engine": req.fallback_engine},
-    )
-
-    return {"version": next_ver, "status": "activated"}
-
-
-@idp_router.post("/engines/routing-policy/test", summary="Test routing policy decisions")
-async def test_policy_decision(
-    req: PolicyTestRequest,
-    session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_idp_db),
-    _authz=Depends(require_permission("content:read", "document")),
-) -> dict[str, Any]:
-    """Simulate document routing logic against active policy rules."""
-    pres = await db.execute(
-        text("SELECT default_engine, fallback_engine, rules FROM ocr_routing_policies WHERE tenant_id = :tenant_id AND is_active = true LIMIT 1"),
-        {"tenant_id": session.tenant_id},
-    )
-    row = pres.fetchone()
-    default_eng = row[0] if row else "tesseract"
-    fallback_eng = row[1] if row else "tesseract"
-    rules = row[2] if row else []
-
-    selected = default_eng
-    matched_reason = "Default Tenant Fallback Policy"
-
-    if req.is_pdf and req.has_text_layer:
-        selected = "pymupdf"
-        matched_reason = "Digital PDF with native vector text layer detected (instant speed, 0% error)"
-    elif req.language in ("hin", "dev", "indic") or "indic" in req.language.lower():
-        selected = "indra"
-        matched_reason = "Indic / Devanagari script detected -> routed to Indra Transformer OCR"
-    else:
-        for rule in rules:
-            cond = rule.get("condition")
-            target = rule.get("engine")
-            if cond == "is_pdf_with_text" and req.is_pdf and req.has_text_layer:
-                selected = target
-                matched_reason = "Matched rule: is_pdf_with_text"
-                break
-            elif cond == "has_indic_script" and ("hin" in req.language.lower() or "indic" in req.language.lower()):
-                selected = target
-                matched_reason = "Matched rule: has_indic_script"
-                break
-            elif cond == "is_scanned_document" and req.is_scanned:
-                selected = target
-                matched_reason = "Matched rule: is_scanned_document"
-                break
-
-    return {
-        "selected_engine": selected,
-        "engine_name": ENGINE_CATALOG.get(selected, {}).get("name", selected),
-        "decision_reason": matched_reason,
-        "fallback_engine": fallback_eng,
-    }
-
-
-@idp_router.post("/engines/routing-policy/rollback", summary="Rollback routing policy to previous version")
-async def rollback_routing_policy(
-    req: PolicyRollbackRequest,
-    session: SessionData = Depends(get_current_session),
-    db: AsyncSession = Depends(get_idp_db),
-    _authz=Depends(require_permission("content:write", "document")),
-) -> dict[str, Any]:
-    """Rollback active policy to previous version with Redis cache invalidation."""
-    if req.target_version is not None:
-        target_v = req.target_version
-    else:
-        vres = await db.execute(
-            text("""
-                SELECT version FROM ocr_routing_policies
-                WHERE tenant_id = :tenant_id AND is_active = false
-                ORDER BY version DESC LIMIT 1
-            """),
-            {"tenant_id": session.tenant_id},
-        )
-        row = vres.fetchone()
-        if not row:
-            raise HTTPException(status_code=400, detail="No previous policy version exists to rollback to.")
-        target_v = int(row[0])
-
-    await db.execute(
-        text("UPDATE ocr_routing_policies SET is_active = false WHERE tenant_id = :tenant_id"),
-        {"tenant_id": session.tenant_id},
-    )
-    await db.execute(
-        text("UPDATE ocr_routing_policies SET is_active = true WHERE tenant_id = :tenant_id AND version = :ver"),
-        {"tenant_id": session.tenant_id, "ver": target_v},
-    )
-    await db.commit()
-
-    try:
-        redis = await session_manager.get_redis()
-        await redis.delete(f"ocr_policy:{session.tenant_id}")
-    except Exception as e:
-        logger.warning(f"Redis cache invalidation warning: {e}")
-
-    await record_audit_event(
-        db,
-        tenant_id=session.tenant_id,
-        actor_id=str(session.user_id),
-        actor_email=session.email,
-        action="idp.policy.rollback",
-        resource_type="ocr_routing_policy",
-        resource_id=str(target_v),
-        outcome="SUCCESS",
-        reason=f"Rolled back OCR routing policy to v{target_v}",
-        ip_address="127.0.0.1",
-        payload={"rolled_back_to_version": target_v},
-    )
-
-    return {"version": target_v, "status": "rolled_back"}
