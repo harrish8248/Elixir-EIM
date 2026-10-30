@@ -1,3 +1,4 @@
+import { UniversalUploadCenter, IngestionPipelineResult } from "./UniversalUploadCenter";
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   Folder,
@@ -874,60 +875,32 @@ export const ContentExplorerView: React.FC = () => {
         </form>
       </Modal>
 
-      {/* Modal: Upload Document */}
+      {/* Modal: Universal Upload Center */}
       <Modal
         open={isUploadModalOpen}
         onOpenChange={setIsUploadModalOpen}
-        title="Upload Enterprise Document"
-        description="Uploaded content will be scanned through ClamAV, hashed with SHA-256, and stored in tenant MinIO bucket."
+        title="Universal Ingestion & Guardrail Center"
+        description="Stream-checked size limits, magic bytes validation, ClamAV antivirus scan, and explainable sensitivity classification."
       >
-        <form onSubmit={handleUploadDocument} className="space-y-4">
-          <div>
-            <label className="block text-xs font-semibold text-surface-700 mb-1">Select File</label>
-            <input
-              type="file"
-              ref={fileInputRef}
-              required
-              onChange={(e) => setUploadFile(e.target.files?.[0] || null)}
-              className="w-full text-xs text-surface-700 file:mr-3 file:py-1.5 file:px-3 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-brand-50 file:text-brand-900 hover:file:bg-brand-100 cursor-pointer"
-            />
+        {selectedWorkspace ? (
+          <UniversalUploadCenter
+            workspaceId={selectedWorkspace.id}
+            folderId={selectedFolder?.id}
+            onUploadSuccess={(res: IngestionPipelineResult) => {
+              if (res.status === "quarantined") {
+                showNotification(`File "${res.filename}" held in quarantine queue for review.`, "error");
+              } else {
+                showNotification(`Document "${res.filename}" ingested (${res.sensitivity_label} - ${res.mapped_clearance})`);
+              }
+              loadContent();
+            }}
+            onClose={() => setIsUploadModalOpen(false)}
+          />
+        ) : (
+          <div className="p-4 text-center text-xs text-surface-500">
+            Please select a workspace on the left before uploading documents.
           </div>
-
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-semibold text-surface-700 mb-1">Security Clearance Classification</label>
-              <select
-                value={uploadClassification}
-                onChange={(e) => setUploadClassification(e.target.value)}
-                className="w-full px-3 py-2 text-xs border border-surface-300 rounded bg-white"
-              >
-                <option value="PUBLIC">PUBLIC</option>
-                <option value="INTERNAL">INTERNAL</option>
-                <option value="CONFIDENTIAL">CONFIDENTIAL</option>
-                <option value="RESTRICTED">RESTRICTED</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-surface-700 mb-1">Department</label>
-              <input
-                type="text"
-                value={uploadDepartment}
-                onChange={(e) => setUploadDepartment(e.target.value)}
-                placeholder="e.g. Finance, Legal, HR"
-                className="w-full px-3 py-2 text-xs border border-surface-300 rounded bg-white"
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-end gap-2 pt-2">
-            <Button type="button" variant="outline" size="sm" onClick={() => setIsUploadModalOpen(false)}>
-              Cancel
-            </Button>
-            <Button type="submit" variant="primary" size="sm" disabled={!uploadFile || isLoading}>
-              {isLoading ? "Scanning & Uploading..." : "Upload Document"}
-            </Button>
-          </div>
-        </form>
+        )}
       </Modal>
 
       {/* Confirm Delete Dialog */}

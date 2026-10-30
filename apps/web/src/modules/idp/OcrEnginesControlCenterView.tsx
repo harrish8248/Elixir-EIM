@@ -571,8 +571,8 @@ export const OcrEnginesControlCenterView: React.FC = () => {
 
             <div className="bg-white/5 rounded-lg p-2.5 border border-white/10">
               <span className="text-[10px] text-indigo-300 block mb-0.5">ACCELERATION / GPU</span>
-              <span className="text-sm font-bold text-white truncate block" title={hardware.gpu_name || "CPU DirectML"}>
-                {hardware.has_gpu ? "RTX 3050 GPU" : "CPU ONNX"}
+              <span className="text-sm font-bold text-white truncate block" title={hardware.gpu_name || "CPU DirectML / ONNX"}>
+                {hardware.has_gpu ? (hardware.gpu_name || "Discrete GPU") : "CPU DirectML / ONNX"}
               </span>
               <span className="block text-[10px] text-indigo-300/70 mt-0.5">
                 {hardware.vram_free_gb ? `${hardware.vram_free_gb} GB VRAM free` : "ONNX DirectML"}
@@ -634,10 +634,13 @@ export const OcrEnginesControlCenterView: React.FC = () => {
           </div>
         </div>
         <div className="p-4 bg-white dark:bg-surface-900 border border-surface-200 dark:border-surface-800 rounded-xl shadow-xs">
-          <span className="text-xs text-surface-500 font-medium">Born-Digital Vector Share</span>
+          <div className="flex items-center justify-between">
+            <span className="text-xs text-surface-500 font-medium">Born-Digital Vector Share</span>
+            <span className="text-[10px] text-amber-600 dark:text-amber-400 font-medium">Preview, not enforced</span>
+          </div>
           <div className="flex items-baseline gap-2 mt-1">
             <p className="text-2xl font-bold text-emerald-700 dark:text-emerald-400">48%</p>
-            <span className="text-[11px] text-surface-400 font-mono">$0.00 / page</span>
+            <span className="text-[11px] text-surface-400 font-mono">synthetic benchmark</span>
           </div>
         </div>
       </div>
@@ -651,7 +654,7 @@ export const OcrEnginesControlCenterView: React.FC = () => {
               Engine Performance Matrix & Machine Speed Decider
             </h2>
             <p className="text-xs text-surface-500">
-              Measured on this machine ({hardware?.physical_cores || 8}-core host, {hardware?.available_ram_gb || 2.7} GB free RAM, {hardware?.on_battery ? "Battery Saver" : "AC Full Speed"}). Toggle any engine on or off instantly.
+              Probed on host ({hardware?.physical_cores ?? "?"}-core CPU, {hardware?.available_ram_gb ?? "?"} GB free RAM, {hardware?.on_battery ? "Battery Saver" : "AC Connected"}).
             </p>
           </div>
         </div>
@@ -664,7 +667,7 @@ export const OcrEnginesControlCenterView: React.FC = () => {
                 <th className="py-3 px-4">ENGINE & ARCHITECTURE</th>
                 <th className="py-3 px-3">EXECUTION DEVICE</th>
                 <th className="py-3 px-3">RAM FOOTPRINT</th>
-                <th className="py-3 px-3">SPEED ON THIS LAPTOP</th>
+                <th className="py-3 px-3">SPEED (EST. / RUN)</th>
                 <th className="py-3 px-3">ACCURACY (F1)</th>
                 <th className="py-3 px-3">COST / PAGE</th>
                 <th className="py-3 px-4">BEST SUITED FOR</th>
@@ -735,22 +738,34 @@ export const OcrEnginesControlCenterView: React.FC = () => {
                       {metric.ramFootprint}
                     </td>
 
-                    {/* Processing Speed on THIS Laptop */}
+                    {/* Processing Speed */}
                     <td className="py-3 px-3 font-mono text-[11px]">
                       {isSkippedDueToRam ? (
                         <span className="text-amber-600 dark:text-amber-400 font-bold">
                           Throttled (RAM)
                         </span>
+                      ) : eng.benchmark?.pages_per_sec ? (
+                        <span className="font-bold text-emerald-600 dark:text-emerald-400" title="Measured benchmark">
+                          {(1 / eng.benchmark.pages_per_sec).toFixed(2)} s (live)
+                        </span>
                       ) : (
-                        <span className="font-bold text-emerald-600 dark:text-emerald-400">
-                          {metric.speedEstimate}
+                        <span className="text-surface-600 dark:text-surface-400" title="Estimated hardware profile">
+                          ~{metric.speedEstimate} (est)
                         </span>
                       )}
                     </td>
 
                     {/* Field Accuracy */}
                     <td className="py-3 px-3 font-mono text-[11px] text-surface-700 dark:text-surface-300">
-                      {metric.f1Score}
+                      {eng.benchmark?.field_f1 != null ? (
+                        <span className="font-bold text-emerald-600 dark:text-emerald-400" title="Measured benchmark">
+                          {(eng.benchmark.field_f1 * 100).toFixed(1)}% (live)
+                        </span>
+                      ) : (
+                        <span className="text-surface-500" title="Pre-benchmark baseline profile">
+                          {metric.f1Score} (profile)
+                        </span>
+                      )}
                     </td>
 
                     {/* Cost per Page */}
