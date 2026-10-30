@@ -3,6 +3,7 @@
 import hashlib
 import mimetypes
 import uuid
+from dataclasses import asdict
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
@@ -25,6 +26,9 @@ from sqlalchemy import func, select, text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from apps.api.app.audit.service import record_audit_event
+from apps.api.app.content.intake.pipeline import (
+    run_universal_intake_pipeline,
+)
 from apps.api.app.content.models import (
     Document,
     DocumentComment,
@@ -37,8 +41,8 @@ from apps.api.app.content.ocr import process_document_ocr
 from apps.api.app.identity.router import get_current_session
 from apps.api.app.identity.session import SessionData
 from apps.api.app.platform.config import settings
+from apps.api.app.platform.demo_store import DEMO_DOCUMENTS, DEMO_FOLDERS, DEMO_WORKSPACES
 from apps.api.app.platform.logging import logger
-from apps.api.app.platform.demo_store import DEMO_WORKSPACES, DEMO_FOLDERS, DEMO_DOCUMENTS
 from apps.api.app.tenancy.database import get_db_session
 
 content_router = APIRouter(prefix="/api/v1/content", tags=["Content Services"])
@@ -632,6 +636,49 @@ async def update_document(
         reason="Metadata updated",
     )
     return _doc_out(doc)
+
+
+@content_router.post(
+    "/intake/universal",
+    summary="Universal File Intake with server-enforced guardrails and sensitivity classification",
+)
+async def universal_file_intake(
+    file: UploadFile = File(...),
+    workspace_id: str = Query(...),
+    folder_id: str | None = Query(None),
+    classification_override: str | None = Query(None),
+    department: str | None = Query(None),
+    description: str | None = Query(None),
+    session: SessionData = Depends(get_current_session),
+    db: AsyncSession = Depends(get_db_session),
+) -> dict[str, Any]:
+    """Execute complete universal file intake pipeline with server-enforced guardrails."""
+    content = await file.read()
+    filename = file.filename or "unnamed"
+    ws_uuid = uuid.UUID(workspace_id)
+    fld_uuid = uuid.UUID(folder_id) if folder_id else None
+
+    # Ensure RLS tenant_id is set
+    try:
+        await db.execute(
+            text("SELECT set_config('app.current_tenant_id', :tenant_id, false)"),
+            {"tenant_id": str(session.tenant_id)},
+        )
+    except Exception as exc:
+        logger.warning(f"RLS setting deferred in intake: {exc}")
+
+    result = await run_universal_intake_pipeline(
+        filename=filename,
+        content=content,
+        session=session,
+        db=db,
+        workspace_id=ws_uuid,
+        folder_id=fld_uuid,
+        classification_override=classification_override,
+        department=department,
+        description=description,
+    )
+    return asdict(result) if hasattr(result, "__dataclass_fields__") else result.__dict__
 
 
 @content_router.post("/upload", response_model=DocumentOut, status_code=status.HTTP_201_CREATED)
