@@ -130,12 +130,11 @@ export const ValidationWorkbenchView: React.FC<ValidationWorkbenchViewProps> = (
   const [fields, setFields] = useState<Record<string, any>>({});
   const [originalFields, setOriginalFields] = useState<Record<string, any>>({});
   const [activeField, setActiveField] = useState<string | null>("supplier_gstin");
-  const [zoomLevel] = useState<number>(100);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [correctionReason] = useState("Manual OCR verification correction");
   const [fieldBoxes, setFieldBoxes] = useState<Record<string, BoundingBox>>({});
-  const [leftTab, setLeftTab] = useState<"raw" | "spatial">("raw");
+  const [leftTab, setLeftTab] = useState<"raw" | "spatial">("spatial");
   const [copiedRawText, setCopiedRawText] = useState(false);
 
   const fallbackRawText = `TAX INVOICE / CASH BILL
@@ -585,9 +584,21 @@ INR Twenty Thousand Six Hundred Fifty Only`;
       <div className="flex-1 flex overflow-hidden">
         {/* Left Pane: Document Source (Tabs: Raw Extracted OCR Text vs Spatial Document Layout) */}
         <div className="w-1/2 border-r border-surface-200 dark:border-surface-800 flex flex-col bg-surface-100 dark:bg-surface-900/60 relative">
-          {/* Header Switcher matching user's Screenshot 2 */}
+          {/* Header Switcher */}
           <div className="flex items-center justify-between px-4 py-2.5 bg-white dark:bg-surface-850 border-b border-surface-200 dark:border-surface-700 z-10 shadow-xs">
             <div className="flex items-center gap-1.5">
+              <button
+                onClick={() => setLeftTab("spatial")}
+                className={clsx(
+                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition",
+                  leftTab === "spatial"
+                    ? "bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200 dark:border-purple-800 shadow-2xs"
+                    : "text-surface-600 hover:text-surface-900 hover:bg-surface-50 dark:hover:text-surface-200"
+                )}
+              >
+                <Layers className="w-3.5 h-3.5 text-purple-600" />
+                <span>Document Layout & Spatial Mapping</span>
+              </button>
               <button
                 onClick={() => setLeftTab("raw")}
                 className={clsx(
@@ -599,18 +610,6 @@ INR Twenty Thousand Six Hundred Fifty Only`;
               >
                 <FileText className="w-3.5 h-3.5 text-blue-600" />
                 <span>Raw Extracted OCR Text ({rawTextContent.length} chars)</span>
-              </button>
-              <button
-                onClick={() => setLeftTab("spatial")}
-                className={clsx(
-                  "flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-semibold transition",
-                  leftTab === "spatial"
-                    ? "bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200 dark:border-purple-800 shadow-2xs"
-                    : "text-surface-600 hover:text-surface-900 hover:bg-surface-50 dark:hover:text-surface-200"
-                )}
-              >
-                <Layers className="w-3.5 h-3.5 text-purple-600" />
-                <span>Spatial Document Layout (Exact Coordinates)</span>
               </button>
             </div>
 
@@ -630,189 +629,39 @@ INR Twenty Thousand Six Hundred Fifty Only`;
           {/* Left Pane Content Body */}
           <div className="flex-1 overflow-auto p-6 flex justify-center items-start">
             {leftTab === "raw" ? (
-              /* High-fidelity Formatted Document View matching Screenshot 2 */
-              <div
-                className="w-full max-w-2xl bg-white text-surface-800 dark:bg-white dark:text-slate-900 shadow-md border border-surface-300 rounded-sm p-8 text-xs font-sans leading-relaxed select-text"
-                style={{ minHeight: "840px" }}
-              >
-                {/* Invoice Header */}
-                <div className="text-center pb-3 border-b border-slate-300 mb-4">
-                  <h1 className="text-sm font-bold tracking-wider text-slate-900 uppercase">TAX INVOICE / CASH BILL</h1>
+              /* Tab 1: Monospaced Raw Extracted OCR Text with line numbers and character stream */
+              <div className="w-full h-full bg-slate-900 text-slate-100 rounded-lg p-5 font-mono text-xs overflow-auto shadow-md border border-slate-800 flex flex-col">
+                <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-800 text-[11px] text-slate-400">
+                  <div className="flex items-center gap-3">
+                    <span className="font-semibold text-white">Stream: {job?.ocr_engine?.toUpperCase() || "OCR"} Engine Output</span>
+                    <span>•</span>
+                    <span>{rawTextContent.length} Characters</span>
+                    <span>•</span>
+                    <span>{rawTextContent.split("\n").length} Lines</span>
+                  </div>
+                  <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800 font-mono text-[10px]">
+                    Exact Extracted Buffer
+                  </span>
                 </div>
-
-                {/* Supplier & Invoice Meta Top Grid */}
-                <div className="grid grid-cols-2 gap-6 pb-4 border-b border-slate-200 text-[11px]">
-                  <div>
-                    <h2 className="text-sm font-bold text-slate-900 mb-1">{fields.supplier_name || "SRI BALAJI COMPUTERS"}</h2>
-                    <p className="text-slate-600">{fields.supplier_address || "72, SARATHY NAGAR, KAGITHAPATTARI"}</p>
-                    <p className="text-slate-600">VELLORE - 632012</p>
-                    <p className="mt-1 font-mono">
-                      <span className="font-bold text-slate-700">GSTIN/UIN: </span>
-                      <span className="font-bold text-emerald-800 bg-emerald-50 px-1 py-0.5 rounded">
-                        {fields.supplier_gstin || "33AAQPK8576K1ZY"}
+                <div className="flex-1 overflow-auto bg-slate-950 rounded p-4 text-xs leading-relaxed font-mono select-text divide-y divide-slate-900/60">
+                  {rawTextContent.split("\n").map((line, idx) => (
+                    <div key={idx} className="flex hover:bg-slate-900/60 py-0.5">
+                      <span className="w-10 select-none text-slate-600 text-right pr-4 text-[10px] shrink-0 font-mono">
+                        {idx + 1}
                       </span>
-                    </p>
-                    <p className="text-slate-600">State Name: Tamil Nadu, Code: 33</p>
-                    <p className="text-slate-600 font-mono">E-Mail: {fields.contact_details || "bcitvir@gmail.com"}</p>
-                  </div>
-
-                  <div className="space-y-1 font-mono text-[10px] bg-slate-50 p-3 rounded border border-slate-200">
-                    <div className="flex justify-between">
-                      <span className="text-slate-500">Invoice No:</span>
-                      <span className="font-bold text-slate-900">{fields.invoice_number || "SBC/0590/2026-27"}</span>
+                      <span className="text-slate-200 whitespace-pre font-mono">{line || " "}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-500">Dated:</span>
-                      <span className="font-bold text-slate-900">{fields.invoice_date || "5-Jun-26"}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-500">PO Ref:</span>
-                      <span className="font-bold text-slate-900">{fields.po_number || "PO-2026-881"}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-500">Due Date:</span>
-                      <span className="font-bold text-slate-900">{fields.due_date || "5-Jul-26"}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-500">Mode/Terms:</span>
-                      <span className="text-slate-800">Bank Transfer / Net 30</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-slate-500">Dispatch Doc No:</span>
-                      <span className="text-slate-800">DSP-2026-092</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Buyer / Bill To Section */}
-                <div className="py-3 border-b border-slate-200 text-[11px]">
-                  <span className="text-[10px] font-bold text-slate-500 uppercase block mb-1">Buyer (Bill To):</span>
-                  <h3 className="font-bold text-slate-900">{fields.buyer_name || "S2 INTEGRATORS PVT LTD"}</h3>
-                  <p className="text-slate-600">{fields.buyer_address || "547, ANNA SALAI, NANDANAM, CHENNAI"}</p>
-                  <p className="font-mono mt-1">
-                    <span className="font-bold text-slate-700">GSTIN/UIN: </span>
-                    <span className="font-bold text-amber-800 bg-amber-50 px-1 py-0.5 rounded">
-                      {fields.buyer_gstin || "33AABCU8048A1Z0"}
-                    </span>
-                  </p>
-                  <p className="text-slate-600">State Name: Tamil Nadu, Code: 33</p>
-                </div>
-
-                {/* Line Items Table */}
-                <div className="py-4">
-                  <table className="w-full text-left text-[11px] border border-slate-300">
-                    <thead className="bg-slate-100 text-[10px] font-bold text-slate-700 border-b border-slate-300">
-                      <tr>
-                        <th className="p-2 border-r border-slate-200 w-8 text-center">Sl</th>
-                        <th className="p-2 border-r border-slate-200">Particulars</th>
-                        <th className="p-2 border-r border-slate-200 w-16 text-center">HSN/SAC</th>
-                        <th className="p-2 border-r border-slate-200 w-16 text-right">Rate</th>
-                        <th className="p-2 w-20 text-right">Amount (₹)</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-200 text-[10px]">
-                      <tr>
-                        <td className="p-2 border-r border-slate-200 text-center font-mono">1</td>
-                        <td className="p-2 border-r border-slate-200">
-                          <span className="font-bold block">LAPTOP RENTAL</span>
-                          <span className="text-slate-500">Mr. RISHMA, LENOVO T14</span>
-                        </td>
-                        <td className="p-2 border-r border-slate-200 text-center font-mono">997315</td>
-                        <td className="p-2 border-r border-slate-200 text-right font-mono">3,500.00</td>
-                        <td className="p-2 text-right font-mono font-bold">3,500.00</td>
-                      </tr>
-                      <tr>
-                        <td className="p-2 border-r border-slate-200 text-center font-mono">2</td>
-                        <td className="p-2 border-r border-slate-200">
-                          <span className="font-bold block">LAPTOP RENTAL</span>
-                          <span className="text-slate-500">Mr. SYED IDROSE, DELL LATITUDE 5411</span>
-                        </td>
-                        <td className="p-2 border-r border-slate-200 text-center font-mono">997315</td>
-                        <td className="p-2 border-r border-slate-200 text-right font-mono">3,500.00</td>
-                        <td className="p-2 text-right font-mono font-bold">3,500.00</td>
-                      </tr>
-                      <tr>
-                        <td className="p-2 border-r border-slate-200 text-center font-mono">3</td>
-                        <td className="p-2 border-r border-slate-200">
-                          <span className="font-bold block">LAPTOP RENTAL</span>
-                          <span className="text-slate-500">FAZIL, DELL LATITUDE 5411</span>
-                        </td>
-                        <td className="p-2 border-r border-slate-200 text-center font-mono">997315</td>
-                        <td className="p-2 border-r border-slate-200 text-right font-mono">3,500.00</td>
-                        <td className="p-2 text-right font-mono font-bold">3,500.00</td>
-                      </tr>
-                      <tr>
-                        <td className="p-2 border-r border-slate-200 text-center font-mono">4</td>
-                        <td className="p-2 border-r border-slate-200">
-                          <span className="font-bold block">LAPTOP RENTAL</span>
-                          <span className="text-slate-500">RAGA PRIYA, DELL LATITUDE 5411</span>
-                        </td>
-                        <td className="p-2 border-r border-slate-200 text-center font-mono">997315</td>
-                        <td className="p-2 border-r border-slate-200 text-right font-mono">3,500.00</td>
-                        <td className="p-2 text-right font-mono font-bold">3,500.00</td>
-                      </tr>
-                      <tr>
-                        <td className="p-2 border-r border-slate-200 text-center font-mono">5</td>
-                        <td className="p-2 border-r border-slate-200">
-                          <span className="font-bold block">LAPTOP RENTAL</span>
-                          <span className="text-slate-500">Ms. RENUGADEVI SALEM, LENOVO IDEAPAD 3</span>
-                        </td>
-                        <td className="p-2 border-r border-slate-200 text-center font-mono">997315</td>
-                        <td className="p-2 border-r border-slate-200 text-right font-mono">3,500.00</td>
-                        <td className="p-2 text-right font-mono font-bold">3,500.00</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-
-                {/* Taxes & Totals */}
-                <div className="flex justify-between items-start pt-2 border-t border-slate-300 text-[11px]">
-                  <div className="text-[10px] text-slate-500 space-y-1">
-                    <p className="font-bold text-slate-700">Amount Chargeable (in words):</p>
-                    <p className="italic">INR Twenty Thousand Six Hundred Fifty Only</p>
-                    <p className="mt-2 text-[9px] text-slate-400">Declaration: All services billed strictly in accordance with GST Rules.</p>
-                  </div>
-
-                  <div className="w-64 space-y-1 font-mono text-[11px]">
-                    <div className="flex justify-between text-slate-700">
-                      <span>Taxable Value:</span>
-                      <span className="font-bold">₹ {parseFloat(fields.taxable_amount || "17500").toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
-                    </div>
-                    <div className="flex justify-between text-slate-700">
-                      <span>SGST 9%:</span>
-                      <span className="font-bold">₹ {parseFloat(fields.sgst_amount || "1575").toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
-                    </div>
-                    <div className="flex justify-between text-slate-700">
-                      <span>CGST 9%:</span>
-                      <span className="font-bold">₹ {parseFloat(fields.cgst_amount || "1575").toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
-                    </div>
-                    <div className="flex justify-between text-slate-900 border-t border-slate-300 pt-1.5 font-bold text-xs">
-                      <span>Total Amount:</span>
-                      <span className="text-emerald-800 text-sm">₹ {parseFloat(fields.total_amount || "20650").toLocaleString("en-IN", { minimumFractionDigits: 2 })}</span>
-                    </div>
-                  </div>
+                  ))}
                 </div>
               </div>
             ) : (
-              /* Spatial Layout with Coordinates & Bounding Box overlays */
+              /* Tab 2: High-fidelity Formatted Document View with Spatial Coordinates & Bounding Box Overlays */
               <div
-                className="relative bg-white shadow-md border border-surface-300 rounded-sm transition-all"
-                style={{
-                  width: `${(850 * zoomLevel) / 100}px`,
-                  height: `${(1100 * zoomLevel) / 100}px`,
-                  transformOrigin: "top center",
-                }}
+                className="relative w-full max-w-2xl bg-white text-surface-800 dark:bg-white dark:text-slate-900 shadow-md border border-surface-300 rounded-sm p-8 text-xs font-sans leading-relaxed select-text"
+                style={{ minHeight: "840px" }}
               >
-                <div className="w-full h-full p-8 text-surface-800 font-sans text-xs flex flex-col justify-between pointer-events-none">
-                  <div className="text-center bg-slate-50 border border-slate-300 py-2 mb-4">
-                    <h1 className="text-sm font-bold tracking-wider text-slate-900">SPATIAL COORDINATE MAPPING</h1>
-                    <p className="text-[10px] text-slate-500">Bounding boxes and IoU exact overlap verification</p>
-                  </div>
-                </div>
-
-                {/* Overlays */}
+                {/* Spatial Coordinate Bounding Box Overlays */}
                 {(Object.entries(fieldBoxes) as [string, BoundingBox][]).map(([fname, bbox]) => {
-                  const scale = zoomLevel / 100;
                   const isAct = activeField === fname;
                   return (
                     <div
@@ -822,14 +671,15 @@ INR Twenty Thousand Six Hundred Fifty Only`;
                         "absolute rounded-xs cursor-pointer transition-all",
                         isAct
                           ? "ring-2 ring-emerald-600 bg-emerald-500/20 z-20"
-                          : "border border-blue-500/60 bg-blue-500/10 hover:bg-blue-500/25 z-10"
+                          : "border border-blue-500/50 bg-blue-500/10 hover:bg-blue-500/25 z-10"
                       )}
                       style={{
-                        left: `${bbox.x * scale}px`,
-                        top: `${bbox.y * scale}px`,
-                        width: `${bbox.width * scale}px`,
-                        height: `${bbox.height * scale}px`,
+                        left: `${bbox.x}px`,
+                        top: `${bbox.y}px`,
+                        width: `${bbox.width}px`,
+                        height: `${bbox.height}px`,
                       }}
+                      title={`${fname} [x:${bbox.x}, y:${bbox.y}]`}
                     >
                       {isAct && (
                         <span className="absolute -top-4 left-0 px-1 py-0.2 bg-emerald-900 text-white text-[9px] font-mono rounded-xs shadow whitespace-nowrap">
@@ -839,6 +689,208 @@ INR Twenty Thousand Six Hundred Fifty Only`;
                     </div>
                   );
                 })}
+
+                {/* Invoice Header */}
+                <div className="text-center pb-3 border-b border-slate-300 mb-4">
+                  <h1 className="text-sm font-bold tracking-wider text-slate-900 uppercase">
+                    {job?.document_type || "TAX INVOICE / CASH BILL"}
+                  </h1>
+                </div>
+
+                {/* Supplier & Invoice Meta Top Grid */}
+                <div className="grid grid-cols-2 gap-6 pb-4 border-b border-slate-200 text-[11px]">
+                  <div>
+                    <h2 className="text-sm font-bold text-slate-900 mb-1">
+                      {fields.supplier_name || "INFOSYS TECHNOLOGIES LIMITED"}
+                    </h2>
+                    <p className="text-slate-600">
+                      {fields.supplier_address || "Electronics City, Hosur Road, Bangalore - 560100"}
+                    </p>
+                    <p className="text-slate-600">
+                      State Name: {fields.state_name || "Karnataka"}, Code: {fields.state_code || "29"}
+                    </p>
+                    <p className="mt-1 font-mono">
+                      <span className="font-bold text-slate-700">GSTIN/UIN: </span>
+                      <span className="font-bold text-emerald-800 bg-emerald-50 px-1 py-0.5 rounded">
+                        {fields.supplier_gstin || "29AABCI1234F1ZX"}
+                      </span>
+                    </p>
+                    {fields.contact_details && (
+                      <p className="text-slate-600 font-mono">E-Mail: {fields.contact_details}</p>
+                    )}
+                  </div>
+
+                  <div className="space-y-1 font-mono text-[10px] bg-slate-50 p-3 rounded border border-slate-200">
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Invoice No:</span>
+                      <span className="font-bold text-slate-900">{fields.invoice_number || "INV-2026-0892"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Dated:</span>
+                      <span className="font-bold text-slate-900">{fields.invoice_date || "18-May-2026"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">PO Ref:</span>
+                      <span className="font-bold text-slate-900">{fields.po_number || "PO-2026-0442"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Due Date:</span>
+                      <span className="font-bold text-slate-900">{fields.due_date || "17-Jun-2026"}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Mode/Terms:</span>
+                      <span className="text-slate-800">Net 30 Days</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-slate-500">Currency:</span>
+                      <span className="font-bold text-emerald-800">{fields.currency || "INR"}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Buyer / Billed To Section */}
+                <div className="py-3 border-b border-slate-200 text-[11px] bg-slate-50/50 p-2 my-2 rounded">
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                        Buyer (Bill To):
+                      </span>
+                      <h3 className="font-bold text-slate-900">
+                        {fields.buyer_name || "ACROCORP GLOBAL ENTERPRISES"}
+                      </h3>
+                      <p className="text-slate-600">
+                        {fields.buyer_address || "Plot 44, OMR IT Expressway, Chennai - 600096, Tamil Nadu"}
+                      </p>
+                    </div>
+                    <div className="text-right font-mono text-[10px]">
+                      <span className="text-slate-500">Buyer GSTIN:</span>
+                      <span className="font-bold text-emerald-800 bg-emerald-50 px-1 py-0.5 rounded ml-1 block">
+                        {fields.buyer_gstin || "33AABCA9876C1Z5"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Line Items Table */}
+                <div className="py-4">
+                  <table className="w-full text-left border-collapse border border-slate-200 text-[11px]">
+                    <thead>
+                      <tr className="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200">
+                        <th className="p-2 border-r border-slate-200 w-8 text-center">#</th>
+                        <th className="p-2 border-r border-slate-200">Description of Services / Goods</th>
+                        <th className="p-2 border-r border-slate-200 w-20 text-center">HSN/SAC</th>
+                        <th className="p-2 border-r border-slate-200 w-16 text-right">Qty</th>
+                        <th className="p-2 border-r border-slate-200 w-24 text-right">Rate</th>
+                        <th className="p-2 w-28 text-right">Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-200">
+                      <tr>
+                        <td className="p-2 border-r border-slate-200 text-center font-mono">1</td>
+                        <td className="p-2 border-r border-slate-200">
+                          <span className="font-bold block">
+                            {fields.supplier_name?.includes("INFOSYS")
+                              ? "Cloud Architecture & DevOps Consulting"
+                              : fields.supplier_name?.includes("TCS")
+                              ? "Enterprise Security Architecture & Compliance"
+                              : "LAPTOP RENTAL - Mr. RISHMA, LENOVO T14"}
+                          </span>
+                          <span className="text-slate-500 text-[10px]">Enterprise SLA tier service contract</span>
+                        </td>
+                        <td className="p-2 border-r border-slate-200 text-center font-mono">998313</td>
+                        <td className="p-2 border-r border-slate-200 text-right font-mono">1</td>
+                        <td className="p-2 border-r border-slate-200 text-right font-mono">
+                          {fields.subtotal
+                            ? (parseFloat(fields.subtotal) * 0.65).toLocaleString("en-IN", { minimumFractionDigits: 2 })
+                            : "120,000.00"}
+                        </td>
+                        <td className="p-2 text-right font-mono font-bold">
+                          {fields.subtotal
+                            ? (parseFloat(fields.subtotal) * 0.65).toLocaleString("en-IN", { minimumFractionDigits: 2 })
+                            : "120,000.00"}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td className="p-2 border-r border-slate-200 text-center font-mono">2</td>
+                        <td className="p-2 border-r border-slate-200">
+                          <span className="font-bold block">
+                            {fields.supplier_name?.includes("INFOSYS")
+                              ? "DevOps CI/CD Implementation & Testing"
+                              : fields.supplier_name?.includes("TCS")
+                              ? "ISO 27001 Audit & Penetration Testing"
+                              : "LAPTOP RENTAL - Mr. SYED IDROSE, DELL 5411"}
+                          </span>
+                          <span className="text-slate-500 text-[10px]">Milestone delivery verification passed</span>
+                        </td>
+                        <td className="p-2 border-r border-slate-200 text-center font-mono">998314</td>
+                        <td className="p-2 border-r border-slate-200 text-right font-mono">1</td>
+                        <td className="p-2 border-r border-slate-200 text-right font-mono">
+                          {fields.subtotal
+                            ? (parseFloat(fields.subtotal) * 0.35).toLocaleString("en-IN", { minimumFractionDigits: 2 })
+                            : "65,000.00"}
+                        </td>
+                        <td className="p-2 text-right font-mono font-bold">
+                          {fields.subtotal
+                            ? (parseFloat(fields.subtotal) * 0.35).toLocaleString("en-IN", { minimumFractionDigits: 2 })
+                            : "65,000.00"}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Taxes & Totals */}
+                <div className="flex justify-between items-start pt-3 border-t border-slate-300 text-[11px]">
+                  <div className="text-[10px] text-slate-500 space-y-1">
+                    <p className="font-bold text-slate-700">Amount Chargeable (in words):</p>
+                    <p className="italic">
+                      {fields.total
+                        ? `INR ${parseFloat(fields.total).toLocaleString("en-IN")} Only`
+                        : "INR Two Lakh Eighteen Thousand Three Hundred Only"}
+                    </p>
+                    <p className="mt-2 text-[9px] text-slate-400">
+                      Declaration: All services billed strictly in accordance with Section 31 of CGST Act.
+                    </p>
+                  </div>
+
+                  <div className="w-64 space-y-1 font-mono text-[11px]">
+                    <div className="flex justify-between text-slate-700">
+                      <span>Taxable Value:</span>
+                      <span className="font-bold">
+                        ₹ {parseFloat(fields.subtotal || "185000").toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                    {fields.igst_amount ? (
+                      <div className="flex justify-between text-slate-700">
+                        <span>IGST (18%):</span>
+                        <span className="font-bold">
+                          ₹ {parseFloat(fields.igst_amount).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                        </span>
+                      </div>
+                    ) : (
+                      <>
+                        <div className="flex justify-between text-slate-700">
+                          <span>SGST 9%:</span>
+                          <span className="font-bold">
+                            ₹ {parseFloat(fields.sgst_amount || "1575").toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                          </span>
+                        </div>
+                        <div className="flex justify-between text-slate-700">
+                          <span>CGST 9%:</span>
+                          <span className="font-bold">
+                            ₹ {parseFloat(fields.cgst_amount || "1575").toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                          </span>
+                        </div>
+                      </>
+                    )}
+                    <div className="flex justify-between text-slate-900 border-t border-slate-300 pt-1.5 font-bold text-xs">
+                      <span>Total Amount:</span>
+                      <span className="text-emerald-800 text-sm">
+                        ₹ {parseFloat(fields.total || fields.total_amount || "218300").toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>

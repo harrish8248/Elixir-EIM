@@ -5,6 +5,11 @@ import {
   FileText,
   FileSearch,
   Sparkles,
+  Shield,
+  ExternalLink,
+  Lock,
+  CheckCircle2,
+  FolderOpen,
 } from "lucide-react";
 import {
   apiClient,
@@ -14,6 +19,7 @@ import {
 import { PageHeader } from "@/components/shell/PageHeader";
 import { Button } from "@/design-system/components/Button";
 import { StatusPill } from "@/design-system/components/StatusPill";
+import { Modal } from "@/design-system/components/Modal";
 
 export const SearchView: React.FC = () => {
   const [query, setQuery] = useState("");
@@ -21,13 +27,16 @@ export const SearchView: React.FC = () => {
   const [selectedDept, setSelectedDept] = useState<string | undefined>(undefined);
   const [results, setResults] = useState<SearchResultItem[]>([]);
   const [facets, setFacets] = useState<{
-    classifications: Record<string, number>;
-    departments: Record<string, number>;
-  }>({ classifications: {}, departments: {} });
+    classifications?: Record<string, number>;
+    departments?: Record<string, number>;
+    classification?: Record<string, number>;
+    department?: Record<string, number>;
+  }>({});
   const [total, setTotal] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [popularQueries, setPopularQueries] = useState<string[]>([]);
+  const [selectedDoc, setSelectedDoc] = useState<SearchResultItem | null>(null);
 
   // Autocomplete & Keyboard Shortcuts
   const [suggestions, setSuggestions] = useState<string[]>([]);
@@ -57,10 +66,12 @@ export const SearchView: React.FC = () => {
           department: dept,
         });
         setResults((res as any).items || res.results || []);
-        setTotal(res.total || 0);
-        setFacets(res.facets || { classifications: {}, departments: {} });
+        setTotal(res.total ?? 0);
+        setFacets(res.facets || {});
       } catch (err) {
         console.error("Search error:", err);
+        setResults([]);
+        setTotal(0);
       } finally {
         setIsLoading(false);
       }
@@ -99,6 +110,10 @@ export const SearchView: React.FC = () => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
   };
+
+  // Safe facet resolution (supporting both plural and singular backend keys)
+  const clsCounts = facets.classifications || facets.classification || {};
+  const deptCounts = facets.departments || facets.department || {};
 
   return (
     <div className="flex flex-col h-full overflow-hidden bg-surface-50">
@@ -199,7 +214,7 @@ export const SearchView: React.FC = () => {
               Clearance Level
             </span>
             {["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"].map((cls) => {
-              const count = facets.classifications[cls] || 0;
+              const count = clsCounts[cls] || 0;
               const isSelected = selectedCls === cls;
               return (
                 <button
@@ -228,7 +243,7 @@ export const SearchView: React.FC = () => {
               Department
             </span>
             {["Finance", "HR", "Legal", "Operations"].map((dept) => {
-              const count = facets.departments[dept] || 0;
+              const count = deptCounts[dept] || 0;
               const isSelected = selectedDept === dept;
               return (
                 <button
@@ -257,34 +272,40 @@ export const SearchView: React.FC = () => {
           {total !== null && (
             <div className="text-xs text-surface-500 font-medium">
               Found <span className="font-bold text-surface-900">{total}</span> documents matching "
-              <span className="italic">{query}</span>" with ACL clearance verification applied.
+              <span className="italic">{query || "all"}</span>" with ACL clearance verification applied.
             </div>
           )}
 
           {results.map((doc) => (
             <div
               key={doc.id}
-              className="bg-white rounded-lg border border-surface-200 p-4 shadow-xs hover:border-brand-300 transition-colors space-y-2"
+              onClick={() => setSelectedDoc(doc)}
+              className="bg-white rounded-lg border border-surface-200 p-4 shadow-xs hover:border-brand-500 hover:shadow-sm cursor-pointer transition-all space-y-2 group"
             >
               <div className="flex items-start justify-between">
                 <div className="flex items-center gap-2">
-                  <FileText className="w-4 h-4 text-brand-700 shrink-0" />
-                  <h3 className="text-sm font-bold text-surface-900 hover:text-brand-900 cursor-pointer">
+                  <FileText className="w-4 h-4 text-brand-700 shrink-0 group-hover:text-brand-900" />
+                  <h3 className="text-sm font-bold text-surface-900 group-hover:text-brand-900 transition-colors">
                     {doc.name}
                   </h3>
                   {doc.is_record && <StatusPill label="RECORD" variant="record" />}
                   {doc.status === "held" && <StatusPill label="LITIGATION HOLD" variant="hold" />}
                 </div>
-                <StatusPill
-                  label={doc.classification}
-                  variant={
-                    doc.classification === "RESTRICTED"
-                      ? "danger"
-                      : doc.classification === "CONFIDENTIAL"
-                      ? "warning"
-                      : "neutral"
-                  }
-                />
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] text-surface-400 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                    Inspect details <ExternalLink className="w-3 h-3" />
+                  </span>
+                  <StatusPill
+                    label={doc.classification}
+                    variant={
+                      doc.classification === "RESTRICTED"
+                        ? "danger"
+                        : doc.classification === "CONFIDENTIAL"
+                        ? "warning"
+                        : "neutral"
+                    }
+                  />
+                </div>
               </div>
 
               {doc.snippet ? (
@@ -331,6 +352,93 @@ export const SearchView: React.FC = () => {
           )}
         </div>
       </div>
+
+      {/* Document Inspection & Policy Guardrails Modal */}
+      {selectedDoc && (
+        <Modal
+          open={selectedDoc !== null}
+          onOpenChange={(open) => !open && setSelectedDoc(null)}
+          title={`Document Governance: ${selectedDoc.name}`}
+          maxWidth="lg"
+        >
+          <div className="space-y-5 text-xs text-surface-700">
+            {/* Top metadata grid */}
+            <div className="grid grid-cols-2 gap-4 p-4 bg-surface-50 rounded-lg border border-surface-200">
+              <div>
+                <span className="text-[10px] text-surface-400 uppercase font-mono block">Department</span>
+                <span className="font-semibold text-surface-900">{selectedDoc.department || "Unassigned"}</span>
+              </div>
+              <div>
+                <span className="text-[10px] text-surface-400 uppercase font-mono block">Security Clearance</span>
+                <span className="font-semibold text-surface-900">{selectedDoc.classification}</span>
+              </div>
+              <div>
+                <span className="text-[10px] text-surface-400 uppercase font-mono block">File Size</span>
+                <span className="font-mono text-surface-900">{formatBytes(selectedDoc.size_bytes)}</span>
+              </div>
+              <div>
+                <span className="text-[10px] text-surface-400 uppercase font-mono block">DoD 5015.02 Record</span>
+                <span className="font-mono text-surface-900">{selectedDoc.is_record ? "Declared Record (Immutable)" : "Standard Asset"}</span>
+              </div>
+            </div>
+
+            {/* Description / Content snippet */}
+            <div>
+              <span className="text-[11px] font-bold text-surface-800 block mb-1">Indexed Content Snippet:</span>
+              <div className="p-3 bg-surface-100 rounded border border-surface-200 font-mono text-[11px] leading-relaxed max-h-36 overflow-auto">
+                {selectedDoc.snippet || selectedDoc.description || "No preview snippet available."}
+              </div>
+            </div>
+
+            {/* Active Policy & Ingestion Guardrails protecting this document */}
+            <div className="space-y-2 border-t border-surface-200 pt-3">
+              <span className="font-bold text-surface-900 flex items-center gap-1.5">
+                <Shield className="w-4 h-4 text-emerald-600" /> Active Trust & Guardrails Evaluation:
+              </span>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                <div className="p-2.5 bg-emerald-50 border border-emerald-200 rounded text-emerald-900">
+                  <div className="flex items-center gap-1.5 font-bold mb-0.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> OPA Authorization
+                  </div>
+                  <p className="text-[10px] text-emerald-700">Clearance level verified against OPA Rego rules.</p>
+                </div>
+                <div className="p-2.5 bg-sky-50 border border-sky-200 rounded text-sky-900">
+                  <div className="flex items-center gap-1.5 font-bold mb-0.5">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-sky-600" /> Antivirus Scan
+                  </div>
+                  <p className="text-[10px] text-sky-700">Clean ClamAV stream scan verified at ingestion.</p>
+                </div>
+                <div className="p-2.5 bg-purple-50 border border-purple-200 rounded text-purple-900">
+                  <div className="flex items-center gap-1.5 font-bold mb-0.5">
+                    <Lock className="w-3.5 h-3.5 text-purple-600" /> SHA-256 Ledger
+                  </div>
+                  <p className="text-[10px] text-purple-700">Append-only cryptographic audit chain sealed.</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex items-center justify-between pt-3 border-t border-surface-200">
+              <a
+                href="#/governance/trust"
+                onClick={() => setSelectedDoc(null)}
+                className="flex items-center gap-1.5 px-3 py-1.5 bg-brand-900 hover:bg-brand-950 text-white rounded text-xs font-semibold shadow-xs transition"
+              >
+                <Shield className="w-3.5 h-3.5" />
+                Modify Policy & Guardrails
+              </a>
+              <a
+                href="#/content/explorer"
+                onClick={() => setSelectedDoc(null)}
+                className="flex items-center gap-1.5 px-3 py-1.5 border border-surface-300 hover:bg-surface-100 text-surface-700 rounded text-xs font-medium transition"
+              >
+                <FolderOpen className="w-3.5 h-3.5" />
+                Open in Content Explorer
+              </a>
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };

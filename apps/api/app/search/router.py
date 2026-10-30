@@ -213,7 +213,7 @@ async def search(
             "snippet": snippet_text[:350],
         })
 
-    # 3. Facets query: counts grouped by classification with same permission filters
+    # 3. Facets query: counts grouped by classification and department with same permission filters
     facet_sql = f"""
         SELECT d.classification, count(*) as count
         FROM documents d
@@ -221,7 +221,16 @@ async def search(
         GROUP BY d.classification
     """
     facet_rows = (await db.execute(text(facet_sql), params)).all()
-    facets = {row[0]: row[1] for row in facet_rows}
+    facets_cls = {row[0]: row[1] for row in facet_rows}
+
+    dept_facet_sql = f"""
+        SELECT COALESCE(d.department, 'Unassigned') as dept, count(*) as count
+        FROM documents d
+        WHERE {where_sql}
+        GROUP BY d.department
+    """
+    dept_rows = (await db.execute(text(dept_facet_sql), params)).all()
+    facets_dept = {row[0]: row[1] for row in dept_rows}
 
     return {
         "query": q,
@@ -229,7 +238,12 @@ async def search(
         "total": total,
         "page": page,
         "page_size": page_size,
-        "facets": {"classification": facets},
+        "facets": {
+            "classifications": facets_cls,
+            "departments": facets_dept,
+            "classification": facets_cls,
+            "department": facets_dept,
+        },
         "user_clearance": user_clearance,
         "user_department": user_dept,
         "allowed_classifications": allowed_classifications,
