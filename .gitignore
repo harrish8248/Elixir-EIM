@@ -71,6 +71,8 @@ models/weights/
 *.pth
 *.pt
 *.bin
+*.tar.gz
+docs/ocr-benchmark/*.tar.gz
 tessdata/*.traineddata
 !tessdata/eng.traineddata
 !tessdata/osd.traineddata

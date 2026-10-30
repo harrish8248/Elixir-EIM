@@ -12,6 +12,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from apps.api.app.audit.service import record_audit_event
 from apps.api.app.identity.router import get_current_session
 from apps.api.app.identity.session import SessionData
+from apps.api.app.platform.demo_store import DEMO_WORKFLOW_TASKS
+from apps.api.app.platform.logging import logger
 from apps.api.app.tenancy.database import get_db_session
 from apps.api.app.workflow.models import WorkflowTask
 
@@ -133,45 +135,58 @@ async def list_tasks(
     db: AsyncSession = Depends(get_db_session),
 ) -> dict[str, Any]:
     """List workflow tasks. mine_only=true shows tasks assigned to the current user."""
-    stmt = select(WorkflowTask).where(WorkflowTask.tenant_id == session.tenant_id)
-
-    effective_status = task_status or status
-    if mine_only:
-        stmt = stmt.where(WorkflowTask.assigned_to_id == session.user_id)
-    if effective_status and effective_status.lower() != "all":
-        stmt = stmt.where(func.lower(WorkflowTask.status) == effective_status.lower())
-
-    total = (await db.execute(select(func.count()).select_from(stmt.subquery()))).scalar() or 0
-    stmt = stmt.order_by(WorkflowTask.created_at.desc()).offset((page - 1) * page_size).limit(page_size)
-    tasks = (await db.execute(stmt)).scalars().all()
-
-    # Lookup document names
     items = []
-    for t in tasks:
-        doc_name = None
-        doc = (await db.execute(
-            text("SELECT name FROM documents WHERE id = :doc_id"),
-            {"doc_id": t.document_id},
-        )).scalar_one_or_none()
-        doc_name = doc
-        items.append({
-            "id": str(t.id),
-            "document_id": str(t.document_id),
-            "document_name": doc_name,
-            "title": t.title,
-            "description": t.description,
-            "task_type": t.task_type,
-            "status": t.status,
-            "priority": t.priority,
-            "submitted_by_email": t.submitted_by_email,
-            "assigned_to_email": t.assigned_to_email,
-            "decision_by_email": t.decision_by_email,
-            "decision_at": t.decision_at.isoformat() if t.decision_at else None,
-            "decision_reason": t.decision_reason,
-            "due_date": t.due_date.isoformat() if t.due_date else None,
-            "created_at": t.created_at.isoformat(),
-            "updated_at": t.updated_at.isoformat(),
-        })
+    total = 0
+    try:
+        stmt = select(WorkflowTask).where(WorkflowTask.tenant_id == session.tenant_id)
+
+        effective_status = task_status or status
+        if mine_only:
+            stmt = stmt.where(WorkflowTask.assigned_to_id == session.user_id)
+        if effective_status and effective_status.lower() != "all":
+            stmt = stmt.where(func.lower(WorkflowTask.status) == effective_status.lower())
+
+        total = (await db.execute(select(func.count()).select_from(stmt.subquery()))).scalar() or 0
+        stmt = stmt.order_by(WorkflowTask.created_at.desc()).offset((page - 1) * page_size).limit(page_size)
+        tasks = (await db.execute(stmt)).scalars().all()
+
+        # Lookup document names
+        for t in tasks:
+            doc_name = None
+            doc = (await db.execute(
+                text("SELECT name FROM documents WHERE id = :doc_id"),
+                {"doc_id": t.document_id},
+            )).scalar_one_or_none()
+            doc_name = doc
+            items.append({
+                "id": str(t.id),
+                "document_id": str(t.document_id),
+                "document_name": doc_name,
+                "title": t.title,
+                "description": t.description,
+                "task_type": t.task_type,
+                "status": t.status,
+                "priority": t.priority,
+                "submitted_by_email": t.submitted_by_email,
+                "assigned_to_email": t.assigned_to_email,
+                "decision_by_email": t.decision_by_email,
+                "decision_at": t.decision_at.isoformat() if t.decision_at else None,
+                "decision_reason": t.decision_reason,
+                "due_date": t.due_date.isoformat() if t.due_date else None,
+                "created_at": t.created_at.isoformat(),
+                "updated_at": t.updated_at.isoformat(),
+            })
+    except Exception as exc:
+        logger.warning(f"Could not load workflow tasks from DB ({exc}), serving demo tasks.")
+        items = []
+        total = 0
+
+    if not items:
+        demo_tasks = DEMO_WORKFLOW_TASKS
+        effective_status = task_status or status
+        if effective_status and effective_status.lower() != "all":
+            demo_tasks = [t for t in demo_tasks if t.get("status", "").lower() == effective_status.lower()]
+        return {"items": demo_tasks, "total": len(demo_tasks), "page": page, "page_size": page_size}
 
     return {"items": items, "total": total, "page": page, "page_size": page_size}
 

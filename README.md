@@ -1,234 +1,160 @@
-# ⚡ Elixir Enterprise Information Management (Elixir EIM)
+# Elixir EIM
 
-[![Python](https://img.shields.io/badge/Python-3.13-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
-[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://react.dev/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16_RLS-4169E1?logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![OPA](https://img.shields.io/badge/OPA-Rego_PDP-7D22C3?logo=openpolicyagent&logoColor=white)](https://www.openpolicyagent.org/)
-[![Security](https://img.shields.io/badge/Security-ClamAV_Scanned-red?logo=shield&logoColor=white)](https://www.clamav.net/)
-[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+**A secure place for a company's documents: store them, find them, approve them, read invoices automatically, and prove who did what.**
 
-**Elixir EIM** is a production-grade, multi-tenant **Enterprise Information Management (EIM)** and **Intelligent Document Processing (IDP)** suite built as a high-assurance modular monolith. Engineered as an open-source, air-gapped alternative to legacy platforms like OpenText Content Suite and OpenText Vendor Invoice Management (VIM), Elixir EIM unifies enterprise content services, defensible records management, state-machine process automation, permission-filtered search, and proven document capture.
+Elixir EIM (Enterprise Information Management) is a web application for organizations that must control and prove how they handle documents, such as banks, hospitals, law firms and finance teams. It also reads invoices with free, open-source OCR, with special support for Indian GST invoices.
+
+> **Project status: work in progress.** The secure foundation and the invoice-capture pipeline work and are tested. Some modules are still partial. See [What works today](#what-works-today).
 
 ---
 
-## 🏛️ Core Architecture & Principles
+## What can I do with it?
 
-```mermaid
-flowchart TD
-    subgraph UI["Modern Web Client (React 18 + TypeScript + Tailwind)"]
-        DASH["Content Services"]
-        RR["Records & Retention"]
-        WF["Process Automation"]
-        SRCH["Search & Discovery"]
-        IDP_UI["Capture & IDP Workbench"]
-        GOV["Governance & Policy Control"]
-    end
+| I want to... | Where to go in the app | What happens |
+|---|---|---|
+| Store and organize documents | **Content Services** | Upload files into workspaces and folders. Every upload is checked for viruses first. |
+| Turn a scanned invoice into data | **Capture & IDP** | OCR reads the invoice and fills in the invoice number, date, GSTINs, taxes and total. |
+| Check and correct what OCR read | **Capture & IDP > Review** | See the document next to the extracted fields, click a field to highlight where it came from, fix mistakes. |
+| Choose which OCR engines run | **OCR Engines** | Switch engines on or off and see which ones are installed and healthy. |
+| Find a document | **Search & Discovery** | Search by name, text inside scans, invoice number or GSTIN. You only see what you are allowed to see. |
+| Keep records for the legal period | **Records & Retention** | Set retention schedules and place legal holds that block deletion. |
+| Get documents approved | **Process Automation** | Send approval tasks to another person. Nobody can approve their own work. |
+| Prove nothing was changed | **Policy & Guardrails / Audit** | Every action is written to a log where each entry is linked to the previous one. Click *Verify* to check the chain. |
 
-    subgraph TRUST["Cross-Cutting Trust & Security Layer"]
-        PEP["Policy Enforcement Point (PEP)"]
-        PDP["Policy Decision Point (OPA Rego)"]
-        GUARD["Guardrails & ClamAV Antivirus"]
-        AUDIT["Immutable Hash-Chained Audit Ledger"]
-    end
+---
 
-    subgraph CORE["Domain Modules (Layered Architecture)"]
-        CONTENT["Content Workspaces & Storage"]
-        RECORDS["File Plans & Legal Holds"]
-        WORKFLOW["Process Engine & SLA Manager"]
-        SEARCH["Fuzzy Search & ACL Filtering"]
-        IDP["Capture & IDP (Multi-Engine OCR)"]
-    end
+## How it keeps data safe (in plain words)
 
-    subgraph DATA["Data & Persistence Tier"]
-        PG[("PostgreSQL 16 with RLS")]
-        REDIS[("Redis 7 Cache & Queues")]
-        MINIO[("MinIO S3 / WORM Object Storage")]
-    end
+1. **Every request is checked.** Before anything happens, a policy engine (Open Policy Agent) decides yes or no based on who you are, your department and your clearance level. If the engine is unreachable, the answer is no.
+2. **Companies are separated at the database level.** Each customer's rows are tagged and the database itself refuses to show one customer's data to another.
+3. **Files are scanned.** ClamAV checks uploads before they are processed.
+4. **Everything is logged.** The audit log is append-only and hash-chained, so any change to history is detectable ("tamper-evident").
+5. **Nothing leaves your machine.** OCR runs locally. No document is sent to an outside service, and document text is kept out of the logs.
 
-    UI --> PEP
-    PEP --> PDP
-    PEP --> GUARD
-    GUARD --> CORE
-    CORE --> AUDIT
-    CORE --> PG
-    CORE --> REDIS
-    CORE --> MINIO
+---
+
+## How invoice reading works
+
+```
+Upload -> Virus scan -> OCR -> Classify -> Extract fields -> Validate -> Human review -> File + make searchable
 ```
 
-### Key Architectural Tenets
-1. **Deny By Default (PEP / PDP)**: Every inbound API request is intercepted by the Policy Enforcement Point (`PEP`). Authorization is evaluated centrally against Rego policies running in Open Policy Agent (`OPA`). Zero backdoor endpoints.
-2. **Multi-Tenancy with Row-Level Security (RLS)**: Enforced directly at the PostgreSQL 16 engine layer. Every table is bound to `tenant_id` via PostgreSQL session variables (`app.current_tenant_id`) ensuring zero data bleed between tenants.
-3. **Immutable Audit Ledger**: Every action generates a cryptographically linked SHA-256 linear hash-chained audit event for SOC 2 Type II and ISO 27001 non-repudiation.
-4. **Air-Gapped & Offline-First**: Operates strictly within your perimeter with zero telemetry and zero external OCR or LLM API calls.
-5. **No Document Text in Logs**: Privacy-first logging; document text and confidential PII are strictly barred from logging frameworks.
+- **OCR engines:** Tesseract (English plus Hindi, Tamil, Telugu, Kannada, Malayalam, Bengali, Marathi, Gujarati and Punjabi), Indra OCR (fast, CPU-only) and the PDF text layer. Other engines are used automatically if you install them.
+- **GSTIN checking:** each GSTIN is checked for format and its built-in check character. If OCR confuses characters like `O` and `0`, the system tries fixes and keeps only one that passes the check.
+- **Tax checks:** taxable value + CGST + SGST (or IGST) must equal the total. Duplicate invoices are flagged.
+- **e-Invoice QR codes** are decoded offline and used to cross-check the OCR result.
+- **Positions:** every extracted field remembers where it was on the page, so the review screen can highlight it.
+- **Not sure? A person decides.** Invoices that fail a check go to a review queue instead of being approved automatically.
+
+**Indra OCR note:** it supports Latin, Cyrillic, Greek, Devanagari, Bengali and Chinese. It does **not** read Tamil, Telugu, Kannada or Malayalam. Tesseract handles those.
 
 ---
 
-## 📦 Functional Modules
+## Get started
 
-### 1. 📑 Capture & Intelligent Document Processing (IDP)
-*An OpenText VIM-style document capture and mathematical reconciliation engine.*
-- **Adaptive Multi-Engine OCR**: Orchestrates **Tesseract 5.4** (with multi-language packs), **Indra OCR** (fast on clean print; supports Latin, Cyrillic, Greek, Devanagari, Bengali and Chinese; does not support Tamil, Telugu, Kannada, or Malayalam), and **PyMuPDF**.
-- **Indian GST Invoice Extraction**: Automated extraction of Supplier/Buyer GSTINs, Taxable Value, CGST, SGST, IGST, HSN line items, and bank details.
-- **Mod-36 Checksum Repair**: Position-aware OCR error correction that repairs confused characters (`O` vs `0`, `I` vs `1`, `S` vs `5`, `B` vs `8`, `Z` vs `2`) to match official GSTIN checksum algorithms.
-- **Rule 46 e-Invoice QR Validation**: Offline decoding and cross-validation of signed e-invoice JWT QR codes using `zxingcpp`.
-- **Mathematical Tax Reconciliation**: Enforces strict tax arithmetic:
-  $$\text{Taxable Value} + \text{CGST} + \text{SGST} = \text{Total Amount} \quad (\text{Intra-State})$$
-  $$\text{Taxable Value} + \text{IGST} = \text{Total Amount} \quad (\text{Inter-State})$$
-- **Human-in-the-Loop Workbench**: Side-by-side visual document preview with bounding-box highlights, field correction drawers, and audit trails.
+### What you need
+- Windows 10/11 with **Docker** (WSL2 backend)
+- **Python 3.13**
+- **Node.js 20+**
+- **Tesseract 5**: `winget install UB-Mannheim.TesseractOCR`
+- About 6 GB of free disk space and 8 GB of RAM (more is better)
 
-### 2. 📁 Content Services
-- Multi-tier folder and workspace management.
-- Major/minor document versioning with automated diffs.
-- Custom metadata schemas with dynamic validation.
-- PDF/A compliance generation and rendition conversions.
-
-### 3. ⚖️ Records & Retention Management
-- Defensible multi-phase file plans (Retention, Archival, Permanent Hold, Disposition).
-- Automatic time-based and event-based retention triggers.
-- Granular legal holds preventing spoliation.
-- Dual-authorization disposition approval workflows.
-
-### 4. ⚡ Process Automation & Workflows
-- Visual state-machine workflow builder.
-- Role-based task inboxes with SLA tracking, escalation paths, and re-assignment.
-- Dynamic form rendering for operational data capture.
-
-### 5. 🔍 Permission-Filtered Search & Discovery
-- Full-text search powered by PostgreSQL `pg_trgm` and tsvector indexing.
-- Department-level zero-leak SQL ACL filtering (e.g., HR users cannot view Finance files).
-- Multi-facet drilldown by document type, tags, date range, and metadata fields.
-
----
-
-## 🛠️ Technology Stack
-
-| Layer | Technologies |
-| :--- | :--- |
-| **Frontend** | React 18, TypeScript, Tailwind CSS, Radix UI, TanStack Query, Lucide Icons, Vite |
-| **Backend API** | FastAPI, Python 3.13, Pydantic v2, SQLAlchemy 2 (asyncpg) |
-| **Security & Auth** | Open Policy Agent (OPA), OIDC / Keycloak, ClamAV Antivirus, JWT |
-| **Database & Cache** | PostgreSQL 16 (Row-Level Security, pg_trgm), Redis 7 |
-| **Storage & Renditions** | MinIO S3 (WORM compliant), Gotenberg (PDF/A engine) |
-| **OCR & Vision** | Tesseract 5.4, Indra OCR 1.1, PyMuPDF, OpenCV, zxing-cpp |
-
----
-
-## 🚀 Quick Start Guide
-
-### Prerequisites
-- [Docker Desktop](https://www.docker.com/) (running with WSL2 backend on Windows)
-- Python 3.13+
-- Node.js 20+
-
-### 1. Clone & Set Up the Environment
-```bash
+### Install and run
+```powershell
 git clone https://github.com/harrish8248/Elixir-EIM.git
 cd Elixir-EIM
 
-# Set up Python virtual environment
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
-pip install -r apps/api/requirements.txt
+pip install -r requirements.lock
 
-# Set up Web Frontend dependencies
-cd apps/web
-npm install
-cd ../..
-```
+npm --prefix apps/web install
 
-### 2. Start Infrastructure Services
-```bash
-docker compose up -d postgres redis minio opa clamav
-```
-
-### 3. Run Database Migrations
-```bash
-alembic -c migrations/alembic.ini upgrade head
-```
-
-### 4. Launch the Application Stack
-You can launch both the API and Web client with a single automated script:
-```powershell
 .\start.ps1 -Demo
 ```
-- **Web Frontend**: [http://localhost:5173](http://localhost:5173)
-- **FastAPI Documentation**: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
-- **Capture & IDP Workbench**: [http://localhost:5173/idp](http://localhost:5173/idp)
+
+`start.ps1 -Demo` starts the services, prepares the database, loads demo data and prints a pass/fail table. The first start can take a few minutes because Keycloak and ClamAV are slow to warm up.
+
+| What | Address |
+|---|---|
+| Web app | http://localhost:5173 |
+| API documentation | http://127.0.0.1:8000/docs |
+
+**Demo logins** are listed in [docs/DEMO.md](docs/DEMO.md). Start with the Records Manager account to see everything, then try an HR user to see how permissions hide Finance documents.
+
+To wipe the demo data and start fresh: `.\start.ps1 -ResetDemo`
 
 ---
 
-## 👥 Pre-Seeded Demo Personas
+## Your first 5 minutes
 
-| Persona | Role | Department | Default Credentials | Primary Access |
-| :--- | :--- | :--- | :--- | :--- |
-| **Sarah Chen** | Platform Administrator | IT / Operations | `admin@elixir.local` / `DemoAdmin2026!` | Full System Administration, Policy Designer |
-| **Raj Patel** | Senior Financial Controller | Finance | `finance@elixir.local` / `DemoFinance2026!` | Invoices, Capture Workbench, PO Matching |
-| **Maria Santos** | HR Director | Human Resources | `hr@elixir.local` / `DemoHR2026!` | Personnel Records, Employee File Plans |
-| **David Kim** | Compliance Auditor | Legal & Risk | `auditor@elixir.local` / `DemoAuditor2026!` | Immutable Audit Ledger, Legal Holds |
+1. **Sign in** with a demo account.
+2. Open **Capture & IDP** and click **Upload Document**. Choose an invoice image from `docs/demo-samples/`.
+3. Watch the status move from scanning to processing to *needs review* or *approved*.
+4. Click **Review**. Click the GSTIN field and see it highlighted on the invoice. Correct any field and save.
+5. Open **Search & Discovery** and search for the invoice number or part of the GSTIN.
+6. Sign out, sign in as a user from another department, and repeat the search. The invoice should not appear.
+7. Open **Policy & Guardrails** and click the audit verification button to check the log.
 
 ---
 
-## 🧪 Testing & Verification
+## What works today
 
-Elixir EIM includes comprehensive test suites across security, OCR accuracy, and architecture:
+| Area | State |
+|---|---|
+| Login, permissions, company separation, audit log | Built and tested |
+| Content, records, approvals, search | Built; more browser-level testing planned |
+| OCR and GST invoice capture | Working; date and total extraction still improving |
+| OCR Engines page and hardware-aware engine choice | In progress |
+| Workflow designer, automatic retention jobs, integrations, AI assistant, analytics | Not built yet |
+| Automated checks on GitHub (CI) | Written, not yet run |
+
+### How accurate is the OCR?
+On a set of 110 synthetic test invoices that the system was never tuned on, **plain OCR without the QR code** read the supplier GSTIN correctly **98%** of the time and the invoice number **98%**. Invoice date (31%), total (48%) and taxable value (47%) are **weak and being improved**. These are test results on generated invoices; accuracy on real invoices has not been measured yet. Method and tables: [docs/OCR_ACCURACY.md](docs/OCR_ACCURACY.md).
+
+---
+
+## Troubleshooting
+
+| Problem | Fix |
+|---|---|
+| Services stop or ports stop responding after a while | WSL shuts down when idle. Keep it alive: `Start-Process wsl -ArgumentList "-d","Ubuntu","sleep","infinity" -WindowStyle Hidden`, then run `.\start.ps1 -Demo` again. |
+| A page shows "API Error 404" | A stale backend is still running. Stop it, then restart with `.\start.ps1 -Demo`. |
+| Login hangs or fails | Keycloak takes 1 to 2 minutes to start. Check `docker ps` until it shows healthy. |
+| OCR says Tesseract is not found | Install Tesseract (see above) and make sure its install folder is configured in `.env`. |
+| An OCR engine shows "Not installed" | That engine's model files could not be downloaded. The app still works with the engines that are installed. |
+| Computer is slow | Close other apps. Gotenberg (document preview) is optional and can be left off. |
+
+---
+
+## Run the tests
 
 ```powershell
-# 1. Benchmark Integrity & Frozen Manifest Verification
-pytest apps/api/tests/test_benchmark_integrity.py -v
-
-# 2. Strict Layered Architecture Contract Check
-import-linter --config importlinter.ini
-
-# 3. Route Coverage & PEP/PDP Authorization Enforcement
-pytest apps/api/tests/test_route_coverage.py -v
-
-# 4. Search ACL Filtering & Department Isolation
-pytest apps/api/tests/test_search_acl_and_fuzzy.py -v
+pytest apps/api/tests -v                                   # backend
+lint-imports                                               # code boundaries
+docker exec elixir-opa opa test /policies -v               # permission policies
+npm --prefix apps/web test -- --run                        # frontend
+python cli/elixir_admin/main.py ocr evaluate --split test  # OCR accuracy
 ```
 
 ---
 
-## 📂 Repository Layout
+## Technology
+
+**Backend:** Python, FastAPI, SQLAlchemy, Alembic. **Frontend:** React, TypeScript, Tailwind CSS. **Data:** PostgreSQL 16 (row-level security), Redis, MinIO. **Security:** Keycloak (login), Open Policy Agent (permissions), ClamAV (virus scan). **OCR:** Tesseract, Indra OCR, PyMuPDF, OpenCV.
+
+## Project layout
 
 ```
-Elixir-EIM/
-├── apps/
-│   ├── api/                     # FastAPI Backend Application
-│   │   ├── app/
-│   │   │   ├── admin/           # Tenant, User, and System Administration
-│   │   │   ├── audit/           # Cryptographic Hash-Chained Audit Ledger
-│   │   │   ├── content/         # Workspaces, Documents & IDP Engine
-│   │   │   │   └── idp/         # Multi-Engine OCR, GST Extractor, VIM Validation
-│   │   │   ├── guardrails/      # ClamAV scan, File Magic Bytes, Ingestion safety
-│   │   │   ├── identity/        # Auth, Sessions & SCIM Provisioning
-│   │   │   ├── pep/             # Policy Enforcement Point
-│   │   │   ├── records/         # File Plans, Retention, and Legal Holds
-│   │   │   ├── search/          # Permission-Filtered Full-Text Search
-│   │   │   ├── tenancy/         # RLS Session Context & Multi-Tenancy
-│   │   │   └── workflow/        # Process Automation & State Machines
-│   │   └── tests/               # Test suites (RLS, ACL, Integrity, Route coverage)
-│   └── web/                     # React 18 Single Page Application
-│       ├── src/
-│       │   ├── components/      # UI Shell, Navigation, Guardrails Modals
-│       │   ├── modules/         # Content, IDP, Records, Automation, Search views
-│       │   └── config/          # Auth context, API clients, Query providers
-├── docs/                        # Specifications, Benchmarks, Control Inventory
-│   ├── ocr-benchmark/           # Frozen Synthetic & Degraded Benchmark Datasets
-│   ├── ARCHITECTURE.md          # Architectural blueprints and boundaries
-│   ├── CONTROL_INVENTORY.md     # SOC 2 & Security control mappings
-│   └── PROGRESS.md              # Milestone tracking & release logs
-├── migrations/                  # Alembic database migration revisions
-├── policies/                    # OPA Rego policy definitions
-├── scripts/                     # Seeding, Benchmark generation & utilities
-└── docker-compose.yml           # Local infrastructure stack definition
+apps/api/     backend (identity, permissions, audit, content and invoice capture, records, workflow, search, admin)
+apps/web/     web app
+policies/     permission rules and their tests
+migrations/   database changes
+cli/          elixir-admin command-line tool
+scripts/      demo data and benchmark tools
+docs/         architecture, demo guide, OCR accuracy, licenses
 ```
 
----
+## License
 
-## 📄 License & Compliance
-
-Distributed under the Apache 2.0 License. Designed to satisfy compliance criteria for **SOC 2 Type II**, **ISO 27001**, **HIPAA**, and **GDPR** records disposition requirements.
-
+Apache-2.0. Third-party OCR engines and model weights have their own terms; see [docs/THIRD_PARTY_LICENSES.md](docs/THIRD_PARTY_LICENSES.md). Indra OCR's model weights carry use restrictions, so review them before any commercial use.
