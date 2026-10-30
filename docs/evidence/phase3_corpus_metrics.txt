@@ -1,0 +1,127 @@
+================================================================================
+PHASE 3: SENSITIVITY CLASSIFIER EVALUATION REPORT (HELD-OUT TEST SET)
+================================================================================
+Total Corpus Size:      160 files across 10 formats
+Dev Split:              80 files
+Held-Out Test Split:    80 files
+Tested Formats:         PDF, DOCX, XLSX, CSV, JSON, HTML, MD, RTF, EML, ZIP, TXT
+
+PER-LABEL CLASSIFICATION METRICS (HELD-OUT SET):
+--------------------------------------------------------------------------------
+Label        | Precision  | Recall     | F1-Score   | Support  | TP/FP/FN
+--------------------------------------------------------------------------------
+SAFE         |     89.47% |    100.00% |     94.44% |       34 | 34/4/0
+SENSITIVE    |    100.00% |     96.00% |     97.96% |       25 | 24/0/1
+CRITICAL     |    100.00% |     85.71% |     92.31% |       21 | 18/0/3
+--------------------------------------------------------------------------------
+Macro Avg    |     96.49% |     93.90% |     94.90% |       80 |
+Overall Accuracy: 95.00% (76/80)
+
+CONFUSION MATRIX:
+--------------------------------------------------------------------------------
+Actual \ Predicted | SAFE       | SENSITIVE  | CRITICAL  
+--------------------------------------------------------------------------------
+SAFE               |         34 |          0 |          0
+SENSITIVE          |          1 |         24 |          0
+CRITICAL           |          3 |          0 |         18
+
+ADVERSARIAL EDGE CASE PERFORMANCE:
+--------------------------------------------------------------------------------
+Adversarial Category      | Accuracy     | Correct / Total
+--------------------------------------------------------------------------------
+aadhaar_valid             |     100.00%  | 4/4
+api_secret                |      66.67%  | 6/9
+bad_gstin_checksum        |     100.00%  | 5/5
+bad_luhn                  |     100.00%  | 7/7
+bad_verhoeff              |     100.00%  | 3/3
+card_valid                |     100.00%  | 8/8
+gstin_valid               |     100.00%  | 4/4
+pii_or_context            |      95.24%  | 20/21
+public_or_erp             |     100.00%  | 19/19
+--------------------------------------------------------------------------------
+
+PER-FILE TEST RESULTS IN HELD-OUT SPLIT:
+--------------------------------------------------------------------------------
+File ID                | Fmt   | True      | Pred      | Status | Explanation
+--------------------------------------------------------------------------------
+crit_secret_7          | json  | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 JSON Web Token (JWT
+sens_18_v42            | pdf   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains Protected Health & C
+crit_card_5            | docx  | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Valid Payment Card 
+crit_aadhaar_4_v3      | pdf   | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Valid Indian Aadhaa
+sens_10                | pdf   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains Confidentiality / ND
+safe_5_v49             | csv   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+safe_1_v45             | pdf   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+safe_3                 | docx  | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+crit_secret_6          | txt   | CRITICAL  | SAFE      | FAIL   | SAFE: No regulated identifiers, payment 
+sens_6_v30             | json  | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains 1 Indian IFSC Code(s
+crit_aadhaar_3_v2      | pdf   | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Valid Indian Aadhaa
+sens_13_v37            | csv   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains Payroll & Executive 
+adv_bad_gstin_1_v75    | json  | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+sens_10_v34            | pdf   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains Confidentiality / ND
+safe_2_v46             | txt   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+crit_secret_6_v20      | txt   | CRITICAL  | SAFE      | FAIL   | SAFE: No regulated identifiers, payment 
+sens_9_v33             | txt   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains 1 Indian Mobile Numb
+sens_7_v31             | html  | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains 1 Indian Mobile Numb
+crit_secret_5_v19      | rtf   | CRITICAL  | SAFE      | FAIL   | SAFE: No regulated identifiers, payment 
+sens_5                 | csv   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains 1 Indian IFSC Code(s
+crit_card_1_v5         | docx  | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Valid Payment Card 
+sens_15_v39            | html  | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains Payroll & Executive 
+adv_bad_card_1_v70     | csv   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+sens_gstin_2_v11       | pdf   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains 1 Verified Indian GS
+crit_secret_10         | rtf   | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Cryptographic Priva
+adv_bad_card_4         | csv   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+safe_2                 | txt   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+adv_bad_gstin_5        | json  | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+crit_aadhaar_2_v1      | pdf   | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Valid Indian Aadhaa
+sens_3_v27             | docx  | SENSITIVE | SAFE      | FAIL   | SAFE: No regulated identifiers, payment 
+sens_13                | csv   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains Payroll & Executive 
+adv_bad_gstin_4_v78    | json  | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+sens_gstin_1           | pdf   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains 1 Verified Indian GS
+safe_3_v47             | docx  | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+crit_secret_1          | txt   | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 AWS Access Key(s)
+adv_bad_aadhaar_4      | txt   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+safe_14                | xlsx  | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+sens_gstin_5_v14       | pdf   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains 1 Verified Indian GS
+crit_card_1            | docx  | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Valid Payment Card 
+crit_secret_10_v24     | rtf   | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Cryptographic Priva
+sens_9                 | txt   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains 1 Indian Mobile Numb
+adv_bad_gstin_3        | json  | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+sens_20                | xlsx  | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains Residential Address 
+safe_11_v55            | pdf   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+safe_1                 | pdf   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+sens_gstin_3           | pdf   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains 1 Verified Indian GS
+safe_4                 | xlsx  | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+adv_bad_aadhaar_4_v68  | txt   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+adv_bad_card_5_v74     | csv   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+crit_card_3_v7         | docx  | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Valid Payment Card 
+adv_bad_aadhaar_3_v67  | txt   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+sens_15                | html  | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains Payroll & Executive 
+safe_14_v58            | xlsx  | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+crit_card_4_v8         | docx  | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Valid Payment Card 
+adv_bad_card_2_v71     | csv   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+sens_16                | eml   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains Protected Health & C
+crit_aadhaar_2         | pdf   | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Valid Indian Aadhaa
+adv_bad_card_2         | csv   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+sens_11_v35            | docx  | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains Confidentiality / ND
+safe_12                | txt   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+sens_4_v28             | xlsx  | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains 1 Indian IFSC Code(s
+adv_bad_card_4_v73     | csv   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+safe_6                 | json  | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+adv_bad_gstin_5_v79    | json  | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+safe_6_v50             | json  | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+safe_15                | csv   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+safe_11                | pdf   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+crit_secret_9          | eml   | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Hardcoded Credentia
+crit_card_3            | docx  | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Valid Payment Card 
+crit_card_4            | docx  | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Valid Payment Card 
+sens_5_v29             | csv   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains 1 Indian IFSC Code(s
+crit_secret_8          | html  | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Hardcoded Credentia
+safe_16_v60            | json  | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+sens_2                 | pdf   | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains 1 Indian PAN Number(
+sens_11                | docx  | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains Confidentiality / ND
+safe_13                | docx  | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+safe_18                | md    | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+adv_bad_card_1         | csv   | SAFE      | SAFE      | PASS   | SAFE: No regulated identifiers, payment 
+crit_card_2            | docx  | CRITICAL  | CRITICAL  | PASS   | CRITICAL: Contains 1 Valid Payment Card 
+sens_4                 | xlsx  | SENSITIVE | SENSITIVE | PASS   | SENSITIVE: Contains 1 Indian IFSC Code(s
+================================================================================
