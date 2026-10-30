@@ -129,16 +129,23 @@ export const OcrEnginesControlCenterView: React.FC = () => {
 
   const handleToggle = async (engineId: string, currentEnabled: boolean) => {
     if (!isAdmin) return;
+    const targetEng = engines.find((e) => e.id === engineId);
+    const nextState = !currentEnabled;
     try {
-      const nextState = !currentEnabled;
       setEngines((prev) =>
         prev.map((e) => (e.id === engineId ? { ...e, is_enabled: nextState } : e))
       );
       await apiClient.post(`/api/v1/idp/engines/${engineId}/toggle`, {
         is_enabled: nextState,
       });
-      setSuccessMessage(`Engine ${engineId} is now ${nextState ? "enabled" : "disabled"}`);
-      setTimeout(() => setSuccessMessage(null), 3000);
+      if (nextState && targetEng && !targetEng.is_installed) {
+        setSuccessMessage(
+          `${targetEng.name} is now enabled in tenant routing policy. (Note: Engine package is not yet installed locally; processing will auto-fallback to available engines until installed).`
+        );
+      } else {
+        setSuccessMessage(`Engine ${targetEng?.name || engineId} is now ${nextState ? "enabled" : "disabled"}`);
+      }
+      setTimeout(() => setSuccessMessage(null), 4000);
     } catch (err: any) {
       setErrorMessage(err.message || "Failed to toggle engine");
       fetchEngines();
@@ -171,10 +178,16 @@ export const OcrEnginesControlCenterView: React.FC = () => {
 
   const handleRunBenchmark = async (engineId: string) => {
     if (!isAdmin) return;
+    const targetEng = engines.find((e) => e.id === engineId);
+    if (targetEng && !targetEng.is_installed) {
+      setErrorMessage(`Cannot run benchmark: ${targetEng.name} is not installed locally (${targetEng.status}).`);
+      setTimeout(() => setErrorMessage(null), 5000);
+      return;
+    }
     setBenchmarkingEngineId(engineId);
     try {
       const res = await apiClient.post<any>(`/api/v1/idp/engines/${engineId}/benchmark`);
-      setSuccessMessage(`Benchmark complete for ${engineId}! CER: ${res.cer}%, WER: ${res.wer}%`);
+      setSuccessMessage(`Benchmark complete for ${targetEng?.name || engineId}! CER: ${res.cer}%, WER: ${res.wer}%`);
       setTimeout(() => setSuccessMessage(null), 4000);
       fetchEngines();
     } catch (err: any) {
@@ -519,11 +532,14 @@ export const OcrEnginesControlCenterView: React.FC = () => {
                   </div>
 
                   {/* Toggle Switch */}
-                  <label className="relative inline-flex items-center cursor-pointer">
+                  <label
+                    className="relative inline-flex items-center cursor-pointer"
+                    title={eng.is_enabled ? `Click to disable ${eng.name}` : `Click to enable ${eng.name}`}
+                  >
                     <input
                       type="checkbox"
                       checked={eng.is_enabled}
-                      disabled={!isAdmin || !eng.is_installed}
+                      disabled={!isAdmin}
                       onChange={() => handleToggle(eng.id, eng.is_enabled)}
                       className="sr-only peer"
                     />
@@ -693,7 +709,8 @@ export const OcrEnginesControlCenterView: React.FC = () => {
                 </button>
                 <button
                   onClick={() => handleRunBenchmark(eng.id)}
-                  disabled={!isAdmin || !eng.is_installed || isBenchmarking}
+                  disabled={!isAdmin || isBenchmarking}
+                  title={!eng.is_installed ? `Note: ${eng.status}` : `Run Dev benchmark on ${eng.name}`}
                   className="flex-1 flex items-center justify-center gap-1.5 px-2.5 py-1.5 text-xs font-medium text-brand-700 dark:text-brand-300 bg-brand-50 dark:bg-brand-950/40 border border-brand-200 dark:border-brand-800 rounded-md hover:bg-brand-100 dark:hover:bg-brand-900/40 transition disabled:opacity-50"
                 >
                   <RefreshCw className={clsx("w-3 h-3", isBenchmarking && "animate-spin")} />
